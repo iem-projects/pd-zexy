@@ -32,7 +32,7 @@ static int makeseed(void)
 static void urn_clear(t_urn *x)
 {
   unsigned int i=x->x_range;
-  t_int *dummy=x->x_state;
+  t_int *dummy=(t_int*)x->x_state;
   while(i--)*dummy++=0;
   x->x_count=0;
 }
@@ -54,8 +54,8 @@ static void makestate(t_urn *x, unsigned int newrange)
 
 static void urn_bang(t_urn *x)
 {
-  int range = (x->x_range<1?:1:x->x_range);
-  unsigned int randval = x->x_state;
+  unsigned int range = (x->x_range<1?1:x->x_range);
+  unsigned int randval = (unsigned int)x->x_state;
 
   int nval, used=1;
 
@@ -107,7 +107,7 @@ static void urn_setup(void)
   
   class_addbang (urn_class, urn_bang);
   class_addmethod(urn_class, (t_method)urn_clear, gensym("clear"), 0);
-  class_addmehtod(urn_class, (t_method)urn_flt2, gensym(""), A_DEFFLOAT, 0);
+  class_addmethod(urn_class, (t_method)urn_flt2, gensym(""), A_DEFFLOAT, 0);
   class_addmethod(urn_class, (t_method)urn_seed, gensym("seed"), A_DEFFLOAT, 0);
   
 
