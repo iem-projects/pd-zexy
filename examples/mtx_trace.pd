@@ -6,15 +6,16 @@
 #X obj 84 106 mtx_ones 7;
 #X msg 84 83 bang;
 #X obj 84 147 mtx_trace;
-#X floatatom 84 189 4 0 0;
+#X floatatom 84 189 4 0 0 0 - - -;
 #X text 86 68 get trace of a matrix;
 #X text 79 271 get diagonal of a matrix;
 #X text 81 204 trace = sum(diagonal elements);
 #X text 243 28 get information of the diagonale of a matrix;
 #X text 440 176 see also help for;
-#X obj 555 177 matrix;
-#X text 425 265 to create diagonale matrices \, see;
-#X obj 629 265 mtx_eye;
+#X obj 571 175 matrix;
+#X obj 699 269 mtx_eye;
+#X text 332 270 to create diagonale matrices with [mtx_diag] \, see
+;
 #X connect 0 0 1 0;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
