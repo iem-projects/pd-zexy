@@ -332,7 +332,7 @@ static t_int *demux_perform(t_int *w)
   t_demux *x = (t_demux *)(w[1]);
   t_float *in = (t_float *)(w[2]);
   int N = (int)(w[3]);
-  int n = N, i;
+  int n = N;
   
   t_float *out = x->out[x->output];
 
