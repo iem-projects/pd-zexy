@@ -51,7 +51,7 @@ ifeq (${ARCH},alpha)
 AFLAGS = -mieee  -mcpu=ev56
 endif
 
-LINCLUDE =
+LINCLUDE = -I../../../pd/src
 
 $(LINUXOBJECTS): *.h
 
