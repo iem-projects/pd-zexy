@@ -83,8 +83,9 @@ all: $(LINUXOBJECTS)
 
 
 install: installdocs
+	install -d $(PD_DIR)/externs
 	install -m 644 zexy.pd_linux $(PD_DIR)/externs
 
 installdocs:
 	install -d $(PD_DIR)/doc/5.reference/zexy
-	install -m644 ../examples/* $(PD_DIR)/doc/5.reference/zexy
+	install -m644 ../examples/*.pd $(PD_DIR)/doc/5.reference/zexy
