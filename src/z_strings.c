@@ -174,9 +174,6 @@ static t_class *list2symbol_class;
 typedef struct _list2symbol
 {
   t_object x_obj;
-#ifdef OLD
-  t_binbuf *bbuf;
-#endif
   int       ac;
   t_atom   *ap;
   t_symbol *s,*connector;
@@ -188,19 +185,6 @@ static void list2symbol_connector(t_list2symbol *x, t_symbol *s){
 
 static void list2symbol_bang(t_list2symbol *x)
 {
-#ifdef OLD
-  char *str=0, *s2;
-  int n=0;
-
-  binbuf_gettext(x->bbuf, &str, &n);
-  /* memory bug ! detected and fixed by Juvu */
-  s2 = copybytes(str, n+1);
-  s2[n]=0;
-
-  outlet_symbol(x->x_obj.ob_outlet, gensym(s2));
-  freebytes(str, n);
-  freebytes(s2,n+1);
-#else
   t_atom *argv=x->ap;
   int     argc=x->ac;
   char *result = 0;
@@ -240,59 +224,35 @@ static void list2symbol_bang(t_list2symbol *x)
   result[length]=0;
   outlet_symbol(x->x_obj.ob_outlet, gensym(result));
   freebytes(result, (length+1)*sizeof(char));
-#endif
 }
 
 static void list2symbol_anything(t_list2symbol *x, t_symbol *s, int argc, t_atom *argv)
 {
-#ifdef OLD
-  t_atom ap;
-  binbuf_clear(x->bbuf);
-  SETSYMBOL(&ap, s);
-  binbuf_add(x->bbuf, 1, &ap);
-  binbuf_add(x->bbuf, argc, argv);
-#else
   x->s =s;
   x->ac=argc;
   x->ap=argv;
-#endif
   
   list2symbol_bang(x);
 }
 
 static void list2symbol_list(t_list2symbol *x, t_symbol *s, int argc, t_atom *argv)
 {
-#ifdef OLD
-  binbuf_clear(x->bbuf);
-  binbuf_add(x->bbuf, argc, argv);
-#else
   list2symbol_anything(x, 0, argc, argv);
-#endif
-  list2symbol_bang(x);
 }
 static void *list2symbol_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_list2symbol *x = (t_list2symbol *)pd_new(list2symbol_class);
 
   outlet_new(&x->x_obj, 0);
-#ifdef OLD
-  x->bbuf = binbuf_new();
-  binbuf_add(x->bbuf, argc, argv);
-#else
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym(""));
   x->connector = gensym(" ");
-#endif
   list2symbol_anything(x, 0, argc, argv);
 
   return (x);
 }
 
 static void list2symbol_free(t_list2symbol *x)
-{
-#ifdef OLD
-  binbuf_free(x->bbuf);
-#endif
-}
+{}
 
 
 static void list2symbol_setup(void)
