@@ -166,19 +166,26 @@ static void strcmp_setup(void)
 
 /* ------------------------- list2symbol ------------------------------- */
 
-/* compare 2 lists ( == for lists) */
-
 static t_class *list2symbol_class;
 
 typedef struct _list2symbol
 {
   t_object x_obj;
-
+#ifdef OLD
   t_binbuf *bbuf;
+#endif
+  int       ac;
+  t_atom   *ap;
+  t_symbol *s,*connector;
 } t_list2symbol;
+
+static void list2symbol_connector(t_list2symbol *x, t_symbol *s){
+  x->connector = s;
+}
 
 static void list2symbol_bang(t_list2symbol *x)
 {
+#ifdef OLD
   char *str=0, *s2;
   int n=0;
 
@@ -190,40 +197,98 @@ static void list2symbol_bang(t_list2symbol *x)
   outlet_symbol(x->x_obj.ob_outlet, gensym(s2));
   freebytes(str, n);
   freebytes(s2,n+1);
+#else
+  t_atom *argv=x->ap;
+  int     argc=x->ac;
+  char *result = 0;
+  char string[MAXPDSTRING];
+  int length = 0;
+  int i= argc;
+
+  if (x->s){
+    char *buf = x->s->s_name;
+    int newlen = length + strlen(buf);
+    strcpy(string+length, buf);
+    length = newlen;
+    if(i && x->connector){
+      char *buf = x->connector->s_name;
+      newlen = length + strlen(buf);
+      strcpy(string+length, buf);
+      length = newlen;
+    }
+  }
+  while(i--){
+    char buffer[MAXPDSTRING];
+    int newlen;
+    atom_string(argv++, buffer, MAXPDSTRING);
+    newlen = length + strlen(buffer);
+    strcpy(string+length, buffer);
+    length = newlen;
+    if(i && x->connector){
+      char *buf = x->connector->s_name;
+      newlen = length + strlen(buf);
+      strcpy(string+length, buf);
+      length = newlen;
+    }
+  }
+  length = strlen(string);
+  result = (char*)getbytes((length+1)*sizeof(char));
+  strcpy(result, string);
+  result[length]=0;
+  outlet_symbol(x->x_obj.ob_outlet, gensym(result));
+  freebytes(result, (length+1)*sizeof(char));
+#endif
 }
 
-static void list2symbol_list(t_list2symbol *x, t_symbol *s, int argc, t_atom *argv)
-{
-  binbuf_clear(x->bbuf);
-  binbuf_add(x->bbuf, argc, argv);
-  
-  list2symbol_bang(x);
-}
 static void list2symbol_anything(t_list2symbol *x, t_symbol *s, int argc, t_atom *argv)
 {
+#ifdef OLD
   t_atom ap;
   binbuf_clear(x->bbuf);
   SETSYMBOL(&ap, s);
   binbuf_add(x->bbuf, 1, &ap);
   binbuf_add(x->bbuf, argc, argv);
+#else
+  x->s =s;
+  x->ac=argc;
+  x->ap=argv;
+#endif
   
   list2symbol_bang(x);
 }
 
+static void list2symbol_list(t_list2symbol *x, t_symbol *s, int argc, t_atom *argv)
+{
+#ifdef OLD
+  binbuf_clear(x->bbuf);
+  binbuf_add(x->bbuf, argc, argv);
+#else
+  list2symbol_anything(x, 0, argc, argv);
+#endif
+  list2symbol_bang(x);
+}
 static void *list2symbol_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_list2symbol *x = (t_list2symbol *)pd_new(list2symbol_class);
 
   outlet_new(&x->x_obj, 0);
+#ifdef OLD
   x->bbuf = binbuf_new();
   binbuf_add(x->bbuf, argc, argv);
+#else
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym(""));
+  x->connector = gensym(" ");
+#endif
+  list2symbol_anything(x, 0, argc, argv);
 
   return (x);
 }
 
 static void list2symbol_free(t_list2symbol *x)
 {
+#ifdef OLD
   binbuf_free(x->bbuf);
+#endif
 }
 
 
@@ -236,6 +301,7 @@ static void list2symbol_setup(void)
   class_addbang    (list2symbol_class, list2symbol_bang);
   class_addlist    (list2symbol_class, list2symbol_list);
   class_addanything(list2symbol_class, list2symbol_anything);
+  class_addmethod  (list2symbol_class, (t_method)list2symbol_connector, gensym(""), A_SYMBOL, 0);
 
   class_sethelpsymbol(list2symbol_class, gensym("zexy/list2symbol"));
 }

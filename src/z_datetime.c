@@ -18,8 +18,8 @@
 
 
 #include "zexy.h"
-#include <sys/timeb.h>
 #include <time.h>
+#include <sys/timeb.h>
 
 /* ----------------------- time --------------------- */
 
