@@ -12,6 +12,7 @@ AC_SUBST(LD)
 AC_SUBST(STRIPFLAGS)
 AC_SUBST(ZEXY_VERSION)
 AC_SUBST(REFERENCEPATH)
+AC_SUBST(PDLIBDIR)
 AC_SUBST(INCLUDES)
 AC_SUBST(SOURCES)
 
@@ -81,7 +82,17 @@ then
     enable_lpt="no";
   fi
 fi
-
+if test `uname | sed -e 's/^MINGW.*/NT/'` = NT; 
+then
+  LD=gcc
+  INCLUDES="-I@prefix@/src"
+  DFLAGS="-DMSW -DNT"
+  LFLAGS="-shared @prefix@/bin/pd.dll"
+  EXT=dll
+else
+  PDLIBDIR="/lib/pd"
+  LIBS="-lc -lm"
+fi
 if test `uname -s` = IRIX64; 
 then
   LFLAGS="-n32 -DUNIX -DIRIX -DN32 -woff 1080,1064,1185 \
