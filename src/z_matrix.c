@@ -54,10 +54,10 @@
 #ifdef MY_WRITE
 #include <stdio.h>
 #endif
+#include <string.h>
 
 #ifdef NT
 #include <memory.h>
-#include <string.h>
 #define fabsf fabs
 #pragma warning( disable : 4244 )
 #pragma warning( disable : 4305 )
