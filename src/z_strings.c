@@ -3,12 +3,12 @@
 #include <string.h>
 
 #ifdef NT
-#pragma warning( disable : 4244 )
-#pragma warning( disable : 4305 )
-#define sqrtf sqrt
-#define STATIC_INLINE
+# pragma warning( disable : 4244 )
+# pragma warning( disable : 4305 )
+# define sqrtf sqrt
+# define STATIC_INLINE
 #else
-#define STATIC_INLINE static
+# define STATIC_INLINE static
 #endif
 
 /*
@@ -191,39 +191,54 @@ static void list2symbol_bang(t_list2symbol *x)
   t_atom *argv=x->ap;
   int     argc=x->ac;
   char *result = 0;
-  char string[MAXPDSTRING];
-  int length = 0;
+  int length = 0, len=0;
   int i= argc;
+  char *connector=0;
+  char connlen=0;
+  if(x->connector)connector=x->connector->s_name;
+  if(connector)connlen=strlen(connector);
 
-  if (x->s){
-    char *buf = x->s->s_name;
-    int newlen = length + strlen(buf);
-    strcpy(string+length, buf);
-    length = newlen;
-    if(i && x->connector){
-      char *buf = x->connector->s_name;
-      newlen = length + strlen(buf);
-      strcpy(string+length, buf);
-      length = newlen;
-    }
-  }
+  /* 1st get the length of the symbol */
+  if(x->s)length+=strlen(x->s->s_name);
+  else length-=connlen;
+
+  length+=i*connlen;
+
   while(i--){
     char buffer[MAXPDSTRING];
-    int newlen;
     atom_string(argv++, buffer, MAXPDSTRING);
-    newlen = length + strlen(buffer);
-    strcpy(string+length, buffer);
-    length = newlen;
-    if(i && x->connector){
-      char *buf = x->connector->s_name;
-      newlen = length + strlen(buf);
-      strcpy(string+length, buf);
-      length = newlen;
+    length+=strlen(buffer);
+  }
+
+  if (length<0){
+    outlet_symbol(x->x_obj.ob_outlet, gensym(""));
+    return;
+  }
+
+  result = (char*)getbytes((length+1)*sizeof(char));
+
+  /* 2nd create the symbol */
+  if (x->s){
+    char *buf = x->s->s_name;
+    strcpy(result+len, buf);
+    len+=strlen(buf);
+    if(i && connector){
+      strcpy(result+len, connector);
+      len += connlen;
     }
   }
-  length = strlen(string);
-  result = (char*)getbytes((length+1)*sizeof(char));
-  strcpy(result, string);
+  i=argc;
+  argv=x->ap;
+  while(i--){
+    char buffer[MAXPDSTRING];
+    atom_string(argv++, buffer, MAXPDSTRING);
+    strcpy(result+len, buffer);
+    len += strlen(buffer);
+    if(i && connector){
+      strcpy(result+len, connector);
+      len += connlen;
+    }
+  }
   result[length]=0;
   outlet_symbol(x->x_obj.ob_outlet, gensym(result));
   freebytes(result, (length+1)*sizeof(char));
@@ -335,12 +350,15 @@ static void symbol2list_process(t_symbol2list *x)
   deli=x->delimiter->s_name;
   dell=strlen(deli);
 
+  
   /* get the number of tokens */
   while((d=strstr(cp, deli))){
-    if (d!=NULL && d!=cp)i++;
+    if (d!=NULL && d!=cp){
+      i++;
+    }
     cp=d+dell;
   }
-  
+
   /* resize the list-buffer if necessary */
   if(x->argnum<i){
     freebytes(x->argv, x->argnum*sizeof(t_atom));
