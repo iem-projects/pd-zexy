@@ -64,7 +64,7 @@ install-bin:
 
 install-doc:
 	-install -d $(INSTALL_DOC)
-	-install -m 644 reference/*.pd $(INSTALL_DOC)
+	-install -m 644 ../examples/*.pd $(INSTALL_DOC)
 
 dist: all cleaner
 	(cd ../..;tar czvf $(TARNAME) $(LIBNAME))
