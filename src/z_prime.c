@@ -16,19 +16,25 @@ void prime_float(t_prime *x, t_float f)
   unsigned int max_divisor;
   unsigned int divisor=1;
 
-  if (f<2)return;
+  if (f<2){
+    outlet_float(x->x_obj.ob_outlet, 0.0);
+    return;
+  }
 
   if (!(i%2)){
-    if (i==2)outlet_bang(x->x_obj.ob_outlet);
+    outlet_float(x->x_obj.ob_outlet, (t_float)(i==2));
     return;
   }
 
   max_divisor = sqrt(f)+1;
 
   while ((divisor+=2)<max_divisor)
-    if (!(i%divisor)) return;
+    if (!(i%divisor)) {
+      outlet_float(x->x_obj.ob_outlet, 0.0);
+      return;
+    }
 
-  outlet_bang(x->x_obj.ob_outlet);
+  outlet_float(x->x_obj.ob_outlet, 1.0);
 }
 
 void *prime_new(void)
