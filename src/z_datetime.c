@@ -118,6 +118,9 @@ typedef struct _date
   t_outlet *x_outlet1;
   t_outlet *x_outlet2;
   t_outlet *x_outlet3;
+  t_outlet *x_outlet4;
+  t_outlet *x_outlet5;
+  t_outlet *x_outlet6;
 } t_date;
 
 static void *date_new(t_symbol *s, int argc, t_atom *argv)
@@ -135,6 +138,9 @@ static void *date_new(t_symbol *s, int argc, t_atom *argv)
   x->x_outlet1 = outlet_new(&x->x_obj, &s_float);
   x->x_outlet2 = outlet_new(&x->x_obj, &s_float);
   x->x_outlet3 = outlet_new(&x->x_obj, &s_float);
+  x->x_outlet4 = outlet_new(&x->x_obj, &s_float);
+  x->x_outlet5 = outlet_new(&x->x_obj, &s_float);
+  x->x_outlet6 = outlet_new(&x->x_obj, &s_float);
   
   return (x);
 }
@@ -151,6 +157,9 @@ static void date_bang(t_date *x)
   gettimeofday(&tv, 0);
   resolvetime = (x->GMT)?gmtime(&tv.tv_sec):localtime(&tv.tv_sec);
 #endif
+  outlet_float(x->x_outlet6, (t_float)resolvetime->tm_isdst);
+  outlet_float(x->x_outlet5, (t_float)resolvetime->tm_yday);
+  outlet_float(x->x_outlet4, (t_float)resolvetime->tm_wday);
   outlet_float(x->x_outlet3, (t_float)resolvetime->tm_mday);
   outlet_float(x->x_outlet2, (t_float)resolvetime->tm_mon + 1);
   outlet_float(x->x_outlet1, (t_float)resolvetime->tm_year + 1900);
@@ -159,7 +168,7 @@ static void date_bang(t_date *x)
 static void help_date(t_date *x)
 {
   post("\n%c date\t\t:: get the current system date", HEARTSYMBOL);
-  post("\noutputs are\t: year / month / day");
+  post("\noutputs are\t: year / month / day / day of week /day of year / daylightsaving (1/0)");
   post("\ncreation\t::'date [GMT]': show local date or GMT");
 }
 
