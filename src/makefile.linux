@@ -55,8 +55,8 @@ LINCLUDE =
 
 $(LINUXOBJECTS): *.h
 
-#CFLAGS = -O2 -g -Wall $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
-CFLAGS = -O3 -march=pentium3 -g -Wall $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
+CFLAGS = -O2 -g -Wall $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
+#CFLAGS = -O3 -march=pentium3 -g -Wall $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
 
 
 everything: clean all install distclean
