@@ -36,7 +36,7 @@ TARGETS = zexy \
 	z_sigbin z_sigaverage \
 	z_dfreq z_sigzero z_pdf \
 	z_sfplay z_sfrecord \
-	z_sigpack \
+	z_sigpack z_wrap \
 	z_prime z_random
 
 # ----------------------- MACOSX ----------------------------
@@ -59,8 +59,8 @@ $(MACOSXOBJECTS): *.h
 CFLAGS = -O2 -DMACOSX -Dunix -g -Wall-W -Wno-unused \
 	 -Wno-parentheses -Wno-switch $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
 
-MACOSXLINKFLAGS = -bundle -undefined suppress  -flat_namespace
-#MACOSXLINKFLAGS = -bundle -bundle_loader ../../../pd/bin/pd
+#MACOSXLINKFLAGS = -bundle -undefined suppress  -flat_namespace
+MACOSXLINKFLAGS = -bundle -bundle_loader ../../../pd/bin/pd
 
 everything: clean all install distclean
 
@@ -123,11 +123,13 @@ darwin_pkg_clean:
 
 # install into MSP's default: /usr/local/lib
 
+HELP_DIR = installroot/pd/doc/5.reference/help-zexy
 darwin_pkg: all darwin_pkg_clean darwin_pkg_license darwin_pkg_welcome
 # set up installroot dir
-	test -d installroot/pd/doc/5.reference || mkdir -p installroot/pd/doc/5.reference
-	install -m444 ../zexy.pd installroot/pd/doc/5.reference
-	install -m444 ../examples/*.* installroot/pd/doc/5.reference
+	test -d $(HELP_DIR)  || mkdir -p  $(HELP_DIR)
+	install -m444 ../zexy.pd  $(HELP_DIR)/..
+	install -d $(HELP_DIR)/help-zexy
+	install -m444 ../examples/*.* $(HELP_DIR)
 	test -d installroot/pd/extra || mkdir -p installroot/pd/extra
 	install -m444 *.pd_darwin installroot/pd/extra
 	cp -f ../pd-zexy.info ../$(PACKAGE_NAME).info
