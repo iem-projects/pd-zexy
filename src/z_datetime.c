@@ -1,5 +1,6 @@
 /* 
    (c) 1202:forum::für::umläute:2000
+   1506:forum::für::umläute:2003: use timeb only if needed (like on windoze)
    
    "time" gets the current time from the system
    "date" gets the current date from the system
@@ -9,6 +10,7 @@
 #ifdef NT
 #pragma warning( disable : 4244 )
 #pragma warning( disable : 4305 )
+#define USE_TIMEB
 #endif
 
 #ifdef MACOSX
@@ -19,7 +21,12 @@
 
 #include "zexy.h"
 #include <time.h>
+#ifdef USE_TIMEB
 #include <sys/timeb.h>
+#else
+#include <sys/time.h>
+#endif
+
 
 /* ----------------------- time --------------------- */
 
@@ -59,13 +66,21 @@ static void *time_new(t_symbol *s, int argc, t_atom *argv)
 
 static void time_bang(t_time *x)
 {
-  struct timeb mytime;
   struct tm *resolvetime;
-  
+  float  ms = 0.f;
+#ifdef USE_TIMEB
+  struct timeb mytime;
   ftime(&mytime);
   resolvetime = (x->GMT)?gmtime(&mytime.time):localtime(&mytime.time);
-
-  outlet_float(x->x_outlet4, (t_float)(mytime.millitm));
+  ms=mytime.millitm;
+#else
+  struct timeval tv;
+  gettimeofday(&tv, 0);
+  resolvetime = (x->GMT)?gmtime(&tv.tv_sec):localtime(&tv.tv_sec);
+  ms = tv.tv_usec*0.001;
+#endif
+  //  outlet_float(x->x_outlet4, (t_float)(mytime.millitm));
+  outlet_float(x->x_outlet4, (t_float)(ms));
   outlet_float(x->x_outlet3, (t_float)resolvetime->tm_sec);
   outlet_float(x->x_outlet2, (t_float)resolvetime->tm_min);  
   outlet_float(x->x_outlet1, (t_float)resolvetime->tm_hour);
@@ -126,12 +141,16 @@ static void *date_new(t_symbol *s, int argc, t_atom *argv)
 
 static void date_bang(t_date *x)
 {
-  struct timeb mytime;
   struct tm *resolvetime;
-    
+#ifdef USE_TIMEB
+  struct timeb mytime;
   ftime(&mytime);
   resolvetime=(x->GMT)?gmtime(&mytime.time):localtime(&mytime.time);
-  
+#else
+  struct timeval tv;
+  gettimeofday(&tv, 0);
+  resolvetime = (x->GMT)?gmtime(&tv.tv_sec):localtime(&tv.tv_sec);
+#endif
   outlet_float(x->x_outlet3, (t_float)resolvetime->tm_mday);
   outlet_float(x->x_outlet2, (t_float)resolvetime->tm_mon + 1);
   outlet_float(x->x_outlet1, (t_float)resolvetime->tm_year + 1900);
