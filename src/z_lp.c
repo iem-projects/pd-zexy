@@ -94,7 +94,7 @@ static void *lp_new(t_symbol *s, int argc, t_atom *argv)
     }
     x->mode=MODE_IOPL;
     count_iopl++;
-    post("iopl.............................%d", count_iopl);
+    //    post("iopl.............................%d", count_iopl);
   }
   
   post("connected to port %x in mode '%s'", x->port, (x->mode==MODE_IOPL)?"iopl":"ioperm");
