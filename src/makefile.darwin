@@ -92,17 +92,71 @@ installdocs:
 	install -d $(PD_DIR)/doc/5.reference/zexy
 	install -m644 ../examples/*.* $(PD_DIR)/doc/5.reference/zexy
 
-darwin_package: all
-	test -d ../installroot/pd/doc/5.reference || mkdir -p ../installroot/pd/doc/5.reference
-	cp  ../examples/* ../installroot/pd/doc/5.reference
-	test -d ../installroot/pd/extra || mkdir -p ../installroot/pd/extra
-	install -m644 --group=admin *.pd_darwin ../installroot/extra
-	open ../darwin_package.pmsp
 
-darwin_altpackage: all
-	test -d ../installroot/Help || mkdir -p ../installroot/Help
-	-cp ../examples/* ../installroot/Help
-	test -d ../installroot/Externals || mkdir -p ../installroot/Externals
-	install -m644 *.pd_darwin --group=admin ../installroot/Externals
-	open ../darwin_altpackage.pmsp
+# added by Hans-Christoph Steiner <hans@eds.org>
+# to generate MacOS X packages
 
+ZEXY_VERSION = $(shell grep VERSION zexy.h | cut -d ' ' -f 3 | cut -d '"' -f 2)
+
+PACKAGE_NAME = pd-zexy-$(ZEXY_VERSION)
+
+darwin_pkg_license:
+  # generate HTML version of License
+	echo "<HTML><BODY><FONT SIZE="-1">" > License.html
+	cat ../../creb/COPYING | sed -e 's/^$$/\<P\>/g' >> License.html	
+	echo "</FONT></BODY></HTML>" >> License.html
+
+darwin_pkg_welcome:
+# generate Welcome.html from ../README.txt
+#	echo "<HTML><BODY><FONT SIZE="-1">" > ../Welcome.html
+#	head -11 ../README.txt >> ../Welcome.html	
+#	sed -i -e 's/the zexy external/\<B\>the zexy external\<\/B\>/' ../Welcome.html
+#	sed -i -e 's/^$$/\<P\>/' ../Welcome.html
+#	echo "</FONT></BODY></HTML>" >> ../Welcome.html
+	head -11 ../README.txt >> Welcome.txt
+
+darwin_pkg_clean:
+	-sudo rm -Rf installroot/ $(PACKAGE_NAME)*.pkg/
+	-rm -f ../$(PACKAGE_NAME)*.info 1 License.html Welcome.???*
+
+
+# install into MSP's default: /usr/local/lib
+
+darwin_pkg: all darwin_pkg_clean darwin_pkg_license darwin_pkg_welcome
+# set up installroot dir
+	test -d installroot/pd/doc/5.reference || mkdir -p installroot/pd/doc/5.reference
+	install -m644 --group=admin ../examples/*.* installroot/pd/doc/5.reference
+	test -d installroot/pd/extra || mkdir -p installroot/pd/extra
+	install -m644 --group=admin *.pd_darwin installroot/extra
+	cp -f ../pd-zexy.info ../$(PACKAGE_NAME).info
+# delete cruft
+	-find installroot -name .DS_Store -delete
+	-rm -f 1
+# set proper permissions
+	sudo chown -R root:staff installroot
+	package installroot ../$(PACKAGE_NAME).info -d . -ignoreDSStore
+# install pkg docs
+	install -m 644 License.html Welcome.txt $(PACKAGE_NAME).pkg/Contents/Resources
+	sudo chown -R root:staff $(PACKAGE_NAME).pkg/Contents/Resources
+
+
+# install into MacOS X style paths: /Library/Pd
+
+darwin_altpkg: all darwin_pkg_clean darwin_pkg_license darwin_pkg_welcome
+# set up installroot dir
+	test -d installroot/Help || mkdir -p installroot/Help
+	-cp ../examples/* installroot/Help
+	test -d installroot/Externals || mkdir -p installroot/Externals
+	install -m644 *.pd_darwin --group=admin installroot/Externals
+	sed -e 's/\/usr\/local\/lib/\/Library\/Pd/' ../pd-zexy.info \
+		 | sed -e 's/MSP standard paths/MacOS X-style Paths/' \
+		 > ../$(PACKAGE_NAME)-alt.info
+ # delete cruft
+	-find installroot -name .DS_Store -delete
+	-rm -f 1
+ # set proper permissions
+	sudo chown -R root:staff installroot
+	package installroot ../$(PACKAGE_NAME)-alt.info -d . -ignoreDSStore
+ # install pkg docs
+	install -m 644 License.html Welcome.txt $(PACKAGE_NAME)-alt.pkg/Contents/Resources
+	sudo chown -R root:staff $(PACKAGE_NAME)-alt.pkg/Contents/Resources
