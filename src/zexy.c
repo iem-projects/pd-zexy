@@ -91,9 +91,9 @@ static void zexy_help(void)
        "\nsort\t\t:: shell-sort a package of floats"
        "\ndemux\t\t:: demultiplex the input to a specified output"
        "\nmsgfile\t\t:: store and handles lists of lists"
-#ifdef linux
        "\nlp\t\t:: write to the (parallel) port"
-#endif
+       "\nwrap\t\t:: wrap a floating number between 2 limits"
+       "\nurn\t\t:: unique random numbers"
 #if 0
        "\nexecute\t\t:: execute an application"
 #endif
@@ -196,6 +196,7 @@ void z_down_setup();
 
 void z_prime_setup();
 void z_random_setup();
+void z_wrap_setup();
 /*
   waiting to be released in near future:
   make stdin~ and stdout~ work
@@ -251,6 +252,7 @@ void zexy_setup(void)
 
   z_prime_setup();
   z_random_setup();
+  z_wrap_setup();
 #if 0
   z_stdinout_setup();
 
