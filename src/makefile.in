@@ -1,0 +1,76 @@
+LIBNAME    =zexy
+PREFIX     =@prefix@
+PDLIBDIR   =lib/pd
+INSTALLDOCS=@REFERENCEPATH@$LIBNAME
+
+INSTALL_BIN=$(PREFIX)/$(PDLIBDIR)/extra
+INSTALL_DOC=$(PREFIX)/$(PDLIBDIR)/$(INSTALLDOCS)
+
+EXT = @EXT@ 
+DEFS = @DFLAGS@
+IFLAGS = -I. @INCLUDES@
+
+CC = @CC@
+LD = @LD@
+AFLAGS = 
+LFLAGS = @LFLAGS@
+WFLAGS =
+
+TARNAME =  $(LIBNAME)-@ZEXY_VERSION@.tgz
+
+.SUFFIXES: .$(EXT)
+
+PDCFLAGS = -g -O2 $(DEFS) $(IFLAGS) $(WFLAGS) $(LFLAGS) $(AFLAGS)
+CFLAGS = -g -O2 $(DEFS) $(IFLAGS) $(WFLAGS)
+
+LIBS = -lc -lm 
+#LIBS = -lpthread -lm -lc 
+include make.source
+TARGETS = $(SOURCES:.c=.o)
+
+
+all: $(LIBNAME)
+	cp $(LIBNAME).$(EXT) ..
+
+$(LIBNAME): $(TARGETS)
+	$(LD) $(LFLAGS) -o $(LIBNAME).$(EXT) *.o $(LIBS)
+	strip @STRIPFLAGS@ $(LIBNAME).$(EXT)
+
+.c.o:
+	$(CC) -c -o $@ $(CFLAGS) -DPD $*.c
+
+# cp $@ $*_stat.o
+
+.o.$(EXT):
+	$(CC) -o $@ $(PDCFLAGS) -DPD $*.o
+
+
+clean:
+	-rm -f *.$(EXT) *.o 
+
+cleaner: clean
+	-rm -f *~ _* config.*
+
+cleanest: cleaner
+	-rm -f makefile ../*.$(EXT) make.source
+
+distclean: cleanest newmakefile
+
+install: install-bin install-doc
+
+install-bin:
+	-install -d $(INSTALL_BIN)
+	-install -m 644 $(LIBNAME).$(EXT) $(INSTALL_BIN)
+
+install-doc:
+	-install -d $(INSTALL_DOC)
+	-install -m 644 reference/*.pd $(INSTALL_DOC)
+
+dist: all cleaner
+	(cd ../..;tar czvf $(TARNAME) $(LIBNAME))
+
+everything: clean all install distclean
+
+newmakefile:
+	echo "current:">makefile
+	echo "	./configure && make">>makefile

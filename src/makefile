@@ -1,0 +1,2 @@
+current:
+	./configure && make

@@ -1,12 +1,9 @@
  /* 
-   (c) 2005:forum::für::umläute:2000
+   (c) 2000:forum::für::umläute:2004
 
    write to the parallel port
    extended to write to any port (if we do have permissions)
-
 */
-#ifdef __i386__
-
 #define BASE0  0x3bc
 #define BASE1  0x378
 #define BASE2  0x278
@@ -16,36 +13,43 @@
 
 #include "zexy.h"
 
-#include <sys/io.h>
-#include <stdlib.h>
+/* ----------------------- lpt --------------------- */
 
-/* ----------------------- lp --------------------- */
-
+#ifdef Z_WANT_LPT
+# include <sys/io.h>
+# include <stdlib.h>
 static int count_iopl = 0;
+#endif
 
-static t_class *lp_class;
 
-typedef struct _lp
+static t_class *lpt_class;
+
+typedef struct _lpt
 {
   t_object x_obj;
 
   unsigned long port;
 
   int mode; // MODE_IOPERM, MODE_IOPL
-} t_lp;
+} t_lpt;
 
-static void lp_float(t_lp *x, t_floatarg f)
+static void lpt_float(t_lpt *x, t_floatarg f)
 {
+#ifdef Z_WANT_LPT
   if (x->port) {
     unsigned char b = f;
     outb(b, x->port);
   }
+#endif /*  Z_WANT_LPT */
 }
 
-static void *lp_new(t_symbol *s, int argc, t_atom *argv)
+static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
 {
-  t_lp *x = (t_lp *)pd_new(lp_class);
+  t_lpt *x = (t_lpt *)pd_new(lpt_class);
+  if(s==gensym("lp"))
+    error("lpt: the use of 'lp' has been deprecated; use 'lpt' instead");
 
+#ifdef Z_WANT_LPT
   x->port = 0;
  
   if ((argc==0)||(argv->a_type==A_FLOAT)) {
@@ -61,7 +65,7 @@ static void *lp_new(t_symbol *s, int argc, t_atom *argv)
       x->port = BASE2;
       break;
     default:
-      error("lp : only lp0, lp1 and lp2 are accessible");
+      error("lpt : only lpt0, lpt1 and lpt2 are accessible");
       x->port = 0;
       return (x);
     }
@@ -74,21 +78,21 @@ static void *lp_new(t_symbol *s, int argc, t_atom *argv)
   }
 
   if (!x->port || x->port>65535){
-    post("lp : bad port %x", x->port);
+    post("lpt : bad port %x", x->port);
     x->port = 0;
     return (x);
   }
 
   if (x->port && x->port < 0x400){
     if (ioperm(x->port, 8, 1)) {
-      error("lp : couldn't get write permissions");
+      error("lpt : couldn't get write permissions");
       x->port = 0;
       return (x);
     }
     x->mode = MODE_IOPERM;
   } else {
     if (iopl(3)){
-	error("lp : couldn't get write permissions");
+	error("lpt : couldn't get write permissions");
 	x->port = 0;
 	return (x);
     }
@@ -99,38 +103,46 @@ static void *lp_new(t_symbol *s, int argc, t_atom *argv)
   
   post("connected to port %x in mode '%s'", x->port, (x->mode==MODE_IOPL)?"iopl":"ioperm");
   if (x->mode==MODE_IOPL)post("warning: this might seriously damage your pc...");
-  
+#else
+  error("zexy has been compiled without [lpt]!");
+#endif /* Z_WANT_LPT */
+
   return (x);
 }
 
-static void lp_free(t_lp *x)
+static void lpt_free(t_lpt *x)
 {
+#ifdef Z_WANT_LPT
   if (x->port) {
-    if (x->mode==MODE_IOPERM && ioperm(x->port, 8, 0)) error("lp: couldn't clean up device");
+    if (x->mode==MODE_IOPERM && ioperm(x->port, 8, 0)) error("lpt: couldn't clean up device");
     else if (x->mode==MODE_IOPL && (!--count_iopl) && iopl(0))
-      error("lp: couldn't clean up device");
+      error("lpt: couldn't clean up device");
   }
+#endif /* Z_WANT_LPT */
 }
 
 
-static void helper(t_lp *x)
+static void helper(t_lpt *x)
 {
-  post("\n%c lp :: direct access to the parallel port", HEARTSYMBOL);
+  post("\n%c lpt :: direct access to the parallel port", HEARTSYMBOL);
   post("<byte>\t: write byte to the parallel-port");
-  post("\ncreation:\t\"lp [<port>]\": connect to parallel port <port> (0..2)");
-  post("\t\t\"lp <portaddr>\": connect to port @ <portaddr> (hex)");
+  post("\ncreation:\t\"lpt [<port>]\": connect to parallel port <port> (0..2)");
+  post("\t\t\"lpt <portaddr>\": connect to port @ <portaddr> (hex)");
 }
 
-void z_lp_setup(void)
+void z_lpt_setup(void)
 {
-  lp_class = class_new(gensym("lp"),
-			  (t_newmethod)lp_new, (t_method)lp_free,
-			  sizeof(t_lp), 0, A_GIMME, 0);
+  lpt_class = class_new(gensym("lpt"),
+			  (t_newmethod)lpt_new, (t_method)lpt_free,
+			  sizeof(t_lpt), 0, A_GIMME, 0);
+  class_addcreator((t_newmethod)lpt_new, gensym("lp"), A_GIMME, 0);
 
-  class_addfloat(lp_class, (t_method)lp_float);
+  class_addfloat(lpt_class, (t_method)lpt_float);
 
-  class_addmethod(lp_class, (t_method)helper, gensym("help"), 0);
-  class_sethelpsymbol(lp_class, gensym("zexy/lp"));
+  class_addmethod(lpt_class, (t_method)helper, gensym("help"), 0);
+  class_sethelpsymbol(lpt_class, gensym("zexy/lpt"));
 }
 
-#endif /* __i386__ */
+void z_lp_setup(void){
+  z_lpt_setup();
+}

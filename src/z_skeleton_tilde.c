@@ -49,7 +49,7 @@ static void *skeleton_new()
   return (x);
 }
 
-void z_skeleton_setup(void)
+void z_skeleton_tilde_setup(void)
 {
   skeleton_class = class_new(gensym("skeleton~"), (t_newmethod)skeleton_new, 0,
 			     sizeof(t_skeleton), 0, A_DEFFLOAT, 0);
