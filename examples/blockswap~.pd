@@ -1,0 +1,36 @@
+#N canvas 0 0 705 533 10;
+#X obj 71 367 dac~ 1;
+#X obj 71 342 *~;
+#X obj 32 293 dbtorms;
+#X floatatom 32 269 0 0 0 0 - - -;
+#X floatatom 26 203 0 0 0 0 - - -;
+#X msg 118 228 help;
+#X msg 404 59 \; pd dsp 1;
+#X obj 71 317 sig~ 0.2;
+#X msg 482 61 \; pd dsp 0;
+#N canvas 0 0 450 300 graph5 0;
+#X array scope 100 float 0;
+#X coords 0 1 100 -1 400 300 1;
+#X restore 298 194 graph;
+#X obj 139 314 tabwrite~ scope;
+#X msg 139 289 bang;
+#X text 287 166 note: there will be a break at 64 samples (signal-vector!)
+;
+#X obj 87 255 blockswap~;
+#X obj 26 227 osc~ 440;
+#X obj 123 12 blockswap~;
+#X text 200 13 swap upper and lower half of the signal-vector;
+#X obj 122 198 tgl 15 0 empty empty on/off 0 -6 0 8 -262144 -1 -1 1
+1;
+#X text 287 151 note: there will be a break at 32 samples (swap!);
+#X connect 1 0 0 0;
+#X connect 2 0 7 0;
+#X connect 3 0 2 0;
+#X connect 4 0 14 0;
+#X connect 5 0 13 0;
+#X connect 7 0 1 0;
+#X connect 11 0 10 0;
+#X connect 13 0 1 1;
+#X connect 13 0 10 0;
+#X connect 14 0 13 0;
+#X connect 17 0 13 0;
