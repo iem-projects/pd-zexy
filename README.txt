@@ -22,7 +22,8 @@ alternatively you can try "make everything"
 win32 :
 extract the zexy-0_x.zip to your pd-path (this file should be located at <mypdpath>/pd/zexy/)
 execute the "z_install.bat", this should copy all necessary files to the correct places
-if you want to compile it for yourself, i don't take any warranties for the makefile.nt; use the workspace zexy.dsw instead
+to compile: w/ MSVC makefile.nt or zexy.dsw, or with GCC configure your pd path, eg:
+./configure --prefix=/c/program/pd; make; make install
 
 irix :
 though i have physical access to both SGI's O2s and indys,  i haven't tried to compile the zexy externals there for years.
