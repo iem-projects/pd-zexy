@@ -8,17 +8,14 @@
   lister    : the same as "float" for floats but for packages
   a2l       : convert "anything" to "list"
   list2int  : cast all floats of a list to integers
-  glue      : glue to lists together (append,...)
+  glue      : glue 2 lists together (append,...)
   .         : scalar mult
+  repeat    : repeat a message a given number times
   TODO      : any
 */
 
 #include "zexy.h"
-
-
-#ifdef NT
 #include <string.h>
-#endif
 
 /* -------------------- segregate ------------------------------ */
 
@@ -565,6 +562,44 @@ static void scalmul_setup(void)
 }
 
 
+/* ------------------------- repeat ------------------------------- */
+
+/* a no-operation - just pass through what you get in */
+
+static t_class *repeat_class;
+
+typedef struct _repeat
+{
+  t_object x_obj;
+  t_float fcount;
+} t_repeat;
+
+static void repeat_anything(t_repeat *x, t_symbol *s, int argc, t_atom *argv)
+{ 
+  int i;
+  i=x->fcount;
+  if (i<0)i=1;
+  while(i--)outlet_anything(x->x_obj.ob_outlet, s, argc, argv);
+}
+
+static void *repeat_new(t_float f)
+{
+  t_repeat *x = (t_repeat *)pd_new(repeat_class);
+  x->fcount = f;
+  floatinlet_new(&x->x_obj, &x->fcount);
+  outlet_new(&x->x_obj, 0);
+  return (x);
+}
+
+static void repeat_setup(void)
+{
+  repeat_class = class_new(gensym("repeat"), (t_newmethod)repeat_new, 
+			   0, sizeof(t_repeat), 0, A_FLOAT, 0);
+  class_addanything(repeat_class, repeat_anything);
+
+  class_sethelpsymbol(repeat_class, gensym("zexy/repeat"));
+}
+
 
 
 /* -------------- overall setup routine for this file ----------------- */
@@ -580,6 +615,7 @@ void z_connective_setup(void)
   scalmul_setup();
 
   a2l_setup();
+  repeat_setup();
 
   /* I don't supply HELP - functionality, since this might harm overall-performance here */
 }
