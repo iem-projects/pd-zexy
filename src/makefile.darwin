@@ -89,3 +89,18 @@ install: installdocs
 installdocs:
 	install -d $(PD_DIR)/doc/5.reference/zexy
 	install -m644 ../examples/*.* $(PD_DIR)/doc/5.reference/zexy
+
+darwin_package: all
+	test -d ../installroot/doc/5.reference || mkdir -p ../installroot/doc/5.reference
+	-cp  ../examples/* ../installroot/doc/5.reference
+	test -d ../installroot/extra || mkdir -p ../installroot/extra
+	install -m644 *.pd_darwin ../installroot/extra
+	open ../darwin_package.pmsp
+
+darwin_altpackage: all
+	test -d ../installroot/Help || mkdir -p ../installroot/Help
+	-cp ../examples/* ../installroot/Help
+	test -d ../installroot/Externals || mkdir -p ../installroot/Externals
+	install -m644 *.pd_darwin ../installroot/Externals
+	open ../darwin_altpackage.pmsp
+
