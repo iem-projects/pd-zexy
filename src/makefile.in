@@ -1,10 +1,9 @@
 LIBNAME    =zexy
-PREFIX     =@prefix@
-PDLIBDIR   =@PDLIBDIR@
-INSTALLDOCS=@REFERENCEPATH@$(LIBNAME)
 
-INSTALL_BIN=$(PREFIX)$(PDLIBDIR)/extra
-INSTALL_DOC=$(PREFIX)$(PDLIBDIR)/$(INSTALLDOCS)
+PREFIX     =@prefix@@PDLIBDIR@
+
+INSTALL_BIN=$(PREFIX)/extra
+INSTALL_DOC=$(PREFIX)/@REFERENCEPATH@$(LIBNAME)
 
 EXT = @EXT@ 
 DEFS = @DFLAGS@
@@ -74,3 +73,8 @@ everything: clean all install distclean
 newmakefile:
 	echo "current:">makefile
 	echo "	./configure && make">>makefile
+
+make.source:
+	echo "SOURCES = \\"> make.source
+	echo `ls z_*.c $(LIBNAME).c` >> make.source
+	echo >> make.source
