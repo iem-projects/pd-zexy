@@ -1,6 +1,5 @@
 the zexy external
 
-
 general::
 the zexy external is a collection of externals for miller.s.puckette's realtime-computermusic-environment called "puredata" (or abbreviated "pd")
 this zexy external will be of no use, if you don't have a running version of pd on your system.
@@ -12,12 +11,17 @@ note: the zexy external is published under the Gnu General Public License that i
 installation::
 linux :
 change to directory source
-adapt the makefile to match your system (where is pd installed ?)
-"make clean"
-"make"
-"make install"
+run:
+ "./configure"
+ "make clean"
+ "make"
+ "make install"
 this will install the zexy external into /usr/local/lib/pd/externs
+(the path can be changed either via the "--prefix"-flag to "configure"
+or by editing the makefile
 alternatively you can try "make everything"
+note: if you don't want the parallel-port object [lpt]
+ (e.g.: because you don't have a parallel-port) you can disable it with "--disable-lpt"
 
 win32 :
 extract the zexy-0_x.zip to your pd-path (this file should be located at <mypdpath>/pd/zexy/)
@@ -26,8 +30,15 @@ to compile: w/ MSVC makefile.nt or zexy.dsw, or with GCC configure your pd path,
 ./configure --prefix=/c/program/pd; make; make install
 
 irix :
-though i have physical access to both SGI's O2s and indys,  i haven't tried to compile the zexy externals there for years.
+though i have physical access to both SGI's O2s and indys,
+i haven't tried to compile the zexy externals there for years.
+the configure-script should work here too;
+if not, try "make -f makefile.irix"
 Good luck !
+
+macOS-X:
+the configure-script should work here too;
+if not, try "make -f makefile.darwin"
 
 
 making pd run with the zexy external::
@@ -38,4 +49,3 @@ make sure, that you somehow load the zexy external (either add "-lib zexy" (if y
 authors::
 this software is copyleft by iohannes m zmoelnig <zmoelnig@iem.kug.ac.at>
 with some contributions by winfried ritsch, guenter geiger, miller.s.puckette and maybe some others
-
