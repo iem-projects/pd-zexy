@@ -84,7 +84,7 @@ static void sort_list(t_sort *x, t_symbol *s, int argc, t_atom *argv)
 
   outlet_list(x->x_obj.ob_outlet, &s_list, n, atombuf);
 
-  freebytes(atombuf, sizeof(atombuf));
+  freebytes(atombuf, argc*sizeof(t_atom));
 }
 
 static void *sort_new(t_floatarg f)
