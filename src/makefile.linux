@@ -5,7 +5,7 @@ current: all
 # everything is GnuGPL that should come with the zexy.tgz
 # NO WARRANTIES FOR ANYTHING
 # et cetera
-# 1999:forum::für::umläute:2001
+# 1999:forum::für::umläute:2003
 
 # make sure that the "m_pd.h" is somehow available either by putting it into this
 # directory, by adding it's path to the INCLUDE-path or by putting it into an
@@ -36,7 +36,7 @@ TARGETS = zexy \
 	z_dfreq z_sigzero z_pdf \
 	z_sfplay z_sfrecord \
 	z_sigpack \
-	z_down z_prime z_random z_wrap
+	z_prime z_random z_wrap
 
 # ----------------------- LINUX ----------------------------
 .SUFFIXES: .pd_linux
@@ -55,7 +55,9 @@ LINCLUDE =
 
 $(LINUXOBJECTS): *.h
 
-CFLAGS = -O2 -g -Wall $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
+#CFLAGS = -O2 -g -Wall $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
+CFLAGS = -O3 -march=pentium3 -g -Wall $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
+
 
 everything: clean all install distclean
 
@@ -83,8 +85,8 @@ all: $(LINUXOBJECTS)
 
 
 install: installdocs
-	install -d $(PD_DIR)/externs
-	install -m 644 zexy.pd_linux $(PD_DIR)/externs
+	install -d $(PD_DIR)/extra
+	install -m 644 zexy.pd_linux $(PD_DIR)/extra
 
 installdocs:
 	install -d $(PD_DIR)/doc/5.reference/zexy

@@ -36,7 +36,7 @@ TARGETS = zexy \
 	z_dfreq z_sigzero z_pdf \
 	z_sfplay z_sfrecord \
 	z_sigpack \
-	z_down z_prime z_random
+	z_prime z_random
 
 # ----------------------- MACOSX ----------------------------
 .SUFFIXES: .pd_darwin
