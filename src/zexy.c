@@ -204,8 +204,6 @@ void z_wrap_setup();
   ...
 */
 
-void z_array_setup();
-
 void zexy_setup(void) 
 {
   int i;
@@ -268,8 +266,6 @@ void zexy_setup(void)
 #ifdef linux  
   z_lp_setup();
 #endif
-
-  z_array_setup();
 
   /* ************************************** */
   startpost("\n\t");
