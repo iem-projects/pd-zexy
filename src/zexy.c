@@ -95,6 +95,7 @@ static void zexy_help(void)
        "\nlp\t\t:: write to the (parallel) port"
        "\nwrap\t\t:: wrap a floating number between 2 limits"
        "\nurn\t\t:: unique random numbers"
+       "\noperating_system\t:: information on the OS"
 #if 0
        "\nexecute\t\t:: execute an application"
 #endif
@@ -206,6 +207,7 @@ void z_wrap_setup();
   sql
   ...
 */
+void z_operating_system_setup();
 
 void zexy_setup(void) 
 {
@@ -266,6 +268,7 @@ void zexy_setup(void)
   z_sigmatrix_setup();
 
   z_strings_setup();
+  z_operating_system_setup();
 
 /* lp ports are only on i386 machines  */
 #ifdef __i386__
