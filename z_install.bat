@@ -7,4 +7,7 @@ echo copying help files
 mkdir ..\extra\help-zexy
 copy examples\* ..\extra\help-zexy
 
+echo copying abstractions
+copy abs\*.pd ..\extra
+
 echo done
