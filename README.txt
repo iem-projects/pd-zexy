@@ -1,0 +1,40 @@
+the zexy external
+
+
+general::
+the zexy external is a collection of externals for miller.s.puckette's realtime-computermusic-environment called "puredata" (or abbreviated "pd")
+this zexy external will be of no use, if you don't have a running version of pd on your system.
+check out for http://pd.iem.at to learn more about pd and how to get it 
+
+note: the zexy external is published under the Gnu General Public License that is included (GnuGPL.txt). some parts of the code are taken directly from the pd source-code, they, of course, fall under the license pd is published under.
+
+
+installation::
+linux :
+change to directory source
+adapt the makefile to match your system (where is pd installed ?)
+"make clean"
+"make"
+"make install"
+this will install the zexy external into /usr/local/lib/pd/externs
+alternatively you can try "make everything"
+
+win32 :
+extract the zexy-0_x.zip to your pd-path (this file should be located at <mypdpath>/pd/zexy/)
+execute the "z_install.bat", this should copy all necessary files to the correct places
+if you want to compile it for yourself, i don't take any warranties for the makefile.nt; use the workspace zexy.dsw instead
+
+irix :
+though i have physical access to both SGI's O2s and indys,  i haven't tried to compile the zexy externals there for years.
+Good luck !
+
+
+making pd run with the zexy external::
+make sure, that pd will be looking at this location (add "-path <mypath>/pd/externs" either to your .pdrc or each time you execute pd)
+make sure, that you somehow load the zexy external (either add "-lib zexy" (if you advised pd somehow to look at the correct place) or "-lib <myzexypath>/zexy" to your startup-script (.pdrc or whatever) or load it via the object "zexy" at runtime
+
+
+authors::
+this software is copyleft by iohannes m zmoelnig <zmoelnig@iem.kug.ac.at>
+with some contributions by winfried ritsch, guenter geiger, miller.s.puckette and maybe some others
+

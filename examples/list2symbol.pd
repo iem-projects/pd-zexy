@@ -1,0 +1,16 @@
+#N canvas 190 131 809 343 10;
+#X obj 135 48 list2symbol;
+#X text 219 48 convert a list into a symbol;
+#X obj 457 50 l2s;
+#X symbolatom 75 230 50 0 0;
+#X obj 75 202 list2symbol;
+#X msg 75 156 list this was a list and is now a symbol;
+#X msg 159 177 anythings work fine too;
+#X obj 507 212 l2s my bonnie is over the ocean;
+#X obj 507 232 print;
+#X msg 507 191 bang;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 8 0;
+#X connect 9 0 7 0;

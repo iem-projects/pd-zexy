@@ -1,0 +1,105 @@
+These are the objects that come with the zexy-external
+
+============================ DSP~ ===============================
+
+---------------------------- IO~ --------------------------------
+sfplay		play back (multi-channel) soundfiles
+sfrecord	record (multichannel) soundfiles
+
+------------------------ generators~ ----------------------------
+dirac~		dirac-pulse
+step~		unity step
+noish~		downsampled noise (hold)
+noisi~		downsampled noise (interpolate)
+
+------------------------ processing~ ----------------------------
+limiter~	a limiter/compressor module
+quantize~	quantizes signals
+swap~		bytes swap a 16bit-signal
+z~		samplewise delay
+
+------------------------- analytic~ -----------------------------
+sigzero~	detects whether a signal is zero throughout the vector or not
+pdf~		probability density function 
+envrms~		like env~, but outputting rms instead of dB
+avg~		arithmetic mean of 1 signal-vector
+tavg~		arithmetic mean between two bangs
+dfreq~		frequency detector
+
+------------------------- sigbinops~ ----------------------------
+>~, <~, ==~, &&~, ||~	logical operators
+abs~		absolute value of a signal
+sgn~		signum of a signal
+
+--------------------------- misc~ -------------------------------
+nop~		no-operation
+pack~		convert a signal to a list of floats
+unpack~		convert a list of floats to a signal
+matrix~		matrix-multiply m IN-signals to n OUT-signals
+multiplex~	multiplex 1-of-n inlets to 1 outlet
+demultiplex~	demultiplex 1 inlet to 1-of-n outlets
+
+
+========================= control ==============================
+
+-------------------------- basic -------------------------------
+nop		no-operation
+lister		store lists (like "float" for floats)
+repack		(re)pack atoms to packages of a given size
+packel		get a specified element of a list
+length		get the length of a list
+niagara		split 1 packages into 2
+glue		append a package to another (glue them together)
+segregate	segregate the input to various outlets, depending on the type
+any2list	convert "anythings" to "lists"
+list2int	cast each float of a list to integer
+atoi		ascii to integer
+strcmp		compare lists as strings
+list2symbol	convert a list into a single symbol
+.		scalar multiplication of vectors (=lists of floats)
+
+------------------------ advanced ------------------------------
+tabread4	interpolating tabread (obsolete since pd>=0.30)
+tabdump		dump out a table as a list of floats
+tabset		set a table with a list of floats
+makesymbol	concatenate lists to formatted symbols
+date		get system date
+time		get system time
+index		map symbols to indices
+msgfile		a powerful "textfile" derivative
+mavg		moving average filter for floats
+mean		get the mean value of a list of floats
+minmax		get minimum and maximum of a list of floats
+sort		shell-sort a list of floats
+demultiplex	demultiplex the input to a specified outlet
+drip		extract the atoms of a package (opt. scheduled)
+lp		write to the (parallel) port (linux only)
+
+-------------------------- matrix -------------------------------
+matrix		create/store/... matrices
+mtx_element	set elements of a matrix
+mtx_row		set rows of a matrix
+mtx_col		set columns of a matrix
+mtx_ones	matrix with all elements==1
+mtx_zeros	matrix with all elements==0
+mtx_eye		identity matrix
+mtx_egg		identity matrix (from upper-right to lower-left)
+mtx_diag	diagonal matrix
+mtx_diegg	diagonal matrix (from upper-right to lower-left)
+mtx_diag	get the diagonal of a matrix
+mtx_trace	get the trace of a matrix
+mtx_transpose	transpose a matrix
+mtx_roll	column-shift a matrix
+mtx_scroll	row-shift a matrix
+mtx_pivot	pivot-transform a matrix
+mtx_resize	resize a matrix (evtl. with zero-padding)
+mtx_size	get the size of a matrix
+mtx_inverse	get the inverse of a matrix
+mtx_add, mtx_+	add 2 matrices (or an offset to 1 matrix)
+mtx_mul, mtx_*	multiply 2 matrices (or a factor with 1 matrix)
+mtx_.*		multiply 2 matrices element by element
+mtx_./		divide 2 matrices element by element
+mtx_mean	get the mean value of each column
+mtx_rand	matrix with random elements
+mtx_check	check the consistency of a matrix and repair
+mtx_print	print a matrix to the stderr

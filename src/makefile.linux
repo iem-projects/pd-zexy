@@ -1,0 +1,90 @@
+current: all
+
+
+# the ZEXY-EXTERNAL-makefile
+# everything is GnuGPL that should come with the zexy.tgz
+# NO WARRANTIES FOR ANYTHING
+# et cetera
+# 1999:forum::für::umläute:2001
+
+# make sure that the "m_pd.h" is somehow available either by putting it into this
+# directory, by adding it's path to the INCLUDE-path or by putting it into an
+# already included path, e.g. "/usr/local/include/"
+
+#these are the user adjustables : adjust them to fit into your system
+# PD will install to $(DESTDIR)$(INSTALLL_PREFIX)$(PDLIBDIR), which is /usr/local/lib/pd
+# by default
+DESTDIR =
+INSTALL_PREFIX = /usr/local
+PDLIBDIR = /lib/pd
+#these were the user adjustables
+
+
+TARGETS = zexy \
+	z_connective z_pack z_multiplex z_drip \
+	z_makesymbol z_strings \
+	z_index z_msgfile \
+	z_stat z_average z_sort \
+	z_tabread4 z_coordinates \
+	z_datetime z_lp \
+	z_matrix \
+	z_noise z_testfun \
+	z_multiline z_sigmatrix \
+	z_nop z_zdelay \
+	z_limiter z_quantize z_swap \
+	z_sigbin z_sigaverage \
+	z_dfreq z_sigzero z_pdf \
+	z_sfplay z_sfrecord \
+	z_sigpack \
+	z_down z_prime z_random
+
+# ----------------------- LINUX ----------------------------
+.SUFFIXES: .pd_linux
+
+
+LINUXOBJECTS = $(TARGETS:%=%.o)
+ARCH = $(shell uname --machine)
+
+PD_DIR = $(DESTDIR)$(INSTALL_PREFIX)$(PDLIBDIR)
+
+ifeq (${ARCH},alpha)
+AFLAGS = -mieee  -mcpu=ev56
+endif
+
+LINCLUDE =
+
+$(LINUXOBJECTS): *.h
+
+CFLAGS = -O2 -g -Wall $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
+
+everything: clean all install distclean
+
+distclean:
+	touch dummy.o
+	touch dummy.pd_linux
+	touch dummy~
+	touch _dummy
+	rm *.o *.pd_linux *~ _*
+
+clean:
+	touch dummy.o
+	touch dummy.pd_linux
+	rm *.o *.pd_linux
+
+all: $(LINUXOBJECTS)
+
+	@echo :: $(LINUXOBJECTS)
+
+	ld -export_dynamic  -shared -o zexy.pd_linux *.o -lc -lm
+	strip --strip-unneeded zexy.pd_linux
+
+.c.pd_linux:
+	cc $(CFLAGS) -O2 -DPD -fPIC $(INCLUDE) -c -o $*.o $*.c
+
+
+install: installdocs
+	install -m 644 zexy.pd_linux $(PD_DIR)/externs
+
+installdocs:
+	install -d $(PD_DIR)/doc/5.reference/zexy
+	install -m644 ../examples/* $(PD_DIR)/doc/5.reference/zexy
