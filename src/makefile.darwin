@@ -125,9 +125,9 @@ darwin_pkg_clean:
 darwin_pkg: all darwin_pkg_clean darwin_pkg_license darwin_pkg_welcome
 # set up installroot dir
 	test -d installroot/pd/doc/5.reference || mkdir -p installroot/pd/doc/5.reference
-	install -m644 --group=admin ../examples/*.* installroot/pd/doc/5.reference
+	install -m644 --group=staff ../examples/*.* installroot/pd/doc/5.reference
 	test -d installroot/pd/extra || mkdir -p installroot/pd/extra
-	install -m644 --group=admin *.pd_darwin installroot/extra
+	install -m644 --group=staff *.pd_darwin installroot/extra
 	cp -f ../pd-zexy.info ../$(PACKAGE_NAME).info
 # delete cruft
 	-find installroot -name .DS_Store -delete
@@ -147,7 +147,7 @@ darwin_altpkg: all darwin_pkg_clean darwin_pkg_license darwin_pkg_welcome
 	test -d installroot/Help || mkdir -p installroot/Help
 	-cp ../examples/* installroot/Help
 	test -d installroot/Externals || mkdir -p installroot/Externals
-	install -m644 *.pd_darwin --group=admin installroot/Externals
+	install -m644 *.pd_darwin --group=staff installroot/Externals
 	sed -e 's/\/usr\/local\/lib/\/Library\/Pd/' ../pd-zexy.info \
 		 | sed -e 's/MSP standard paths/MacOS X-style Paths/' \
 		 > ../$(PACKAGE_NAME)-alt.info
