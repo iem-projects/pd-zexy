@@ -29,9 +29,9 @@ static void tabdump_bang(t_tabdump *x, t_float findex)
     {
       int n;
       t_atom *atombuf = (t_atom *)getbytes(sizeof(t_atom)*npoints);
-
       for (n = 0; n < npoints; n++) SETFLOAT(&atombuf[n], vec[n]);
       outlet_list(x->x_obj.ob_outlet, &s_list, npoints, atombuf);
+      freebytes(atombuf,sizeof(t_atom)*npoints);
     }
 }
 
@@ -156,94 +156,8 @@ static void tabset_setup(void)
 }
 
 
-/* =================== tabread4 ====================== */
-
-static t_class *tabread4_class;
-
-typedef struct _tabread
-{
-  t_object x_obj;
-  t_symbol *x_arrayname;
-} t_tabread;
-
-static void tabread4_float(t_tabread *x, t_float findex)
-{
-  t_garray *A;
-  int npoints;
-  t_float *vec;
-
-  if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class)))
-    error("%s: no such array", x->x_arrayname->s_name);
-  else if (!garray_getfloatarray(A, &npoints, &vec))
-
-    error("%s: bad template for tabread", x->x_arrayname->s_name);
-  else
-    {
-      float a, b, c, d, cminusb, frac, out;
-      int index = (int)findex, max_index = npoints - 1;
-
-      if (index < 0) index = 0, frac = 0.;
-      else if (index > max_index) index = max_index, frac = 0.;
-      else frac = findex - index;
-
-      a = vec[index-1];
-      b = vec[index];
-      c = vec[index+1];
-      d = vec[index+2];
-      cminusb = c - b;
-
-      out = 	(t_float)(b + frac * (cminusb - 0.5 * (frac-1.) * (
-	        (a - d + 3.0 * cminusb) * frac + 
-		(b - a - cminusb)
-		)
-	      ));
-
-      outlet_float(x->x_obj.ob_outlet, (npoints ? out : 0));
-    }
-}
-
-
-static void tabread4_set(t_tabread *x, t_symbol *s)
-{
-  x->x_arrayname = s;
-}
-
-static void *tabread4_new(t_symbol *s)
-{
-  t_tabread *x = (t_tabread *)pd_new(tabread4_class);
-  x->x_arrayname = s;
-  outlet_new(&x->x_obj, &s_float);
-  
-  post("zexy/tabread4: this is obsolete, since tabread4 is now included into pd");
-  post("maybe you should go for an upgrade...");
-  return (x);
-}
-
-static void tabread4_helper(void)
-{
-  post("\n%c tabread4 - object : reads out a table (4point-interpolation-support)", HEARTSYMBOL);
-  post("'set <table>': read out another table\n"
-       "<position>   : read from table at specified position\n"
-       "outlet\t:  table-data at specified position (evt. interpolated)");
-  post("creation:  \"tabread4 <table>\"");
-
-}
-
-static void tabread4_setup(void)
-{
-  tabread4_class = class_new(gensym("tabread4"), (t_newmethod)tabread4_new,
-			     0, sizeof(t_tabread), 0, A_DEFSYM, 0);
-  class_addfloat(tabread4_class, (t_method)tabread4_float);
-  class_addmethod(tabread4_class, (t_method)tabread4_set, gensym("set"),
-		  A_SYMBOL, 0);
-
-  class_addmethod(tabread4_class, (t_method)tabread4_helper, gensym("help"), 0);
-  class_sethelpsymbol(tabread4_class, gensym("zexy/tabread4"));
-}
-
 void z_tabread4_setup(void)
 {
-  tabread4_setup();
   tabdump_setup();
   tabset_setup();
 }
