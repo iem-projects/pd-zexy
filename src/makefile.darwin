@@ -127,7 +127,7 @@ darwin_pkg: all darwin_pkg_clean darwin_pkg_license darwin_pkg_welcome
 	test -d installroot/pd/doc/5.reference || mkdir -p installroot/pd/doc/5.reference
 	install -m644 --group=staff ../examples/*.* installroot/pd/doc/5.reference
 	test -d installroot/pd/extra || mkdir -p installroot/pd/extra
-	install -m644 --group=staff *.pd_darwin installroot/extra
+	install -m644 --group=staff *.pd_darwin installroot/pd/extra
 	cp -f ../pd-zexy.info ../$(PACKAGE_NAME).info
 # delete cruft
 	-find installroot -name .DS_Store -delete
