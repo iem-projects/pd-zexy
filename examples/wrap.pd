@@ -1,0 +1,49 @@
+#N canvas 77 -120 738 641 10;
+#X text 118 18 wrap a float between to limits;
+#X obj 71 18 wrap;
+#X obj 42 150 wrap;
+#X floatatom 42 132 5 0 0 0 - - -;
+#X floatatom 42 173 5 0 0 0 - - -;
+#X floatatom 42 242 5 0 0 0 - - -;
+#X floatatom 42 283 5 0 0 0 - - -;
+#X text 32 94 if called without arguments \, [wrap] will wrap the input
+between [0 \, 1);
+#X text 32 204 if called with one argument f \, [wrap] will wrap the
+input between [0 \, f);
+#X text 37 53 (somehow a float-capable modulo-function with some extensions)
+;
+#X floatatom 32 342 5 0 0 0 - - -;
+#X floatatom 32 383 5 0 0 0 - - -;
+#X text 22 306 if called with two arguments f1 f2 \, [wrap] will wrap
+the input between [f1 \, f2);
+#X obj 42 260 wrap 10.5;
+#X floatatom 244 342 5 0 0 0 - - -;
+#X floatatom 244 383 5 0 0 0 - - -;
+#X text 127 361 is the same as;
+#X obj 31 497 wrap;
+#X floatatom 31 471 5 0 0 0 - - -;
+#X floatatom 31 520 5 0 0 0 - - -;
+#X obj 32 360 wrap 1 9.2;
+#X obj 244 360 wrap 9.2 1;
+#X msg 94 455 2 4;
+#X msg 94 478 -8;
+#X text 129 463 you can dynamically set the limits via the second inlet
+;
+#X text 143 502 if only one argument is given \, the second is assumed
+as zero (0).;
+#X text 137 543 wrapping is always done between [f1 \, f2) \, where
+f1 is ALWAYS less than f2.;
+#X text 130 593 if you need wrapping between (f1 \, f2] you have to
+multiply the numbers with -1 before and after wrapping.;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 5 0 13 0;
+#X connect 10 0 20 0;
+#X connect 13 0 6 0;
+#X connect 14 0 21 0;
+#X connect 17 0 19 0;
+#X connect 18 0 17 0;
+#X connect 20 0 11 0;
+#X connect 21 0 15 0;
+#X connect 22 0 17 1;
+#X connect 23 0 17 1;

@@ -1,0 +1,46 @@
+#N canvas 60 29 809 570 10;
+#X symbolatom 75 517 22 0 0 0 - - -;
+#X symbolatom 147 393 10 0 0 0 - - -;
+#X obj 135 48 symbol2list;
+#X text 219 48 convert a symbol into a list;
+#X obj 458 50 s2l;
+#X symbolatom 106 500 16 0 0 0 - - -;
+#X symbolatom 137 483 10 0 0 0 - - -;
+#X msg 75 97 symbol a_dash_separated_list;
+#X msg 147 358 symbol -;
+#X obj 348 409 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 170 206 symbol _i;
+#X obj 170 226 t b s;
+#X obj 75 448 unpack s s s s;
+#X symbolatom 168 467 10 0 0 0 - - -;
+#X msg 159 118 symbol what_is-the_de-limiter_i-ask-(_i) ?;
+#X text 336 497 see also:;
+#X obj 447 497 list2symbol;
+#X text 253 189 by default \, list-elements are separated by spaces.
+You can set the separator to any symbol either with an argument or
+by setting the second inlet;
+#X text 250 240 using a zero-symbol as delimiter will break the symbol
+up into its characters.;
+#X msg 256 277 symbol;
+#X obj 256 296 t b s;
+#X text 221 393 delimiter;
+#X text 375 412 banging the object will re-parse the list-symbol;
+#X text 532 498 which does the inverse;
+#X obj 75 428 symbol2list _;
+#X connect 1 0 24 1;
+#X connect 7 0 24 0;
+#X connect 8 0 1 0;
+#X connect 9 0 24 0;
+#X connect 10 0 11 0;
+#X connect 11 0 24 0;
+#X connect 11 1 1 0;
+#X connect 12 0 0 0;
+#X connect 12 1 5 0;
+#X connect 12 2 6 0;
+#X connect 12 3 13 0;
+#X connect 14 0 24 0;
+#X connect 19 0 20 0;
+#X connect 20 0 24 0;
+#X connect 20 1 1 0;
+#X connect 24 0 12 0;

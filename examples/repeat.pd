@@ -1,0 +1,22 @@
+#N canvas 59 45 599 332 10;
+#X msg 41 151 bang;
+#X msg 62 177 1 1 2 3 5 8 13 21 44 fibonacchi;
+#X obj 160 14 repeat;
+#X text 210 15 - repeat a message several times.;
+#X text 64 53 similar to [until] but doesn't output [bang( but whatever
+comes in;
+#X floatatom 99 237 5 0 0 0 - - -;
+#X text 76 152 repeat bangs;
+#X text 295 179 repeat a list;
+#X text 162 262 creation argument initializes the number of repeats
+;
+#X msg 82 207 set 5;
+#X text 130 208 repeat anything;
+#X obj 41 262 repeat 3;
+#X text 143 236 reset the number of repetitions;
+#X obj 41 303 print repetitio;
+#X connect 0 0 11 0;
+#X connect 1 0 11 0;
+#X connect 5 0 11 1;
+#X connect 9 0 11 0;
+#X connect 11 0 13 0;
