@@ -58,7 +58,7 @@ static void urn_bang(t_urn *x)
   unsigned int range = (x->x_range<1?1:x->x_range);
   unsigned int randval = x->x_seed;
 
-  unsigned int nval, used=1;
+  unsigned int nval=0, used=1;
 
   if (x->x_count>=range){
     outlet_bang(x->x_bangout);
