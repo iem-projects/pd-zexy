@@ -19,6 +19,7 @@ INSTALL_PREFIX = /usr/local
 PDLIBDIR = /pd
 #these were the user adjustables
 
+CC=gcc
 
 TARGETS = zexy \
 	z_connective z_pack z_multiplex z_drip \
@@ -42,7 +43,7 @@ TARGETS = zexy \
 .SUFFIXES: .pd_darwin
 
 
-LINUXOBJECTS = $(TARGETS:%=%.o)
+MACOSXOBJECTS = $(TARGETS:%=%.o)
 ARCH = $(shell uname --machine)
 
 PD_DIR = $(DESTDIR)$(INSTALL_PREFIX)$(PDLIBDIR)
@@ -53,10 +54,12 @@ endif
 
 LINCLUDE =
 
-$(LINUXOBJECTS): *.h
+$(MACOSXOBJECTS): *.h
 
 CFLAGS = -O2 -DMACOSX -Dunix -g -Wall-W -Wno-unused \
 	 -Wno-parentheses -Wno-switch $(LINCLUDE) $(UCFLAGS) $(AFLAGS)
+
+MACOSXLINKFLAGS = -bundle -undefined suppress  -flat_namespace
 
 everything: clean all install distclean
 
@@ -72,16 +75,15 @@ clean:
 	touch dummy.pd_darwin
 	rm *.o *.pd_darwin
 
-all: $(LINUXOBJECTS)
+all: $(MACOSXOBJECTS)
 
-	@echo :: $(LINUXOBJECTS)
+	@echo :: $(MACOSXOBJECTS)
 
-	cc -bundle -undefined suppress  -flat_namespace -o zexy.pd_darwin *.o -lc -lm
+	$(CC) $(MACOSXLINKFLAGS) -o zexy.pd_darwin *.o -lc -lm
 #	strip -x zexy.pd_darwin
 
 .c.pd_darwin:
-	cc $(CFLAGS) -DPD  $(INCLUDE) -c -o $*.o $*.c
-
+	$(CC) $(CFLAGS) -DPD $(INCLUDE) -c -o $*.o $*.c
 
 install: installdocs
 	install -m 644 zexy.pd_darwin $(PD_DIR)/extra
@@ -91,16 +93,16 @@ installdocs:
 	install -m644 ../examples/*.* $(PD_DIR)/doc/5.reference/zexy
 
 darwin_package: all
-	test -d ../installroot/doc/5.reference || mkdir -p ../installroot/doc/5.reference
-	-cp  ../examples/* ../installroot/doc/5.reference
-	test -d ../installroot/extra || mkdir -p ../installroot/extra
-	install -m644 *.pd_darwin ../installroot/extra
+	test -d ../installroot/pd/doc/5.reference || mkdir -p ../installroot/pd/doc/5.reference
+	cp  ../examples/* ../installroot/pd/doc/5.reference
+	test -d ../installroot/pd/extra || mkdir -p ../installroot/pd/extra
+	install -m644 --group=admin *.pd_darwin ../installroot/extra
 	open ../darwin_package.pmsp
 
 darwin_altpackage: all
 	test -d ../installroot/Help || mkdir -p ../installroot/Help
 	-cp ../examples/* ../installroot/Help
 	test -d ../installroot/Externals || mkdir -p ../installroot/Externals
-	install -m644 *.pd_darwin ../installroot/Externals
+	install -m644 *.pd_darwin --group=admin ../installroot/Externals
 	open ../darwin_altpackage.pmsp
 
