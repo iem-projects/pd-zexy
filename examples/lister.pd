@@ -1,4 +1,4 @@
-#N canvas 194 86 685 518 10;
+#N canvas 385 348 685 518 10;
 #X obj 110 16 lister;
 #X text 160 17 - store a list;
 #X msg 41 132 bang;
@@ -34,6 +34,7 @@ a symbol \, you need to cast it as a list:;
 #X obj 154 52 float;
 #X obj 202 52 int;
 #X obj 237 52 symbol;
+#X text 497 29 part of zexy;
 #X connect 2 0 10 0;
 #X connect 9 0 10 1;
 #X connect 10 0 6 0;

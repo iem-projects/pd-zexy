@@ -1,4 +1,4 @@
-#N canvas 217 38 529 495 10;
+#N canvas 615 253 529 495 10;
 #X obj 76 35 urn;
 #X text 73 75 generates random numbers without repetition;
 #X obj 25 110 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
@@ -58,6 +58,7 @@ via the second outlet;
 #X restore 74 440 pd lotto;
 #X obj 249 453 random;
 #X text 182 453 see also:;
+#X text 346 21 part of zexy;
 #X connect 2 0 4 0;
 #X connect 4 1 13 0;
 #X connect 7 0 4 1;

@@ -10,16 +10,16 @@ note: the zexy external is published under the Gnu General Public License that i
 
 installation::
 linux :
-change to directory source
+change to directory src
 run:
+ "autoconf"
  "./configure"
- "make clean"
  "make"
  "make install"
 this will install the zexy external into /usr/local/lib/pd/externs
 (the path can be changed either via the "--prefix"-flag to "configure"
 or by editing the makefile
-alternatively you can try "make everything"
+alternatively you can try "make everything" (after ./configure)
 note: if you don't want the parallel-port object [lpt]
  (e.g.: because you don't have a parallel-port) you can disable it with "--disable-lpt"
 

@@ -1,4 +1,4 @@
-#N canvas 469 38 727 656 10;
+#N canvas 382 48 796 839 10;
 #X obj 57 15 makesymbol;
 #X text 152 13 makesymbol is something between the "symbol" and the
 "makefilename" object.;
@@ -30,7 +30,7 @@ argument on the second input or as a creation-argument.;
 #X text 321 255 if the right inlet (mask) does not have any format-tags
 \, the left one won't get through !!;
 #X floatatom 61 458 0 0 0 0 - - -;
-#X text 149 471 it doesn't matter whether you are using numbers \,
+#X text 177 473 it doesn't matter whether you are using numbers \,
 symbols...;
 #X text 235 567 note:: every member of the list will be converted to
 a STRING \, so there's no use \, using %d \, %f...;
@@ -40,7 +40,6 @@ a STRING \, so there's no use \, using %d \, %f...;
 #X symbolatom 92 427 25 0 0 0 - - -;
 #X symbolatom 72 306 25 0 0 0 - - -;
 #X symbolatom 80 619 25 0 0 0 - - -;
-#X obj 61 478 ftos;
 #X symbolatom 58 166 0 0 0 0 - - -;
 #X text 58 98 The result will always be a symbol.;
 #X msg 58 118 list you can have up to ten members in your list.;
@@ -48,10 +47,18 @@ a STRING \, so there's no use \, using %d \, %f...;
 #X obj 19 426 print B;
 #X obj 10 618 print C;
 #X obj 13 305 print A;
+#X obj 61 478 makefilename %d;
+#X text 551 18 part of zexy;
+#X text 25 719 a personal ntoe: this object is somewhat obsoleted \;
+use the following instead:;
+#X obj 167 742 makefilename;
+#X obj 167 772 l2s;
+#X text 260 741 (plain pd!);
+#X text 260 775 (zexy);
 #X connect 3 0 32 0;
-#X connect 3 0 41 0;
+#X connect 3 0 40 0;
 #X connect 4 0 33 0;
-#X connect 4 0 40 0;
+#X connect 4 0 39 0;
 #X connect 5 0 3 0;
 #X connect 6 0 11 0;
 #X connect 7 0 4 0;
@@ -59,7 +66,7 @@ a STRING \, so there's no use \, using %d \, %f...;
 #X connect 9 0 3 0;
 #X connect 10 0 3 0;
 #X connect 11 0 31 0;
-#X connect 11 0 39 0;
+#X connect 11 0 38 0;
 #X connect 12 0 11 0;
 #X connect 13 0 3 1;
 #X connect 14 0 3 1;
@@ -71,8 +78,8 @@ a STRING \, so there's no use \, using %d \, %f...;
 #X connect 20 0 19 0;
 #X connect 21 0 11 1;
 #X connect 22 0 11 1;
-#X connect 26 0 34 0;
+#X connect 26 0 41 0;
 #X connect 29 0 11 0;
-#X connect 34 0 19 0;
-#X connect 37 0 38 0;
-#X connect 38 0 35 0;
+#X connect 36 0 37 0;
+#X connect 37 0 34 0;
+#X connect 41 0 19 0;

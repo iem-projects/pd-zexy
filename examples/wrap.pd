@@ -1,4 +1,4 @@
-#N canvas 77 -120 738 641 10;
+#N canvas 477 186 738 641 10;
 #X text 118 18 wrap a float between to limits;
 #X obj 71 18 wrap;
 #X obj 42 150 wrap;
@@ -35,6 +35,7 @@ as zero (0).;
 f1 is ALWAYS less than f2.;
 #X text 130 593 if you need wrapping between (f1 \, f2] you have to
 multiply the numbers with -1 before and after wrapping.;
+#X text 458 20 part of zexy;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
 #X connect 5 0 13 0;

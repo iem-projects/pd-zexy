@@ -1,15 +1,17 @@
-#N canvas 378 65 854 849 10;
+#N canvas 340 54 854 849 10;
 #X msg 30 108 come on \, my house;
 #X obj 30 210 print UNFOLDED;
 #X msg 48 135 1 two tre quatre 5 se;
 #X text 72 10 drip;
 #X obj 30 183 drip;
-#X text 311 104 drip is like a medical drip - you can adjust the drop-speed;
+#X text 311 104 drip is like a medical drip - you can adjust the drop-speed
+;
 #X obj 316 198 drip 1000;
 #X obj 316 218 print DROP;
 #X msg 316 152 this is that slow;
-#X floatatom 365 179;
-#X text 439 545 drip without arguments will do no scheduling (this is: output all the atoms at once);
+#X floatatom 365 179 0 0 0 0 - - -;
+#X text 439 545 drip without arguments will do no scheduling (this
+is: output all the atoms at once);
 #X text 424 182 drop-delay in [ms];
 #X obj 36 599 drip;
 #X obj 95 601 drip 0;
@@ -21,9 +23,11 @@
 #X obj 248 621 print DESCHED;
 #X msg 248 556 bang;
 #X obj 639 805 unfold;
-#X text 423 790 for historical reasons (finding no proper object-name...) we still provide the obsolete alias;
+#X text 423 770 for historical reasons (finding no proper object-name...)
+we still provide the obsolete alias;
 #X text 44 27 unfolds a package to a sequence;
-#X text 43 50 since you can switch to scheduled mode \, this might be used to reduce CPU-load;
+#X text 43 50 since you can switch to scheduled mode \, this might
+be used to reduce CPU-load;
 #X text 55 817 see also :;
 #X obj 127 819 repack;
 #X obj 35 299 t l l b;
@@ -39,11 +43,14 @@
 #X text 411 309 creation:;
 #X text 475 309 "drip [<n> [flush]]";
 #X text 457 397 <n> is the initial drop-delay in [ms];
-#X text 452 333 "flush" indicates whether non-empty buffers should be flushed when a new package arrives or not.;
+#X text 452 333 "flush" indicates whether non-empty buffers should
+be flushed when a new package arrives or not.;
 #X text 453 362 default is no_flush;
-#X text 457 430 n==0 will DO scheduling (and is therefore somewhat "slower" than without arguments;
+#X text 457 430 n==0 will DO scheduling (and is therefore somewhat
+"slower" than without arguments;
 #X text 455 415 default is NO scheduling;
 #X text 456 465 negative values for <n> turn off scheduling;
+#X text 717 13 part of zexy;
 #X connect 0 0 4 0;
 #X connect 2 0 4 0;
 #X connect 4 0 1 0;

@@ -1,4 +1,4 @@
-#N canvas 114 89 754 537 10;
+#N canvas 413 385 754 537 10;
 #X text 122 40 convert between SPHeric \, POLar and CARTesian coordinates
 ;
 #X obj 99 305 cart2sph;
@@ -45,6 +45,7 @@
 #X obj 309 305 pol2cart;
 #X text 112 450 angles are given in RADian \, if you want DEGree you
 might want to use [deg2rad] and [rad2deg];
+#X text 599 17 part of zexy;
 #X connect 1 0 7 0;
 #X connect 1 1 6 0;
 #X connect 1 2 5 0;

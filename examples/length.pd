@@ -1,13 +1,14 @@
-#N canvas 186 166 450 300 10;
+#N canvas 231 541 421 294 10;
 #X obj 77 40 length;
 #X text 141 43 get the length of a list;
 #X obj 72 186 length;
-#X floatatom 72 206 4 0 0;
+#X floatatom 72 206 4 0 0 0 - - -;
 #X msg 72 109 list these are 4 elements;
 #X msg 83 128 1 2 3;
 #X msg 95 155 auralization by wave field synthesis;
 #X msg 25 113 bang;
-#X floatatom 14 146 4 0 0;
+#X floatatom 14 146 4 0 0 0 - - -;
+#X text 324 19 part of zexy;
 #X connect 2 0 3 0;
 #X connect 4 0 2 0;
 #X connect 5 0 2 0;

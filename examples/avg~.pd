@@ -1,18 +1,20 @@
 #N canvas 288 18 580 361 10;
-#X floatatom 59 148;
-#X floatatom 59 254;
-#X floatatom 129 255;
+#X floatatom 59 148 0 0 0 0 - - -;
+#X floatatom 59 254 0 0 0 0 - - -;
+#X floatatom 129 255 0 0 0 0 - - -;
 #X obj 59 276 dbtorms;
-#X floatatom 59 299;
+#X floatatom 59 299 0 0 0 0 - - -;
 #X text 272 269 see also:;
 #X obj 277 296 env~;
 #X obj 373 296 tavg~;
 #X obj 71 51 avg~;
 #X obj 129 234 avg~;
 #X obj 59 233 env~;
-#X text 155 49 calculates the arithmetic mean of one signal vector;
+#X text 155 49 calculates the arithmetic mean of one signal vector
+;
 #X obj 315 296 envrms~;
 #X obj 59 173 osc~ 5512.5;
+#X text 456 11 part of zexy;
 #X connect 0 0 13 0;
 #X connect 1 0 3 0;
 #X connect 3 0 4 0;

@@ -1,20 +1,44 @@
 #N canvas 173 205 772 508 10;
-#X obj 90 33 lp;
 #X text 129 36 write data to the (parallel) port;
-#X text 82 70 this is LINUX ONLY !!!;
-#X text 17 125 note:;
-#X text 59 126 you might have to be root to get write-permissions on your specified port.;
-#X text 59 160 you can access all ports on your system when using "lp <hex-port-address>";
-#X text 59 194 if your port-address exceeds 0x3ff \, "lp" will try to get all permissions with the iopl()-command. this might be dangerous !;
-#X obj 81 411 lp 0;
-#X obj 110 411 lp 1;
-#X obj 139 411 lp 2;
 #X text 75 390 parallel ports 0 \, 1 \, 2;
-#X obj 294 415 lp 0x378;
 #X text 289 394 another port;
-#X obj 81 337 lp 1;
 #X obj 81 305 % 256;
-#X floatatom 81 283 4 0 0;
+#X floatatom 81 283 4 0 0 0 - - -;
 #X text 122 284 write an 8bit-word;
-#X connect 14 0 13 0;
-#X connect 15 0 14 0;
+#X obj 90 33 lpt;
+#X obj 81 337 lpt 1;
+#X obj 81 411 lpt 0;
+#X obj 120 411 lpt 1;
+#X obj 159 411 lpt 2;
+#X obj 294 415 lpt 0x378;
+#X text 521 30 part of zexy;
+#X text 82 70 this does not work on osX (as there is no parallel port)
+;
+#X text 79 194 if your port-address exceeds 0x3ff \, "lpt" will try
+to get all permissions with the iopl()-command. this might be dangerous
+!;
+#X text 79 160 you can access all ports on your system when using "lpt
+<hex-port-address>";
+#N canvas 0 0 631 406 windows 0;
+#X text 32 16 To get it running under WinNT/2000/XP a special kernel
+driver is needed. These systems do not allow direct access to I/O ports.
+;
+#X text 53 207 If you ever whish to remove the kernel driver start
+the programm again and click 'Stop'.;
+#X text 54 242 Under Win95/98/Me all this is not needed!!!;
+#X text 52 272 Good Luck!;
+#X text 54 141 The subfolder 'UserPort' contains a kernel driver that
+handles the I/O stuff. Just copy the file UserPort.sys into %WINDIR%/system32/drivers
+(e.g. C:/WinNT/system32/drivers) and run the program UserPort.exe.
+Click on 'Start' and then 'Exit'.;
+#X text 175 112 ftp://iem.at/DOSen/UserPort/;
+#X text 172 82 http://www.embeddedtronics.com/public/Electronics/minidaq/..
+../userport;
+#X text 49 79 downloads:;
+#X text 267 326 thanks to Olaf Matthes for this;
+#X restore 292 94 pd windows;
+#X text 78 94 windoze users shoud read this:;
+#X text 79 122 linux users might have to be root to get write-permissions
+on your specified port.;
+#X connect 3 0 7 0;
+#X connect 4 0 3 0;

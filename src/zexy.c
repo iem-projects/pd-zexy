@@ -1,7 +1,22 @@
+/******************************************************
+ *
+ * zexy - implementation file
+ *
+ * copyleft (c) IOhannes m zmölnig
+ *
+ *   1999:forum::für::umläute:2004
+ *
+ *   institute of electronic music and acoustics (iem)
+ *
+ ******************************************************
+ *
+ * license: GNU General Public License v.2
+ *
+ ******************************************************/
+
+
 /* ...this is a very ZEXY external ...
    so have fun
-	
-   1999:forum::für::umläute:2001
 */
 
 #include "zexy.h"
@@ -134,147 +149,18 @@ static void zexy_help(void)
        "this software is under the GnuGPL that is provided with these files", HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL);
 }
 
-void *zexy_new(void)
+static void *zexy_new(void)
 {
   t_zexy *x = (t_zexy *)pd_new(zexy_class);
   return (void *)x;
 }
 
-/* include some externals */
-#if 0
-void z_streamin_setup();	/* urps, i THINK this will be linux only */
-void z_streamout_setup();
-void z_stdinout_setup();	// not yet...
-#endif // 0
-void z_sfplay_setup();
-void z_sfrecord_setup();
-void z_noise_setup();
-void z_testfun_setup();
-void z_nop_setup();
-void z_zdelay_setup();
-void z_limiter_setup();
-void z_swap_setup();
-void z_quantize_setup();
-void z_sigzero_setup();
-void z_tabread4_setup();
-void z_makefilenamen_setup();
-void z_makesymbol_setup();
-
-void z_pdf_setup();
-void z_dfreq_setup();
-void z_sigaverage_setup();
-void z_sigpack_setup();
-
-void z_datetime_setup();
-
-void z_sigbin_setup();
-
-#if 0  // used to be Win32 only, but i somehow lost the fine code
-void z_execute_setup();
-#endif
-
-/* lp ports are only on i386 machines  */
-#ifdef __i386__
-void z_lp_setup();
-#endif
-
-void z_index_setup();
-void z_connective_setup();
-void z_sort_setup();
-void z_multiplex_setup();
-void z_average_setup();
-void z_coordinates_setup();
-void z_stat_setup();
-
-void z_pack_setup();
-void z_drip_setup();
-
-void z_stdinout_setup();
-void z_msgfile_setup();
-void z_multiline_setup();
-void z_matrix_setup();
-void z_sigmatrix_setup();
-
-void z_strings_setup();
-
-void z_prime_setup();
-void z_random_setup();
-void z_wrap_setup();
-/*
-  waiting to be released in near future:
-  make stdin~ and stdout~ work
-  MAKE streamin~ work !!!
-  sql
-  ...
-*/
-void z_operating_system_setup();
+#include "z_zexy.c"
 
 void zexy_setup(void) 
 {
   int i;
-#if 0
-#ifdef linux
-  z_streamin_setup();
-#endif
-  z_streamout_setup();
-  z_stdinout_setup();
-#endif
-  z_sfplay_setup();
-  z_sfrecord_setup();
-  z_noise_setup();
-  z_testfun_setup();
-  z_limiter_setup();
-  z_nop_setup();
-  z_zdelay_setup();
-  z_swap_setup();
-  z_quantize_setup();
-
-  z_sigzero_setup();
-  z_pdf_setup();
-  z_dfreq_setup();
-  z_sigaverage_setup();
-  z_sigbin_setup();
-
-  z_sigpack_setup();
-
-  z_tabread4_setup();
-  z_average_setup();
-  z_coordinates_setup();
-  z_stat_setup();
-  z_makesymbol_setup();
-
-  z_datetime_setup();
-
-  z_index_setup();
-  z_connective_setup();
-  z_sort_setup();
-  z_multiplex_setup();
-  z_pack_setup();
-  z_drip_setup();
-
-  z_prime_setup();
-  z_random_setup();
-  z_wrap_setup();
-#if 0
-  z_stdinout_setup();
-
-  // we'll do this the next days
-  z_execute_setup();
-#endif
-  z_msgfile_setup();
-
-  z_multiline_setup();
-  z_matrix_setup();
-  z_sigmatrix_setup();
-
-  z_strings_setup();
-  z_operating_system_setup();
-
-/* lp ports are only on i386 machines  */
-#ifdef __i386__
-  z_lp_setup();
-#endif
-
+  z_zexy_setup();
   /* ************************************** */
   startpost("\n\t");
   for (i=0; i<28; i++) startpost("%c", HEARTSYMBOL);

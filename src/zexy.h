@@ -32,14 +32,44 @@
 
 #include "m_pd.h"
 
-#define VERSION "1.3"
+#define VERSION "2.0"
 
 #ifdef NT
-/* yes, we have beautiful hearts under NT */
-#define HEARTSYMBOL 3
+# pragma warning( disable : 4244 )
+# pragma warning( disable : 4305 )
+# define HEARTSYMBOL 3
+# define sqrtf sqrt
+# define fabsf fabs
+# define STATIC_INLINE
 #else
-/* but none for linux; indeed the only drawback */
-#define HEARTSYMBOL 169
+# define HEARTSYMBOL 169
 #endif
 
+#ifdef MACOSX
+# define sqrtf sqrt
 #endif
+
+
+typedef struct _mypdlist
+{
+  t_object x_obj;
+
+  int x_n;
+  t_atom *x_list;
+} t_mypdlist;
+
+#ifdef SINGLE_EXTERNALS
+static void zexy_register(char*object){
+  if(object!=0){
+    post("%s: part of the zexy external "VERSION"", object);
+    post("\t (l) forum::für::umläute");
+    post("\t     IOhannes m zmölnig @ IEM");
+    post("\t compiled:  "__DATE__" ");
+  }
+}
+#else
+static void zexy_register(char*object){}
+#endif /* SINGLE_EXTERNALS */
+
+
+#endif /* INCLUDE_ZEXY_H__ */

@@ -1,10 +1,10 @@
 #N canvas 420 353 697 479 10;
-#X floatatom 83 92;
+#X floatatom 83 92 0 0 0 0 - - -;
 #X obj 83 111 osc~ 689.062;
 #X obj 83 320 unpack 0 0 0;
 #X obj 240 302 print;
-#X floatatom 83 359;
-#X floatatom 150 339;
+#X floatatom 83 359 0 0 0 0 - - -;
+#X floatatom 150 339 0 0 0 0 - - -;
 #X obj 83 230 t l l;
 #X obj 240 282 spigot;
 #X msg 271 262 1;
@@ -15,9 +15,10 @@
 #X obj 83 162 pack~;
 #X text 154 40 pack~;
 #X text 178 65 convert signals to float-packages;
-#X text 460 14 see also;
-#X obj 461 33 unpack~;
+#X text 368 189 see also;
+#X obj 369 208 unpack~;
 #X text 98 379 1st and 3rd sample of each signal-vector;
+#X text 434 36 part of zexy;
 #X connect 0 0 1 0;
 #X connect 1 0 13 0;
 #X connect 2 0 4 0;

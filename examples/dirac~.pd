@@ -1,24 +1,27 @@
-#N canvas 202 49 564 290 8;
+#N canvas 484 494 564 290 10;
 #X obj 123 230 dirac~;
-#X floatatom 95 186;
+#X floatatom 95 186 0 0 0 0 - - -;
 #X obj 95 208 t b f;
 #X obj 123 253 print~;
 #X text 40 30 dirac~ ::;
 #X text 40 60 IN :;
 #X text 115 30 produces a unit:sample:sequence;
-#X text 114 61 define the nth sample after the float::bang:message for the unit:sample to take place;
+#X text 114 61 define the nth sample after the float::bang:message
+for the unit:sample to take place;
 #X text 98 165 position;
 #N canvas 0 0 765 385 application 0;
 #X obj 75 82 t b b b;
 #X msg 119 104 \; pd dsp 1;
 #X obj 97 139 dirac~;
-#X floatatom 181 141;
+#X floatatom 181 141 0 0 0 0 - - -;
 #X obj 97 181 tabwrite~ unit::response;
-#X graph graph1 0 -1 64 1 358 325 758 25;
-#X array unit::response 64 float;
-#X pop;
+#N canvas 0 0 450 300 graph1 0;
+#X array unit::response 64 float 0;
+#X coords 0 1 63 -1 400 300 1;
+#X restore 358 25 graph;
 #X msg 70 283 \; unit::response resize 64;
-#X text 32 353 we thought it useful to have a tool that would be able to easily plot the unit::response of a system;
+#X text 32 353 we thought it useful to have a tool that would be able
+to easily plot the unit::response of a system;
 #X text 111 61 press me;
 #X msg 75 61 bang;
 #X obj 97 160 hip~ 5000;
@@ -33,6 +36,7 @@
 #X obj 53 208 t f b;
 #X msg 53 187 2;
 #X msg 185 225 2;
+#X text 462 7 part of zexy;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;

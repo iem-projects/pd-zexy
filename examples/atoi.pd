@@ -1,28 +1,34 @@
-#N canvas 271 320 749 300 10;
+#N canvas 274 494 749 300 10;
 #X obj 125 21 atoi;
 #X text 174 19 convert ascii to integer;
 #X obj 72 178 atoi;
-#X floatatom 72 201 4 0 0;
+#X floatatom 72 201 4 0 0 0 - - -;
 #X obj 72 132 makefilename %4d;
-#X symbolatom 72 155 10 0 0;
-#X floatatom 72 110 4 0 0;
-#X floatatom 177 110 4 0 0;
+#X symbolatom 72 155 10 0 0 0 - - -;
+#X floatatom 72 110 4 0 0 0 - - -;
+#X floatatom 177 110 4 0 0 0 - - -;
 #X obj 177 132 makefilename 0%d;
-#X floatatom 280 110 4 0 0;
+#X floatatom 280 110 4 0 0 0 - - -;
 #X obj 280 132 makefilename 0x%d;
 #X text 74 92 decimal;
 #X text 178 94 octal;
 #X text 280 93 sedecimal;
-#X floatatom 417 109 4 0 0;
+#X floatatom 417 109 4 0 0 0 - - -;
 #X obj 417 127 makefilename %d;
-#X floatatom 502 106 4 0 0;
+#X floatatom 502 106 4 0 0 0 - - -;
 #X text 506 93 base;
 #X obj 417 146 pack s 2;
 #X msg 417 86 101;
 #X msg 443 86 10011;
-#X text 241 214 symbols starting with "0x" are converted as hex-numbers;
-#X text 242 228 symbols starting with "0" are converted as octal numbers;
-#X text 241 243 symbols starting with numbers but "0" are converted as decimal numbers;
+#X text 241 214 symbols starting with "0x" are converted as hex-numbers
+;
+#X text 242 228 symbols starting with "0" are converted as octal numbers
+;
+#X text 241 243 symbols starting with numbers but "0" are converted
+as decimal numbers;
+#X text 360 325 updated for zexy-2.0;
+#X text 360 325 updated for zexy-2.0;
+#X text 539 17 part of zexy;
 #X connect 2 0 3 0;
 #X connect 4 0 5 0;
 #X connect 5 0 2 0;

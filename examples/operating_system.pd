@@ -1,4 +1,4 @@
-#N canvas 186 166 450 300 10;
+#N canvas 594 494 450 300 10;
 #X obj 77 40 operating_system;
 #X text 200 40 which OS are we running;
 #X symbolatom 75 140 10 0 0 0 - - -;
@@ -11,6 +11,7 @@
 #X obj 193 191 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
 -1;
 #X obj 75 108 operating_system;
+#X text 293 8 part of zexy;
 #X connect 2 0 4 0;
 #X connect 3 0 8 0;
 #X connect 4 0 5 0;

@@ -1,9 +1,9 @@
-#N canvas 240 25 854 550 10;
+#N canvas 347 343 854 550 10;
 #X msg 117 288 reset;
 #X msg 216 288 auto 0;
 #X msg 354 287 help;
-#X floatatom 441 288;
-#X floatatom 192 439;
+#X floatatom 441 288 0 0 0 0 - - -;
+#X floatatom 192 439 0 0 0 0 - - -;
 #X obj 117 419 index 128 3;
 #X text 224 441 index;
 #X msg 216 313 auto 1;
@@ -36,8 +36,10 @@
 #X text 440 272 debug: which item has index #;
 #X text 61 9 index: create a symbol->int map;
 #X text 349 402 creation : "index [<n> [<auto>]]";
-#X text 290 517 in NON-AUTO mode \, only ADDED symbols (eg. "add <symbol>") are added to the map;
-#X text 289 495 in AUTO mode \, unknown symbols are automatically added to the map \;;
+#X text 290 517 in NON-AUTO mode \, only ADDED symbols (eg. "add <symbol>")
+are added to the map;
+#X text 289 495 in AUTO mode \, unknown symbols are automatically added
+to the map \;;
 #X msg 384 85 delete alias;
 #N canvas 601 96 333 308 print2screen 0;
 #X obj 114 58 inlet;
@@ -58,8 +60,11 @@
 #X connect 6 0 2 1;
 #X connect 7 0 6 0;
 #X restore 117 488 pd print2screen;
-#X text 387 420 n :: max. number of elements in list (defaults to 128);
-#X text 369 429 auto :: 1_sets auto ON \, 0_sets auto OFF (default off);
+#X text 387 420 n :: max. number of elements in list (defaults to 128)
+;
+#X text 369 429 auto :: 1_sets auto ON \, 0_sets auto OFF (default
+off);
+#X text 705 14 part of zexy;
 #X connect 0 0 5 0;
 #X connect 1 0 5 0;
 #X connect 2 0 5 0;

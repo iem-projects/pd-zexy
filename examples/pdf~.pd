@@ -1,4 +1,4 @@
-#N canvas 160 310 829 485 10;
+#N canvas 220 418 829 485 10;
 #X obj 90 43 pdf~;
 #X text 175 44 probability density function;
 #X obj 14 166 osc~ 440;
@@ -13,9 +13,11 @@
 #X obj 137 387 print;
 #X text 90 302 creation argument : number of steps;
 #X text 227 315 default is 64;
-#X graph graph1 0 -1 128 1 428 431 828 131;
-#X array array99 128 float;
-#X pop;
+#N canvas 0 0 450 300 graph1 0;
+#X array array99 128 float 0;
+#X coords 0 1 128 -1 400 300 1;
+#X restore 428 131 graph;
+#X text 532 42 part of zexy;
 #X connect 2 0 5 0;
 #X connect 3 0 5 0;
 #X connect 5 0 4 0;

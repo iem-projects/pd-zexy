@@ -1,4 +1,4 @@
-#N canvas 652 218 777 455 10;
+#N canvas 243 428 595 456 10;
 #X obj 111 58 glue;
 #X text 171 58 glue together 2 packages (append \, prepend \, ...)
 ;
@@ -12,6 +12,7 @@
 #X msg 51 179 bang;
 #X obj 95 210 glue;
 #X obj 277 206 glue and stick;
+#X text 490 14 part of zexy;
 #X connect 2 0 10 0;
 #X connect 3 0 10 1;
 #X connect 6 0 11 0;

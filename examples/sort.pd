@@ -1,8 +1,9 @@
-#N canvas 390 217 721 511 10;
+#N canvas 137 350 811 532 10;
 #X obj 86 231 print UNSORTED;
 #X msg 37 107 bang;
 #X obj 198 23 sort;
-#X text 314 87 any package-elements that are non-float will be interpreted as "0.0".;
+#X text 314 87 any package-elements that are non-float will be interpreted
+as "0.0".;
 #X text 270 87 note :;
 #X obj 53 329 sort 1;
 #X obj 53 470 print ASCENDING;
@@ -56,12 +57,13 @@
 #X obj 72 177 print;
 #X msg 72 160 -----;
 #X obj 37 141 t b b;
-#X floatatom 88 293;
+#X floatatom 88 293 0 0 0 0 - - -;
 #X text 122 295 direction;
 #X obj 37 213 t l l l l;
 #X obj 69 312 sort;
 #X obj 69 453 print SORTED;
 #X text 237 23 shell-sort a package of floats;
+#X text 553 16 part of zexy;
 #X connect 1 0 16 0;
 #X connect 5 0 6 0;
 #X connect 7 0 8 0;

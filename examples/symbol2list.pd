@@ -28,6 +28,7 @@ up into its characters.;
 #X text 375 412 banging the object will re-parse the list-symbol;
 #X text 532 498 which does the inverse;
 #X obj 75 428 symbol2list _;
+#X text 600 44 part of zexy;
 #X connect 1 0 24 1;
 #X connect 7 0 24 0;
 #X connect 8 0 1 0;

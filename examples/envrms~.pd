@@ -1,20 +1,25 @@
-#N canvas 288 18 580 361 10;
+#N canvas 366 497 580 361 10;
 #X obj 71 51 envrms~;
-#X text 174 51 an envelope follower that outputs rms instead of dB;
+#X text 174 51 an envelope follower that outputs rms instead of dB
+;
 #X obj 59 172 sig~ 3;
-#X floatatom 59 148;
+#X floatatom 59 148 0 0 0 0 - - -;
 #X obj 59 233 env~;
-#X floatatom 59 254;
-#X floatatom 129 255;
+#X floatatom 59 254 0 0 0 0 - - -;
+#X floatatom 129 255 0 0 0 0 - - -;
 #X obj 129 234 envrms~;
-#X text 177 93 (i found it very often quite annoying \, to get dB all the times \, and i wouldn't use snapshot~ instead);
+#X text 177 93 (i found it very often quite annoying \, to get dB all
+the times \, and i wouldn't use snapshot~ instead);
 #X obj 59 276 dbtorms;
-#X floatatom 59 299;
-#X text 179 172 of course \, this is cheaper than using env~ + dbtorms;
+#X floatatom 59 299 0 0 0 0 - - -;
+#X text 179 172 of course \, this is cheaper than using env~ + dbtorms
+;
 #X text 272 269 see also:;
 #X obj 277 296 env~;
 #X obj 315 296 avg~;
 #X obj 354 296 tavg~;
+#X msg 484 217 \; pd dsp 1;
+#X text 479 17 part of zexy;
 #X connect 2 0 7 0;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;

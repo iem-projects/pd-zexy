@@ -1,4 +1,4 @@
-#N canvas 127 -1 1027 898 10;
+#N canvas 127 0 1027 898 10;
 #X msg 463 10 rewind;
 #X obj 392 853 print done;
 #X text 575 665 read a file;
@@ -6,10 +6,12 @@
 #X text 23 356 see also:;
 #X text 512 9 go to beginning;
 #X msg 466 223 bang;
-#X text 474 724 write a file \, terminating lines only with carriage return (omitting semicolons.) You can read files this way too \, in which case carriage returns are mapped to semicolons.;
+#X text 474 724 write a file \, terminating lines only with carriage
+return (omitting semicolons.) You can read files this way too \, in
+which case carriage returns are mapped to semicolons.;
 #X obj 355 871 print list;
 #X msg 466 281 clear;
-#X text 123 872 this outlet gets the lines in sequence.;
+#X text 73 872 this outlet gets the lines in sequence.;
 #X msg 470 571 set 2 4 6 8;
 #X text 576 570 clear and then add one message;
 #X msg 466 388 add cis boom bah;
@@ -20,7 +22,8 @@
 #X text 127 9 read and write messages into text files;
 #X obj 355 815 msgfile;
 #X obj 84 357 textfile;
-#X text 18 57 The msgfile object is derived from the textfile object and expands its features.;
+#X text 18 57 The msgfile object is derived from the textfile object
+and expands its features.;
 #X text 15 97 new features are :;
 #X text 127 110 insert \, append \, delete \, replace;
 #X msg 464 33 end;
@@ -37,7 +40,8 @@
 #X text 520 282 empty the object;
 #X msg 467 321 delete 2;
 #X text 9 183 changed behaviour :;
-#X text 130 183 add2 : read "add too" \; append to an existing line;
+#X text 130 183 add2 : read "add too" \; append to an existing line
+;
 #X text 602 433 insert a message before the current line;
 #X text 605 455 add to the previous line (CHANGED BEHAVIOUR !!!);
 #X text 567 405 add to the last line (CHANGED BEHAVIOUR !!!);
@@ -52,7 +56,9 @@
 #X msg 467 508 append2 appendix;
 #X msg 467 250 flush;
 #X text 516 249 output all lines;
-#X text 457 836 This outlet gets a bang when you hit the end of the sequence \; it will also get the current position when using "when";
+#X text 467 836 This outlet gets a bang when you hit the end of the
+sequence \; it will also get the current position when using "when"
+;
 #X msg 467 666 read msgfile.txt;
 #X msg 467 708 write /tmp/msgfile2.txt cr;
 #X msg 466 761 read msgfile2.txt cr;
@@ -70,11 +76,13 @@
 #X text 538 360 delete all but the specified region;
 #X msg 472 600 find test 6;
 #X msg 472 619 find test * 7 *;
-#X text 576 606 find a matching list ("*" is the only wildcard supported);
+#X text 576 606 find a matching list ("*" is the only wildcard supported)
+;
 #X text 127 97 end \, goto \, skip;
 #X text 131 127 flush \, where \, this \, prev \, next;
 #X text 128 145 find;
 #X text 73 163 read/write can handle csv files too;
+#X text 890 17 part of zexy;
 #X connect 0 0 19 0;
 #X connect 6 0 19 0;
 #X connect 9 0 19 0;

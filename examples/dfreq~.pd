@@ -1,14 +1,19 @@
-#N canvas 307 9 598 301 10;
+#N canvas 441 541 598 301 10;
 #X obj 61 163 dfreq~;
 #X obj 61 133 osc~ 440;
 #X obj 61 231 print~;
 #X msg 96 208 bang;
 #X obj 85 28 dfreq~;
 #X text 146 27 a frequency detector that counts zero-crossings;
-#X floatatom 61 109;
-#X text 182 104 every zero-crossing the frequency-estimation is updated \, therefore this estimation is given as a signal...;
-#X text 179 170 this detector won't work properly on complex signals (e.g. zero-crossings should not be caused by higher partials);
-#X text 177 205 on the other hand \, this is much cheaper than fft's or fiddle...;
+#X floatatom 61 109 0 0 0 0 - - -;
+#X text 182 104 every zero-crossing the frequency-estimation is updated
+\, therefore this estimation is given as a signal...;
+#X text 179 170 this detector won't work properly on complex signals
+(e.g. zero-crossings should not be caused by higher partials);
+#X text 177 205 on the other hand \, this is much cheaper than fft's
+or fiddle...;
+#X text 503 7 part of zexy;
+#X text 183 265 thanks to w.ritsch for this one;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 3 0 2 0;

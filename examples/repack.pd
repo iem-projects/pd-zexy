@@ -1,13 +1,14 @@
-#N canvas 222 219 739 549 10;
+#N canvas 364 364 739 549 10;
 #X obj 78 35 repack;
 #X obj 73 303 print;
-#X floatatom 73 120;
+#X floatatom 73 120 0 0 0 0 - - -;
 #X msg 73 138 1 2 3 4 5 6 7 8 9 10;
 #X obj 73 265 repack 7;
 #X msg 73 157 hallo;
-#X text 149 33 (re)packs (packages of) floats/symbols/pointers/anythings to packages of a (given) size;
+#X text 149 33 (re)packs (packages of) floats/symbols/pointers/anythings
+to packages of a (given) size;
 #X msg 120 187 bang;
-#X floatatom 116 235;
+#X floatatom 116 235 0 0 0 0 - - -;
 #X text 172 236 set the package-size;
 #X text 173 191 output the currently made package immediately;
 #X obj 56 501 repack 1;
@@ -15,6 +16,7 @@
 #X obj 337 503 drip;
 #X text 72 407 creation:;
 #X text 140 408 "repack <n>" create packages of the length n;
+#X text 582 11 part of zexy;
 #X connect 2 0 4 0;
 #X connect 3 0 4 0;
 #X connect 4 0 1 0;

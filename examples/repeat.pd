@@ -1,4 +1,4 @@
-#N canvas 59 45 599 332 10;
+#N canvas 429 454 599 332 10;
 #X msg 41 151 bang;
 #X msg 62 177 1 1 2 3 5 8 13 21 44 fibonacchi;
 #X obj 160 14 repeat;
@@ -15,6 +15,7 @@ comes in;
 #X obj 41 262 repeat 3;
 #X text 143 236 reset the number of repetitions;
 #X obj 41 303 print repetitio;
+#X text 471 32 part of zexy;
 #X connect 0 0 11 0;
 #X connect 1 0 11 0;
 #X connect 5 0 11 1;

@@ -1,3 +1,19 @@
+/******************************************************
+ *
+ * zexy - implementation file
+ *
+ * copyleft (c) IOhannes m zmölnig
+ *
+ *   1999:forum::für::umläute:2004
+ *
+ *   institute of electronic music and acoustics (iem)
+ *
+ ******************************************************
+ *
+ * license: GNU General Public License v.2
+ *
+ ******************************************************/
+
 /*
 	finally :: some of the missing binops for signals :: abs~, sgn~, >~, <~, ==~, &&~, ||~
 
@@ -9,8 +25,6 @@
 
 #ifdef NT
 #define fabsf fabs
-#pragma warning( disable : 4244 )
-#pragma warning( disable : 4305 )
 #endif
 
 typedef struct _misc
@@ -798,4 +812,5 @@ void z_sigbin_setup(void)
   sigEQUAL_setup();
   sigOR_setup();
   sigAND_setup();
+  zexy_register("sigbin");
 }

@@ -39,7 +39,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "ZEXY_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "..\..\..\pd\src" /D "WIN32" /D "NT" /D "_WINDOWS" /D "ZEXY" /FR /YX /FD /c
+# ADD CPP /nologo /Zp16 /W3 /GX /I "..\..\..\pd\src" /D "WIN32" /D "NT" /D "_WINDOWS" /D "ZEXY" /D "Z_WANT_LPT" /FR /YX /FD /c
+# SUBTRACT CPP /O<none>
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /win32
 # SUBTRACT MTL /mktyplib203
@@ -60,99 +61,231 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\z_average.c
+SOURCE=.\a2l.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_connective.c
+SOURCE=.\atoi.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_coordinates.c
+SOURCE=.\avg_tilde.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_datetime.c
+SOURCE=.\blockmirror_tilde.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_dfreq.c
+SOURCE=.\blockswap_tilde.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_drip.c
+SOURCE=.\date.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_index.c
+SOURCE=.\demultiplex.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_limiter.c
+SOURCE=.\demultiplex_tilde.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_makesymbol.c
+SOURCE=.\dfreq_tilde.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_matrix.c
+SOURCE=.\dirac_tilde.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_msgfile.c
+SOURCE=.\dot.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_multiline.c
+SOURCE=.\drip.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_multiplex.c
+SOURCE=.\envrms_tilde.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_noise.c
+SOURCE=.\glue.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_nop.c
+SOURCE=.\index.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_operating_system.c
+SOURCE=.\length.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_pack.c
+SOURCE=.\limiter_tilde.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_pdf.c
+SOURCE=.\list2int.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_prime.c
+SOURCE=.\list2symbol.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_quantize.c
+SOURCE=.\lister.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_random.c
+SOURCE=.\lpt.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_sfplay.c
+SOURCE=.\makesymbol.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_sfrecord.c
+SOURCE=.\mavg.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_sigaverage.c
+SOURCE=.\minmax.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\msgfile.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\multiline_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\multiplex.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\multiplex_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\niagara.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\noish_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\noisi_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\operating_system.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\pack_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\packel.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\pdf_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\prime.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\quantize_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\repack.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\repeat.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\sfplay.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\sfrecord.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\sigzero_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\sort.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\step_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\strcmp.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\sum.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\swap_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\symbol2list.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\tabdump.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\tabminmax.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\tabset.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\tavg_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\time.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\unpack_tilde.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\urn.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\winNT_portio.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\wrap.c
 # End Source File
 # Begin Source File
 
@@ -160,47 +293,7 @@ SOURCE=.\z_sigbin.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_sigmatrix.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_sigpack.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_sigzero.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_sort.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_stat.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_strings.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_swap.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_tabread4.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_testfun.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_wrap.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\z_zdelay.c
+SOURCE=.\z_tilde.c
 # End Source File
 # Begin Source File
 
@@ -217,6 +310,14 @@ SOURCE=..\..\src\m_pd.h
 # Begin Source File
 
 SOURCE=.\Zexy.h
+# End Source File
+# End Group
+# Begin Group "generic"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\z_zexy.h
 # End Source File
 # End Group
 # End Target

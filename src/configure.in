@@ -214,13 +214,14 @@ else
  echo "no (ignored)"
 fi
 
-echo "SOURCES = \\"> make.source
-for i in `ls z_*.c zexy.c`
+echo "SOURCES = \\"> Make.source
+for i in `ls *.c`
 do
-  echo "	$i\\">> make.source
+  echo "	$i\\">> Make.source
 done
-echo >> make.source
+echo >> Make.source
 
-AC_OUTPUT(makefile)
+AC_OUTPUT(Makefile)
 
 rm -f conftest.*
+./makesource.sh
