@@ -554,7 +554,7 @@ static void sfplay_dsp(t_sfplay *x, t_signal **sp)
          sp[0]->s_n);
       break;
    case 4:
-      dsp_add(sfplay_perform, 6, x, 
+      dsp_add(sfplay_perform, 7, x, 
          sp[0]->s_vec, 
          sp[1]->s_vec,
          sp[2]->s_vec,
@@ -562,9 +562,8 @@ static void sfplay_dsp(t_sfplay *x, t_signal **sp)
          sp[4]->s_vec,
          sp[0]->s_n);
       break;
-      
-	  case 8:
-        dsp_add(sfplay_perform, 8, x, 
+   case 8:
+        dsp_add(sfplay_perform, 11, x, 
            sp[0]->s_vec, 
            sp[1]->s_vec,
            sp[2]->s_vec,
@@ -576,7 +575,6 @@ static void sfplay_dsp(t_sfplay *x, t_signal **sp)
            sp[8]->s_vec,
            sp[0]->s_n);
         break;
-        
    }
 }
 
@@ -589,13 +587,13 @@ static void *sfplay_new(t_floatarg chan,t_floatarg skip)
    
    switch(c){
       /* ok */
-   case 1: case 2: case 8: break;
+   case 1: case 2: case 4: case 8: break;
       /* try it, good luck ... */
    case 3: c = 2; break;     
    case 5: case 6: case 7: c=7; break;
    default: c=1; break;
    }
-   
+
    floatinlet_new(&x->x_obj, &x->offset); /* inlet 2 */
    /*    floatinlet_new(&x->x_obj, &x->speed);  *//* inlet 3 */
    

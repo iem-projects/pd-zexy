@@ -473,7 +473,7 @@ static void sfrecord_dsp(t_sfrecord *x, t_signal **sp)
 			sp[0]->s_n);
 		break;
 	case 4:
-		dsp_add(sfrecord_perform, 5, x, 
+		dsp_add(sfrecord_perform, 6, x, 
 			sp[0]->s_vec, 
 			sp[1]->s_vec,
 			sp[2]->s_vec,
@@ -481,7 +481,7 @@ static void sfrecord_dsp(t_sfrecord *x, t_signal **sp)
 			sp[0]->s_n);
 		break;
 	case 8:
-		dsp_add(sfrecord_perform, 7, x, 
+		dsp_add(sfrecord_perform, 9, x, 
 			sp[0]->s_vec, 
 			sp[1]->s_vec,
 			sp[2]->s_vec,
@@ -504,7 +504,7 @@ static void *sfrecord_new(t_floatarg chan)
 
 	switch(c){
 		/* ok */
-	case 1: case 2: case 8: break;
+	case 1: case 2: case 4: case 8: break;
 		/* try it, good luck ... */
 	case 3: c = 2; break;     
 	case 5: case 6: case 7: c=7; break;
