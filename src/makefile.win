@@ -1,0 +1,58 @@
+current: all
+prefix=../../..
+
+# the ZEXY-EXTERNAL-makefile
+# everything is GnuGPL that should come with the zexy.tgz
+# NO WARRANTIES FOR ANYTHING
+# et cetera
+# 1999:forum::für::umläute:2003
+
+TARGETS = zexy \
+	z_connective z_pack z_multiplex z_drip \
+	z_makesymbol z_strings \
+	z_index z_msgfile \
+	z_stat z_average z_sort \
+	z_tabread4 z_coordinates \
+	z_datetime \
+	z_matrix \
+	z_noise z_testfun \
+	z_multiline z_sigmatrix \
+	z_nop z_zdelay \
+	z_limiter z_quantize z_swap \
+	z_sigbin z_sigaverage \
+	z_dfreq z_sigzero z_pdf \
+	z_sfplay z_sfrecord \
+	z_sigpack \
+	z_prime z_random z_wrap \
+	z_operating_system
+
+.SUFFIXES: .dll
+
+OBJECTS = $(TARGETS:%=%.o)
+
+INCLUDE = -I. -I$(prefix)/src
+
+$(OBJECTS): *.h
+
+CFLAGS = -DNT -Wall -W -Wshadow -Wstrict-prototypes -Wno-unused -Wno-parentheses -Wno-switch $(INCLUDE)
+
+everything: clean all install
+
+clean:
+	-rm *.dll *.o
+
+all: $(OBJECTS)
+
+	@echo :: $(OBJECTS)
+	gcc -shared -o zexy.dll *.o $(prefix)/bin/pd.dll
+
+.c.pd_linux:
+	cc $(CFLAGS) -O2 -DPD -fPIC $(INCLUDE) -c -o $*.o $*.c
+
+install: installdocs
+	@test -d $(prefix)/extra || mkdir -p $(prefix)/extra
+	install *.dll $(prefix)/extra
+	
+installdocs:
+	install -d $(prefix)/doc/5.reference/zexy
+	install -m644 ../examples/*.pd $(prefix)/doc/5.reference/zexy
