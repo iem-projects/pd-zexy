@@ -5,7 +5,7 @@
    extended to write to any port (if we do have permissions)
 
 */
-#ifndef MACOSX
+#ifdef __i386__
 
 #define BASE0  0x3bc
 #define BASE1  0x378
@@ -133,4 +133,4 @@ void z_lp_setup(void)
   class_sethelpsymbol(lp_class, gensym("zexy/lp"));
 }
 
-#endif /* MACOSX */
+#endif /* __i386__ */
