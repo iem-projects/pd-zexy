@@ -35,7 +35,7 @@ zmoelnig@iem.kug.ac.at
 #ifdef NT
 #define BINWRITEMODE "wb"
 #endif
-#ifdef linux
+#ifdef unix
 #include <unistd.h>
 #include <sys/mman.h>
 #define BINWRITEMODE "w"

@@ -7,6 +7,10 @@
 #define sqrtf sqrt
 #endif
 
+#ifdef MACOSX
+#define sqrtf sqrt
+#endif
+
 /* ---------------- envrms~ - simple envelope follower. ----------------- */
 /* this is exactly the same as msp's env~-object, but does not output dB but RMS !! */
 /* i found env~+dbtorms most inconvenient (and expensive...) */

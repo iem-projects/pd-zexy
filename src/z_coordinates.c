@@ -10,6 +10,13 @@
 #define cosf cos
 #endif
 
+#ifdef MACOSX
+#define atan2f atan2
+#define sqrtf sqrt
+#define sinf sin
+#define cosf cos
+#endif
+
 /* ----------------------- deg/rad utils ----------------- */
 t_class *deg2rad_class, *rad2deg_class;
 typedef struct _deg2rad

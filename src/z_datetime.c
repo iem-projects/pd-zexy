@@ -11,6 +11,12 @@
 #pragma warning( disable : 4305 )
 #endif
 
+#ifdef MACOSX
+#include <sys/types.h>
+/* typedef     _BSD_TIME_T_    time_t;                */
+#endif
+
+
 #include "zexy.h"
 #include <sys/timeb.h>
 #include <time.h>

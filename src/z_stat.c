@@ -7,6 +7,10 @@
 #define sqrtf sqrt
 #endif
 
+#ifdef MACOSX 
+#define sqrtf sqrt
+#endif
+
 /* mean :: the mean of a list of floats */
 
 static t_class *mean_class;
