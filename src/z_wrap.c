@@ -47,6 +47,7 @@ void *wrap_new(t_symbol *s, int argc, t_atom*argv)
   wrap_set(x, s, argc, argv);
 
   outlet_new(&x->x_obj, &s_float);
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("set"));
 
   return (void *)x;
 }
@@ -59,4 +60,5 @@ void z_wrap_setup(void) {
 
   class_addfloat (wrap_class, wrap_float);
   class_addmethod(wrap_class, (t_method)wrap_set, gensym("set"), A_GIMME, 0);
+  class_sethelpsymbol(wrap_class, gensym("zexy/wrap"));
 }
