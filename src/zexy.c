@@ -172,7 +172,10 @@ void z_sigbin_setup();
 void z_execute_setup();
 #endif
 
+/* lp ports are only on i386 machines  */
+#ifdef __i386__
 void z_lp_setup();
+#endif
 
 void z_index_setup();
 void z_connective_setup();
@@ -263,7 +266,9 @@ void zexy_setup(void)
   z_sigmatrix_setup();
 
   z_strings_setup();
-#ifdef linux  
+
+/* lp ports are only on i386 machines  */
+#ifdef __i386__
   z_lp_setup();
 #endif
 
