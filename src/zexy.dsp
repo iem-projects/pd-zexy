@@ -68,11 +68,19 @@ SOURCE=.\z_connective.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\z_coordinates.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\z_datetime.c
 # End Source File
 # Begin Source File
 
 SOURCE=.\z_dfreq.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\z_down.c
 # End Source File
 # Begin Source File
 
@@ -100,6 +108,10 @@ SOURCE=.\z_msgfile.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\z_mtx.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\z_multiline.c
 # End Source File
 # Begin Source File
@@ -124,7 +136,15 @@ SOURCE=.\z_pdf.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\z_point.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\z_quantize.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\z_random.c
 # End Source File
 # Begin Source File
 
@@ -157,6 +177,14 @@ SOURCE=.\z_sigzero.c
 # Begin Source File
 
 SOURCE=.\z_sort.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\z_stat.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\z_strings.c
 # End Source File
 # Begin Source File
 
