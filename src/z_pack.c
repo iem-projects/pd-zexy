@@ -276,8 +276,12 @@ static void packel_list(t_packel *x, t_symbol *s, int argc, t_atom *argv)
     t_atom *current;
     int pos = (mypos < 0)?(argc+mypos):(mypos-1);
 
-    if (pos < 0) pos = 0;
-    else if (pos >= argc) pos = argc - 1;
+    if(argc==0){
+      if (pos==0||pos==-1)outlet_bang(x->x_obj.ob_outlet);
+      return;
+    }
+    
+    if (pos < 0 || pos >= argc)return;
 
     current = &(argv[pos]);
 
