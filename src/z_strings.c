@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #ifdef NT
+#include <string.h>
 #pragma warning( disable : 4244 )
 #pragma warning( disable : 4305 )
 #define sqrtf sqrt

@@ -14,7 +14,7 @@ void prime_float(t_prime *x, t_float f)
 
   unsigned int i=f;
   unsigned int max_divisor;
-  int divisor=1;
+  unsigned int divisor=1;
 
   if (f<2)return;
 
