@@ -97,8 +97,8 @@ installdocs:
 # to generate MacOS X packages
 
 ZEXY_VERSION = $(shell grep VERSION zexy.h | cut -d ' ' -f 3 | cut -d '"' -f 2)
-
-PACKAGE_NAME = pd-zexy-$(ZEXY_VERSION)
+PACKAGE_PREFIX = pd-zexy
+PACKAGE_NAME = $(PACKAGE_PREFIX)-$(ZEXY_VERSION)
 
 darwin_pkg_license:
   # generate HTML version of License
@@ -116,8 +116,8 @@ darwin_pkg_welcome:
 	head -11 ../README.txt >> Welcome.txt
 
 darwin_pkg_clean:
-	-sudo rm -Rf installroot/ $(PACKAGE_NAME)*.pkg/
-	-rm -f ../$(PACKAGE_NAME)*.info 1 License.html Welcome.???*
+	-sudo rm -Rf installroot/ $(PACKAGE_PREFIX)*.pkg/
+	-rm -f ../$(PACKAGE_PREFIX)-*.info 1 License.html Welcome.???*
 
 
 # install into MSP's default: /usr/local/lib
