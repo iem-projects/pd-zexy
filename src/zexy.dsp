@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "ZEXY_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "..\..\src" /D "WIN32" /D "NT" /D "_WINDOWS" /D "ZEXY" /FR /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /I "..\..\..\pd\src" /D "WIN32" /D "NT" /D "_WINDOWS" /D "ZEXY" /FR /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /win32
 # SUBTRACT MTL /mktyplib203
@@ -50,7 +50,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib wsock32.lib uuid.lib libc.lib oldnames.lib pd.lib /nologo /dll /machine:I386 /nodefaultlib /out:"..\zexy.dll" /libpath:"../../bin" /export:zexy_setup
+# ADD LINK32 kernel32.lib wsock32.lib uuid.lib libc.lib oldnames.lib pd.lib /nologo /dll /machine:I386 /nodefaultlib /out:"..\zexy.dll" /libpath:"../../bin" /libpath:"C:\Programme\pd\bin" /export:zexy_setup
 # SUBTRACT LINK32 /pdb:none
 # Begin Target
 
@@ -80,10 +80,6 @@ SOURCE=.\z_dfreq.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_down.c
-# End Source File
-# Begin Source File
-
 SOURCE=.\z_drip.c
 # End Source File
 # Begin Source File
@@ -108,10 +104,6 @@ SOURCE=.\z_msgfile.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_mtx.c
-# End Source File
-# Begin Source File
-
 SOURCE=.\z_multiline.c
 # End Source File
 # Begin Source File
@@ -128,6 +120,10 @@ SOURCE=.\z_nop.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\z_operating_system.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\z_pack.c
 # End Source File
 # Begin Source File
@@ -136,7 +132,7 @@ SOURCE=.\z_pdf.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_point.c
+SOURCE=.\z_prime.c
 # End Source File
 # Begin Source File
 
@@ -197,6 +193,10 @@ SOURCE=.\z_tabread4.c
 # Begin Source File
 
 SOURCE=.\z_testfun.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\z_wrap.c
 # End Source File
 # Begin Source File
 

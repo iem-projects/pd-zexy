@@ -12,7 +12,7 @@
 #include <string.h>
 #ifdef NT
 #include <memory.h>
-#error do we need memory.h
+//#error do we need memory.h
 #endif
 
 
