@@ -1,0 +1,30 @@
+all: zexy.dll
+
+SRCS = z_average.c z_connective.c z_coordinates.c z_datetime.c z_dfreq.c z_drip.c z_index.c z_limiter.c z_lp.c z_makesymbol.c z_matrix.c z_msgfile.c z_multiline.c z_multiplex.c z_noise.c z_nop.c z_operating_system.c z_pack.c z_pdf.c z_prime.c z_quantize.c z_random.c z_sfplay.c z_sfrecord.c z_sigaverage.c z_sigbin.c z_sigmatrix.c z_sigpack.c z_sigzero.c z_sort.c z_stat.c z_strings.c z_swap.c z_tabread4.c z_testfun.c z_wrap.c z_zdelay.c
+
+NTOBJETS = $(SRCS:.c=.obj)
+
+NTDLLS = *.dll
+
+PDNTCFLAGS = /DNT /DMSW /DPD /nologo
+
+PDNTINCLUDE = /I. /I..\..\..\src 
+
+PDNTLDIR = "c:\program\vc2003\lib"
+
+PDNTLIB = $(PDNTLDIR)\libc.lib \
+	$(PDNTLDIR)\oldnames.lib \
+	$(PDNTLDIR)\wsock32.lib \
+	$(PDNTLDIR)\kernel32.lib \
+	$(PDNTLDIR)\uuid.lib \
+	..\..\..\bin\pd.lib
+
+.c.obj:
+	cl /c $(PDNTCFLAGS) $(PDNTINCLUDE) $*.c
+
+zexy.dll: $(NTOBJETS)
+	-link /dll /out:zexy.dll $(PDNTLIB) $(NTOBJETS)
+
+clean:
+	del *.obj 
+	del *.dll
