@@ -6,6 +6,9 @@
 #pragma warning( disable : 4244 )
 #pragma warning( disable : 4305 )
 #define sqrtf sqrt
+#define STATIC_INLINE
+#else
+#define STATIC_INLINE static
 #endif
 
 /*
@@ -285,7 +288,7 @@ static void symbol2list_delimiter(t_symbol2list *x, t_symbol *s){
   x->delimiter = s;
 }
 
-static inline void string2atom(t_atom *ap, char* cp, int clen){
+STATIC_INLINE void string2atom(t_atom *ap, char* cp, int clen){
   char *buffer=getbytes(sizeof(char)*(clen+1));
   char *endptr[1];
   t_float ftest;
