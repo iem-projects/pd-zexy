@@ -65,17 +65,16 @@ static void zexy_help(void)
        "\nlist2int\t:: cast each float of a list to integer"
        "\natoi\t\t:: convert ascii to integer"
        "\nlist2symbol\t:: convert a list into a single symbol"
+       "\nsymbol2list\t:: split a symbol into a list"
        "\nstrcmp\t\t:: compare 2 lists as if they where strings"
        "\nrepack\t\t:: (re)packs atoms to packages of a given size"
        "\npackel\t\t:: element of a package"
        "\nlength\t\t:: length of a package"
        "\nniagara\t\t:: divide a package into 2 sub-packages"
        "\nglue\t\t:: append a list to another"
+       "\nrepeat\t\t:: repeat a message"
        "\nsegregate\t:: sort inputs by type"
-       "\nmatrix\t\t:: handle matrices"
        "\n.\t\t:: scalar multiplication of vectors (lists of floats)"
-       "\nmean\t\t:: get the arithmetic mean of a vector"
-       "\nminmax\t\t:: get the minimum and the maximum of a vector"
 
        "\n%c advanced message objects"
 
@@ -83,6 +82,8 @@ static void zexy_help(void)
        "\ntabdump\t\t:: dump the table as a list"
        "\ntabset\t\t:: set a table with a list"
        "\nmavg\t\t:: a variable moving average filter"
+       "\nmean\t\t:: get the arithmetic mean of a vector"
+       "\nminmax\t\t:: get the minimum and the maximum of a vector"
        "\nmakesymbol\t:: creates (formatted) symbols"
        "\ndate\t\t:: get the current system date"
        "\ntime\t\t:: get the current system time"
@@ -192,8 +193,6 @@ void z_sigmatrix_setup();
 
 void z_strings_setup();
 
-void z_down_setup();
-
 void z_prime_setup();
 void z_random_setup();
 void z_wrap_setup();
@@ -269,15 +268,14 @@ void zexy_setup(void)
 #ifdef linux  
   z_lp_setup();
 #endif
-  z_down_setup();
 
   /* ************************************** */
-   
   startpost("\n\t");
   for (i=0; i<28; i++) startpost("%c", HEARTSYMBOL);
   endpost();
-  post("\t%c...the zexy external"VERSION"...%c", HEARTSYMBOL, HEARTSYMBOL);
-  post("\t%c forum::für::umläute 2000 %c", HEARTSYMBOL, HEARTSYMBOL);
+  post("\t%c  the zexy external  "VERSION"  %c", HEARTSYMBOL, HEARTSYMBOL);
+  post("\t%c (l)  forum::für::umläute %c", HEARTSYMBOL, HEARTSYMBOL);
+  post("\t%c  compiled:  "__DATE__"  %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c send me a 'help' message %c", HEARTSYMBOL, HEARTSYMBOL);
   startpost("\t");
   for (i=0; i<28; i++) startpost("%c", HEARTSYMBOL);

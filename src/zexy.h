@@ -9,13 +9,13 @@
  * (except if you want to use the code for other things)
  * download "pure data" at
 
- http://iem.kug.ac.at/pd
- ftp://iem.kug.ac.at/pd
+ http://pd.iem.at
+ ftp://iem.at/pd
 
  *
  * if you are looking for the latest release of the ZEXY-external you should have another look at
 
- ftp://iem.kug.ac.at/pd/Externals/ZEXY
+ ftp://iem.at/pd/Externals/ZEXY
 
  * 
  * ZEXY is published under the GNU GeneralPublicLicense, that must be shipped with ZEXY.
@@ -32,14 +32,14 @@
 
 #include "m_pd.h"
 
-#define VERSION "1P2"
+#define VERSION "1.3"
 
 #ifdef NT
 /* yes, we have beautiful hearts under NT */
 #define HEARTSYMBOL 3
 #else
 /* but none for linux; indeed the only drawback */
-#define HEARTSYMBOL 64
+#define HEARTSYMBOL 169
 #endif
 
 #endif
