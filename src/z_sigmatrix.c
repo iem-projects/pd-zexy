@@ -313,17 +313,14 @@ typedef struct _demux {
   int n_out;
   t_float **out;
 
-  int changed;
-  int oldout;
 } t_demux;
 
 static void demux_output(t_demux *x, t_floatarg f)
 {
-  if ((f>=0)&&(f<x->n_out)&&((int)f!=x->output)){
-    x->oldout=x->output;
+  if ((f>=0)&&(f<x->n_out)){
     x->output=f;
-    x->changed=1;
-  }
+  } else
+    error("demultiplex: %d is channel out of range (0..%d)", (int)f, x->n_out);
 }
 
 
@@ -333,29 +330,19 @@ static t_int *demux_perform(t_int *w)
   t_float *in = (t_float *)(w[2]);
   int N = (int)(w[3]);
   int n = N;
-  
-  t_float *out = x->out[x->output];
 
-  if(x->changed){
-    t_float *oldout=x->out[x->oldout];
-    x->changed=0;
 
-    if (out!=in)
-      while(n--){
-	*out++=*in;
-	*in++=*oldout++=0;
-      }
-    else
-      while(n--)*oldout++=0;
+  int channel=x->n_out;
 
-  } else { /* !changed */
-    if (out!=in)
-      while(n--){
-	*out++=*in;
-	*in++=0;
-      }
+
+  while(channel--){
+    t_float*out=x->out[channel];
+    n=N;
+    if(x->output==channel){
+      while(n--)*out++=*in++;
+    } else
+      while(n--)*out++=0.f;
   }
-
   return (w+4);
 }
 
@@ -426,18 +413,15 @@ typedef struct _mux {
 
   int n_in;
   t_float **in;
-
-  int changed;
-  int oldin;
 } t_mux;
 
 static void mux_input(t_mux *x, t_floatarg f)
 {
-  if ((f>=0)&&(f<x->n_in)&&((int)f!=x->input)){
-    x->oldin=x->input;
+  if ((f>=0)&&(f<x->n_in)){
     x->input=f;
-    x->changed=1;
-  }
+  } else
+    error("multiplex: %d is channel out of range (0..%d)", (int)f, x->n_in);
+
 }
 
 static t_int *mux_perform(t_int *w)
@@ -446,26 +430,10 @@ static t_int *mux_perform(t_int *w)
   t_float *out = (t_float *)(w[2]);
   int n = (int)(w[3]);
   
-  t_float *in;
-  
-  in = x->in[x->input];
+  t_float *in = x->in[x->input];
 
-  if(x->changed){
-    t_float *oldin=x->in[x->oldin];
-    x->changed=0;
-    if (in!=out)
-      while(n--){
-	*out++=*in;
-	*in++=*oldin++=0;
-      }
-    else while(n--)*oldin++=0;
-  } else {
-    if (in!=out)
-      while(n--){
-	*out++=*in;
-	*in++=0;
-      }
-  }
+  while(n--)*out++=*in++;
+
   return (w+4);
 }
 
