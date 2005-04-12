@@ -54,7 +54,7 @@ AC_CHECK_FUNCS(select socket strerror)
 
 
 LD=ld
-DFLAGS=""
+DFLAGS="-DZEXY_LIBRARY"
 
 dnl
 dnl  OK, checks for machines are here now

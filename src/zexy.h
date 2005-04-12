@@ -58,18 +58,20 @@ typedef struct _mypdlist
   t_atom *x_list;
 } t_mypdlist;
 
-#ifdef SINGLE_EXTERNALS
+#ifndef ZEXY_LIBRARY
 static void zexy_register(char*object){
   if(object!=0){
-    post("%s: part of the zexy external "VERSION"", object);
-    post("\t (l) forum::für::umläute");
-    post("\t     IOhannes m zmölnig @ IEM");
-    post("\t compiled:  "__DATE__" ");
+    post("[%s]", object);
+    post("\tpart of zexy-%s", VERSION);
+    post("\tCopyright (l) IOhannes m zmölnig, 1999-2005");
+    post("\tforum::für::umläute");
+    post("\tIEM");
+    post("\tcompiled:  "__DATE__" ");
   }
 }
 #else
 static void zexy_register(char*object){}
-#endif /* SINGLE_EXTERNALS */
+#endif /* ZEXY_LIBRARY */
 
 
 #endif /* INCLUDE_ZEXY_H__ */
