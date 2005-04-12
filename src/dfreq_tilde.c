@@ -81,7 +81,7 @@ static void dfreq_dsp(t_dfreq *x, t_signal **sp)
 
 
 
-static void *dfreq_new()
+static void *dfreq_new(void)
 {
   t_dfreq *x = (t_dfreq *)pd_new(dfreq_class);
   outlet_new(&x->x_obj, gensym("signal"));
@@ -102,7 +102,7 @@ static void helper(void)
 void dfreq_tilde_setup(void)
 {
     dfreq_class = class_new(gensym("dfreq~"), (t_newmethod)dfreq_new, 0,
-    	sizeof(t_dfreq), 0, A_DEFFLOAT, 0);
+    	sizeof(t_dfreq), 0, A_NULL);
     class_addmethod(dfreq_class, nullfn, gensym("signal"), 0);
     class_addmethod(dfreq_class, (t_method)dfreq_dsp, gensym("dsp"), 0);
 

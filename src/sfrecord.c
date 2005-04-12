@@ -103,7 +103,7 @@ to split them on different ticks in steps of SFRECORD_WAITTICKS
 to avoid peak performance */
 
 /* like the one from garray */
-static int sfrecord_am_i_big_endian() 
+static int sfrecord_am_i_big_endian(void) 
 {
 	unsigned short s = 1;
 	unsigned char c = *(char *) (&s);

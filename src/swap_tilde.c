@@ -77,7 +77,7 @@ static void swap_helper(void)
   post("outlet : signal~");
 }
 
-static void *swap_new()
+static void *swap_new(void)
 {
   t_swap *x = (t_swap *)pd_new(swap_class);
   outlet_new(&x->x_obj, gensym("signal"));
@@ -88,7 +88,7 @@ static void *swap_new()
 void swap_tilde_setup(void)
 {
   swap_class = class_new(gensym("swap~"), (t_newmethod)swap_new, 0,
-			 sizeof(t_swap), 0, A_DEFFLOAT, 0);
+			 sizeof(t_swap), 0, A_NULL);
   class_addmethod(swap_class, nullfn, gensym("signal"), 0);
   class_addmethod(swap_class, (t_method)swap_dsp, gensym("dsp"), 0);
   

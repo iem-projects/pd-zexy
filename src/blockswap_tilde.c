@@ -75,7 +75,7 @@ static void blockswap_helper(void)
   post("outlet : signal~");
 }
 
-static void *blockswap_new()
+static void *blockswap_new(void)
 {
   t_blockswap *x = (t_blockswap *)pd_new(blockswap_class);
   outlet_new(&x->x_obj, gensym("signal"));
@@ -87,7 +87,7 @@ static void *blockswap_new()
 void blockswap_tilde_setup(void)
 {
   blockswap_class = class_new(gensym("blockswap~"), (t_newmethod)blockswap_new, 0,
-			 sizeof(t_blockswap), 0, A_DEFFLOAT, 0);
+			 sizeof(t_blockswap), 0, A_NULL);
   class_addmethod(blockswap_class, nullfn, gensym("signal"), 0);
   class_addmethod(blockswap_class, (t_method)blockswap_dsp, gensym("dsp"), 0);
   

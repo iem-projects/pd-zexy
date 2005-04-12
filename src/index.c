@@ -73,13 +73,13 @@ static int find_free(char **names, int maxentries)
 
 static void index_float(t_index *x, t_float findex)
 {
-  int index = (int)findex;
-  if ((index > 0) && (index <= x->maxentries) && (x->names[index-1])) 
+  int iindex = (int)findex;
+  if ((iindex > 0) && (iindex <= x->maxentries) && (x->names[iindex-1])) 
   {
       /* TB: output symbol to outlet */
-      t_symbol * s = gensym (x->names[index-1]);
+      t_symbol * s = gensym (x->names[iindex-1]);
       outlet_symbol (x->x_obj.ob_outlet,s);
-      post("index[%d] = %s", index, x->names[index-1]);
+      //      post("iindex[%d] = %s", iindex, x->names[iindex-1]);
   }
 }
 

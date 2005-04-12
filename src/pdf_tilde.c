@@ -78,8 +78,8 @@ static t_int *pdf_perform(t_int *w)
   while (n--)
     {
       t_float f = *in++;
-      int index = ((f + 1.0) * halfsize)+0.5;
-      buf[(index<0)?0:((index>=x->size)?x->size-1:index)]+=1.;
+      int iindex = ((f + 1.0) * halfsize)+0.5;
+      buf[(iindex<0)?0:((iindex>=x->size)?x->size-1:iindex)]+=1.;
     }
   return (w+4);
 }

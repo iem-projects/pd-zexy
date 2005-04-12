@@ -80,7 +80,7 @@ static void blockmirror_helper(void)
   post("outlet : signal~");
 }
 
-static void *blockmirror_new()
+static void *blockmirror_new(void)
 {
   t_blockmirror *x = (t_blockmirror *)pd_new(blockmirror_class);
   outlet_new(&x->x_obj, gensym("signal"));
@@ -92,7 +92,7 @@ static void *blockmirror_new()
 void blockmirror_tilde_setup(void)
 {
   blockmirror_class = class_new(gensym("blockmirror~"), (t_newmethod)blockmirror_new, 0,
-			 sizeof(t_blockmirror), 0, A_DEFFLOAT, 0);
+			 sizeof(t_blockmirror), 0, A_NULL);
   class_addmethod(blockmirror_class, nullfn, gensym("signal"), 0);
   class_addmethod(blockmirror_class, (t_method)blockmirror_dsp, gensym("dsp"), 0);
   

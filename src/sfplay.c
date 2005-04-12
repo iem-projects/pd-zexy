@@ -134,7 +134,7 @@ to split them on different ticks in steps of SFPLAY_WAITTICKS
 to avoid peak performance */
 
 /* like the one from garray */
-static int sfplay_am_i_big_endian() 
+static int sfplay_am_i_big_endian(void) 
 {
    unsigned short s = 1;
    unsigned char c = *(char *) (&s);
@@ -458,7 +458,7 @@ static t_int *sfplay_perform(t_int *w)
       }
       
       /* first read soundfile 16 bit*/		 
-      if((j=fread(buf,sizeof(short),c*n,x->fp)) < (unsigned int) n)
+      if((j=fread(buf,sizeof(short),c*n,x->fp)) < n)
       {   
 
 		  outlet_bang(x->bangout);
