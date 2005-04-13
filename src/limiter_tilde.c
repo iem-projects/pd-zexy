@@ -259,7 +259,7 @@ static void set_compressor(t_limiter *x, t_floatarg limit, t_floatarg treshold, 
   t_float lim = dbtorms(limit);
   t_float tresh = dbtorms(treshold);
 
-  if ((limit == 0) && (treshold = 0) && (ratio = 0)) {set_mode(x, COMPRESS); return;}
+  if ((limit == 0) && (treshold == 0) && (ratio == 0)) {set_mode(x, COMPRESS); return;}
 
   if (tresh > lim) tresh = lim;
   if (ratio < 0.) ratio = 1.;

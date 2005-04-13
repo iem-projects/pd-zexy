@@ -71,11 +71,11 @@ static int sys_inb(int port)
 
 static void sys_outb(unsigned char byte, int port)
 {
-	outb(byte, port);
+  outb(byte, port);
 }
 static int sys_inb(int port)
 {
-	inb(port);
+  return inb(port);
 }
 # endif /* NT */
 #endif /* Z_WANT_LP */
