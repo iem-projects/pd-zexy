@@ -10,12 +10,23 @@ set PDPATH=C:\programme\pd
 REM which pd-version do we have ?
 set PDVERSION=0.37
 
+
 REM ==============================================
 REM do not edit below this line !!!
 REM ==============================================
 
+echo :
+echo : installing zexy on your system
+echo :
+echo : assuming that PD-version is at least %PDVERSION%
+echo : assuming that PD is installed at %PDPATH%
+echo :
+echo : if this is correct, hit [return] to proceed
+echo : if this is incorrect, stop this programm ([Ctrl]-C), edit 'z_install.bat' to your needs and rerun
+echo :
+pause
 
-echo installing zexy on your system
+
 IF NOT EXIST %PDPATH%\bin\pd.exe goto location_error
 
 set BINPATH=extra
@@ -28,12 +39,17 @@ copy zexy.dll %PDPATH%\%BINPATH% > tempInstall.trash
 
 echo copying help files
 mkdir %PDPATH%\%REFPATH%
-copy examples\* %PDPATH%\%REFPATH%
+copy examples\* %PDPATH%\%REFPATH% > tempInstall.trash
 
 echo copying abstractions
-copy abs\*.pd %PDPATH\%BINPATH%
+copy abs\*.pd %PDPATH%\%BINPATH% > tempInstall.trash
 
-echo done
+echo : done
+echo : dont forget to load zexy on startup...
+echo : have fun
+
+
+
 goto end
 
 :location_error
