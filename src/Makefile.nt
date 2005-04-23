@@ -1,0 +1,53 @@
+# ----------------------- NT -----------------------
+LIBNAME    =zexy
+
+
+PREFIX     =C:\Programme\pd
+
+
+
+current: $(LIBNAME)
+
+
+
+EXT = dll
+
+CC = cl
+LD = link
+
+
+DEFS =  /DNT /DPD
+IFLAGS = /I. /I$(PREFIX)\src
+
+AFLAGS = 
+LFLAGS = /dll /export:$(LIBNAME)_setup
+WFLAGS = /W3 /WX /nologo
+
+.SUFFIXES: .$(EXT)
+
+PDCFLAGS = /O2 $(DEFS) $(IFLAGS) $(WFLAGS) $(LFLAGS) $(AFLAGS)
+CFLAGS = /O2 $(DEFS) $(IFLAGS) $(WFLAGS)
+
+LIBS = libc.lib oldnames.lib kernel32.lib $(PREFIX)\bin\pd.lib
+
+
+include Make.source
+
+## for LinePrinter-support: (if you don't want it, comment it out)
+SOURCES += winNT_portio.c
+DEFS += /DZ_WANT_LPT
+LIBS += 
+
+
+TARGETS = $(SOURCES:.c=.o)
+
+$(LIBNAME): $(TARGETS)
+	$(LD) $(LFLAGS) /out:..\$(LIBNAME).$(EXT) *.obj $(LIBS)
+
+
+clean:
+	-del -f *.$(EXT) *.obj ..\$(LIBNAME).lib ..\$(LIBNAME).exp *.lib *.exp
+
+cleaner: clean
+	-del -f *~ _* config.* ..\$(LIBNAME).$(EXT)
+
