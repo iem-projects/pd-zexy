@@ -71,7 +71,7 @@ static void *mypdlist_new(t_symbol *s, int argc, t_atom *argv)
 void lister_setup(void)
 {
   mypdlist_class = class_new(gensym("lister"), (t_newmethod)mypdlist_new, 
-			 (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
+                             (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
   /* i don't know how to get this work with name=="list" !!! */
 
   class_addcreator((t_newmethod)mypdlist_new, gensym("l"), A_GIMME, 0);
@@ -82,4 +82,8 @@ void lister_setup(void)
 
   class_sethelpsymbol(mypdlist_class, gensym("zexy/lister"));
   zexy_register("lister");
+}
+void l_setup(void)
+{
+  lister_setup();
 }
