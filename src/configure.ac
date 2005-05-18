@@ -33,7 +33,7 @@ AC_SUBST(SOURCES)
 
 AC_ARG_WITH(pdversion, [  --with-pdversion=<ver>  enforce a certain pd-version (e.g. 0.37)])
 AC_ARG_ENABLE(lpt,    [  --enable-lpt            enable parallelport-support])
-#AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
+AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
 
 
 if test $includedir
