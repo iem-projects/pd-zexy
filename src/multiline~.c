@@ -261,3 +261,8 @@ void multiline_tilde_setup(void)
   class_sethelpsymbol(mline_class, gensym("zexy/multiline~"));
   zexy_register("multiline_tilde");
 }
+
+void z_multiline__setup(void)
+{
+  multiline_tilde_setup();
+}

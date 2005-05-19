@@ -105,3 +105,7 @@ int open_port(int port)
 	}
 }
 #endif /* NT */
+
+void z_winNT_portio_setup(void)
+{
+}

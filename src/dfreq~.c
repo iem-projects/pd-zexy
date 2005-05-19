@@ -110,3 +110,8 @@ void dfreq_tilde_setup(void)
 	class_sethelpsymbol(dfreq_class, gensym("zexy/dfreq~"));
   zexy_register("dfreq~");
 }
+
+void z_dfreq__setup(void)
+{
+  dfreq_tilde_setup();
+}

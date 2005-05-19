@@ -231,3 +231,8 @@ void fifop_setup(void)
   class_sethelpsymbol(fifop_class, gensym("zexy/fifop"));
   zexy_register("fifop");
 }
+
+void z_fifop_setup(void)
+{
+  fifop_setup();
+}

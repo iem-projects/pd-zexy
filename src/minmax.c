@@ -82,3 +82,8 @@ void minmax_setup(void)
   class_sethelpsymbol(minmax_class, gensym("zexy/minmax"));
   zexy_register("minmax");
 }
+
+void z_minmax_setup(void)
+{
+  minmax_setup();
+}

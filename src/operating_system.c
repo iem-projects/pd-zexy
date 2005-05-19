@@ -64,3 +64,8 @@ void operating_system_setup(void)
   class_sethelpsymbol(operating_system_class, gensym("zexy/operating_system"));
   zexy_register("operating_system");
 }
+
+void z_operating_system_setup(void)
+{
+  operating_system_setup();
+}

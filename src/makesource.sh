@@ -53,12 +53,6 @@ function foot_s() {
   echo
 }
 
-function get_setupfunctions() {
-  if [ -e "$1" ]
-  then
-    $GREP "^void .*_setup(void)" $i | $AWK '{print gensub("_setup.*", "_setup", "g", $2);}'
-  fi
-}
 
 ##################################
 ## body
@@ -69,17 +63,14 @@ head_s > $ZEXY_S
 
 for i in `ls *.c | grep -v zexy.c`
 do
-  NAME="${i%.c}"
-  SETUPNAMES=`get_setupfunctions $i`
-  if [ "$SETUPNAMES" ]
-  then
-    echo "	$i \\" >> $ZEXY_S
-    for SETUPNAME in $SETUPNAMES
-    do
-      echo "void ${SETUPNAME}(void);" >> $ZEXY_H
-      echo "	${SETUPNAME}();" >> $ZEXY_C
-    done
-  fi
+## each c-file in zexy needs to have a z_<file>_setup()-function
+## that calls all needed setup-functions
+## any non-alpha-numeric-character is replaced by "_"
+## e.g. "multiplex~.c" -> "z_multiplex__setup()"
+  SETUPNAME=z_`echo ${i%.c} | sed -e 's/[^[:alnum:]]/_/g'`_setup
+  echo "	$i \\" >> $ZEXY_S
+  echo "void ${SETUPNAME}(void); /* $i */" >> $ZEXY_H
+  echo "	${SETUPNAME}(); /* $i */" >> $ZEXY_C
 done
 
 foot_h >> $ZEXY_H

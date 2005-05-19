@@ -109,3 +109,8 @@ void sigzero_tilde_setup(void)
 	class_sethelpsymbol(sigzero_class, gensym("zexy/sigzero~"));
   zexy_register("sigzero~");
 }
+
+void z_sigzero__setup(void)
+{
+  sigzero_tilde_setup();
+}

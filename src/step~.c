@@ -139,3 +139,8 @@ void step_tilde_setup(void)
 
   zexy_register("step~");
 }
+
+void z_step__setup(void)
+{
+  step_tilde_setup();
+}

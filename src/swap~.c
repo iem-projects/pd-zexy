@@ -99,3 +99,8 @@ void swap_tilde_setup(void)
   class_sethelpsymbol(swap_class, gensym("zexy/swap~"));
   zexy_register("swap~");
 }
+
+void z_swap__setup(void)
+{
+  swap_tilde_setup();
+}

@@ -97,3 +97,8 @@ void tavg_tilde_setup(void)
 	class_sethelpsymbol(tavg_class, gensym("zexy/tavg~"));
   zexy_register("tavg~");
 }
+
+void z_tavg__setup(void)
+{
+  tavg_tilde_setup();
+}

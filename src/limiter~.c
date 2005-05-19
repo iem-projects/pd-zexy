@@ -717,3 +717,8 @@ void limiter_tilde_setup(void)
 
   zexy_register("limiter~");
 }
+
+void z_limiter__setup(void)
+{
+  limiter_tilde_setup();
+}

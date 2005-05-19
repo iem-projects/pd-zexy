@@ -102,3 +102,8 @@ void blockmirror_tilde_setup(void)
   class_sethelpsymbol(blockmirror_class, gensym("zexy/blockmirror~"));
   zexy_register("blockmirror~");
 }
+
+void z_blockmirror__setup(void)
+{
+  blockmirror_tilde_setup();
+}

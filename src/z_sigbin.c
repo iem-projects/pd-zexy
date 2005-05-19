@@ -814,3 +814,8 @@ void z_sigbin_setup(void)
   sigAND_setup();
   zexy_register("sigbin");
 }
+void z_z_sigbin_setup(void)
+{
+  /* ok, looks a bit like nonsense... */
+  z_sigbin_setup();
+}

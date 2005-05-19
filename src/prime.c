@@ -73,3 +73,8 @@ void prime_setup(void) {
   class_addfloat(prime_class, prime_float);
   zexy_register("prime");
 }
+
+void z_prime_setup(void)
+{
+  prime_setup();
+}

@@ -148,3 +148,8 @@ void envrms_tilde_setup(void)
 	class_sethelpsymbol(sigenvrms_class, gensym("zexy/envrms~"));
   zexy_register("envrms~");
 }
+
+void z_envrms__setup(void)
+{
+  envrms_tilde_setup();
+}

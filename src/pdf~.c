@@ -138,3 +138,8 @@ void pdf_tilde_setup(void)
   class_sethelpsymbol(pdf_class, gensym("zexy/pdf~"));
   zexy_register("pdf~");
 }
+
+void z_pdf__setup(void)
+{
+  pdf_tilde_setup();
+}

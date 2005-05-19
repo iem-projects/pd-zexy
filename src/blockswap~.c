@@ -97,3 +97,8 @@ void blockswap_tilde_setup(void)
   class_sethelpsymbol(blockswap_class, gensym("zexy/blockswap~"));
   zexy_register("blockswap~");
 }
+
+void z_blockswap__setup(void)
+{
+  blockswap_tilde_setup();
+}

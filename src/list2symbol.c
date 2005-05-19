@@ -139,3 +139,11 @@ void list2symbol_setup(void)
   class_sethelpsymbol(list2symbol_class, gensym("zexy/list2symbol"));
   zexy_register("list2symbol");
 }
+void l2s_setup(void)
+{
+  list2symbol_setup();
+}
+void z_list2symbol_setup(void)
+{
+ list2symbol_setup();
+}

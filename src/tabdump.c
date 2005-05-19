@@ -115,3 +115,8 @@ void tabdump_setup(void)
   class_addmethod(tabdump_class, (t_method)tabdump_helper, gensym("help"), 0);
   class_sethelpsymbol(tabdump_class, gensym("zexy/tabdump"));
 }
+
+void z_tabdump_setup(void)
+{
+  tabdump_setup();
+}

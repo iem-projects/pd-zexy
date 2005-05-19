@@ -138,3 +138,8 @@ void tabminmax_setup(void)
   class_addmethod(tabminmax_class, (t_method)tabminmax_helper, gensym("help"), 0);
   class_sethelpsymbol(tabminmax_class, gensym("zexy/tabminmax"));
 }
+
+void z_tabminmax_setup(void)
+{
+  tabminmax_setup();
+}

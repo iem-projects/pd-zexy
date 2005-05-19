@@ -111,3 +111,8 @@ void dirac_tilde_setup(void)
     class_sethelpsymbol(dirac_class, gensym("zexy/dirac~"));
   zexy_register("dirac~");
 }
+
+void z_dirac__setup(void)
+{
+  dirac_tilde_setup();
+}

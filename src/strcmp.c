@@ -101,3 +101,8 @@ void strcmp_setup(void)
   class_sethelpsymbol(strcmp_class, gensym("zexy/strcmp"));
   zexy_register("strcmp");
 }
+
+void z_strcmp_setup(void)
+{
+  strcmp_setup();
+}

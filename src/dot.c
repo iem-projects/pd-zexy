@@ -160,3 +160,8 @@ void dot_setup(void)
   class_sethelpsymbol(scalmul_scal_class, gensym("zexy/scalarmult"));
   zexy_register(".");
 }
+
+void z_dot_setup(void)
+{
+  dot_setup();
+}

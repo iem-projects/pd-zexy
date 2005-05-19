@@ -100,3 +100,8 @@ void tabset_setup(void)
   class_addmethod(tabset_class, (t_method)tabset_helper, gensym("help"), 0);
   class_sethelpsymbol(tabset_class, gensym("zexy/tabset"));
 }
+
+void z_tabset_setup(void)
+{
+  tabset_setup();
+}

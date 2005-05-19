@@ -113,3 +113,11 @@ void demultiplex_setup(void)
   class_sethelpsymbol(demux_class, gensym("zexy/demultiplex"));
   zexy_register("demultiplex");
 }
+void demux_setup(void)
+{
+  demultiplex_setup();
+}
+void z_demultiplex_setup(void)
+{
+  demultiplex_setup();
+}

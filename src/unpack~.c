@@ -132,3 +132,8 @@ void unpack_tilde_setup(void)
   class_sethelpsymbol(sigunpack_class, gensym("zexy/unpack~"));
   zexy_register("unpack~");
 }
+
+void z_unpack__setup(void)
+{
+  unpack_tilde_setup();
+}

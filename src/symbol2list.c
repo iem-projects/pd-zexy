@@ -161,3 +161,11 @@ void symbol2list_setup(void)
   class_sethelpsymbol(symbol2list_class, gensym("zexy/symbol2list"));
   zexy_register("symbol2list");
 }
+void s2l_setup(void)
+{
+  symbol2list_setup();
+}
+void z_symbol2list_setup(void)
+{
+  symbol2list_setup();
+}

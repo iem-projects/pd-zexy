@@ -144,3 +144,8 @@ void makesymbol_setup(void)
 	class_sethelpsymbol(makesymbol_class, gensym("zexy/makesymbol"));
   zexy_register("makesymbol");
 }
+
+void z_makesymbol_setup(void)
+{
+  makesymbol_setup();
+}

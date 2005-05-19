@@ -79,3 +79,13 @@ void list2int_setup(void)
   class_sethelpsymbol(list2int_class, gensym("zexy/list2int"));
   zexy_register("list2int");
 }
+
+void l2i_setup(void)
+{
+  list2int_setup();
+}
+
+void z_list2int_setup(void)
+{
+  list2int_setup();
+}

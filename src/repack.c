@@ -180,3 +180,8 @@ void repack_setup(void)
   class_sethelpsymbol(repack_class, gensym("zexy/repack"));
   zexy_register("repack");
 }
+
+void z_repack_setup(void)
+{
+  repack_setup();
+}

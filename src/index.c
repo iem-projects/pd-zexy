@@ -224,3 +224,8 @@ void index_setup(void)
   class_sethelpsymbol(index_class, gensym("zexy/index"));
   zexy_register("index");
 }
+
+void z_index_setup(void)
+{
+  index_setup();
+}

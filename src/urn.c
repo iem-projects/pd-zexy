@@ -152,3 +152,8 @@ void urn_setup(void)
   class_sethelpsymbol(urn_class, gensym("zexy/urn"));
   zexy_register("urn");
 }
+
+void z_urn_setup(void)
+{
+  urn_setup();
+}

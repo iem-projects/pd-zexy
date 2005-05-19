@@ -122,3 +122,8 @@ void date_setup(void)
   class_sethelpsymbol(date_class, gensym("zexy/date"));
   zexy_register("date");
 }
+
+void z_date_setup(void)
+{
+  date_setup();
+}

@@ -230,3 +230,8 @@ void lpt_setup(void)
   class_sethelpsymbol(lpt_class, gensym("zexy/lpt"));
   zexy_register("lpt");
 }
+
+void z_lpt_setup(void)
+{
+  lpt_setup();
+}
