@@ -34,7 +34,10 @@ AC_SUBST(SOURCES)
 AC_ARG_WITH(pdversion, [  --with-pdversion=<ver>  enforce a certain pd-version (e.g. 0.37)])
 AC_ARG_ENABLE(lpt,    [  --enable-lpt            enable parallelport-support])
 AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
-
+if test `uname -s` = Darwin; 
+then
+AC_ARG_ENABLE(bundle, [  --enable-bundleloader   use bundle_loader (default: autodetect)])
+fi
 
 if test $includedir
 then
@@ -73,87 +76,6 @@ LD=${LD:-ld}
 
 DFLAGS="-DZEXY_LIBRARY"
 
-dnl
-dnl  OK, checks for machines are here now
-dnl
-if test `uname -s` = Linux; 
-then
-  LFLAGS="-export_dynamic  -shared"
-  EXT=pd_linux	
-  STRIPFLAGS="--strip-unneeded"
-  if test "$enable_icc" = "yes"; then
-    CC=icc
-  fi
-
-  if test $CC = "icc"
-  then
-    LD=$CC
-    LFLAGS="-ip -ipo_obj "$LFLAGS
-    CFLAGS="-ip -ipo_obj "$CFLAGS
-  else
-    :
-  fi
-fi
-
-dnl This should use '-bundle_loader /path/to/pd/bin/pd' instead of'-undefined suppress'
-dnl then strip might do something
-if test `uname -s` = Darwin; 
-then
-  LD=cc
-  LFLAGS="-bundle -undefined suppress -flat_namespace"
-  EXT=pd_darwin
-  STRIPFLAGS=
-  if test "$enable_lpt" = "yes"; then
-    AC_MSG_ERROR("lpt not supported on this platform");
-  fi
-  if test "$enable_lpt" = ""; then
-    AC_MSG_WARN("lpt not supported on this platform - disabling");
-    enable_lpt="no";
-  fi
-fi
-if test `uname | sed -e 's/^MINGW.*/NT/'` = NT; 
-then
-  LD=gcc
-  INCLUDES="-I@prefix@/src"
-  DFLAGS="-DMSW -DNT"
-  LFLAGS="-shared @prefix@/bin/pd.dll"
-  EXT=dll
-else
-  PDLIBDIR="/lib/pd"
-  LIBS="-lc -lm"
-fi
-if test `uname -s` = IRIX64; 
-then
-  LFLAGS="-n32 -DUNIX -DIRIX -DN32 -woff 1080,1064,1185 \
-	-OPT:roundoff=3 -OPT:IEEE_arithmetic=3 -OPT:cray_ivdep=true \
-        -shared -rdata_shared"
-  EXT=pd_irix6
-  dnl DFLAGS="-DUNIX -DIRIX6"
-  STRIPFLAGS="--strip-unneeded"
-  if test "$enable_lpt" = "yes"; then
-    AC_MSG_ERROR("lpt not supported on this platform");
-  fi
-  if test "$enable_lpt" = ""; then
-    AC_MSG_WARN("lpt not supported on this platform - disabling");
-    enable_lpt="no";
-  fi
-fi
-
-if test `uname -s` = IRIX32; 
-then
-  LFLAGS="-o32 -DUNIX -DIRIX -O2 
-         -shared -rdata_shared"
-  EXT=pd_irix5
-  dnl DFLAGS="-DUNIX -DIRIX5"
-  STRIPFLAGS="--strip-unneeded"
-  if test "$enable_lpt" = "yes"; then
-    AC_MSG_ERROR("lpt not supported on this platform");
-  fi
-  if test "$enable_lpt" = ""; then
-    AC_MSG_WARN("lpt not supported on this platform - disabling");
-    enable_lpt="no";
-  fi
-fi
 
 dnl Checks for pd-version, to set the correct help-path
 AC_MSG_CHECKING("pd\>=0.37")
@@ -211,6 +133,108 @@ else
   echo "(unknown)"
 fi
 
+
+
+dnl
+dnl  OK, checks which machines are here now
+dnl
+if test `uname -s` = Linux; 
+then
+  LFLAGS="-export_dynamic -shared"
+  EXT=pd_linux	
+  STRIPFLAGS="--strip-unneeded"
+  if test "$enable_icc" = "yes"; then
+    CC=icc
+  fi
+
+  if test $CC = "icc"
+  then
+    LD=$CC
+    LFLAGS="-ip -ipo_obj "$LFLAGS
+    CFLAGS="-ip -ipo_obj "$CFLAGS
+  else
+    :
+  fi
+fi
+
+dnl This should use '-bundle_loader /path/to/pd/bin/pd' instead of'-undefined suppress'
+dnl then strip might do something
+if test `uname -s` = Darwin; 
+then
+  LD=cc
+  EXT=pd_darwin
+
+  if test "$enable_bundleloader" = ""; then
+    if test "$PD_MAJORVERSION" -gt 0 || test "$PD_MINORVERSION" -ge 39; then
+      enable_bundleloader="yes"
+    else
+      enable_bundleloader="no"
+    fi
+  fi
+  if test "$enable_bundleloader" = "yes"; then
+dnl i hope "prefix" points to where we want it...
+dnl should it rather be @exec_prefix@ ???
+    LFLAGS="-bundle -bundle_loader @prefix@/bin/pd"
+    STRIPFLAGS=
+  else
+    LFLAGS="-bundle -undefined suppress -flat_namespace"
+    STRIPFLAGS=
+  fi
+    
+
+
+  if test "$enable_lpt" = "yes"; then
+    AC_MSG_ERROR("lpt not supported on this platform");
+  fi
+  if test "$enable_lpt" = ""; then
+    AC_MSG_WARN("lpt not supported on this platform - disabling");
+    enable_lpt="no";
+  fi
+fi
+
+if test `uname | sed -e 's/^MINGW.*/NT/'` = NT; 
+then
+  LD=gcc
+  INCLUDES="-I@prefix@/src"
+  DFLAGS="-DMSW -DNT"
+  LFLAGS="-shared @prefix@/bin/pd.dll"
+  EXT=dll
+else
+  PDLIBDIR="/lib/pd"
+  LIBS="-lc -lm"
+fi
+if test `uname -s` = IRIX64; 
+then
+  LFLAGS="-n32 -DUNIX -DIRIX -DN32 -woff 1080,1064,1185 \
+	-OPT:roundoff=3 -OPT:IEEE_arithmetic=3 -OPT:cray_ivdep=true \
+        -shared -rdata_shared"
+  EXT=pd_irix6
+  dnl DFLAGS="-DUNIX -DIRIX6"
+  STRIPFLAGS="--strip-unneeded"
+  if test "$enable_lpt" = "yes"; then
+    AC_MSG_ERROR("lpt not supported on this platform");
+  fi
+  if test "$enable_lpt" = ""; then
+    AC_MSG_WARN("lpt not supported on this platform - disabling");
+    enable_lpt="no";
+  fi
+fi
+
+if test `uname -s` = IRIX32; 
+then
+  LFLAGS="-o32 -DUNIX -DIRIX -O2 
+         -shared -rdata_shared"
+  EXT=pd_irix5
+  dnl DFLAGS="-DUNIX -DIRIX5"
+  STRIPFLAGS="--strip-unneeded"
+  if test "$enable_lpt" = "yes"; then
+    AC_MSG_ERROR("lpt not supported on this platform");
+  fi
+  if test "$enable_lpt" = ""; then
+    AC_MSG_WARN("lpt not supported on this platform - disabling");
+    enable_lpt="no";
+  fi
+fi
 
 dnl check for LPT
 AC_MSG_CHECKING("parallel-port")
