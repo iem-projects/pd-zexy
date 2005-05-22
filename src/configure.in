@@ -88,10 +88,10 @@ then
   if test $CC = "icc"
   then
     LD=$CC
-    LFLAGS="-ip -ipo_obj "$LFLAGS
-    CFLAGS="-ip -ipo_obj "$CFLAGS
+    LFLAGS="-ip -ipo_obj $LFLAGS"
+    CFLAGS="-ip -ipo_obj $CFLAGS"
   else
-    :
+    CFLAGS="-fPIC $CFLAGS"
   fi
 fi
 

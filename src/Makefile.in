@@ -21,7 +21,7 @@ TARNAME =  $(LIBNAME)-@ZEXY_VERSION@.tgz
 
 # ICCFLAGS=-march=pentiumiii -axK
 PDCFLAGS = -g -O2 $(DEFS) $(IFLAGS) $(WFLAGS) $(LFLAGS) $(AFLAGS)
-CFLAGS = -g -O2 $(DEFS) $(IFLAGS) $(WFLAGS) @CFLAGS@
+CFLAGS = $(DEFS) $(IFLAGS) $(WFLAGS) @CFLAGS@
 
 LIBS = @LIBS@
 #LIBS = -lpthread -lm -lc 
