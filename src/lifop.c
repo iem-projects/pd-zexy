@@ -78,14 +78,14 @@ static t_lifop_prioritylist*lifop_genprioritylist(t_lifop*x, t_float priority)
   result->lifo_start=0;
 
   /* insert it into the list of priority lists */
-  if(dummy!=0){
+  if(dummy==0){
+    /* insert at the beginning */
+    result->next=x->lifo_list;
+    x->lifo_list=result;   
+  } else {
+    /* post insert into the list of LIFOs */
     result->next=dummy->next;
     dummy->next =result;
-  } else {
-    result->next=0;
-  }
-  if(x->lifo_list==0){
-    x->lifo_list=result;
   }
 
   /* return the result */

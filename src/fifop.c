@@ -54,6 +54,7 @@ typedef struct _fifop
 
 static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
 {
+  int i;
   t_fifop_prioritylist*result=0, *dummy=0;
 
   if(x->fifo_list!=0)
@@ -71,22 +72,23 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
         result=dummy;
         dummy=dummy->next;
       }
-      dummy=result;
+      dummy=result; /* dummy points to the FIFO-before the one we want to insert */
     }
   /* create a new priority list */
   result = (t_fifop_prioritylist*)getbytes(sizeof( t_fifop_prioritylist*));
   result->priority=priority;
   result->fifo_start=0;
+  result->next=0;
 
   /* insert it into the list of priority lists */
-  if(dummy!=0){
+  if(dummy==0){
+    /* insert at the beginning */
+    result->next=x->fifo_list;
+    x->fifo_list=result;   
+  } else {
+    /* post insert into the list of FIFOs */
     result->next=dummy->next;
     dummy->next =result;
-  } else {
-    result->next=0;
-  }
-  if(x->fifo_list==0){
-    x->fifo_list=result;
   }
 
   /* return the result */
