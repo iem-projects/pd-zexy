@@ -42,6 +42,7 @@ typedef struct _fifop_list {
 typedef struct _fifop_prioritylist {
   t_float                     priority;
   t_fifop_list               *fifo_start;
+  t_fifop_list               *fifo_end;
   struct _fifop_prioritylist *next;
 } t_fifop_prioritylist;
 
@@ -78,13 +79,14 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
   result = (t_fifop_prioritylist*)getbytes(sizeof( t_fifop_prioritylist));
   result->priority=priority;
   result->fifo_start=0;
+  result->fifo_end=0;
   result->next=0;
 
   /* insert it into the list of priority lists */
   if(dummy==0){
     /* insert at the beginning */
     result->next=x->fifo_list;
-    x->fifo_list=result;   
+    x->fifo_list=result;
   } else {
     /* post insert into the list of FIFOs */
     result->next=dummy->next;
@@ -120,15 +122,19 @@ static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
   entry->argc=argc;
   entry->next=0;
 
-  /* go to end of fifo */
-  fifo=fifoprio->fifo_start;
-  if(fifo){
-    while(fifo->next!=0)fifo=fifo->next;
+  /* insert entry into fifo */
+  if(fifoprio->fifo_end){
+    /* append to the end of the fifo */
+    fifo=fifoprio->fifo_end;
+
     /* add new entry to end of fifo */
     fifo->next=entry;
+    fifoprio->fifo_end=entry;    
   } else {
     /* the new entry is the 1st entry of the fifo */
     fifoprio->fifo_start=entry;
+    /* and at the same time, it is the last entry */
+    fifoprio->fifo_end  =entry;
   }
 }
 static t_fifop_prioritylist*getFifo(t_fifop_prioritylist*pfifo)
@@ -163,7 +169,9 @@ static void fifop_bang(t_fifop *x)
   }
 
   pfifo->fifo_start=fifo->next;
-
+  if(0==pfifo->fifo_start){
+    pfifo->fifo_end=0;
+  }
   /* get the list from the entry */
   argc=fifo->argc;
   argv=fifo->argv;
@@ -203,6 +211,7 @@ static void fifop_free(t_fifop *x)
     }
     fifo_list2->priority  =0;
     fifo_list2->fifo_start=0;
+    fifo_list2->fifo_end  =0;
     fifo_list2->next      =0;
     freebytes(fifo_list2, sizeof( t_fifop_prioritylist));
   }
