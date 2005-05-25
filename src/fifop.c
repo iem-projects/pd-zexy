@@ -75,7 +75,7 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
       dummy=result; /* dummy points to the FIFO-before the one we want to insert */
     }
   /* create a new priority list */
-  result = (t_fifop_prioritylist*)getbytes(sizeof( t_fifop_prioritylist*));
+  result = (t_fifop_prioritylist*)getbytes(sizeof( t_fifop_prioritylist));
   result->priority=priority;
   result->fifo_start=0;
   result->next=0;
