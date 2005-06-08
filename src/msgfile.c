@@ -515,27 +515,49 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
 
   int fd;
   long readlength, length;
-  char filnam[MAXPDSTRING];
+  char filnam[MAXPDSTRING], namebuf[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
+  char*dirname=canvas_getdir(x->x_canvas)->s_name;
 
   int mode = x->mode;
   char separator, eol;
 
   t_binbuf *bbuf = binbuf_new();
 
-  if ((fd = open_via_path(canvas_getdir(x->x_canvas)->s_name,
+
+#ifdef NT
+  rmode |= O_BINARY;
+#endif
+
+  if ((fd = open_via_path(dirname,
 		  filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0)) < 0) {
-    error("%s: can't open", filename->s_name);
-    return;
-  }
-  else
+
+    if(fd=open(filename->s_name, rmode) < 0) {
+      error("%s: can't open in %s", filename->s_name, dirname);
+      return;
+    }
+  } else {
     close (fd);
 
-  if (!strcmp(format->s_name, "cr")) {
+    namebuf[0] = 0;
+    if (*buf)
+      strcat(namebuf, buf), strcat(namebuf, "/");
+    strcat(namebuf, bufptr);
+    
+    /* open and get length */
+    sys_bashfilename(namebuf, filnam);
+    
+    if ((fd = open(filnam, rmode)) < 0) {
+      error("msgfile_read: unable to open %s", filnam);
+      return;
+    }
+  }
+
+  if (gensym("cr")==format) {
     mode = CR_MODE;
-  } else if (!strcmp(format->s_name, "csv")) {
+  } else if (gensym("csv")==format) {
     mode = CSV_MODE;
-  } else if (!strcmp(format->s_name, "pd")) {
+  } else if (gensym("pd")==format) {
     mode = PD_MODE;
   } else if (*format->s_name)
     error("msgfile_read: unknown flag: %s", format->s_name);
@@ -555,17 +577,6 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
     break;
   }
 
-  /* open and get length */
-  sys_bashfilename(filename->s_name, filnam);
-
-#ifdef NT
-  rmode |= O_BINARY;
-#endif
-
-  if ((fd = open(filnam, rmode)) < 0) {
-    error("msgfile_read: unable to open %s", filnam);
-    return;
-  }
   if ((length = lseek(fd, 0, SEEK_END)) < 0 || lseek(fd, 0,SEEK_SET) < 0
       || !(readbuf = t_getbytes(length))) {
     error("msgfile_read: unable to lseek %s", filnam);
