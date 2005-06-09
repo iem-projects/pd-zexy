@@ -26,8 +26,11 @@ note: if you don't want the parallel-port object [lpt]
 win32 :
 extract the zexy-0_x.zip to your pd-path (this file should be located at <mypdpath>/pd/zexy/)
 execute the "z_install.bat", this should copy all necessary files to the correct places
-to compile: w/ MSVC makefile.nt or zexy.dsw, or with GCC configure your pd path, eg:
-./configure --prefix=/c/program/pd; make; make install
+to compile: w/ MSVC use makefile.nt or zexy.dsw;
+or with GCC configure your pd path, eg:
+	./configure --prefix=/c/program/pd; make; make install
+cross-compilation for windows on linux using mingw (assumes that the xcompiler is "i586-mingw32msvc-cc")
+	./configure --host=i586-mingw32msvc --with-extension=dll --includedir=/path/to/win/pd/src/ --libdir=/path/to/win/pd/bin/
 
 irix :
 though i have physical access to both SGI's O2s and indys,
