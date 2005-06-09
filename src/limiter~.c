@@ -39,7 +39,6 @@
 #define COMPRESS 2
 
 #include "zexy.h"
-#include <math.h>
 
 #define LN2 .69314718056
 #define SINC1 .822462987

@@ -15,7 +15,6 @@
  ******************************************************/
 
 #include "zexy.h"
-#include <math.h>
 
 /* triggered average :: arithmetic mean between last and current BANG */
 

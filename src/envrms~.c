@@ -19,7 +19,6 @@
 /* i found env~+dbtorms most inconvenient (and expensive...) */
 
 #include "zexy.h"
-#include <math.h>
 
 #define MAXOVERLAP 10
 #define MAXVSTAKEN 64

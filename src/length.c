@@ -17,7 +17,6 @@
 
 
 #include "zexy.h"
-#include <math.h>
 
 static t_class *length_class;
 

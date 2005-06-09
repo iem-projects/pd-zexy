@@ -17,7 +17,6 @@
 /* wrap floats between to limits */
 
 #include "zexy.h"
-#include <math.h>
 
 static t_class *wrap_class;
 

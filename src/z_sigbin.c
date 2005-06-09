@@ -21,7 +21,6 @@
 */
 
 #include "zexy.h"
-#include <math.h>
 
 typedef struct _misc
 {

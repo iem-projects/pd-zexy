@@ -36,6 +36,7 @@
 #endif
 
 #include "m_pd.h"
+#include <math.h>
 
 #define VERSION "2.0"
 
@@ -46,8 +47,8 @@
 # pragma warning( disable : 4305 )
 # define HEARTSYMBOL 3
 # define STATIC_INLINE
-//# define sqrtf sqrt
-//# define fabsf fabs
+# define sqrtf sqrt
+# define fabsf fabs
 #else
 # define HEARTSYMBOL 169
 # define STATIC_INLINE static

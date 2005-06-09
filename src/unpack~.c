@@ -23,7 +23,6 @@
 
 
 #include "zexy.h"
-#include <math.h>
 
 static t_class *sigunpack_class;
 

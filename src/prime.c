@@ -17,7 +17,6 @@
 /* get the n-th prime number */
 
 #include "zexy.h"
-#include <math.h>
 
 
 static t_class *prime_class;
