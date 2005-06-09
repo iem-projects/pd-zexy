@@ -74,8 +74,7 @@ ritsch@iem.kug.ac.at */
 
 #ifdef __WIN32__
 # define BINREADMODE "rb"
-#endif
-#ifdef unix
+#else
 # include <unistd.h>
 # include <sys/mman.h>
 # define BINREADMODE "r"

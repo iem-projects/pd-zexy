@@ -44,12 +44,11 @@ zmoelnig@iem.kug.ac.at
 #define MAX_CHANS 8		/* channels for soundfiles 1,2,4,8 */
 
 #ifdef __WIN32__
-#define BINWRITEMODE "wb"
-#endif
-#ifdef unix
-#include <unistd.h>
-#include <sys/mman.h>
-#define BINWRITEMODE "w"
+# define BINWRITEMODE "wb"
+#else
+# include <unistd.h>
+# include <sys/mman.h>
+# define BINWRITEMODE "w"
 #endif
 
 static t_class *sfrecord_class;
