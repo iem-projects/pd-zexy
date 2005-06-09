@@ -18,10 +18,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef NT
-# define STATIC_INLINE static
-#endif
-
 /*
  * symbol2list: convert a symbol into a list (with given delimiters)
 */

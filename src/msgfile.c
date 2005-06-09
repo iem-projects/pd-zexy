@@ -28,7 +28,7 @@
 #ifdef linux
 #include <unistd.h>
 #endif
-#ifdef NT
+#ifdef __WIN32__
 #include <io.h>
 #endif
 
@@ -525,7 +525,7 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
   t_binbuf *bbuf = binbuf_new();
 
 
-#ifdef NT
+#ifdef __WIN32__
   rmode |= O_BINARY;
 #endif
 

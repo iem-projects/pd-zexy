@@ -40,7 +40,7 @@
 #ifdef Z_WANT_LPT
 # include <stdlib.h>
 
-# ifdef NT
+# ifdef __WIN32__
 /* on windoze everything is so complicated... */
 extern int read_parport(int port);
 extern void write_parport(int port, int value);
@@ -77,7 +77,7 @@ static int sys_inb(int port)
 {
   return inb(port);
 }
-# endif /* NT */
+# endif /* __WIN32__ */
 #endif /* Z_WANT_LP */
 
 

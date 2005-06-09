@@ -42,7 +42,7 @@ static void operating_system_bang(t_operating_system *x)
   s=gensym("linux");
 #elif defined __APPLE__
   s=gensym("macos");
-#elif defined NT
+#elif defined __WIN32__
   s=gensym("windows");
 #endif
   outlet_symbol(x->x_obj.ob_outlet, s);

@@ -23,10 +23,6 @@
 #include "zexy.h"
 #include <math.h>
 
-#ifdef NT
-#define fabsf fabs
-#endif
-
 typedef struct _misc
 {
   t_object x_obj;

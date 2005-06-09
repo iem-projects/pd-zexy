@@ -30,25 +30,32 @@
 #ifndef INCLUDE_ZEXY_H__
 #define INCLUDE_ZEXY_H__
 
+#ifdef __WIN32__
+# define NT
+# define MSW
+#endif
+
 #include "m_pd.h"
 
 #define VERSION "2.0"
 
-#ifdef NT
+
+#ifdef __WIN32__
+# pragma warning( disable : 4018 )
 # pragma warning( disable : 4244 )
 # pragma warning( disable : 4305 )
 # define HEARTSYMBOL 3
-# define sqrtf sqrt
-# define fabsf fabs
 # define STATIC_INLINE
+//# define sqrtf sqrt
+//# define fabsf fabs
 #else
 # define HEARTSYMBOL 169
+# define STATIC_INLINE static
 #endif
 
-#ifdef MACOSX
+#ifdef __APPLE__
 # define sqrtf sqrt
 #endif
-
 
 typedef struct _mypdlist
 {

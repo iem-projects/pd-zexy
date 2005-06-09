@@ -23,17 +23,18 @@
    
 */
 
-#ifdef NT
+#include "zexy.h"
+
+#ifdef __WIN32__
 # define USE_TIMEB
 #endif
 
-#ifdef MACOSX
+#ifdef __APPLE__
 # include <sys/types.h>
 /* typedef     _BSD_TIME_T_    time_t;                */
 #endif
 
 
-#include "zexy.h"
 #include <time.h>
 
 #ifdef USE_TIMEB

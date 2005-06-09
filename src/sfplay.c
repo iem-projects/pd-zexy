@@ -65,12 +65,6 @@ ritsch@iem.kug.ac.at */
 
 #define DACBLKSIZE 64 /* in m_imp.h, but error if it is included it here*/
 
-#ifdef NT
-#pragma warning( disable : 4244 )
-#pragma warning( disable : 4305 )
-#pragma warning( disable : 4018 )
-#endif
-
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -78,13 +72,13 @@ ritsch@iem.kug.ac.at */
 /* ------------------------ sfplay ----------------------------- */
 #define MAX_CHANS 8 /* channels for soundfiles 1,2,4,8 */
 
-#ifdef NT
-#define BINREADMODE "rb"
+#ifdef __WIN32__
+# define BINREADMODE "rb"
 #endif
 #ifdef unix
-#include <unistd.h>
-#include <sys/mman.h>
-#define BINREADMODE "r"
+# include <unistd.h>
+# include <sys/mman.h>
+# define BINREADMODE "r"
 #endif
 
 static t_class *sfplay_class;

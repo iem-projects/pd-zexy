@@ -36,11 +36,6 @@ zmoelnig@iem.kug.ac.at
 
 #define DACBLKSIZE 64	/* in m_imp.h, but error if it is included it here*/
 
-#ifdef NT
-#pragma warning( disable : 4244 )
-#pragma warning( disable : 4305 )
-#endif
-
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -48,7 +43,7 @@ zmoelnig@iem.kug.ac.at
 /* ------------------------ sfrecord ----------------------------- */
 #define MAX_CHANS 8		/* channels for soundfiles 1,2,4,8 */
 
-#ifdef NT
+#ifdef __WIN32__
 #define BINWRITEMODE "wb"
 #endif
 #ifdef unix

@@ -19,11 +19,6 @@
 #include "zexy.h"
 #include <math.h>
 
-#ifdef MACOSX 
-#define sqrtf sqrt
-#endif
-
-
 static t_class *length_class;
 
 typedef struct _length

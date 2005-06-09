@@ -17,16 +17,6 @@
 #include "zexy.h"
 #include <math.h>
 
-#ifdef NT
-#define sqrtf sqrt
-#endif
-
-#ifdef MACOSX
-#define sqrtf sqrt
-#endif
-
-
-
 /* triggered average :: arithmetic mean between last and current BANG */
 
 static t_class *tavg_class;
