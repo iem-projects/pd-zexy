@@ -6,7 +6,7 @@
  * to plug this on the usb bus.
  * if the interface changes, only this file has to be adopted for the target system
  */
-#ifdef NT
+#ifdef __WIN32__
 
 #include <stdio.h>
 #include <windows.h>
@@ -21,20 +21,40 @@ int read_parport(int port)
 {
 	// byte = _inp((unsigned short)port);
 	unsigned char value;
-
+#ifdef _MSC_VER
 	__asm mov edx,port
 	__asm in al,dx
 	__asm mov value,al
+#else
+    // hmm, i should read some documentation about inline assembler
+    post("lpt: cannot read from parport (recompile!)");
+        return 0;
+#endif
 	return (int)value;
 }
 
 void write_parport(int port, int invalue)
 {
-	// _outp((unsigned short)port, value);
-	BYTE value = (BYTE)invalue;
-	__asm mov edx,port
-	__asm mov al,value
-	__asm out dx,al
+  // _outp((unsigned short)port, value);
+  BYTE value = (BYTE)invalue;
+#ifdef _MSC_VER
+  __asm mov edx,port
+  __asm mov al,value
+  __asm out dx,al
+#else
+    // hmm, i should read some documentation about inline assembler
+    // and probably about assembler in general...
+    post("lpt: cannot write to parport (recompile!)");
+    /*
+    asm(
+        "mov %%edx,%0\n"
+        "mov %%al,%1\n"
+        "out %%dx,%%al\n"
+        :
+        : "a"(port),"b"(value)
+        );
+    */
+#endif
 }
 
 static LONG WINAPI HandlerExceptionFilter ( EXCEPTION_POINTERS *pExPtrs )
@@ -104,7 +124,7 @@ int open_port(int port)
 		return(0);
 	}
 }
-#endif /* NT */
+#endif /* __WIN32__ */
 
 void z_winNT_portio_setup(void)
 {
