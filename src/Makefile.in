@@ -1,4 +1,4 @@
-LIBNAME    =zexy
+LIBNAME    =@LIBNAME@
 
 PREFIX     =@prefix@@PDLIBDIR@
 
@@ -11,6 +11,9 @@ IFLAGS = -I. @INCLUDES@
 
 CC = @CC@
 LD = @LD@
+STRIP = @STRIP@
+STRIPFLAGS= @STRIPFLAGS@
+
 AFLAGS = 
 LFLAGS = @LFLAGS@
 WFLAGS =
@@ -24,7 +27,6 @@ PDCFLAGS = -g -O2 $(DEFS) $(IFLAGS) $(WFLAGS) $(LFLAGS) $(AFLAGS)
 CFLAGS = $(DEFS) $(IFLAGS) $(WFLAGS) @CFLAGS@
 
 LIBS = @LIBS@
-#LIBS = -lpthread -lm -lc 
 
 include Make.source
 
@@ -36,12 +38,10 @@ all: $(LIBNAME)
 
 $(LIBNAME): $(TARGETS)
 	$(LD) $(LFLAGS) -o $(LIBNAME).$(EXT) *.o $(LIBS)
-	strip @STRIPFLAGS@ $(LIBNAME).$(EXT)
+	$(STRIP) $(STRIPFLAGS) $(LIBNAME).$(EXT)
 
 .c.o:
 	$(CC) -c -o $@ $(CFLAGS) -DPD $*.c
-
-# cp $@ $*_stat.o
 
 .o.$(EXT):
 	$(CC) -o $@ $(PDCFLAGS) -DPD $*.o
