@@ -39,6 +39,9 @@ dnl Replace `main' with a function in -lc:
 AC_CHECK_LIB(c, main)
 AC_CHECK_LIB(crtdll, fclose)
 
+AC_CHECK_LIB(coldname, lseek)
+AC_CHECK_LIB(kernel32, main)
+
 dnl Replace `main' with a function in -lm:
 AC_CHECK_LIB(m, main)
 dnl Replace `main' with a function in -lpthread:
@@ -118,7 +121,24 @@ fi
 
 
 dnl if we don't have $LD set, we set it to $(CC)
+dnl LD=${LD:=$CC}
+if test "x$LD" = "x"
+then
+ if test "x$host" != "x"
+ then
+  LD=${host}-ld
+  if $(which ${LD} > /dev/null)
+  then
+    :
+  else
+    LD=""
+  fi
+ fi
+fi
 LD=${LD:=$CC}
+
+
+
 dnl if we don't have $STRIP set, we set it to ${host}-strip or strip
 if test "x$STRIP" = "x"
 then
