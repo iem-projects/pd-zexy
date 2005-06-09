@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "ZEXY_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /Zp16 /W3 /GX /I "..\..\..\pd\src" /D "WIN32" /D "NT" /D "_WINDOWS" /D "ZEXY" /D "Z_WANT_LPT" /FR /YX /FD /c
+# ADD CPP /nologo /Zp16 /W3 /GX /I "..\..\..\pd\src" /D "__WIN32__" /D "ZEXY" /D "Z_WANT_LPT" /FR /YX /FD /c
 # SUBTRACT CPP /O<none>
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /win32
