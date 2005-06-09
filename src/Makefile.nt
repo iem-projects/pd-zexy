@@ -16,7 +16,7 @@ CC = cl
 LD = link
 
 
-DEFS =  /DNT /DPD
+DEFS =  /D__WIN32__ /DPD
 IFLAGS = /I. /I$(PREFIX)\src
 
 AFLAGS = 
