@@ -136,6 +136,7 @@ static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
     /* and at the same time, it is the last entry */
     fifoprio->fifo_end  =entry;
   }
+  return 0;
 }
 static t_fifop_prioritylist*getFifo(t_fifop_prioritylist*pfifo)
 {
