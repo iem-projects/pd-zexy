@@ -39,8 +39,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "ZEXY_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /Zp16 /W3 /GX /I "..\..\..\pd\src" /D "__WIN32__" /D "ZEXY" /D "Z_WANT_LPT" /FR /YX /FD /c
-# SUBTRACT CPP /O<none>
+# ADD CPP /nologo /Zp16 /W3 /GX /I "..\..\..\pd\src" /I "C:\Programme\pd-0.38-3\src" /D "__WIN32__" /D "ZEXY" /D "Z_WANT_LPT" /D "ZEXY_LIBRARY" /FR /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /win32
 # SUBTRACT MTL /mktyplib203
@@ -51,7 +50,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib wsock32.lib uuid.lib libc.lib oldnames.lib pd.lib /nologo /dll /machine:I386 /nodefaultlib /out:"..\zexy.dll" /libpath:"../../bin" /libpath:"C:\Programme\pd\bin" /export:zexy_setup
+# ADD LINK32 kernel32.lib wsock32.lib uuid.lib libc.lib oldnames.lib pd.lib /nologo /dll /machine:I386 /nodefaultlib /out:"..\zexy.dll" /libpath:"../../bin" /libpath:"C:\Programme\pd\bin" /libpath:"C:\Programme\pd-0.38-3\bin" /export:zexy_setup
 # SUBTRACT LINK32 /pdb:none
 # Begin Target
 
@@ -69,15 +68,15 @@ SOURCE=.\atoi.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\avg_tilde.c
+SOURCE=.\avg~.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\blockmirror_tilde.c
+SOURCE=.\blockmirror~.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\blockswap_tilde.c
+SOURCE=.\blockswap~.c
 # End Source File
 # Begin Source File
 
@@ -89,15 +88,15 @@ SOURCE=.\demultiplex.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\demultiplex_tilde.c
+SOURCE=.\demultiplex~.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\dfreq_tilde.c
+SOURCE=.\dfreq~.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\dirac_tilde.c
+SOURCE=.\dirac~.c
 # End Source File
 # Begin Source File
 
@@ -109,7 +108,11 @@ SOURCE=.\drip.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\envrms_tilde.c
+SOURCE=.\envrms~.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\fifop.c
 # End Source File
 # Begin Source File
 
@@ -125,7 +128,11 @@ SOURCE=.\length.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\limiter_tilde.c
+SOURCE=.\lifop.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\limiter~.c
 # End Source File
 # Begin Source File
 
@@ -161,7 +168,7 @@ SOURCE=.\msgfile.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\multiline_tilde.c
+SOURCE=.\multiline~.c
 # End Source File
 # Begin Source File
 
@@ -169,7 +176,7 @@ SOURCE=.\multiplex.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\multiplex_tilde.c
+SOURCE=.\multiplex~.c
 # End Source File
 # Begin Source File
 
@@ -177,11 +184,11 @@ SOURCE=.\niagara.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\noish_tilde.c
+SOURCE=.\noish~.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\noisi_tilde.c
+SOURCE=.\noisi~.c
 # End Source File
 # Begin Source File
 
@@ -189,15 +196,15 @@ SOURCE=.\operating_system.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\pack_tilde.c
-# End Source File
-# Begin Source File
-
 SOURCE=.\packel.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\pdf_tilde.c
+SOURCE=.\pack~.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\pdf~.c
 # End Source File
 # Begin Source File
 
@@ -205,7 +212,7 @@ SOURCE=.\prime.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\quantize_tilde.c
+SOURCE=.\quantize~.c
 # End Source File
 # Begin Source File
 
@@ -225,7 +232,7 @@ SOURCE=.\sfrecord.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\sigzero_tilde.c
+SOURCE=.\sigzero~.c
 # End Source File
 # Begin Source File
 
@@ -233,7 +240,7 @@ SOURCE=.\sort.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\step_tilde.c
+SOURCE=.\step~.c
 # End Source File
 # Begin Source File
 
@@ -245,7 +252,7 @@ SOURCE=.\sum.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\swap_tilde.c
+SOURCE=.\swap~.c
 # End Source File
 # Begin Source File
 
@@ -265,7 +272,7 @@ SOURCE=.\tabset.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\tavg_tilde.c
+SOURCE=.\tavg~.c
 # End Source File
 # Begin Source File
 
@@ -273,7 +280,7 @@ SOURCE=.\time.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\unpack_tilde.c
+SOURCE=.\unpack~.c
 # End Source File
 # Begin Source File
 
@@ -293,11 +300,11 @@ SOURCE=.\z_sigbin.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_tilde.c
+SOURCE=.\zexy.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\zexy.c
+SOURCE=.\z~.c
 # End Source File
 # End Group
 # Begin Group "Header-Dateien"
