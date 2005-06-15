@@ -256,10 +256,10 @@ static void index_sort(t_index *x){
   index_compact(x); /* couldn't we do it more "in-place", e.g. don't touch empty slots ? */
 
   while(step>1){
+    int i = loops;
     //step = (step % 2)?(step+1)/2:step/2;
     step+=step%2;
     step>>=1;
-    int i = loops;
     loops+=2;
 
     while(i--) { /* there might be some optimization in here */
