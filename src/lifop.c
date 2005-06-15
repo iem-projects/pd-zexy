@@ -119,6 +119,8 @@ static int add2lifo(t_lifop_prioritylist*lifoprio, int argc, t_atom *argv)
 
   entry->next=lifoprio->lifo_start;
   lifoprio->lifo_start=entry;
+
+  return 0;
 }
 static t_lifop_prioritylist*getLifo(t_lifop_prioritylist*plifo)
 {
