@@ -1,53 +1,43 @@
 # ----------------------- NT -----------------------
-LIBNAME    =zexy
-
-
-PREFIX     =C:\Programme\pd
-
-
+LIBNAME=zexy
 
 current: $(LIBNAME)
 
+PREFIX="C:\Programme\pd"
 
+EXT=dll
+CC=cl
+LD=link
 
-EXT = dll
-
-CC = cl
-LD = link
-
-
-DEFS =  /D__WIN32__ /DPD
-IFLAGS = /I. /I$(PREFIX)\src
-
-AFLAGS = 
-LFLAGS = /dll /export:$(LIBNAME)_setup
-WFLAGS = /W3 /WX /nologo
+DEFS=/D__WIN32__ /DPD /DZEXY_LIBRARY
+IFLAGS=/I. /I$(PREFIX)\src
+AFLAGS= 
+WFLAGS=/W3 /WX /nologo
 
 .SUFFIXES: .$(EXT)
-
-PDCFLAGS = /O2 $(DEFS) $(IFLAGS) $(WFLAGS) $(LFLAGS) $(AFLAGS)
-CFLAGS = /O2 $(DEFS) $(IFLAGS) $(WFLAGS)
-
-LIBS = libc.lib oldnames.lib kernel32.lib $(PREFIX)\bin\pd.lib
-
 
 include Make.source
 
 ## for LinePrinter-support: (if you don't want it, comment it out)
-SOURCES += winNT_portio.c
-DEFS += /DZ_WANT_LPT
-LIBS += 
+DEFS = $(DEFS) /DZ_WANT_LPT
 
 
-TARGETS = $(SOURCES:.c=.o)
+CFLAGS = /O2 $(DEFS) $(IFLAGS) $(WFLAGS)
+LIBS = libc.lib oldnames.lib kernel32.lib $(PREFIX)\bin\pd.lib
+LFLAGS = /dll /export:$(LIBNAME)_setup
+
+
+TARGETS = $(SOURCES:.c=.obj)
+
+.c.obj:
+	cl $(CFLAGS) /c $*.c
+
 
 $(LIBNAME): $(TARGETS)
 	$(LD) $(LFLAGS) /out:..\$(LIBNAME).$(EXT) *.obj $(LIBS)
-
 
 clean:
 	-del -f *.$(EXT) *.obj ..\$(LIBNAME).lib ..\$(LIBNAME).exp *.lib *.exp
 
 cleaner: clean
 	-del -f *~ _* config.* ..\$(LIBNAME).$(EXT)
-
