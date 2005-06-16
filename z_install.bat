@@ -5,10 +5,10 @@ REM ==============================================
 
 REM where does PD reside ??
 REM if you want spaces in the path, please use quotes ("")
-set PDPATH=C:\programme\pd
+set PDPATH="%PROGRAMFILES%\pd"
 
 REM which pd-version do we have ?
-set PDVERSION=0.37
+set PDVERSION=0.38
 
 
 REM ==============================================
