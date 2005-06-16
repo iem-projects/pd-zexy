@@ -269,6 +269,8 @@ if test `uname -s` = Darwin;
 then
   LD=cc
   EXT=pd_darwin
+  STRIP="echo faking strip"
+  STRIPFLAGS=
 
   if test "$enable_bundleloader" = ""; then
     if test "$PD_MAJORVERSION" -gt 0 || test "$PD_MINORVERSION" -ge 39; then
@@ -281,13 +283,10 @@ then
 dnl i hope "prefix" points to where we want it...
 dnl should it rather be @exec_prefix@ ???
     LFLAGS="-bundle -bundle_loader @prefix@/bin/pd"
-    STRIPFLAGS=
   else
     LFLAGS="-bundle -undefined suppress -flat_namespace"
-    STRIPFLAGS=
   fi
     
-
 
   if test "$enable_lpt" = "yes"; then
     AC_MSG_ERROR("lpt not supported on this platform");
