@@ -42,7 +42,7 @@ typedef struct _mux
 
 typedef struct _muxproxy
 {
-  t_object  p_ob;
+  t_pd  p_pd;
   t_mux    *p_master;
   int id;
 } t_muxproxy;
@@ -64,11 +64,11 @@ static void *mux_new(t_symbol *s, int argc, t_atom *argv)
   int n = (argc < 2)?2:argc;
   t_mux *x = (t_mux *)pd_new(mux_class);
   //  t_muxproxy *y=(t_muxproxy*)pd_new(muxproxy_class);
-  x->x_proxy = (t_muxproxy**)getbytes(sizeof(t_muxproxy*));
 
   x->i_selected=0;
   x->i_count = n;
   x->in = (t_inlet **)getbytes(x->i_count * sizeof(t_inlet *));
+  x->x_proxy = (t_muxproxy**)getbytes(x->i_count * sizeof(t_muxproxy*));
 
   for (n = 0; n<x->i_count; n++) {
     x->x_proxy[n]=(t_muxproxy*)pd_new(muxproxy_class);
@@ -84,7 +84,28 @@ static void *mux_new(t_symbol *s, int argc, t_atom *argv)
 }
 
 static void mux_free(t_mux*x){
+  const int count = x->i_count;
 
+  if(x->in && x->x_proxy){
+    int n=0;
+    for(n=0; n<count; n++){
+      if(x->in[n]){
+        inlet_free(x->in[n]);
+      }
+      x->in[n]=0;
+      if(x->x_proxy[n]){
+        t_muxproxy *y=x->x_proxy[n];
+        y->p_master=0;
+        y->id=0;
+        pd_free(&y->p_pd);        
+      }
+      x->x_proxy[n]=0;      
+    }
+    freebytes(x->in, x->i_count * sizeof(t_inlet *));
+    freebytes(x->x_proxy, x->i_count * sizeof(t_muxproxy*));
+  }
+  
+  //pd_free(&y->p_pd)
 }
 
 void multiplex_setup(void)
