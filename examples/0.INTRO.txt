@@ -37,7 +37,6 @@ sgn~		signum of a signal
 nop~		no-operation
 pack~		convert a signal to a list of floats
 unpack~		convert a list of floats to a signal
-matrix~		matrix-multiply m IN-signals to n OUT-signals
 multiline~	multiply a number of signals with scalars (interpolated)
 multiplex~	multiplex 1-of-n inlets to 1 outlet
 demultiplex~	demultiplex 1 inlet to 1-of-n outlets
@@ -62,23 +61,27 @@ atoi		ascii to integer
 strcmp		compare lists as strings
 list2symbol	convert a list into a single symbol
 symbol2list	convert a symbol to a list
+fifop		list FIFO with priorities
+lifop		list LIFO with priorities
 
 ------------------------ advanced ------------------------------
 tabdump		dump out a table as a list of floats
 tabset		set a table with a list of floats
+tabminman	get minimum and maximum of a table
 makesymbol	concatenate lists to formatted symbols
 date		get system date
 time		get system time
 index		map symbols to indices
 msgfile		a powerful "textfile" derivative
 demultiplex	demultiplex the input to a specified outlet
-lpt		write to the (parallel) port (linux only)
+lpt		write to the (parallel) port
 operating_system      get the current OS
 
 
 -------------------------- maths --------------------------------
 mavg		moving average filter for floats
 mean		get the mean value of a list of floats
+sum		get the sum of a list of floats
 minmax		get minimum and maximum of a list of floats
 sort		shell-sort a list of floats
 urn		unique random numbers
@@ -89,32 +92,3 @@ deg2rad		convert between degree and radiant
 rad2deg		convert between radiant and degree
 cart2pol, pol2cart, cart2sph, sph2cart, pol2sph, sph2pol	convert between coordinate systems (cartesian, polar, shperic)
 
--------------------------- matrix -------------------------------
-matrix		create/store/... matrices
-mtx_element	set elements of a matrix
-mtx_row		set rows of a matrix
-mtx_col		set columns of a matrix
-mtx_ones	matrix with all elements==1
-mtx_zeros	matrix with all elements==0
-mtx_eye		identity matrix
-mtx_egg		identity matrix (from upper-right to lower-left)
-mtx_diag	diagonal matrix
-mtx_diegg	diagonal matrix (from upper-right to lower-left)
-mtx_diag	get the diagonal of a matrix
-mtx_trace	get the trace of a matrix
-mtx_transpose	transpose a matrix
-mtx_roll	column-shift a matrix
-mtx_scroll	row-shift a matrix
-mtx_pivot	pivot-transform a matrix
-mtx_resize	resize a matrix (evtl. with zero-padding)
-mtx_size	get the size of a matrix
-mtx_inverse	get the inverse of a matrix
-mtx_add, mtx_+	add 2 matrices (or an offset to 1 matrix)
-mtx_sub, mtx_-  subtract 2 matrices (or an offset from 1 matrix)
-mtx_mul, mtx_*	multiply 2 matrices (or a factor with 1 matrix)
-mtx_.*		multiply 2 matrices element by element
-mtx_./		divide 2 matrices element by element
-mtx_mean	get the mean value of each column
-mtx_rand	matrix with random elements
-mtx_check	check the consistency of a matrix and repair
-mtx_print	print a matrix to the stderr
