@@ -38,7 +38,7 @@
 #include "m_pd.h"
 #include <math.h>
 
-#define VERSION "2.0"
+#define VERSION "2.1"
 
 
 #ifdef __WIN32__

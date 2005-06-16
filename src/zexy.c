@@ -4,7 +4,7 @@
  *
  * copyleft (c) IOhannes m zmölnig
  *
- *   1999:forum::für::umläute:2004
+ *   1999:forum::für::umläute:2005
  *
  *   institute of electronic music and acoustics (iem)
  *
@@ -58,7 +58,6 @@ static void zexy_help(void)
 
        "\n%c multary operations on signals"
 
-       "\nmatrix~\t\t:: handle matrices"
        "\nmultiline~\t:: multiple line~ multiplication"
        "\nmultiplex~\t:: multiplex 1 inlet~ to 1-of-various outlet~s"
        "\ndemultiplex~\t:: demultiplex 1-of-various inlet~s to 1 outlet~"
@@ -111,39 +110,6 @@ static void zexy_help(void)
        "\nwrap\t\t:: wrap a floating number between 2 limits"
        "\nurn\t\t:: unique random numbers"
        "\noperating_system\t:: information on the OS"
-#if 0
-       "\nexecute\t\t:: execute an application"
-#endif
-
-       "\n%c matrix message objects"
-
-       "\nmatrix\t\t:: create/store/edit matrices"
-
-       "\nmtx_element\t:: change elements of a matrix"
-       "\nmtx_row\t\t:: change rows of a matrix"
-       "\nmtx_col\t\t:: change columns of a matrix"
-       "\nmtx_eye\t\t:: create an identity matrix"
-       "\nmtx_egg\t\t:: create an identity matrix that is rotated by 90deg"
-       "\nmtx_zeros\t:: create a matrix whose elements are all 1"
-       "\nmtx_ones\t:: create a matrix whose elements are all 0"
-       "\nmtx_diag\t:: returns the diagonal of a matrix or create a diagonal matrix"
-       "\nmtx_dieggt:: like mtx_diag but rotated by 90deg"
-       "\nmtx_trace\t:: calculate the trace of a matrix"
-       "\nmtx_size\t:: returns the size of a matrix"
-       "\nmtx_resize\t:: resize a matrix (evt. with zero-padding)"
-       "\nmtx_transpose\t:: transpose a matrix"
-       "\nmtx_scroll\t:: shift the rows of a matrix"
-       "\nmtx_roll\t:: shift the columns of a matrix"
-       "\nmtx_pivot\t:: pivot-transform a matrix"
-       "\nmtx_add\t\t:: add matrices"
-       "\nmtx_mul\t\t:: multiply matrices"
-       "\nmtx_.*\t\t:: multiply matrices element by element"
-       "\nmtx_./\t\t:: divide matrices element by element"
-       "\nmtx_inverse\t:: calculate the inverse of a matrix"
-       "\nmtx_mean\t:: return the mean value of each column"
-       "\nmtx_rand\t:: fill a matrix with random values"
-       "\nmtx_check\t:: check the consistency of a matrix and correct if necessary"
-       "\nmtx_print\t:: print formatted matrix to the stdout (for debug)"
 
        "\n\n(l) forum::für::umläute except where indicated (%c)\n"
        "this software is under the GnuGPL that is provided with these files", HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL);
