@@ -301,7 +301,7 @@ static void *index_new(t_symbol *s, int argc, t_atom *argv)
     if (argc) automod = (int)atom_getfloat(argv++);
   }
 
-  if (!maxentries) maxentries=128;
+  if (maxentries<1) maxentries=128;
 
   buf = (t_symbol **)getbytes(sizeof(t_symbol *) * maxentries);
 
