@@ -46,6 +46,7 @@ void z_zexy_setup(void)
 	z_pdf__setup(); /* pdf~.c */
 	z_prime_setup(); /* prime.c */
 	z_quantize__setup(); /* quantize~.c */
+	z_relay_setup(); /* relay.c */
 	z_repack_setup(); /* repack.c */
 	z_repeat_setup(); /* repeat.c */
 	z_sfplay_setup(); /* sfplay.c */

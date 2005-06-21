@@ -44,6 +44,7 @@ void z_pack__setup(void); /* pack~.c */
 void z_pdf__setup(void); /* pdf~.c */
 void z_prime_setup(void); /* prime.c */
 void z_quantize__setup(void); /* quantize~.c */
+void z_relay_setup(void); /* relay.c */
 void z_repack_setup(void); /* repack.c */
 void z_repeat_setup(void); /* repeat.c */
 void z_sfplay_setup(void); /* sfplay.c */
