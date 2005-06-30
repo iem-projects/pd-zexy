@@ -148,7 +148,7 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
       if(newentry>0){
         newentry--;
         if(x->names[newentry]){ /* it is already taken! */
-          error("index :: couldn't add element at position %d (already taken)", newentry+1);
+          error("index :: couldn't add element '%s' at position %d (already taken)", s->s_name, newentry+1);
           outlet_float(x->x_obj.ob_outlet, -1.f);
           return;
         }
@@ -164,7 +164,7 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
 
       } else error("index :: couldn't find any place for new entry");
     } else error("index :: max number of elements (%d) reached !", x->maxentries);
-  } else post("index :: element already exists");
+  } else post("index :: element '%s' already exists", s->s_name);
 
   /* couldn't add the symbol to our index table */
   outlet_float(x->x_obj.ob_outlet, -1.f);
