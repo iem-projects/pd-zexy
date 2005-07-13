@@ -44,9 +44,13 @@ STATIC_INLINE void string2atom(t_atom *ap, char* cp, int clen){
   t_float ftest;
   strncpy(buffer, cp, clen);
   buffer[clen]=0;
-  //  post("converting buffer '%s' %d", buffer, clen);
   ftest=strtod(buffer, endptr);
-  if (*endptr == buffer){
+  /* what should we do with the special cases of hexadecimal values, "INF" and "NAN" ???
+   * strtod() parses them to numeric values:
+   * symbol "hallo 0x12" will become "list hallo 18"
+   * do we want this ??
+   */
+  if (buffer+clen!=*endptr){
     /* strtof() failed, we have a symbol */
     SETSYMBOL(ap, gensym(buffer));    
   } else {
@@ -118,6 +122,10 @@ static void symbol2list_process(t_symbol2list *x)
     if(cp)string2atom(x->argv+i, cp, strlen(cp));
 }
 static void symbol2list_bang(t_symbol2list *x){
+  if(!(x->s) || x->s==&s_){
+    outlet_bang(x->x_obj.ob_outlet);
+    return;
+  }
   symbol2list_process(x);
   if(x->argc)outlet_list(x->x_obj.ob_outlet, 0, x->argc, x->argv);
 }
