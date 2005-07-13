@@ -62,7 +62,7 @@ static void list2symbol_bang(t_list2symbol *x)
     length+=strlen(buffer);
   }
 
-  if (length<0){
+  if (length<=0){
     outlet_symbol(x->x_obj.ob_outlet, gensym(""));
     return;
   }
