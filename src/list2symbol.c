@@ -58,8 +58,12 @@ static void list2symbol_bang(t_list2symbol *x)
 
   while(i--){
     char buffer[MAXPDSTRING];
-    atom_string(argv++, buffer, MAXPDSTRING);
-    length+=strlen(buffer);
+    if(A_SYMBOL==argv->a_type){
+      length+=strlen(argv->a_w.w_symbol->s_name);
+    } else {
+      atom_string(argv++, buffer, MAXPDSTRING);
+      length+=strlen(buffer);
+    }
   }
 
   if (length<=0){
@@ -82,10 +86,16 @@ static void list2symbol_bang(t_list2symbol *x)
   i=argc;
   argv=x->ap;
   while(i--){
-    char buffer[MAXPDSTRING];
-    atom_string(argv++, buffer, MAXPDSTRING);
-    strcpy(result+len, buffer);
-    len += strlen(buffer);
+    if(A_SYMBOL==argv->a_type){
+      strcpy(result+len, argv->a_w.w_symbol->s_name);
+      len+= strlen(argv->a_w.w_symbol->s_name);
+    } else {
+      char buffer[MAXPDSTRING];
+      atom_string(argv, buffer, MAXPDSTRING);
+      strcpy(result+len, buffer);
+      len += strlen(buffer);
+    }
+    argv++;
     if(i && connector){
       strcpy(result+len, connector);
       len += connlen;
