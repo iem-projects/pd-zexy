@@ -58,12 +58,15 @@ static void list2symbol_bang(t_list2symbol *x)
 
   while(i--){
     char buffer[MAXPDSTRING];
+    int len=0;
     if(A_SYMBOL==argv->a_type){
-      length+=strlen(argv->a_w.w_symbol->s_name);
+      len=strlen(argv->a_w.w_symbol->s_name);
     } else {
-      atom_string(argv++, buffer, MAXPDSTRING);
-      length+=strlen(buffer);
+      atom_string(argv, buffer, MAXPDSTRING);
+      len=strlen(buffer);
     }
+    length+=len;
+    argv++;
   }
 
   if (length<=0){
