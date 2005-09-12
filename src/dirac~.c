@@ -6,8 +6,11 @@
  *
  *   1999:forum::für::umläute:2004
  *
+ *
  *   institute of electronic music and acoustics (iem)
  *
+ * optimizations
+ *   copyright (c) 2005 tim blechmann
  ******************************************************
  *
  * license: GNU General Public License v.2
@@ -16,19 +19,15 @@
 
 
 /*
-This external makes the two main test-functions available :
-dirac~ : will make a single peak (eg: a 1 in all the 0s) at a desired position in the signal-vector
-			the position can be passed as an argument when creating the object
-step~  : will make a unity step at a desired point in the signal-vector; the second input specifies a 
-			length:	after the so-specified time has elapsed, the step will toggle back to the previous
-			value;
-			the length can be passed as an argument when creating the object
-			with length==1 you might do the dirac~ thing a little bit more complicated
-			with length==0 the output just toggles between 0 and 1 every time you bang the object
-
-NOTE : the inlets do NOT specify any times but sample-NUMBERS; there are 64 samples in a signal-vector,
-		each "lasting" for 1/44100 secs.
-*/
+ * This external makes the two main test-functions available :
+ * dirac~: will make a single peak (eg: a 1 in all the 0s) at
+ *	   a desired position in the signal-vector
+ *	   the position can be passed as an argument when creating the object
+ *
+ * NOTE : the inlets do NOT specify any times but sample-NUMBERS;
+ *	  there are 64 samples in a "standard" signal-vector,
+ *	  each "lasting" for 1/44100 secs.
+ */
 
 #include "zexy.h"
 
@@ -40,8 +39,8 @@ static t_class *dirac_class;
 typedef struct _dirac
 {
     t_object x_obj;
-	t_float position;
-	t_float do_it;
+	t_int position;
+	t_int do_it;
 } t_dirac;
 
 static void dirac_bang(t_dirac *x)
@@ -51,7 +50,7 @@ static void dirac_bang(t_dirac *x)
 
 static void dirac_float(t_dirac *x, t_float where)
 {
-	x->do_it = x->position = where;
+	x->do_it = x->position = (t_int)where;
 }
 
 static t_int *dirac_perform(t_int *w)
@@ -59,21 +58,50 @@ static t_int *dirac_perform(t_int *w)
 	t_dirac *x = (t_dirac *)(w[1]);
 	t_float *out = (t_float *)(w[2]);
 	int n = (int)(w[3]);
+	
+	t_int do_it = x->do_it;
 
-	int do_it = x->do_it;
+	zero_perform(w+1);
 
-	while (n--)
-		{
-		*out++ = (!do_it--);
-		}
-	x->do_it = do_it;
+	if (do_it >= n)
+		x->do_it -= n;
+	else if(do_it >= 0)
+	{
+		out[do_it] = 1.f;
+		x->do_it = -1;
+	}
+
+	return (w+4);
+}
+
+
+static t_int *dirac_perf8(t_int *w)
+{
+	t_dirac *x = (t_dirac *)(w[1]);
+	t_float *out = (t_float *)(w[2]);
+	int n = (int)(w[3]);
+	
+	t_int do_it = x->do_it;
+
+	zero_perf8(w+1);
+
+	if (do_it >= n)
+		x->do_it -= n;
+	else if(do_it >= 0)
+	{
+		out[do_it] = 1.f;
+		x->do_it = -1;
+	}
 
 	return (w+4);
 }
 
 static void dirac_dsp(t_dirac *x, t_signal **sp)
 {
-	dsp_add(dirac_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
+	if (sp[0]->s_n & 7)
+		dsp_add(dirac_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
+	else
+		dsp_add(dirac_perf8, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
 
 static void dirac_helper(void)
@@ -94,8 +122,12 @@ static void *dirac_new(t_floatarg where)
 
 	outlet_new(&x->x_obj, gensym("signal"));
 
-	x->do_it = 0;
-	x->position = where;
+	x->do_it = where;
+
+	if (where > 0)
+		x->position = where;
+	else
+		x->position = -where;
 	return (x);
 }
  
