@@ -15,10 +15,16 @@
  ******************************************************/
 
 /* 
-   (c) 2000:forum::für::umläute:2004
+   (c) 2000:forum::für::umläute:2005
 
    write to the parallel port
    extended to write to any port (if we do have permissions)
+
+   2005-09-28: write to devices instead of hardware-addresses
+     http://people.redhat.com/twaugh/parport/html/ppdev.html
+     TODO: don't lock when multiple objects refer to the same device
+     TODO: allow readonly/writeonly access
+     TODO: test for timeouts,...
 
    thanks to
     Olaf Matthes: porting to WindozeNT/2000/XP
@@ -240,10 +246,10 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     }
   }
   if(x->device>0)
-    post("connected to device %s", devname);
+    post("lpt: connected to device %s", devname);
   else
-    post("connected to port %x in mode '%s'", x->port, (x->mode==MODE_IOPL)?"iopl":"ioperm");
-  if (x->mode==MODE_IOPL)post("warning: this might seriously damage your pc...");
+    post("lpt: connected to port %x in mode '%s'", x->port, (x->mode==MODE_IOPL)?"iopl":"ioperm");
+  if (x->mode==MODE_IOPL)post("lpt-warning: this might seriously damage your pc...");
 #else
   error("zexy has been compiled without [lpt]!");
 #endif /* Z_WANT_LPT */
