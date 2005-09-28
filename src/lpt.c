@@ -190,17 +190,16 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     x->device=-1;
     x->port=strtol(devname, 0, 16);
     if(0==x->port){
-      x->port=-1;
 #ifdef HAVE_PPDEV
       x->device = open(devname, O_RDWR);
-      if(x->device<0){
+      if(x->device<=0){
         error("lpt: bad device %s", devname);
         return(x);
       } else {
         if (ioctl (x->device, PPCLAIM)) {
           perror ("PPCLAIM");
           close (x->device);
-          return(x);
+          x->device=-1;
         }
       }
 #endif /* HAVE_PPDEV */
