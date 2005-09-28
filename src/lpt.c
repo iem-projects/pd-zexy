@@ -24,7 +24,6 @@
     Olaf Matthes: porting to WindozeNT/2000/XP
     Thomas Musil: adding "control-output" and "input"
 */
-
 #define BASE0  0x3bc
 #define BASE1  0x378
 #define BASE2  0x278
@@ -39,6 +38,15 @@
 
 #ifdef Z_WANT_LPT
 # include <stdlib.h>
+# include <errno.h>
+
+# ifdef HAVE_PPDEV
+#  include <sys/ioctl.h>
+#  include <linux/ppdev.h>
+#  include <linux/parport.h>
+#  include <fcntl.h>
+# endif /* HAVE_PPDEV */
+
 
 # ifdef __WIN32__
 /* on windoze everything is so complicated... */
@@ -89,15 +97,21 @@ typedef struct _lpt
   t_object x_obj;
 
   unsigned long port;
+  int device; /* file descriptor of device, in case we are using one ...*/
 
   int mode; // MODE_IOPERM, MODE_IOPL
 } t_lpt;
 
 static void lpt_float(t_lpt *x, t_floatarg f)
 {
+  unsigned char b = f;
 #ifdef Z_WANT_LPT
+# ifdef HAVE_PPDEV
+  if (x->device>0){
+    ioctl (x->device, PPWDATA, &b);
+  } else
+# endif
   if (x->port) {
-    unsigned char b = f;
     sys_outb(b, x->port+0);
   }
 #endif /*  Z_WANT_LPT */
@@ -105,9 +119,14 @@ static void lpt_float(t_lpt *x, t_floatarg f)
 
 static void lpt_control(t_lpt *x, t_floatarg f)
 {
+  unsigned char b = f;
+# ifdef HAVE_PPDEV
+  if (x->device>0){
+    ioctl (x->device, PPWCONTROL, &b);
+  } else
+# endif
 #ifdef Z_WANT_LPT
   if (x->port) {
-    unsigned char b = f;
     sys_outb(b, x->port+2);
   }
 #endif /*  Z_WANT_LPT */
@@ -115,6 +134,13 @@ static void lpt_control(t_lpt *x, t_floatarg f)
 
 static void lpt_bang(t_lpt *x)
 {
+# ifdef HAVE_PPDEV
+  if (x->device>0){
+    unsigned char b=0;
+    ioctl (x->device, PPRCONTROL, &b);
+      outlet_float(x->x_obj.ob_outlet, (float)b);
+  } else
+# endif
 #ifdef Z_WANT_LPT
   if (x->port)	{
     outlet_float(x->x_obj.ob_outlet, (float)sys_inb(x->port+1));
@@ -126,16 +152,18 @@ static void lpt_bang(t_lpt *x)
 static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_lpt *x = (t_lpt *)pd_new(lpt_class);
+  char*devname=atom_getsymbol(argv)->s_name;
   if(s==gensym("lp"))
     error("lpt: the use of 'lp' has been deprecated; use 'lpt' instead");
+
 
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("control"));
   outlet_new(&x->x_obj, gensym("float"));
   x->mode = MODE_NONE;
   x->port = 0;
+  x->device = -1;
 
 #ifdef Z_WANT_LPT
- 
   if ((argc==0)||(argv->a_type==A_FLOAT)) {
     /* FLOAT specifies a parallel port */
     switch ((int)((argc)?atom_getfloat(argv):0)) {
@@ -158,35 +186,64 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
        we ignore the file (device) case by now;
        LATER think about this
     */
-    x->port=strtol(atom_getsymbol(argv)->s_name, 0, 16);
+    int bla;
+    x->device=-1;
+    x->port=strtol(devname, 0, 16);
+    if(0==x->port){
+      x->port=-1;
+#ifdef HAVE_PPDEV
+      x->device = open(devname, O_RDWR);
+      if(x->device<0){
+        error("lpt: bad device %s", devname);
+        return(x);
+      } else {
+        if (ioctl (x->device, PPCLAIM)) {
+          perror ("PPCLAIM");
+          close (x->device);
+          return(x);
+        }
+      }
+#endif /* HAVE_PPDEV */
+    }
   }
 
-  if (!x->port || x->port>65535){
+  if ((x->device<0) && (!x->port || x->port>65535)){
     post("lpt : bad port %x", x->port);
     x->port = 0;
     return (x);
   }
-
-  if (x->port && x->port < 0x400){
-    if (ioperm(x->port, 8, 1)) {
-      x->mode=MODE_NONE;
-    } else x->mode = MODE_IOPERM;
+  if (x->device<0){
+    /* this is ugly: when using a named device,
+     * we are currently assuming that we have read/write-access
+     * of course, this is not necessary true
+     */
+    /* furthermore, we might also use the object
+     * withOUT write permissions
+     * (just reading the parport)
+     */
+    if (x->port && x->port < 0x400){
+      if (ioperm(x->port, 8, 1)) {
+        x->mode=MODE_NONE;
+      } else x->mode = MODE_IOPERM;
+    }
+    if(x->mode==MODE_NONE){
+      if (iopl(3)){
+        x->mode=MODE_NONE;
+      } else x->mode=MODE_IOPL;
+      count_iopl++;
+      //    post("iopl.............................%d", count_iopl);
+    }
+    
+    if(x->mode==MODE_NONE){
+      error("lpt : couldn't get write permissions");
+      x->port = 0;
+      return (x);
+    }
   }
-  if(x->mode==MODE_NONE){
-    if (iopl(3)){
-      x->mode=MODE_NONE;
-    } else x->mode=MODE_IOPL;
-    count_iopl++;
-    //    post("iopl.............................%d", count_iopl);
-  }
-  
-  if(x->mode==MODE_NONE){
-    error("lpt : couldn't get write permissions");
-    x->port = 0;
-    return (x);
-  }
-  
-  post("connected to port %x in mode '%s'", x->port, (x->mode==MODE_IOPL)?"iopl":"ioperm");
+  if(x->device>0)
+    post("connected to device %s", devname);
+  else
+    post("connected to port %x in mode '%s'", x->port, (x->mode==MODE_IOPL)?"iopl":"ioperm");
   if (x->mode==MODE_IOPL)post("warning: this might seriously damage your pc...");
 #else
   error("zexy has been compiled without [lpt]!");
@@ -198,6 +255,13 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
 static void lpt_free(t_lpt *x)
 {
 #ifdef Z_WANT_LPT
+# ifdef HAVE_PPDEV
+  if (x->device>0){
+    ioctl (x->device, PPRELEASE);
+    close(x->device);
+    x->device=0;
+  } else
+# endif
   if (x->port) {
     if (x->mode==MODE_IOPERM && ioperm(x->port, 8, 0)) error("lpt: couldn't clean up device");
     else if (x->mode==MODE_IOPL && (!--count_iopl) && iopl(0))

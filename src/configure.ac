@@ -349,6 +349,8 @@ then
  EXT=$with_extension
 fi
 
+AC_CHECK_HEADER(linux/ppdev.h, [ have_ppdev="yes" ], [ have_ppdev="no" ])
+
 dnl check for LPT
 AC_MSG_CHECKING("parallel-port")
 if test "$enable_lpt" != "no"
@@ -358,6 +360,7 @@ then
     DFLAGS="$DFLAGS -DZ_WANT_LPT"
     echo "yes (forced)"
   else
+
 cat > conftest.c << EOF
 # include <sys/io.h>
 int main(){
@@ -371,7 +374,13 @@ EOF
    if $CC $INCLUDES -o conftest.o conftest.c > /dev/null 2>&1
    then
      DFLAGS="$DFLAGS -DZ_WANT_LPT"
-     echo "yes"
+     if test "x$have_ppdev" = "xyes"
+     then
+       DFLAGS="$DFLAGS -DHAVE_PPDEV"
+       echo "yes (with device-support)"
+     else
+       echo "yes"
+     fi
    else
      echo "no"
    fi
