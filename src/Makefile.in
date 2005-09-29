@@ -23,12 +23,13 @@ TARNAME =  $(LIBNAME)-@ZEXY_VERSION@.tgz
 .SUFFIXES: .$(EXT)
 
 # ICCFLAGS=-march=pentiumiii -axK
-PDCFLAGS = -g -O2 $(DEFS) $(IFLAGS) $(WFLAGS) $(LFLAGS) $(AFLAGS)
-CFLAGS = $(DEFS) $(IFLAGS) $(WFLAGS) @CFLAGS@
+Z_CFLAGS = $(DEFS) $(IFLAGS) $(WFLAGS) @CFLAGS@ -DPD $(CFLAGS)
+
+MAKEDEP_FLAGS = @MAKEDEP_FLAGS@
 
 LIBS = @LIBS@
 
-include Make.source
+SOURCES=$(sort $(filter %.c, $(wildcard *.c)))
 
 TARGETS = $(SOURCES:.c=.o)
 
@@ -40,11 +41,8 @@ $(LIBNAME): $(TARGETS)
 	$(LD) $(LFLAGS) -o $(LIBNAME).$(EXT) *.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $(LIBNAME).$(EXT)
 
-.c.o:
-	$(CC) -c -o $@ $(CFLAGS) -DPD $*.c
-
-.o.$(EXT):
-	$(CC) -o $@ $(PDCFLAGS) -DPD $*.o
+$(TARGETS): %.o : %.c
+	$(CC) -c -o $@ $(Z_CFLAGS) $*.c
 
 
 clean:
@@ -52,9 +50,10 @@ clean:
 
 cleaner: clean
 	-rm -f *~ _* config.*
+	-rm -f *.d *.d.*
 
 cleanest: cleaner
-	-rm -f Makefile ../*.$(EXT) Make.source
+	-rm -f Makefile ../*.$(EXT)
 
 distclean: cleanest newmakefile
 
@@ -81,7 +80,18 @@ newmakefile:
 	echo "current:">Makefile
 	echo "	./configure && make">>Makefile
 
-make.source:
-	echo "SOURCES = \\"> Make.source
-	echo `ls z_*.c $(LIBNAME).c` >> Make.source
-	echo >> Make.source
+## dependencies: as proposed by the GNU-make documentation
+## see http://www.gnu.org/software/make/manual/html_node/make_47.html#SEC51
+-include $(SOURCES:.c=.d)
+%.d: %.c
+	@set -e; rm -f $@; \
+	 $(CC) $(MAKEDEP_FLAGS) $(Z_CFLAGS) $< > $@.$$$$; \
+	 sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	 rm -f $@.$$$$
+
+
+Makefile: Makefile.in configure
+	./configure
+
+configure: configure.ac
+	autoconf

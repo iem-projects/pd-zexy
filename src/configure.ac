@@ -97,6 +97,14 @@ AC_CHECK_HEADERS(stdlib.h stdio.h string.h math.h time.h sys/time.h)
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_TIME
 
+### make-depend flags
+if test "x$ac_cv_c_compiler_gnu" = "xyes"; then
+    AC_SUBST(MAKEDEP_FLAGS, "-MM")
+else
+    AC_SUBST(MAKEDEP_FLAGS, "-M")
+fi
+
+
 dnl Checks for library functions.
 AC_FUNC_MMAP
 AC_CHECK_FUNCS(select socket strerror)
