@@ -25,11 +25,12 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <string.h>
+
 #ifdef linux
-#include <unistd.h>
+# include <unistd.h>
 #endif
 #ifdef __WIN32__
-#include <io.h>
+# include <io.h>
 #endif
 
 /* ****************************************************************************** */
@@ -109,30 +110,28 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
   }
 }
 
-static void clear_currentnode(t_msgfile *x)
+static void delete_currentnode(t_msgfile *x)
 {
-  t_msglist *dummy = x->current;
-  t_msglist *nxt;
-  t_msglist *prv;
+  if (x&&x->current){
+    t_msglist *dummy = x->current;
+    t_msglist *nxt=dummy->next;
+    t_msglist *prv=dummy->previous;
+    freebytes(dummy->thislist, sizeof(dummy->thislist));
+    dummy->thislist = 0;
+    dummy->n = 0;
+    dummy->next=0;
+    dummy->previous=0;
 
-  if (!dummy) return;
+    freebytes(dummy, sizeof(t_msglist));
+    dummy=0;
 
-  freebytes(dummy->thislist, sizeof(dummy->thislist));
-  dummy->thislist = 0;
-  dummy->n = 0;
-
-  prv = dummy->previous;
-  nxt = dummy->next;
-
-  if (nxt) nxt->previous = prv;
-  if (prv) prv->next     = nxt;
-
-  if (!prv && !nxt) return;
-
-  x->current = (nxt)?nxt:prv;
-  freebytes(dummy, sizeof(t_msglist));
+    if (nxt) nxt->previous = prv;
+    if (prv) prv->next     = nxt;
+    
+    x->current = (nxt)?nxt:prv;
+  }
 }
-static void clear_emptynodes(t_msgfile *x)
+static void delete_emptynodes(t_msgfile *x)
 {
   t_msglist *dummy = x->current;
 
@@ -142,7 +141,7 @@ static void clear_emptynodes(t_msgfile *x)
 
   while (x->current && x->current->previous) x->current = x->current->previous;
   while (x->current && x->current->next) {
-    if (!x->current->thislist) clear_currentnode(x);
+    if (!x->current->thislist) delete_currentnode(x);
     else x->current = x->current->next;
   }
   dummy = x->current;
@@ -167,7 +166,7 @@ static void add_currentnode(t_msgfile *x)
   if (nxt) nxt->previous = newnode;
 
 
-  if (x->current->thislist) x->current = newnode;
+  x->current = newnode;
 }
 static void insert_currentnode(t_msgfile *x)
 {  /* insert (add before the current node) a node (do not write a the listbuf !!!) */
@@ -241,17 +240,17 @@ static void msgfile_skip(t_msgfile *x, t_float f)
 
 static void msgfile_clear(t_msgfile *x)
 {
+  /* find the beginning */
   while (x->current && x->current->previous) x->current = x->current->previous;
 
-  while (x->current && (x->current->previous || x->current->next)) {
-    clear_currentnode(x);
-  }
-  if (x->current->thislist) {
-    freebytes(x->current->thislist, sizeof(x->current->thislist));
-    x->current->n = 0;
+  while (x->current) {
+    delete_currentnode(x);
   }
 }
 
+/* delete from line "start" to line "stop"
+ * if "stop" is negative, delete from "start" to the end
+ */
 static void delete_region(t_msgfile *x, int start, int stop)
 {
   int n;
@@ -261,7 +260,9 @@ static void delete_region(t_msgfile *x, int start, int stop)
   t_msglist *dummy = x->current;
   int counter = 0;
 
+  /* go to the beginning of the buffer */
   while (dummy && dummy->previous) dummy=dummy->previous;
+  /* go to the end of the buffer */
   while (dummy && dummy->next) {
     counter++;
     dummy = dummy->next;
@@ -276,7 +277,7 @@ static void delete_region(t_msgfile *x, int start, int stop)
 
   msgfile_goto(x, start);
 
-  while (n--) clear_currentnode(x);
+  while (n--) delete_currentnode(x);
 
   if (newwhere+1) msgfile_goto(x, newwhere);
   else msgfile_end(x);
@@ -290,9 +291,8 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 
     if (pos<0) return;
     if (oldwhere > pos) oldwhere--;
-
     msgfile_goto(x, pos);
-    clear_currentnode(x);
+    delete_currentnode(x);
     msgfile_goto(x, oldwhere);
   } else if (ac==2) {
     int pos1 = atom_getfloat(av++);
@@ -305,7 +305,7 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
       delete_region(x, pos1+1, -1);
       delete_region(x, 0, pos2);
     }
-  } else clear_currentnode(x);
+  } else delete_currentnode(x);
 }
 
 static void msgfile_add(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
@@ -363,13 +363,11 @@ static void msgfile_replace(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 static void msgfile_flush(t_msgfile *x)
 {
   t_msglist *cur = x->current;
-
-  while (x->current && x->current->previous) x->current=x->current->previous;
-  while (x->current && x->current->thislist) {
-    outlet_list(x->x_obj.ob_outlet, gensym("list"), x->current->n, x->current->thislist);
-    x->current = x->current->next;
+  while (cur && cur->previous) cur=cur->previous;
+  while (cur && cur->thislist) {
+    outlet_list(x->x_obj.ob_outlet, gensym("list"), cur->n, cur->thislist);
+    cur = cur->next;
   }
-  x->current = cur;
 }
 static void msgfile_this(t_msgfile *x)
 {
@@ -428,14 +426,16 @@ static int atomcmp(t_atom *this, t_atom *that)
 static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   int searching = 1;
-  t_msglist *found = x->current;
-  int actu = 0;
+  t_msglist *found = 0;
+  t_msglist *cur=x->current;
 
-  while ((searching) && (x->current) && (x->current->thislist)) {
-    int n = x->current->n;
+  while (cur) {
+    int n = cur->n;
     int equal = 1;
     t_atom *that = av;
-    t_atom *this = x->current->thislist;
+    t_atom *this = cur->thislist;
+
+    if(0==this)continue;
     
     if (ac < n) n = ac;
 
@@ -449,21 +449,21 @@ static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
     }
 
     if (equal) {
-      found = x->current;
-      outlet_float(x->x_secondout, node_wherearewe(x));
-      outlet_list(x->x_obj.ob_outlet, gensym("list"), x->current->n, x->current->thislist);
+      found = cur;
+      break;
     }
 
-    searching = !(equal);
-
-    if (x->current && x->current->thislist) {
-      if (x->current->next) x->current = x->current->next;
-      actu++;
-    }
+    cur=cur->next;
   }
 
-  if (searching) outlet_bang(x->x_secondout);
-  x->current = found;
+  if(found){
+    x->current = found;
+    outlet_float(x->x_secondout, node_wherearewe(x));
+    if(found->n && found->thislist)
+      outlet_list(x->x_obj.ob_outlet, gensym("list"), found->n, found->thislist);
+  } else {
+    outlet_bang(x->x_secondout);
+  }
 }
 
 static void msgfile_where(t_msgfile *x)
@@ -474,22 +474,22 @@ static void msgfile_where(t_msgfile *x)
 static void msgfile_print(t_msgfile *x)
 {
   t_msglist *cur = x->current;
-
+  int j=0;
   post("--------- msgfile contents: -----------");
 
-  while (x->current && x->current->previous) x->current=x->current->previous;
-  while (x->current) {
-    t_msglist *dum=x->current;
+  while (cur && cur->previous) cur=cur->previous;
+  while (cur) {
+    t_msglist *dum=cur;
     int i;
-    startpost("");
+    j++;
+    startpost("line %d:", j);
     for (i = 0; i < dum->n; i++) {
       t_atom *a = dum->thislist + i;
       postatom(1, a);
     }
     endpost();
-    x->current = x->current->next;
+    cur = cur->next;
   }
-  x->current = cur;
 }
 
 static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
@@ -506,7 +506,7 @@ static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
     ap++;
   }
 
-  clear_emptynodes(x);
+  delete_emptynodes(x);
 }
 
 static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
@@ -741,10 +741,13 @@ static void *msgfile_new(t_symbol *s, int argc, t_atom *argv)
     t_msgfile *x = (t_msgfile *)pd_new(msgfile_class);
 
     /* an empty node indicates the end of our listbuffer */
-    x->current = (t_msglist *)getbytes(sizeof(t_msglist));
-    x->current->n = 0;
-    x->current->thislist = 0;
-    x->current->previous = x->current->next = 0;
+    x->current = 0;
+    /*
+      x->curent = (t_msglist *)getbytes(sizeof(t_msglist));
+      x->current->n = 0;
+      x->current->thislist = 0;
+      x->current->previous = x->current->next = 0;
+    */
 
     if ((argc==1) && (argv->a_type == A_SYMBOL)) {
       if (!strcmp(argv->a_w.w_symbol->s_name, "cr")) x->mode = CR_MODE;
