@@ -83,7 +83,17 @@ static t_int *dirac_perf8(t_int *w)
 	
 	t_int do_it = x->do_it;
 
+#ifndef __WIN32__
+	/* LATER: investigate the occurence of zero_perf8() */
+	/* it seems, like pd has the symbol zero_perf8(),
+	 * but it is not exported by m_pd.h:
+	 * so linux can use it, but w32 not
+	 * have to tell miller about that
+	 */
 	zero_perf8(w+1);
+#else
+	zero_perform(w+1);
+#endif
 
 	if (do_it >= n)
 		x->do_it -= n;
