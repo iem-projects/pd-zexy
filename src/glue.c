@@ -25,7 +25,7 @@
 
 static t_class *glue_class;
 
-typedef struct _glue
+typedef struct _zglue
 {
   t_object x_obj;
 
