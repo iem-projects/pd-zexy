@@ -1,9 +1,12 @@
 # ----------------------- NT -----------------------
+
+.PHONY: clean cleaner all zexy
+
 LIBNAME=zexy
 
 current: $(LIBNAME)
 
-PREFIX="C:\Programme\pd"
+PREFIX=C:\Programme\pd
 
 EXT=dll
 CC=cl
@@ -14,30 +17,31 @@ IFLAGS=/I. /I$(PREFIX)\src
 AFLAGS= 
 WFLAGS=/W3 /WX /nologo
 
+## for LinePrinter-support: (if you don't want it, comment it out)
+DEFS += /DZ_WANT_LPT
+
 .SUFFIXES: .$(EXT)
 
-include Make.source
-
-## for LinePrinter-support: (if you don't want it, comment it out)
-DEFS = $(DEFS) /DZ_WANT_LPT
-
+SOURCES=$(sort $(filter %.c, $(wildcard *.c)))
 
 CFLAGS = /O2 $(DEFS) $(IFLAGS) $(WFLAGS)
-LIBS = libc.lib oldnames.lib kernel32.lib $(PREFIX)\bin\pd.lib
-LFLAGS = /dll /export:$(LIBNAME)_setup
+LIBS = libc.lib oldnames.lib kernel32.lib pd.lib
+LFLAGS = /dll /export:$(LIBNAME)_setup /LIBPATH:"$(PREFIX)\bin"
 
 
 TARGETS = $(SOURCES:.c=.obj)
 
-.c.obj:
-	cl $(CFLAGS) /c $*.c
+
+$(TARGETS): %.obj : %.c
+	$(CC) $(CFLAGS) /c $*.c
 
 
 $(LIBNAME): $(TARGETS)
-	$(LD) $(LFLAGS) /out:..\$(LIBNAME).$(EXT) *.obj $(LIBS)
+	$(LD) $(LFLAGS) /out:$(LIBNAME).$(EXT) *.obj $(LIBS)
 
 clean:
-	-del -f *.$(EXT) *.obj ..\$(LIBNAME).lib ..\$(LIBNAME).exp *.lib *.exp
+	del /f *.obj $(LIBNAME).$(EXT)
 
 cleaner: clean
-	-del -f *~ _* config.* ..\$(LIBNAME).$(EXT)
+	del /f *~ _* config.* $(LIBNAME).$(EXT)
+
