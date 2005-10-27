@@ -126,11 +126,11 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
 {
   int newentry=(int)f;
   int ok = 0;
-  
+
   if (! (find_item(s, x->names, x->maxentries)+1) ) {
-    if (x->auto_resize && x->entries==x->maxentries){
+    if (x->auto_resize && (x->entries==x->maxentries || newentry>=x->maxentries)){
       /* do some resizing */
-      int maxentries=x->maxentries*2;
+      int maxentries=(newentry>x->maxentries)?newentry:(x->maxentries*2);
       int i;
       t_symbol**buf=(t_symbol **)getbytes(sizeof(t_symbol *) * maxentries);
       if(buf!=0){
@@ -148,24 +148,22 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
       if(newentry>0){
         newentry--;
         if(x->names[newentry]){ /* it is already taken! */
-          error("index :: couldn't add element '%s' at position %d (already taken)", s->s_name, newentry+1);
+          verbose(1, "index :: couldn't add element '%s' at position %d (already taken)", s->s_name, newentry+1);
           outlet_float(x->x_obj.ob_outlet, -1.f);
           return;
         }
-      } else
+      } else {
         newentry=find_free(x->names, x->maxentries);
-
+      }
       if (newentry + 1) {
 	x->entries++;
 	x->names[newentry]=s;
-
 	outlet_float(x->x_obj.ob_outlet, (t_float)newentry+1);
         return;
 
       } else error("index :: couldn't find any place for new entry");
     } else error("index :: max number of elements (%d) reached !", x->maxentries);
-  } else post("index :: element '%s' already exists", s->s_name);
-
+  } else  verbose(1, "index :: element '%s' already exists", s->s_name);
   /* couldn't add the symbol to our index table */
   outlet_float(x->x_obj.ob_outlet, -1.f);
 }
@@ -192,7 +190,7 @@ static void index_delete(t_index *x, t_symbol *s, int argc, t_atom*argv)
     x->entries--;
     outlet_float(x->x_obj.ob_outlet, 0.0);
   } else {
-    post("index :: couldn't find element");
+    verbose(1, "index :: couldn't find element");
     outlet_float(x->x_obj.ob_outlet, -1.0);
   }
 }
@@ -222,7 +220,6 @@ static void index_dump(t_index *x)
 {
   t_atom ap[2];
   int i=0;
-  
   for(i=0; i<x->maxentries; i++){
     if(x->names[i]){
       SETSYMBOL(ap, x->names[i]);
