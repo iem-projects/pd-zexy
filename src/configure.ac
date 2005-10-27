@@ -305,7 +305,7 @@ dnl should it rather be @exec_prefix@ ???
   fi
 fi
 
-if test `uname | sed -e 's/^MINGW.*/NT/'` = NT; 
+if test `uname | sed -e 's/^MINGW.*/NT/'` = NT ; 
 then
   LD=gcc
   INCLUDES="-I@prefix@/src"
@@ -397,7 +397,6 @@ else
  echo "no (ignored)"
 fi
 
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Make.config)
 
-rm -f conftest.*
-./makesource.sh
+#rm -f conftest.*

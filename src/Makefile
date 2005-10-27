@@ -1,33 +1,15 @@
-LIBNAME    =@LIBNAME@
+default: all
 
-PREFIX     =@prefix@@PDLIBDIR@
+Make.config: Make.config.in configure
+	./configure
 
-INSTALL_BIN=$(PREFIX)/extra
-INSTALL_DOC=$(PREFIX)/@REFERENCEPATH@$(LIBNAME)
 
-EXT = @EXT@ 
-DEFS = @DFLAGS@
-IFLAGS = -I. @INCLUDES@
+configure: configure.ac
+	autoconf
 
-CC = @CC@
-LD = @LD@
-STRIP = @STRIP@
-STRIPFLAGS= @STRIPFLAGS@
-
-AFLAGS = 
-LFLAGS = @LFLAGS@
-WFLAGS =
-
-TARNAME =  $(LIBNAME)-@ZEXY_VERSION@.tgz
+include Make.config
 
 .SUFFIXES: .$(EXT)
-
-# ICCFLAGS=-march=pentiumiii -axK
-Z_CFLAGS = $(DEFS) $(IFLAGS) $(WFLAGS) @CFLAGS@ -DPD $(CFLAGS)
-
-MAKEDEP_FLAGS = @MAKEDEP_FLAGS@
-
-LIBS = @LIBS@
 
 SOURCES=$(sort $(filter %.c, $(wildcard *.c)))
 
@@ -88,10 +70,3 @@ newmakefile:
 	 $(CC) $(MAKEDEP_FLAGS) $(Z_CFLAGS) $< > $@.$$$$; \
 	 sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	 rm -f $@.$$$$
-
-
-Makefile: Makefile.in configure
-	./configure
-
-configure: configure.ac
-	autoconf
