@@ -37,7 +37,7 @@ cleaner: clean
 cleanest: cleaner
 	-rm -f Makefile ../*.$(EXT)
 
-distclean: cleanest newmakefile
+distclean: cleanest
 
 install: install-bin install-doc install-abs
 
@@ -57,10 +57,6 @@ dist: all cleaner
 	(cd ../..;tar czvf $(TARNAME) $(LIBNAME))
 
 everything: clean all install distclean
-
-newmakefile:
-	echo "current:">Makefile
-	echo "	./configure && make">>Makefile
 
 ## dependencies: as proposed by the GNU-make documentation
 ## see http://www.gnu.org/software/make/manual/html_node/make_47.html#SEC51
