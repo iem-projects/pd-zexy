@@ -84,5 +84,15 @@ static void zexy_register(char*object){
 static void zexy_register(char*object){}
 #endif /* ZEXY_LIBRARY */
 
+#if (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION > 38)
+/* pd>=0.39 has a verbose() function; older versions don't
+ */
+#else
+/* this might not work on compilers other than gcc
+ * is it ISO-C99 or just a gnu-cpp thing ?
+ */
+# define verbose(level, format, ...) post(format, ## __VA_ARGS__)
+#endif
+
 
 #endif /* INCLUDE_ZEXY_H__ */
