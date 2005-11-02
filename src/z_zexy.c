@@ -13,8 +13,8 @@ void z_zexy_setup(void)
 	z_blockmirror__setup(); /* blockmirror~.c */
 	z_blockswap__setup(); /* blockswap~.c */
 	z_date_setup(); /* date.c */
-	z_demultiplex_setup(); /* demultiplex.c */
 	z_demultiplex__setup(); /* demultiplex~.c */
+	z_demultiplex_setup(); /* demultiplex.c */
 	z_dfreq__setup(); /* dfreq~.c */
 	z_dirac__setup(); /* dirac~.c */
 	z_dot_setup(); /* dot.c */
@@ -35,17 +35,18 @@ void z_zexy_setup(void)
 	z_minmax_setup(); /* minmax.c */
 	z_msgfile_setup(); /* msgfile.c */
 	z_multiline__setup(); /* multiline~.c */
-	z_multiplex_setup(); /* multiplex.c */
 	z_multiplex__setup(); /* multiplex~.c */
+	z_multiplex_setup(); /* multiplex.c */
 	z_niagara_setup(); /* niagara.c */
 	z_noish__setup(); /* noish~.c */
 	z_noisi__setup(); /* noisi~.c */
 	z_operating_system_setup(); /* operating_system.c */
-	z_packel_setup(); /* packel.c */
 	z_pack__setup(); /* pack~.c */
+	z_packel_setup(); /* packel.c */
 	z_pdf__setup(); /* pdf~.c */
 	z_prime_setup(); /* prime.c */
 	z_quantize__setup(); /* quantize~.c */
+	z_regex_setup(); /* regex.c */
 	z_relay_setup(); /* relay.c */
 	z_repack_setup(); /* repack.c */
 	z_repeat_setup(); /* repeat.c */
@@ -67,7 +68,7 @@ void z_zexy_setup(void)
 	z_urn_setup(); /* urn.c */
 	z_winNT_portio_setup(); /* winNT_portio.c */
 	z_wrap_setup(); /* wrap.c */
-	z_z_sigbin_setup(); /* z_sigbin.c */
 	z_z__setup(); /* z~.c */
+	z_z_sigbin_setup(); /* z_sigbin.c */
 }
 

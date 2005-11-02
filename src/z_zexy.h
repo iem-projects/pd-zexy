@@ -11,8 +11,8 @@ void z_avg__setup(void); /* avg~.c */
 void z_blockmirror__setup(void); /* blockmirror~.c */
 void z_blockswap__setup(void); /* blockswap~.c */
 void z_date_setup(void); /* date.c */
-void z_demultiplex_setup(void); /* demultiplex.c */
 void z_demultiplex__setup(void); /* demultiplex~.c */
+void z_demultiplex_setup(void); /* demultiplex.c */
 void z_dfreq__setup(void); /* dfreq~.c */
 void z_dirac__setup(void); /* dirac~.c */
 void z_dot_setup(void); /* dot.c */
@@ -33,17 +33,18 @@ void z_mavg_setup(void); /* mavg.c */
 void z_minmax_setup(void); /* minmax.c */
 void z_msgfile_setup(void); /* msgfile.c */
 void z_multiline__setup(void); /* multiline~.c */
-void z_multiplex_setup(void); /* multiplex.c */
 void z_multiplex__setup(void); /* multiplex~.c */
+void z_multiplex_setup(void); /* multiplex.c */
 void z_niagara_setup(void); /* niagara.c */
 void z_noish__setup(void); /* noish~.c */
 void z_noisi__setup(void); /* noisi~.c */
 void z_operating_system_setup(void); /* operating_system.c */
-void z_packel_setup(void); /* packel.c */
 void z_pack__setup(void); /* pack~.c */
+void z_packel_setup(void); /* packel.c */
 void z_pdf__setup(void); /* pdf~.c */
 void z_prime_setup(void); /* prime.c */
 void z_quantize__setup(void); /* quantize~.c */
+void z_regex_setup(void); /* regex.c */
 void z_relay_setup(void); /* relay.c */
 void z_repack_setup(void); /* repack.c */
 void z_repeat_setup(void); /* repeat.c */
@@ -65,7 +66,7 @@ void z_unpack__setup(void); /* unpack~.c */
 void z_urn_setup(void); /* urn.c */
 void z_winNT_portio_setup(void); /* winNT_portio.c */
 void z_wrap_setup(void); /* wrap.c */
-void z_z_sigbin_setup(void); /* z_sigbin.c */
 void z_z__setup(void); /* z~.c */
+void z_z_sigbin_setup(void); /* z_sigbin.c */
 #endif /* Z_ZEXY_H__ */
 
