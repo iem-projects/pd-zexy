@@ -29,7 +29,7 @@
 #include <stdio.h>
 
 #define MAXSTRINGARGS 10
-#define MAXSTRINGLENG 80
+#define MAXSTRINGLENG MAXPDSTRING
 
 /* ----------------------- makesymbol --------------------- */
 
@@ -125,8 +125,6 @@ static void helper(t_makesymbol *x)
 		"\ninlet2 : <format-string>: new format-string (symbol !)"
 		"\noutlet : <symbol>\t: formatted concatenation");
 	post("\ncreation:\"makesymbol [<format-string>]\": C-style format-string (%s only)", "%s");
-
-post("\n\nmasq = %s", x->mask);
 }
 
 void makesymbol_setup(void)
