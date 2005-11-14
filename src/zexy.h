@@ -31,8 +31,12 @@
 #define INCLUDE_ZEXY_H__
 
 #ifdef __WIN32__
-# define NT
-# define MSW
+# ifndef NT
+#  define NT
+# endif
+# ifndef MSW
+#  define MSW
+# endif
 #endif
 
 #include "m_pd.h"
@@ -40,11 +44,14 @@
 
 #define VERSION "2.1"
 
-
-#ifdef __WIN32__
+/* these pragmas are only used for MSVC, not MinGW or Cygwin */
+#ifdef _MSC_VER
 # pragma warning( disable : 4018 )
 # pragma warning( disable : 4244 )
 # pragma warning( disable : 4305 )
+#endif
+
+#ifdef __WIN32__
 # define HEARTSYMBOL 3
 # define STATIC_INLINE
 # define sqrtf sqrt
