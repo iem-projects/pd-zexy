@@ -101,6 +101,7 @@ static void *zNdelay_new(t_floatarg f)
   }
   x->phase = 0;
 
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("ft1"));
   outlet_new(&x->x_obj, gensym("signal")); 
   return (x);
 }
@@ -126,6 +127,7 @@ void z_tilde_setup(void)
   class_addmethod(zNdelay_class, (t_method)zNdelay_dsp, gensym("dsp"), 0);
 
   class_addfloat(zNdelay_class, zdel_float);
+  class_addmethod(zNdelay_class, (t_method)zdel_float, gensym("ft1"), A_FLOAT, 0);
   class_addmethod(zNdelay_class, (t_method)zdel_helper, gensym("help"), 0);
   class_sethelpsymbol(zNdelay_class, gensym("zexy/z~"));
   zexy_register("z~");
