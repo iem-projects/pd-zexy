@@ -127,6 +127,21 @@ else
 fi
 
 
+AC_MSG_CHECKING("PIC")
+cat > conftest.c << EOF
+int main(){
+  return 0;
+}
+EOF
+if ${CC} ${INCLUDES} ${DFLAGS} -o conftest.o conftest.c ${CFLAGS} -fPIC > /dev/null 2>&1
+then
+  echo "yes"
+  CFLAGS="${CFLAGS} -fPIC"
+else
+  echo "no"
+fi
+
+
 
 dnl if we don't have $LD set, we set it to $(CC)
 dnl LD=${LD:=$CC}
