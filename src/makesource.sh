@@ -2,7 +2,6 @@
 
 ZEXY_H=z_zexy.h
 ZEXY_C=z_zexy.c
-ZEXY_S=Make.source
 
 
 GREP=grep
@@ -44,22 +43,11 @@ function foot_c() {
  echo
 }
 
-function head_s() {
-  echo "SOURCES = \\"
-}
-
-function foot_s() {
-  echo "	zexy.c"
-  echo
-}
-
-
 ##################################
 ## body
 
 head_h > $ZEXY_H
 head_c > $ZEXY_C
-head_s > $ZEXY_S
 
 for i in `ls *.c | grep -v zexy.c`
 do
@@ -68,12 +56,10 @@ do
 ## any non-alpha-numeric-character is replaced by "_"
 ## e.g. "multiplex~.c" -> "z_multiplex__setup()"
   SETUPNAME=z_`echo ${i%.c} | sed -e 's/[^[:alnum:]]/_/g'`_setup
-  echo "	$i \\" >> $ZEXY_S
   echo "void ${SETUPNAME}(void); /* $i */" >> $ZEXY_H
   echo "	${SETUPNAME}(); /* $i */" >> $ZEXY_C
 done
 
 foot_h >> $ZEXY_H
 foot_c >> $ZEXY_C
-foot_s >> $ZEXY_S
 
