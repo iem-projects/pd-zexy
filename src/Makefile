@@ -9,6 +9,8 @@ SOURCES=$(sort $(filter %.c, $(wildcard *.c)))
 Make.config: Make.config.in configure
 	./configure
 
+zexyconf.h: zexyconf.h.in configure
+	./configure
 
 configure: configure.ac
 	autoconf

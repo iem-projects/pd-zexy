@@ -1,5 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(zexy.c)
+AC_INIT([zexy.h])
+AC_CONFIG_HEADER([zexyconf.h])
 
 LIBNAME=zexy
 
@@ -21,8 +22,6 @@ AC_SUBST(PDLIBDIR)
 AC_SUBST(INCLUDES)
 AC_SUBST(SOURCES)
 AC_SUBST(LIBNAME)
-
-
 
 AC_ARG_WITH(pdversion, [  --with-pdversion=<ver>  enforce a certain pd-version (e.g. 0.37)])
 AC_ARG_WITH(version,   [  --with-version=<ver>    enforce a certain zexy-version (e.g. 2.0)])
@@ -92,7 +91,7 @@ AC_CHECK_LIB(pd, nullfn)
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(stdlib.h stdio.h string.h math.h time.h sys/time.h)
+AC_CHECK_HEADERS(stdlib.h stdio.h string.h math.h time.h sys/time.h regex.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_TIME
@@ -372,7 +371,7 @@ then
  EXT=$with_extension
 fi
 
-AC_CHECK_HEADER(linux/ppdev.h, [ have_ppdev="yes" ], [ have_ppdev="no" ])
+AC_CHECK_HEADERS(linux/ppdev.h, [ have_ppdev="yes" ], [ have_ppdev="no" ])
 
 dnl check for LPT
 AC_MSG_CHECKING("parallel-port")
@@ -380,7 +379,7 @@ if test "$enable_lpt" != "no"
 then
   if test "$enable_lpt" = "yes"
   then
-    DFLAGS="$DFLAGS -DZ_WANT_LPT"
+    AC_DEFINE([Z_WANT_LPT])
     echo "yes (forced)"
   else
 
@@ -396,10 +395,9 @@ EOF
 
    if $CC $INCLUDES -o conftest.o conftest.c > /dev/null 2>&1
    then
-     DFLAGS="$DFLAGS -DZ_WANT_LPT"
+     AC_DEFINE([Z_WANT_LPT])
      if test "x$have_ppdev" = "xyes"
      then
-       DFLAGS="$DFLAGS -DHAVE_PPDEV"
        echo "yes (with device-support)"
      else
        echo "yes"

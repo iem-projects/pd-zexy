@@ -39,6 +39,8 @@
 # endif
 #endif
 
+#include "zexyconf.h"
+
 #include "m_pd.h"
 #include <math.h>
 

@@ -16,11 +16,13 @@
 
 #include "zexy.h"
 
-#include <sys/types.h>
-#include <regex.h>
-#include <string.h>
+#ifdef HAVE_REGEX_H
+# include <sys/types.h>
+# include <regex.h>
+# include <string.h>
+#endif
 
-#define NUM_REGMATCHES 10
+# define NUM_REGMATCHES 10
 
 /*
  * regex    : see whether a regular expression matches the given symbol
@@ -35,11 +37,13 @@ static t_class *regex_class;
 typedef struct _regex
 {
   t_object x_obj;
-
+#ifdef HAVE_REGEX_H
   regex_t *x_regexp;
   int x_matchnum;
+#endif
 } t_regex;
 
+#ifdef HAVE_REGEX_H
 static char*regex_l2s(int *reslen, t_symbol*s, int argc, t_atom*argv)
 {
   char *result = 0;
@@ -105,9 +109,11 @@ static char*regex_l2s(int *reslen, t_symbol*s, int argc, t_atom*argv)
   if(reslen)*reslen=length;
   return result;
 }
+#endif
 
 static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
 {
+#ifdef HAVE_REGEX_H
   char*result=0;
   int length=0;
   t_atom*ap=argv;
@@ -137,9 +143,11 @@ static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
   }
 
   if(result)freebytes(result, length);
+#endif
 }
 static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
 {
+#ifdef HAVE_REGEX_H
   char*teststring=0;
   int length=0;
 
@@ -192,30 +200,36 @@ static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
     outlet_list(x->x_obj.ob_outlet, gensym("list"), ap_length, ap);
     freebytes(ap, sizeof(t_atom)*(1+2*num_matches));
   }
+#endif
 }
 
 static void *regex_new(t_symbol *s, int argc, t_atom*argv)
 {
   t_regex *x = (t_regex *)pd_new(regex_class);
 
-  x->x_regexp=0;
-  x->x_matchnum=NUM_REGMATCHES;
-
   outlet_new(&x->x_obj, 0);
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("regex"));
 
+#ifdef HAVE_REGEX_H
+  x->x_regexp=0;
+  x->x_matchnum=NUM_REGMATCHES;
   if(argc)regex_regex(x, gensym(""), argc, argv);
+#else
+  error("[regex] non-functional: compiled without regex-support!");
+#endif
 
   return (x);
 }
 
 static void regex_free(t_regex *x)
 {
+#ifdef HAVE_REGEX_H
   if(x->x_regexp) {
     regfree(x->x_regexp);
     freebytes(x->x_regexp, sizeof(t_regex));
     x->x_regexp=0;
   }
+#endif
 }
 
 
