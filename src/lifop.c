@@ -43,12 +43,14 @@ typedef struct _lifop_prioritylist {
   t_float                     priority;
   t_lifop_list               *lifo_start;
   struct _lifop_prioritylist *next;
+  unsigned long               counter;
 } t_lifop_prioritylist;
 typedef struct _lifop
 {
   t_object              x_obj;
   t_lifop_prioritylist *lifo_list;
   t_float               priority; /* current priority */
+  t_outlet             *x_out, *x_infout;
 } t_lifop;
 
 static t_lifop_prioritylist*lifop_genprioritylist(t_lifop*x, t_float priority)
@@ -76,6 +78,7 @@ static t_lifop_prioritylist*lifop_genprioritylist(t_lifop*x, t_float priority)
   result = (t_lifop_prioritylist*)getbytes(sizeof( t_lifop_prioritylist));
   result->priority=priority;
   result->lifo_start=0;
+  result->counter=0;
 
   /* insert it into the list of priority lists */
   if(dummy==0){
@@ -119,6 +122,7 @@ static int add2lifo(t_lifop_prioritylist*lifoprio, int argc, t_atom *argv)
 
   entry->next=lifoprio->lifo_start;
   lifoprio->lifo_start=entry;
+  lifoprio->counter++;
 
   return 0;
 }
@@ -147,11 +151,15 @@ static void lifop_bang(t_lifop *x)
   int argc=0;
 
   if(!(plifo=getLifo(x->lifo_list))){
+    outlet_bang(x->x_infout);
     return;
   }
   if(!(lifo=plifo->lifo_start)){
+    outlet_bang(x->x_infout);
     return;
   }
+
+  plifo->counter--;
 
   plifo->lifo_start=lifo->next;
 
@@ -167,12 +175,25 @@ static void lifop_bang(t_lifop *x)
   freebytes(lifo, sizeof(t_lifop_list));
 
   /* output the list */
-  outlet_list(x->x_obj.ob_outlet, &s_list, argc, argv);
+  outlet_list(x->x_out, &s_list, argc, argv);
 
   /* free the list */
   freebytes(argv, argc*sizeof(t_atom));
 }
+static void lifop_query(t_lifop*x)
+{
+  unsigned long counter=0;
+  t_lifop_prioritylist*plifo=x->lifo_list;
 
+  while(plifo!=NULL){
+    counter+=plifo->counter;
+    plifo=plifo->next;
+  }
+  
+  verbose(1, "%d elements in lifo", (int)counter);
+  
+  outlet_float(x->x_infout, (t_float)counter);
+}
 static void lifop_free(t_lifop *x)
 {
   t_lifop_prioritylist *lifo_list=x->lifo_list;
@@ -198,14 +219,18 @@ static void lifop_free(t_lifop *x)
     freebytes(lifo_list2, sizeof( t_lifop_prioritylist));
   }
   x->lifo_list=0;
+
+  outlet_free(x->x_out);
+  outlet_free(x->x_infout);
 }
 
 static void *lifop_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_lifop *x = (t_lifop *)pd_new(lifop_class);
 
-  outlet_new(&x->x_obj, 0);
   floatinlet_new(&x->x_obj, &x->priority);
+  x->x_out=outlet_new(&x->x_obj, gensym("list"));
+  x->x_infout=outlet_new(&x->x_obj, gensym("float"));
 
   x->lifo_list = 0;
   x->priority=0;
@@ -220,6 +245,7 @@ void lifop_setup(void)
 
   class_addbang    (lifop_class, lifop_bang);
   class_addlist    (lifop_class, lifop_list);
+  class_addmethod  (lifop_class, (t_method)lifop_query, gensym("info"), A_NULL);
 
   class_sethelpsymbol(lifop_class, gensym("zexy/lifop"));
   zexy_register("lifop");

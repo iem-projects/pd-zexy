@@ -44,6 +44,7 @@ typedef struct _fifop_prioritylist {
   t_fifop_list               *fifo_start;
   t_fifop_list               *fifo_end;
   struct _fifop_prioritylist *next;
+  unsigned long               counter;
 } t_fifop_prioritylist;
 
 typedef struct _fifop
@@ -51,6 +52,7 @@ typedef struct _fifop
   t_object              x_obj;
   t_fifop_prioritylist *fifo_list;
   t_float               priority; /* current priority */
+  t_outlet             *x_out, *x_infout;
 } t_fifop;
 
 static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
@@ -81,6 +83,7 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
   result->fifo_start=0;
   result->fifo_end=0;
   result->next=0;
+  result->counter=0;
 
   /* insert it into the list of priority lists */
   if(dummy==0){
@@ -136,6 +139,7 @@ static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
     /* and at the same time, it is the last entry */
     fifoprio->fifo_end  =entry;
   }
+  fifoprio->counter++;
   return 0;
 }
 static t_fifop_prioritylist*getFifo(t_fifop_prioritylist*pfifo)
@@ -163,11 +167,15 @@ static void fifop_bang(t_fifop *x)
   int argc=0;
 
   if(!(pfifo=getFifo(x->fifo_list))){
+    outlet_bang(x->x_infout);
     return;
   }
   if(!(fifo=pfifo->fifo_start)){
+    outlet_bang(x->x_infout);
     return;
   }
+
+  pfifo->counter--;
 
   pfifo->fifo_start=fifo->next;
   if(0==pfifo->fifo_start){
@@ -185,12 +193,25 @@ static void fifop_bang(t_fifop *x)
   freebytes(fifo, sizeof(t_fifop_list));
 
   /* output the list */
-  outlet_list(x->x_obj.ob_outlet, &s_list, argc, argv);
+  outlet_list(x->x_out, &s_list, argc, argv);
 
   /* free the list */
   freebytes(argv, argc*sizeof(t_atom));
 }
+static void fifop_query(t_fifop*x)
+{
+  unsigned long counter=0;
+  t_fifop_prioritylist*pfifo=x->fifo_list;
 
+  while(pfifo!=NULL){
+    counter+=pfifo->counter;
+    pfifo=pfifo->next;
+  }
+  
+  verbose(1, "%d elements in fifo", (int)counter);
+  
+  outlet_float(x->x_infout, (t_float)counter);
+}
 static void fifop_free(t_fifop *x)
 {
   t_fifop_prioritylist *fifo_list=x->fifo_list;
@@ -217,14 +238,18 @@ static void fifop_free(t_fifop *x)
     freebytes(fifo_list2, sizeof( t_fifop_prioritylist));
   }
   x->fifo_list=0;
+
+  outlet_free(x->x_out);
+  outlet_free(x->x_infout);
 }
 
 static void *fifop_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_fifop *x = (t_fifop *)pd_new(fifop_class);
 
-  outlet_new(&x->x_obj, 0);
   floatinlet_new(&x->x_obj, &x->priority);
+  x->x_out   =outlet_new(&x->x_obj, gensym("list" ));
+  x->x_infout=outlet_new(&x->x_obj, gensym("float"));
 
   x->fifo_list = 0;
   x->priority=0;
@@ -239,6 +264,7 @@ void fifop_setup(void)
 
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);
+  class_addmethod  (fifop_class, (t_method)fifop_query, gensym("info"), A_NULL);
 
   class_sethelpsymbol(fifop_class, gensym("zexy/fifop"));
   zexy_register("fifop");
