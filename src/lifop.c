@@ -43,12 +43,12 @@ typedef struct _lifop_prioritylist {
   t_float                     priority;
   t_lifop_list               *lifo_start;
   struct _lifop_prioritylist *next;
-  unsigned long               counter;
 } t_lifop_prioritylist;
 typedef struct _lifop
 {
   t_object              x_obj;
   t_lifop_prioritylist *lifo_list;
+  unsigned long         counter;
   t_float               priority; /* current priority */
   t_outlet             *x_out, *x_infout;
 } t_lifop;
@@ -78,7 +78,6 @@ static t_lifop_prioritylist*lifop_genprioritylist(t_lifop*x, t_float priority)
   result = (t_lifop_prioritylist*)getbytes(sizeof( t_lifop_prioritylist));
   result->priority=priority;
   result->lifo_start=0;
-  result->counter=0;
 
   /* insert it into the list of priority lists */
   if(dummy==0){
@@ -122,7 +121,6 @@ static int add2lifo(t_lifop_prioritylist*lifoprio, int argc, t_atom *argv)
 
   entry->next=lifoprio->lifo_start;
   lifoprio->lifo_start=entry;
-  lifoprio->counter++;
 
   return 0;
 }
@@ -141,7 +139,11 @@ static void lifop_list(t_lifop *x, t_symbol *s, int argc, t_atom *argv)
     error("[lifop]: couldn't get priority lifo");
     return;
   }
-  add2lifo(plifo, argc, argv);
+  if(!add2lifo(plifo, argc, argv)) 
+    { 
+      x->counter++;
+    }
+
 }
 static void lifop_bang(t_lifop *x)
 {
@@ -159,7 +161,7 @@ static void lifop_bang(t_lifop *x)
     return;
   }
 
-  plifo->counter--;
+  x->counter--;
 
   plifo->lifo_start=lifo->next;
 
@@ -181,18 +183,10 @@ static void lifop_bang(t_lifop *x)
   freebytes(argv, argc*sizeof(t_atom));
 }
 static void lifop_query(t_lifop*x)
-{
-  unsigned long counter=0;
-  t_lifop_prioritylist*plifo=x->lifo_list;
-
-  while(plifo!=NULL){
-    counter+=plifo->counter;
-    plifo=plifo->next;
-  }
+{  
+  verbose(1, "%d elements in lifo", (int)x->counter);
   
-  verbose(1, "%d elements in lifo", (int)counter);
-  
-  outlet_float(x->x_infout, (t_float)counter);
+  outlet_float(x->x_infout, (t_float)x->counter);
 }
 static void lifop_free(t_lifop *x)
 {
@@ -234,6 +228,7 @@ static void *lifop_new(t_symbol *s, int argc, t_atom *argv)
 
   x->lifo_list = 0;
   x->priority=0;
+  x->counter=0;
 
   return (x);
 }

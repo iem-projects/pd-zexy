@@ -44,7 +44,6 @@ typedef struct _fifop_prioritylist {
   t_fifop_list               *fifo_start;
   t_fifop_list               *fifo_end;
   struct _fifop_prioritylist *next;
-  unsigned long               counter;
 } t_fifop_prioritylist;
 
 typedef struct _fifop
@@ -52,6 +51,7 @@ typedef struct _fifop
   t_object              x_obj;
   t_fifop_prioritylist *fifo_list;
   t_float               priority; /* current priority */
+  unsigned long               counter;
   t_outlet             *x_out, *x_infout;
 } t_fifop;
 
@@ -83,7 +83,6 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
   result->fifo_start=0;
   result->fifo_end=0;
   result->next=0;
-  result->counter=0;
 
   /* insert it into the list of priority lists */
   if(dummy==0){
@@ -139,7 +138,6 @@ static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
     /* and at the same time, it is the last entry */
     fifoprio->fifo_end  =entry;
   }
-  fifoprio->counter++;
   return 0;
 }
 static t_fifop_prioritylist*getFifo(t_fifop_prioritylist*pfifo)
@@ -157,7 +155,10 @@ static void fifop_list(t_fifop *x, t_symbol *s, int argc, t_atom *argv)
     error("[fifop]: couldn't get priority fifo");
     return;
   }
-  add2fifo(pfifo, argc, argv);
+  if(!add2fifo(pfifo, argc, argv))
+    {
+      x->counter++;
+    }
 }
 static void fifop_bang(t_fifop *x)
 {
@@ -175,7 +176,7 @@ static void fifop_bang(t_fifop *x)
     return;
   }
 
-  pfifo->counter--;
+  x->counter--;
 
   pfifo->fifo_start=fifo->next;
   if(0==pfifo->fifo_start){
@@ -200,17 +201,9 @@ static void fifop_bang(t_fifop *x)
 }
 static void fifop_query(t_fifop*x)
 {
-  unsigned long counter=0;
-  t_fifop_prioritylist*pfifo=x->fifo_list;
-
-  while(pfifo!=NULL){
-    counter+=pfifo->counter;
-    pfifo=pfifo->next;
-  }
+  verbose(1, "%d elements in fifo", (int)x->counter);
   
-  verbose(1, "%d elements in fifo", (int)counter);
-  
-  outlet_float(x->x_infout, (t_float)counter);
+  outlet_float(x->x_infout, (t_float)x->counter);
 }
 static void fifop_free(t_fifop *x)
 {
