@@ -59,7 +59,7 @@ realclean: clean
 	-rm -f *.d *.d.*
 
 distclean: realclean
-	-rm -f Make.config ../*.$(EXT)
+	-rm -f Make.config zexyconf.h ../*.$(EXT)
 
 install: install-bin install-doc install-abs
 
