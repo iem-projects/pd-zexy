@@ -62,6 +62,7 @@ distclean: realclean
 	-rm -f Make.config zexyconf.h ../*.$(EXT)
 	-rm -f zexy.exp  zexy.lib  zexy.ncb  \
 		zexy.opt  zexy.plg
+	-rm -rf autom4te.cache/
 
 install: install-bin install-doc install-abs
 
