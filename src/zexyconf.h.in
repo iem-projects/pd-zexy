@@ -2,6 +2,9 @@
 /* Define if you have the <regex.h> header file.  */
 #undef HAVE_REGEX_H
 
+/* Define if you have the <alloca.h> header file.  */
+#undef HAVE_ALLOCA_H
+
 /* define if you want parallelport-support (direct access to the port address) */
 #undef Z_WANT_LPT
 
