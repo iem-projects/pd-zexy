@@ -55,11 +55,12 @@ static void reset_mask(t_makesymbol *x, t_symbol *s)
 	}
 }
 
+typedef char cstring[MAXSTRINGLENG];
+
 t_symbol* list2symbol(char *masque, int argc, t_atom *argv)
 {
-	typedef char cstring[MAXSTRINGLENG];
-
-	cstring buf[MAXSTRINGARGS];
+  //	cstring buf[MAXSTRINGARGS];
+  cstring*buf=(cstring*)getbytes(MAXSTRINGARGS*sizeof(cstring));
 	cstring buffer;
 	int i;
 
@@ -73,6 +74,7 @@ t_symbol* list2symbol(char *masque, int argc, t_atom *argv)
 		masque,
 		buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7], buf[8], buf[9]);
 
+        freebytes(buf, MAXSTRINGARGS*sizeof(cstring));
 	return (gensym(buffer));
 }
 
