@@ -48,7 +48,7 @@ $(LIBNAME): $(TARGETS)
 	$(STRIP) $(STRIPFLAGS) $(LIBNAME).$(EXT)
 
 $(TARGETS): %.o : %.c
-	$(CC) -c -o $@ $(Z_CFLAGS) $*.c
+	$(CC) $(Z_CFLAGS) -c -o $@ $*.c
 
 
 clean:
