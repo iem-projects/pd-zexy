@@ -23,9 +23,11 @@ AC_SUBST(INCLUDES)
 AC_SUBST(SOURCES)
 AC_SUBST(LIBNAME)
 
-AC_ARG_WITH(pdversion, [  --with-pdversion=<ver>  enforce a certain pd-version (e.g. 0.37)])
-AC_ARG_WITH(version,   [  --with-version=<ver>    enforce a certain zexy-version (e.g. 2.0)])
-AC_ARG_WITH(extension, [  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
+AC_ARG_WITH(pdversion,[  --with-pdversion=<ver>  enforce a certain pd-version (e.g. 0.37)])
+AC_ARG_WITH(version,  [  --with-version=<ver>    enforce a certain zexy-version (e.g. 2.0)])
+AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
+AC_ARG_WITH(pdpath,   [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
+AC_ARG_ENABLE(PIC,    [  --disable-PIC           disable compilation with PIC-flag])
 AC_ARG_ENABLE(lpt,    [  --enable-lpt            enable parallelport-support])
 AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
 if test `uname -s` = Darwin; 
@@ -58,6 +60,15 @@ then
  if test "$enable_icc" = "yes"; then
   CC=icc
   LD=icc
+ fi
+fi
+
+if test "x$with_pd" != "x"; then
+ if test -d "${with_pd}/src"; then
+  INCLUDES="-I${with_pd}/src ${INCLUDES}"
+ fi
+ if test -d "${with_pd}/bin"; then
+  LIBS="-L${with_pd}/bin ${LIBS}"
  fi
 fi
 
@@ -125,7 +136,7 @@ else
   echo "no"
 fi
 
-
+if test "x$enable_PIC" != "xno"; then
 AC_MSG_CHECKING("PIC")
 cat > conftest.c << EOF
 int main(){
@@ -139,7 +150,7 @@ then
 else
   echo "no"
 fi
-
+fi
 
 
 dnl if we don't have $LD set, we set it to $(CC)

@@ -79,8 +79,7 @@ to compile:
  + cross-compilation for windows on linux using mingw (assumes that the 
    crosscompiler is "i586-mingw32msvc-cc")
 	#> ./configure --host=i586-mingw32msvc --with-extension=dll \
-	   --includedir=/path/to/win/pd/src/ --libdir=/path/to/win/pd/bin/
-
+	   --with-pd=/path/to/win/pd/ --disable-PIC
 
 irix :
 ------------------------------------------------------------------------------
