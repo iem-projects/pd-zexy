@@ -5,10 +5,10 @@
 #X msg 58 85 1 2 3 4 5;
 #X msg 69 110 list a list;
 #X msg 81 137 5;
-#X msg 199 127 bang;
-#X floatatom 200 163 5 0 0 1 priority - -;
+#X msg 199 107 bang;
+#X floatatom 200 143 5 0 0 1 priority - -;
 #X text 45 61 input lists;
-#X text 247 110 bang to output the last list that came in \; bang again
+#X text 247 90 bang to output the last list that came in \; bang again
 to output the second last list \; and so on;
 #X obj 58 223 print LIFO;
 #X text 47 18 lifop:: Last-In-First-Out stack with Priorities;
@@ -25,9 +25,14 @@ higher priority then 10);
 #X text 52 445 note: you can store any number of lists into the [fifop]
 \, but just pushing lists on the stack without popping them back will
 eat your memory.;
+#X msg 200 167 info;
+#X obj 112 203 print info;
+#X text 247 168 query the number of arguments in the LIFO;
 #X connect 2 0 10 0;
+#X connect 2 1 18 0;
 #X connect 3 0 2 0;
 #X connect 4 0 2 0;
 #X connect 5 0 2 0;
 #X connect 6 0 2 0;
 #X connect 7 0 2 1;
+#X connect 17 0 2 0;
