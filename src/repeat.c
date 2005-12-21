@@ -40,10 +40,14 @@ static void repeat_anything(t_repeat *x, t_symbol *s, int argc, t_atom *argv)
   while(i--)outlet_anything(x->x_obj.ob_outlet, s, argc, argv);
 }
 
-static void *repeat_new(t_float f)
+static void *repeat_new(t_symbol*s, int argc, t_atom*argv)
 {
   t_repeat *x = (t_repeat *)pd_new(repeat_class);
-  x->fcount = f;
+  if(argc){
+    if(A_FLOAT==argv->a_type)
+      x->fcount = atom_getfloat(argv);
+    else return 0;
+  } else x->fcount=2;
   floatinlet_new(&x->x_obj, &x->fcount);
   outlet_new(&x->x_obj, 0);
   return (x);
@@ -52,7 +56,7 @@ static void *repeat_new(t_float f)
 void repeat_setup(void)
 {
   repeat_class = class_new(gensym("repeat"), (t_newmethod)repeat_new, 
-			   0, sizeof(t_repeat), 0, A_FLOAT, 0);
+			   0, sizeof(t_repeat), 0, A_GIMME, 0);
   class_addanything(repeat_class, repeat_anything);
 
   class_sethelpsymbol(repeat_class, gensym("zexy/repeat"));
