@@ -421,6 +421,12 @@ else
  echo "no (ignored)"
 fi
 
+
+AC_CHECK_HEADERS(m_pd.h, , AC_ERROR([m_pd.h is desperately needed!
+        install pd and/or use
+        "--with-pd=</path/to/pd/>"     or
+        "--includedir=</path/to/pd/src/>"]))
+
 AC_OUTPUT(Make.config)
 
 #rm -f conftest.*
