@@ -57,7 +57,15 @@ note: if you don't want the parallel-port object [lpt]
 macOS-X:
 ------------------------------------------------------------------------------
 see installation/linux
-the configure-script should work here too;
+the configure-script should work here too
+
+note on generating dependencies:
+ on older systems the automatic creation of build dependencies
+ might fail with following error:
+    cpp0: invalid option -smart
+ a simple workaround is to not use the "-E" flag for the preprocessor
+ try:
+   make CPP=cc
 
 win32 :
 ------------------------------------------------------------------------------
