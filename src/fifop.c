@@ -106,7 +106,7 @@ static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
   t_fifop_list*entry=0;
 
   if(fifoprio==0){
-    error("pfifo: no fifos available");
+        error("pfifo: no fifos available");
     return -1;
   }
 
@@ -201,7 +201,7 @@ static void fifop_bang(t_fifop *x)
 }
 static void fifop_query(t_fifop*x)
 {
-  verbose(1, "%d elements in fifo", (int)x->counter);
+  z_verbose(1, "%d elements in fifo", (int)x->counter);
   
   outlet_float(x->x_infout, (t_float)x->counter);
 }

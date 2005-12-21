@@ -43,12 +43,15 @@
 /* some defines, which turn on special compile-options 
  * (like parallel-port)
  * the ifdef is here, to not break the externals/build-system
+ * (read: build-systems outside of zexy)
  */
 # include "zexyconf.h"
 #endif
 
 #include "m_pd.h"
 #include <math.h>
+
+#include <stdarg.h>
 
 #define VERSION "2.1"
 
@@ -99,15 +102,24 @@ static void zexy_register(char*object){
 static void zexy_register(char*object){}
 #endif /* ZEXY_LIBRARY */
 
+static void z_verbose(int level, char*fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+
 #if (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION > 38)
-/* pd>=0.39 has a verbose() function; older versions don't
+/* 
+ * pd>=0.39 has a verbose() function; older versions don't
  */
+  verbose(level, fmt, ap);
 #else
-/* this might not work on compilers other than gcc
- * is it ISO-C99 or just a gnu-cpp thing ?
- */
-# define verbose(level, format, ...) post(format, ## __VA_ARGS__)
+  /* 
+   * fall back to a simple post...
+   */
+  post(fmt, ap);
 #endif
 
+  va_end(ap);
+}
 
 #endif /* INCLUDE_ZEXY_H__ */
