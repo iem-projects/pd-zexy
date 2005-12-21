@@ -53,6 +53,7 @@ void z_zexy_setup(void)
 	z_repeat_setup(); /* repeat.c */
 	z_sfplay_setup(); /* sfplay.c */
 	z_sfrecord_setup(); /* sfrecord.c */
+	z_sgn__setup(); /* sgn~.c */
 	z_sigzero__setup(); /* sigzero~.c */
 	z_sort_setup(); /* sort.c */
 	z_step__setup(); /* step~.c */

@@ -51,6 +51,7 @@ void z_repack_setup(void); /* repack.c */
 void z_repeat_setup(void); /* repeat.c */
 void z_sfplay_setup(void); /* sfplay.c */
 void z_sfrecord_setup(void); /* sfrecord.c */
+void z_sgn__setup(void); /* sgn~.c */
 void z_sigzero__setup(void); /* sigzero~.c */
 void z_sort_setup(void); /* sort.c */
 void z_step__setup(void); /* step~.c */

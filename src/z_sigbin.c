@@ -15,67 +15,12 @@
  ******************************************************/
 
 /*
-	finally :: some of the missing binops for signals :: sgn~, >~, <~, ==~, &&~, ||~
+	finally :: some of the missing binops for signals :: >~, <~, ==~, &&~, ||~
 
 	1302:forum::für::umläute:2000
 */
 
 #include "zexy.h"
-
-typedef struct _misc
-{
-  t_object x_obj;
-} t_misc;
-
-
-/* ------------------------ sgn~ ----------------------------- */
-
-static t_class *sigSGN_class;
-
-static t_int *sigSGN_perform(t_int *w)
-{
-  t_float *in = (t_float *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
-  int n = (int)(w[3]);
-  t_float x;
-  
-  while (n--) {
-    if ((x=*in++)>0.) *out++=1.;
-    else if	(x<0.) *out++=-1.;
-    else *out++=0.;
-  }
-  
-  return (w+4);
-}
-
-static void sigSGN_dsp(t_misc *x, t_signal **sp)
-{
-  dsp_add(sigSGN_perform, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
-}
-
-static void sigSGN_helper(void)
-{
-  post("\n%c sgn~ \t\t:: sign of a signal", HEARTSYMBOL);
-}
-
-static void *sigSGN_new()
-{
-  t_misc *x = (t_misc *)pd_new(sigSGN_class);
-  outlet_new(&x->x_obj, gensym("signal"));
-  
-  return (x);
-}
-
-static void sigSGN_setup(void)
-{
-  sigSGN_class = class_new(gensym("sgn~"), (t_newmethod)sigSGN_new, 0,
-			   sizeof(t_misc), 0, A_DEFFLOAT, 0);
-  class_addmethod(sigSGN_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sigSGN_class, (t_method)sigSGN_dsp, gensym("dsp"), 0);
-  
-  class_addmethod(sigSGN_class, (t_method)sigSGN_helper, gensym("help"), 0);
-  class_sethelpsymbol(sigSGN_class, gensym("zexy/sigbinops+"));
-}
 
 /* ------------------------ relational~ ----------------------------- */
 
@@ -755,7 +700,6 @@ static void sigOR_setup(void)
 
 void z_sigbin_setup(void)
 {
-  sigSGN_setup();
   sigGRT_setup();
   sigLESS_setup();
   sigEQUAL_setup();
