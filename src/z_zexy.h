@@ -6,6 +6,7 @@
 #ifndef Z_ZEXY_H__
 #define Z_ZEXY_H__
 void z_a2l_setup(void); /* a2l.c */
+void z_abs__setup(void); /* abs~.c */
 void z_atoi_setup(void); /* atoi.c */
 void z_avg__setup(void); /* avg~.c */
 void z_blockmirror__setup(void); /* blockmirror~.c */

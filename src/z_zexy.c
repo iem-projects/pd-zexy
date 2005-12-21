@@ -8,6 +8,7 @@
 void z_zexy_setup(void)
 {
 	z_a2l_setup(); /* a2l.c */
+	z_abs__setup(); /* abs~.c */
 	z_atoi_setup(); /* atoi.c */
 	z_avg__setup(); /* avg~.c */
 	z_blockmirror__setup(); /* blockmirror~.c */

@@ -15,7 +15,7 @@
  ******************************************************/
 
 /*
-	finally :: some of the missing binops for signals :: abs~, sgn~, >~, <~, ==~, &&~, ||~
+	finally :: some of the missing binops for signals :: sgn~, >~, <~, ==~, &&~, ||~
 
 	1302:forum::für::umläute:2000
 */
@@ -27,51 +27,6 @@ typedef struct _misc
   t_object x_obj;
 } t_misc;
 
-
-/* ------------------------ sigABS~ ----------------------------- */
-
-static t_class *sigABS_class;
-
-static t_int *sigABS_perform(t_int *w)
-{
-  t_float *in = (t_float *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
-  int n = (int)(w[3]);
-  
-  while (n--) *out++ = fabsf(*in++);
-  
-  return (w+4);
-}
-
-static void sigABS_dsp(t_misc *x, t_signal **sp)
-{
-  dsp_add(sigABS_perform, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
-}
-
-static void sigABS_helper(void)
-{
-  post("\n%c abs~ \t\t:: absolute value of a signal", HEARTSYMBOL);
-}
-
-static void *sigABS_new(void)
-{
-  t_misc *x = (t_misc *)pd_new(sigABS_class);
-  outlet_new(&x->x_obj, gensym("signal"));
-
-  return (x);
-}
-
-static void sigABS_setup(void)
-{
-  sigABS_class = class_new(gensym("abs~"), (t_newmethod)sigABS_new, 0,
-			   sizeof(t_misc), 0, A_DEFFLOAT, 0);
-  class_addmethod(sigABS_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sigABS_class, (t_method)sigABS_dsp, gensym("dsp"), 0);
-  
-  class_addmethod(sigABS_class, (t_method)sigABS_helper, gensym("help"), 0);
-  
-  class_sethelpsymbol(sigABS_class, gensym("zexy/sigbinops+"));
-}
 
 /* ------------------------ sgn~ ----------------------------- */
 
@@ -800,7 +755,6 @@ static void sigOR_setup(void)
 
 void z_sigbin_setup(void)
 {
-  sigABS_setup();
   sigSGN_setup();
   sigGRT_setup();
   sigLESS_setup();
