@@ -49,6 +49,16 @@
 #endif
 
 #include "m_pd.h"
+
+#ifdef __SSE__
+# include <xmmintrin.h>
+# define Z_SIMD_BLOCK 16  /* must be a power of 2 */
+# define Z_SIMD_BYTEALIGN (128/8)   /* assume 128 bits */
+# define Z_SIMD_CHKBLOCKSIZE(n) (!(n&(Z_SIMD_BLOCK-1)))
+# define Z_SIMD_CHKALIGN(ptr) ( ((unsigned long)(ptr) & (Z_SIMD_BYTEALIGN-1)) == 0 )
+
+#endif /* __SSE__ */
+
 #include <math.h>
 
 #define VERSION "2.1"
@@ -114,7 +124,7 @@ static void zexy_register(char*object){}
  *
  * so we make it simpler: on older version we just shut up!
  */
-# define z_verbose
+# define z_verboseab
 #endif
 
 
