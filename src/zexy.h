@@ -51,8 +51,6 @@
 #include "m_pd.h"
 #include <math.h>
 
-#include <stdarg.h>
-
 #define VERSION "2.1"
 
 /* these pragmas are only used for MSVC, not MinGW or Cygwin */
@@ -102,24 +100,22 @@ static void zexy_register(char*object){
 static void zexy_register(char*object){}
 #endif /* ZEXY_LIBRARY */
 
-static void z_verbose(int level, char*fmt, ...)
-{
-  va_list ap;
-  va_start(ap, fmt);
-
 #if (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION > 38)
 /* 
  * pd>=0.39 has a verbose() function; older versions don't
+ * btw, this finally makes zexy binary incompatible with older version
  */
-  verbose(level, fmt, ap);
+# define z_verbose verbose
 #else
-  /* 
-   * fall back to a simple post...
-   */
-  post(fmt, ap);
+/* 
+ * this might not work on compilers other than gcc
+ * is it ISO-C99 or just a gnu-cpp thing ?
+ # define z_verbose(level, format, ...) post(format, ## __VA_ARGS__)
+ *
+ * so we make it simpler: on older version we just shut up!
+ */
+# define z_verbose
 #endif
 
-  va_end(ap);
-}
 
 #endif /* INCLUDE_ZEXY_H__ */
