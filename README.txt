@@ -59,9 +59,6 @@ macOS-X:
 see installation/linux
 the configure-script should work here too;
 
-if not, try "make -f makefile.darwin"
-
-
 win32 :
 ------------------------------------------------------------------------------
 
