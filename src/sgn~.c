@@ -79,7 +79,7 @@ static t_int *sgnTilde_performSSE(t_int *w)
   __m128 *out = (__m128 *)(w[2]);
 
   __m128 val;
-  int n = (int)(w[3])>>4; // yea, we do 16x loop-unrolling
+  int n = (int)(w[3])>>3; // we do 8x loop-unrolling
 
   const __m128 sgnmask= _mm_loadu_ps((float*)l_bitmask);
   const __m128 zero   = _mm_setzero_ps();
@@ -101,20 +101,8 @@ static t_int *sgnTilde_performSSE(t_int *w)
     xmm0  = _mm_and_ps   (xmm0, one);
     out[1]= _mm_or_ps    (xmm1, xmm0);
 
-    val=in[2];
-    xmm0  = _mm_cmpneq_ps(val , zero);
-    xmm1  = _mm_and_ps   (val, sgnmask);
-    xmm0  = _mm_and_ps   (xmm0, one);
-    out[2]= _mm_or_ps    (xmm1, xmm0);
-
-    val=in[3];
-    xmm0  = _mm_cmpneq_ps(val , zero);
-    xmm1  = _mm_and_ps   (val, sgnmask);
-    xmm0  = _mm_and_ps   (xmm0, one);
-    out[3]= _mm_or_ps    (xmm1, xmm0);
-
-    in +=4;
-    out+=4;
+    in +=2;
+    out+=2;
 
   }
   return (w+4);
