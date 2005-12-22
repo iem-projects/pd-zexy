@@ -124,7 +124,7 @@ static void zexy_register(char*object){}
  *
  * so we make it simpler: on older version we just shut up!
  */
-# define z_verboseab
+# define z_verbose
 #endif
 
 
