@@ -122,34 +122,10 @@ AC_CHECK_FUNCS(select socket strerror)
 dnl check for "-mms-bitfields" cflag
 dnl why is there no generic compiler-check for a given flag ?
 dnl it would make things so easy: AC_CHECK_FLAG([-mms-bitfields],,)
-AC_MSG_CHECKING("ms-bitfields")
-cat > conftest.c << EOF
-int main(){
-  return 0;
-}
-EOF
-if ${CC} ${INCLUDES} ${DFLAGS} -o conftest.o conftest.c ${CFLAGS} -mms-bitfields > /dev/null 2>&1
-then
-  echo "yes"
-  CFLAGS="${CFLAGS} -mms-bitfields"
-else
-  echo "no"
-fi
+AC_CHECK_CFLAGS([-mms-bitfields])
 
 if test "x$enable_PIC" != "xno"; then
-AC_MSG_CHECKING("PIC")
-cat > conftest.c << EOF
-int main(){
-  return 0;
-}
-EOF
-if ${CC} ${INCLUDES} ${DFLAGS} -o conftest.o conftest.c ${CFLAGS} -fPIC > /dev/null 2>&1
-then
-  echo "yes"
-  CFLAGS="${CFLAGS} -fPIC"
-else
-  echo "no"
-fi
+ AC_CHECK_CFLAGS([-fPIC])
 fi
 
 
