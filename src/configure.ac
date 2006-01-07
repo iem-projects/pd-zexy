@@ -128,6 +128,7 @@ if test "x$enable_PIC" != "xno"; then
  AC_CHECK_CFLAGS([-fPIC])
 fi
 
+AC_CHECK_CFLAGS([-mfpmath=sse -msse])
 
 dnl if we don't have $LD set, we set it to $(CC)
 dnl LD=${LD:=$CC}
