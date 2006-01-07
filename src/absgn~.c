@@ -76,8 +76,8 @@ static t_int *sigABSGN_performSSE(t_int *w)
     out1[1]= _mm_and_ps   (val2, bitmask);/* abs: set sign-bit to "+" */
     out2[1]= _mm_or_ps    (xmm3, xmm2);   /* merge sign and value */
 
-    in +=2;
-    out+=2;
+    in  +=2;
+    out1+=2;
     out2+=2;
   }
   while (--n);
