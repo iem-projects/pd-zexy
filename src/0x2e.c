@@ -165,3 +165,14 @@ void z_dot_setup(void)
 {
   dot_setup();
 }
+
+void z_0x2e_setup(void)
+{
+	dot_setup();
+}
+
+void setup_0x2e(void)
+{
+	dot_setup();
+}
+

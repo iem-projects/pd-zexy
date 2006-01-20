@@ -5,6 +5,12 @@
 
 #ifndef Z_ZEXY_H__
 #define Z_ZEXY_H__
+void z_0x260x260x7e_setup(void); /* 0x260x260x7e.c */
+void z_0x2e_setup(void); /* 0x2e.c */
+void z_0x3c0x7e_setup(void); /* 0x3c0x7e.c */
+void z_0x3d0x3d0x7e_setup(void); /* 0x3d0x3d0x7e.c */
+void z_0x3e0x7e_setup(void); /* 0x3e0x7e.c */
+void z_0x7c0x7c0x7e_setup(void); /* 0x7c0x7c0x7e.c */
 void z_a2l_setup(void); /* a2l.c */
 void z_absgn__setup(void); /* absgn~.c */
 void z_abs__setup(void); /* abs~.c */
@@ -17,7 +23,6 @@ void z_demultiplex_setup(void); /* demultiplex.c */
 void z_demultiplex__setup(void); /* demultiplex~.c */
 void z_dfreq__setup(void); /* dfreq~.c */
 void z_dirac__setup(void); /* dirac~.c */
-void z_dot_setup(void); /* dot.c */
 void z_drip_setup(void); /* drip.c */
 void z_envrms__setup(void); /* envrms~.c */
 void z_fifop_setup(void); /* fifop.c */
@@ -69,7 +74,6 @@ void z_unpack__setup(void); /* unpack~.c */
 void z_urn_setup(void); /* urn.c */
 void z_winNT_portio_setup(void); /* winNT_portio.c */
 void z_wrap_setup(void); /* wrap.c */
-void z_z_sigbin_setup(void); /* z_sigbin.c */
 void z_z__setup(void); /* z~.c */
 #endif /* Z_ZEXY_H__ */
 

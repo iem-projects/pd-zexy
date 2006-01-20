@@ -7,6 +7,12 @@
 
 void z_zexy_setup(void)
 {
+	z_0x260x260x7e_setup(); /* 0x260x260x7e.c */
+	z_0x2e_setup(); /* 0x2e.c */
+	z_0x3c0x7e_setup(); /* 0x3c0x7e.c */
+	z_0x3d0x3d0x7e_setup(); /* 0x3d0x3d0x7e.c */
+	z_0x3e0x7e_setup(); /* 0x3e0x7e.c */
+	z_0x7c0x7c0x7e_setup(); /* 0x7c0x7c0x7e.c */
 	z_a2l_setup(); /* a2l.c */
 	z_absgn__setup(); /* absgn~.c */
 	z_abs__setup(); /* abs~.c */
@@ -19,7 +25,6 @@ void z_zexy_setup(void)
 	z_demultiplex__setup(); /* demultiplex~.c */
 	z_dfreq__setup(); /* dfreq~.c */
 	z_dirac__setup(); /* dirac~.c */
-	z_dot_setup(); /* dot.c */
 	z_drip_setup(); /* drip.c */
 	z_envrms__setup(); /* envrms~.c */
 	z_fifop_setup(); /* fifop.c */
@@ -71,7 +76,6 @@ void z_zexy_setup(void)
 	z_urn_setup(); /* urn.c */
 	z_winNT_portio_setup(); /* winNT_portio.c */
 	z_wrap_setup(); /* wrap.c */
-	z_z_sigbin_setup(); /* z_sigbin.c */
 	z_z__setup(); /* z~.c */
 }
 
