@@ -116,8 +116,6 @@ static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
 #ifdef HAVE_REGEX_H
   char*result=0;
   int length=0;
-  t_atom*ap=argv;
-  int i=argc;
   int flags =  0;
   flags |= REG_EXTENDED;
 

@@ -57,7 +57,6 @@ typedef struct _fifop
 
 static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
 {
-  int i;
   t_fifop_prioritylist*result=0, *dummy=0;
 
   if(x->fifo_list!=0)
@@ -101,7 +100,6 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x, t_float priority)
 
 static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
 {
-  t_atom*buffer=0;
   t_fifop_list*fifo=0;
   t_fifop_list*entry=0;
 

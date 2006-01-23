@@ -47,10 +47,12 @@
 # include <errno.h>
 
 # ifdef HAVE_LINUX_PPDEV_H
+#  include <unistd.h>
 #  include <sys/ioctl.h>
 #  include <linux/ppdev.h>
 #  include <linux/parport.h>
 #  include <fcntl.h>
+#  include <stdio.h>
 # endif /* HAVE_LINUX_PPDEV_H */
 
 
@@ -192,7 +194,6 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
        we ignore the file (device) case by now;
        LATER think about this
     */
-    int bla;
     x->device=-1;
     x->port=strtol(devname, 0, 16);
     if(0==x->port){

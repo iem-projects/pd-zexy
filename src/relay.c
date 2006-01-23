@@ -175,6 +175,7 @@ void relay_setup(void)
         (t_method)relay_free, sizeof(t_relay), 0, A_GIMME, 0);
     class_addlist(relay_class, relay_list);
     class_addanything(relay_class, relay_anything);
+    zexy_register("relay");
 }
 void z_relay_setup(void)
 {

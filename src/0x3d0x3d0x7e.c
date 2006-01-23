@@ -127,7 +127,7 @@ t_int *eq_tilde_performSSE(t_int *w)
   const __m128 one    = _mm_set1_ps(1.f);
 
   while (n--) {
-    __m128 xmm0, xmm1, xmm2;
+    __m128 xmm0, xmm1;
     xmm0   = _mm_cmpeq_ps(in1[0], in2[0]);
     out[0] = _mm_and_ps  (xmm0 , one);
 

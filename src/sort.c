@@ -52,7 +52,7 @@ static void sort_dir(t_sort *x, t_float f)
 static void sort_buffer(t_sort *x, int argc, t_atom *argv)
 {
   int n = argc;
-  t_float *buf, *idx;
+  t_float *buf;
   t_atom *atombuf = argv;
 
   if (argc != x->bufsize) {

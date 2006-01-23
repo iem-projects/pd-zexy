@@ -425,7 +425,6 @@ static int atomcmp(t_atom *this, t_atom *that)
 
 static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
-  int searching = 1;
   t_msglist *found = 0;
   t_msglist *cur=x->current;
 
@@ -532,7 +531,7 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
   if ((fd = open_via_path(dirname,
 		  filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0)) < 0) {
 
-    if(fd=open(filename->s_name, rmode) < 0) {
+    if((fd=open(filename->s_name, rmode)) < 0) {
       error("%s: can't open in %s", filename->s_name, dirname);
       return;
     }

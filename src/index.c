@@ -125,7 +125,6 @@ static void index_float(t_index *x, t_float findex)
 static void index_add(t_index *x, t_symbol *s, t_float f)
 {
   int newentry=(int)f;
-  int ok = 0;
 
   if (! (find_item(s, x->names, x->maxentries)+1) ) {
     if (x->auto_resize && (x->entries==x->maxentries || newentry>=x->maxentries)){
@@ -291,7 +290,6 @@ static void *index_new(t_symbol *s, int argc, t_atom *argv)
   t_symbol** buf;
 
   int maxentries = 0, automod=0;
-  int i;
 
   if (argc--) {
     maxentries = (int)atom_getfloat(argv++);
