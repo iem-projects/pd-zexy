@@ -14,15 +14,15 @@ void z_zexy_setup(void)
 	z_0x3e0x7e_setup(); /* 0x3e0x7e.c */
 	z_0x7c0x7c0x7e_setup(); /* 0x7c0x7c0x7e.c */
 	z_a2l_setup(); /* a2l.c */
-	z_absgn__setup(); /* absgn~.c */
 	z_abs__setup(); /* abs~.c */
+	z_absgn__setup(); /* absgn~.c */
 	z_atoi_setup(); /* atoi.c */
 	z_avg__setup(); /* avg~.c */
 	z_blockmirror__setup(); /* blockmirror~.c */
 	z_blockswap__setup(); /* blockswap~.c */
 	z_date_setup(); /* date.c */
-	z_demultiplex_setup(); /* demultiplex.c */
 	z_demultiplex__setup(); /* demultiplex~.c */
+	z_demultiplex_setup(); /* demultiplex.c */
 	z_dfreq__setup(); /* dfreq~.c */
 	z_dirac__setup(); /* dirac~.c */
 	z_drip_setup(); /* drip.c */
@@ -42,14 +42,14 @@ void z_zexy_setup(void)
 	z_minmax_setup(); /* minmax.c */
 	z_msgfile_setup(); /* msgfile.c */
 	z_multiline__setup(); /* multiline~.c */
-	z_multiplex_setup(); /* multiplex.c */
 	z_multiplex__setup(); /* multiplex~.c */
+	z_multiplex_setup(); /* multiplex.c */
 	z_niagara_setup(); /* niagara.c */
 	z_noish__setup(); /* noish~.c */
 	z_noisi__setup(); /* noisi~.c */
 	z_operating_system_setup(); /* operating_system.c */
-	z_packel_setup(); /* packel.c */
 	z_pack__setup(); /* pack~.c */
+	z_packel_setup(); /* packel.c */
 	z_pdf__setup(); /* pdf~.c */
 	z_prime_setup(); /* prime.c */
 	z_quantize__setup(); /* quantize~.c */
