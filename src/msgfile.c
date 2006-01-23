@@ -26,11 +26,10 @@
 #include <fcntl.h>
 #include <string.h>
 
-#ifdef linux
-# include <unistd.h>
-#endif
 #ifdef __WIN32__
 # include <io.h>
+#else
+# include <unistd.h>
 #endif
 
 /* ****************************************************************************** */
