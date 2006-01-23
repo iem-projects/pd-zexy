@@ -259,7 +259,7 @@ static void oror_tilde_setup(void)
 
 
 /* ---------------------- global setup ------------------------- */
-void z_oror__setup()
+void z_oror__setup(void)
 {
   oror_tilde_setup();
 }
