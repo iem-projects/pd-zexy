@@ -112,8 +112,8 @@ typedef struct _lpt
 
 static void lpt_float(t_lpt *x, t_floatarg f)
 {
-  unsigned char b = f;
 #ifdef Z_WANT_LPT
+  unsigned char b = f;
 # ifdef HAVE_LINUX_PPDEV_H
   if (x->device>0){
     ioctl (x->device, PPWDATA, &b);
@@ -127,13 +127,13 @@ static void lpt_float(t_lpt *x, t_floatarg f)
 
 static void lpt_control(t_lpt *x, t_floatarg f)
 {
+#ifdef Z_WANT_LPT
   unsigned char b = f;
 # ifdef HAVE_LINUX_PPDEV_H
   if (x->device>0){
     ioctl (x->device, PPWCONTROL, &b);
   } else
 # endif
-#ifdef Z_WANT_LPT
   if (x->port) {
     sys_outb(b, x->port+2);
   }
@@ -142,6 +142,7 @@ static void lpt_control(t_lpt *x, t_floatarg f)
 
 static void lpt_bang(t_lpt *x)
 {
+#ifdef Z_WANT_LPT
 # ifdef HAVE_LINUX_PPDEV_H
   if (x->device>0){
     unsigned char b=0;
@@ -149,7 +150,6 @@ static void lpt_bang(t_lpt *x)
       outlet_float(x->x_obj.ob_outlet, (float)b);
   } else
 # endif
-#ifdef Z_WANT_LPT
   if (x->port)	{
     outlet_float(x->x_obj.ob_outlet, (float)sys_inb(x->port+1));
   }
@@ -253,7 +253,10 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
   if (x->mode==MODE_IOPL)post("lpt-warning: this might seriously damage your pc...");
 #else
   error("zexy has been compiled without [lpt]!");
+  count_iopl=0;
 #endif /* Z_WANT_LPT */
+
+  devname=0;
 
   return (x);
 }
