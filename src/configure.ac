@@ -35,6 +35,22 @@ then
 AC_ARG_ENABLE(bundle, [  --enable-bundleloader   use bundle_loader (default: autodetect)])
 fi
 
+if test "x" = "x${enable_PIC}" ; then
+ enable_PIC="${with_PIC}"
+fi
+
+if test "x" = "x${enable_lpt}" ; then
+ enable_lpt="${with_lpt}"
+fi
+
+if test "x" = "x${enable_icc}" ; then
+ enable_icc="${with_icc}"
+fi
+
+if test "x" = "x${enable_bundle}" ; then
+ enable_bundle="${with_bundle}"
+fi
+
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lc:
 AC_CHECK_LIB(c, main)
@@ -399,6 +415,8 @@ else
 fi
 
 
+CFLAGS="${INCLUDES} ${CFLAGS}"
+INCLUDES=""
 AC_CHECK_HEADERS(m_pd.h, , AC_ERROR([m_pd.h is desperately needed!
         install pd and/or use
         "--with-pd=</path/to/pd/>"     or
