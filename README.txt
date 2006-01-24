@@ -83,8 +83,12 @@ to compile:
  OR
  + cross-compilation for windows on linux using mingw (assumes that the 
    crosscompiler is "i586-mingw32msvc-cc")
-	#> ./configure --host=i586-mingw32msvc --with-extension=dll \
+	#> CFLAGS="" ./configure --host=i586-mingw32msvc --with-extension=dll \
 	   --with-pd=/path/to/win/pd/ --disable-PIC
+     notes: configure tries to set the CFLAGS to "-g -O2" if the compiler
+            accepts this; however, i noticed that when doing a cross-compilation
+	    for w32, pd will not be able to load certain externals if "-O2"
+	    is turned on; the 'CFLAGS=""' will prevent this
 
 irix :
 ------------------------------------------------------------------------------
