@@ -687,11 +687,6 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   /* close */
   if (f) fclose(f);
 
-#if 0
-  if (binbuf_write(bbuf, buf, "", cr))
-    error("%s: write failed", filename->s_name);
-#endif
-
   binbuf_free(bbuf);
 }
 
@@ -706,8 +701,8 @@ static void msgfile_help(t_msgfile *x)
        "\nprev\t\t: output previous line"
        "\nthis\t\t: output this line"
        "\nnext\t\t: output next line"
-       "\nflush\t\t: output all lines"
-       "\nset <list>\t: clear the buffer and add <list>"
+       "\nflush\t\t: output all lines");
+  post("set <list>\t: clear the buffer and add <list>"
        "\nadd <list>\t: add <list> at the end of the file"
        "\nadd2 <list>\t: append <list> to the last line of the file"
        "\nappend <list>\t: append <list> at the current position"
@@ -716,8 +711,8 @@ static void msgfile_help(t_msgfile *x)
        "\ninsert2 <list>\t: append <list> to position [current-1]"
        "\nreplace <list>\t: replace current line by <list>"
        "\ndelete [<pos> [<pos2>]]\t: delete lines or regions"
-       "\nclear\t\t: delete the whole buffer"
-       "\nwhere\t\t: output current position"
+       "\nclear\t\t: delete the whole buffer");
+  post("where\t\t: output current position"
        "\nfind <list>\t: search for <list>"
        "\nread <file> [<format>]\t: read <file> as <format>"
        "\nwrite <file> [<format>]\t: write <file> as <format>"
