@@ -332,8 +332,8 @@ static void index_helper(t_index *x)
        "\n'reset'              : delete the whole index-map"
        "\n'bang'               : return the number of entries in the index-map"
        "\n'dump'               : dump each entry in the format \"list <symbol> <index>\""
-       "\n'compact'            : remove holes in the index-map"
-       "\n'sort'               : alphabetically sort the entries"
+       "\n'compact'            : remove holes in the index-map");
+  post("\n'sort'               : alphabetically sort the entries"
        "\n'auto <1/0>          : if auto is 1 and a yet unknown symbol is looked up it is\n\t\t\t automatically added to the index-map"
        "\n'resize <1/0>        : if resize is 1 (default), the index-map is resized\n\t\t\t automatically if needed"
        "\n'help'               : view this"

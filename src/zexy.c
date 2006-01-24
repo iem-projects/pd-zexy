@@ -32,37 +32,39 @@ t_class *zexy_class;
 
 static void zexy_help(void)
 {
-  post("\n\n...this is the zexy %c external "VERSION"...\n", HEARTSYMBOL);
+  post("\n\n...this is the zexy %c external "VERSION"...", HEARTSYMBOL);
   post("\n%c handling signals"
 #if 0
        "\nstreamout~\t:: stream signals via a LAN : (%c) gige 1999"
        "\nstreamin~\t:: catch signals from a LAN : based on gige"
 #endif
-       "\nsfplay\t\t:: play back a (multichannel) soundfile : (%c) ritsch 1999"
-       "\nsfrecord\t:: record a (multichannel) soundfile : based on ritsch"
-       "\n%c generating signals"
+       "\nsfplay\t\t:: play back a (multichannel) soundfile : (c) ritsch 1999"
+       "\nsfrecord\t:: record a (multichannel) soundfile : based on ritsch", HEARTSYMBOL);
+
+  post("\n%c generating signals"
        "\nnoish~\t\t:: generate bandlimited noise"
        "\nnoisi~\t\t:: generate bandlimited noise"
        "\ndirac~\t\t:: generate a dirac-pulse"
        "\nstep~\t\t:: generate a unity-step"
-       "\ndfreq~\t\t:: detect frequency by counting zero-crossings : (%c) ritsch 1998"
-       "\n%c manipulating signals"
+       "\ndfreq~\t\t:: detect frequency by counting zero-crossings : (c) ritsch 1998", HEARTSYMBOL);
+
+  post("\n%c manipulating signals"
        "\nlimiter~\t:: limit/compress one or more signals"
        "\nnop~\t\t:: pass through a signal (delay 1 block)"
        "\nz~\t\t:: samplewise delay"
        "\nswap~\t\t:: byte-swap a signal"
-       "\nquantize~\t:: quantize a signal"
+       "\nquantize~\t:: quantize a signal", HEARTSYMBOL);
 
-       "\n%c binary operations on signals"
-       "\nabs~, sgn~, >~, <~, ==~, &&~, ||~"
+  post("\n%c binary operations on signals"
+       "\nabs~, sgn~, >~, <~, ==~, &&~, ||~", HEARTSYMBOL);
 
-       "\n%c multary operations on signals"
+  post("\n%c multary operations on signals"
 
        "\nmultiline~\t:: multiple line~ multiplication"
        "\nmultiplex~\t:: multiplex 1 inlet~ to 1-of-various outlet~s"
-       "\ndemultiplex~\t:: demultiplex 1-of-various inlet~s to 1 outlet~"
+       "\ndemultiplex~\t:: demultiplex 1-of-various inlet~s to 1 outlet~", HEARTSYMBOL);
 
-       "\n%c investigating signals in message-domain"
+  post("\n%c investigating signals in message-domain"
        "\npack~\t\t:: convert a signal into a list of floats"
        "\nunpack~\t\t:: convert packages of floats into a signal"
 
@@ -70,9 +72,9 @@ static void zexy_help(void)
        "\navg~\t\t:: outputs average of a signal as float"
        "\ntavg~\t\t:: outputs average of a signal between two bangs"
        "\nenvrms~\t\t:: an env~-object that ouputs rms instead of db"
-       "\npdf~\t\t:: power density function"
+       "\npdf~\t\t:: power density function", HEARTSYMBOL);
        
-       "\n%c basic message objects"
+  post("\n%c basic message objects"
        "\nnop\t\t:: a no-operation"
        "\nlister\t\t:: stores lists"
        "\nany2list\t\t:: converts \"anything\" to lists"
@@ -88,10 +90,9 @@ static void zexy_help(void)
        "\nglue\t\t:: append a list to another"
        "\nrepeat\t\t:: repeat a message"
        "\nsegregate\t:: sort inputs by type"
-       "\n.\t\t:: scalar multiplication of vectors (lists of floats)"
+       "\n.\t\t:: scalar multiplication of vectors (lists of floats)", HEARTSYMBOL);
 
-       "\n%c advanced message objects"
-
+  post("\n%c advanced message objects"
        "\ntabread4\t:: 4-point interpolating table-read object"
        "\ntabdump\t\t:: dump the table as a list"
        "\ntabset\t\t:: set a table with a list"
@@ -109,10 +110,10 @@ static void zexy_help(void)
        "\nlp\t\t:: write to the (parallel) port"
        "\nwrap\t\t:: wrap a floating number between 2 limits"
        "\nurn\t\t:: unique random numbers"
-       "\noperating_system\t:: information on the OS"
+       "\noperating_system\t:: information on the OS", HEARTSYMBOL);
 
-       "\n\n(l) forum::für::umläute except where indicated (%c)\n"
-       "this software is under the GnuGPL that is provided with these files", HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL, HEARTSYMBOL);
+  post("\n\n(l) forum::für::umläute except where indicated\n"
+       "this software is under the GnuGPL that is provided with these files");
 }
 
 static void *zexy_new(void)
