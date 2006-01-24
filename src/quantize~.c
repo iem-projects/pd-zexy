@@ -73,7 +73,7 @@ static void quantize_dsp(t_quantize *x, t_signal **sp)
     dsp_add(quantize_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void helper(t_quantize *x)
+static void quantize_tilde_helper(t_quantize *x)
 {
 	post("%c quantize~-object\t:: used for quantizing signals by various degrees", HEARTSYMBOL);
 	post("<quants> : quantize a signal into <quants> steps ('0' turns quantizing off)\n"
@@ -107,7 +107,7 @@ void quantize_tilde_setup(void)
   class_addmethod(quantize_class, (t_method)quantize_8bit, gensym("8bit"), 0);
   class_addmethod(quantize_class, (t_method)quantize_16bit, gensym("16bit"), 0);
   
-  class_addmethod(quantize_class, (t_method)helper, gensym("help"), 0);
+  class_addmethod(quantize_class, (t_method)quantize_tilde_helper, gensym("help"), 0);
   class_sethelpsymbol(quantize_class, gensym("zexy/quantize~"));
   zexy_register("quantize~");
 }

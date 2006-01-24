@@ -118,7 +118,7 @@ static void makesymbol_free(t_makesymbol *x)
 }
 
 
-static void helper(t_makesymbol *x)
+static void makesymbol_helper(t_makesymbol *x)
 {
 	post("\n%c makesymbol :: create a formatted symbol", HEARTSYMBOL);
 	post("<list of anything>\t: glue up to 10 list-elements to 1 formatted symbol\n"
@@ -140,7 +140,7 @@ void makesymbol_setup(void)
 
 	class_addmethod(makesymbol_class, (t_method)reset_mask, gensym("sym1"), A_SYMBOL, 0);
 
-	class_addmethod(makesymbol_class, (t_method)helper, gensym("help"), 0);
+	class_addmethod(makesymbol_class, (t_method)makesymbol_helper, gensym("help"), 0);
 	class_sethelpsymbol(makesymbol_class, gensym("zexy/makesymbol"));
   zexy_register("makesymbol");
 }

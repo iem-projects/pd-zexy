@@ -315,7 +315,7 @@ static void status(t_limiter *x)
   }
 }
 
-static void helper(t_limiter *x)
+static void limiter_tilde_helper(t_limiter *x)
 {
   post("\n\n%c %d-channel limiter-object: mode %d", HEARTSYMBOL, x->number_of_inlets, x->mode);
   poststring("\n'mode <mode>'\t\t\t: (0_limiter, 1_crack-limiter, 2_compressor)");
@@ -569,24 +569,7 @@ static t_int *limiter_perform(t_int *w)
 }
 
 
-#if 0
-static t_int *route_through(t_int *w)
-{
-  t_float *in  = (t_float *)w[1];
-  t_float *out = (t_float *)w[2];
-  int n = (int)w[3];
-
-  while(n--)
-    {
-      *out++ = *in;
-      *in++ = 0;
-    }
-
-  return (w+4);
-}
-#endif
-
-void limiter_dsp(t_limiter *x, t_signal **sp)
+static void limiter_dsp(t_limiter *x, t_signal **sp)
 {
   int i = 0;
   t_float* sig_buf = (t_float *)getbytes(sizeof(t_float) * sp[0]->s_n);
@@ -611,7 +594,7 @@ void limiter_dsp(t_limiter *x, t_signal **sp)
 /* ------------------------------------------------------------------------------------ */
 // finally do the creation - things
 
-void *limiter_new(t_symbol *s, int argc, t_atom *argv)
+static void *limiter_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_limiter *x = (t_limiter *)pd_new(limiter_class);
 
@@ -663,7 +646,7 @@ void *limiter_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
-void limiter_free(t_limiter *x)
+static void limiter_free(t_limiter *x)
 {
   int i=0;
 
@@ -691,7 +674,7 @@ void limiter_tilde_setup(void)
   class_addmethod(limiter_class, nullfn,					gensym("signal"), 0);
   class_addmethod(limiter_class, (t_method)limiter_dsp,	gensym("dsp"), 0);
 
-  class_addmethod(limiter_class, (t_method)helper,	gensym("help"), 0);
+  class_addmethod(limiter_class, (t_method)limiter_tilde_helper,	gensym("help"), 0);
   class_addmethod(limiter_class, (t_method)status,	gensym("print"), 0);
   class_sethelpsymbol(limiter_class, gensym("zexy/limiter~"));
 

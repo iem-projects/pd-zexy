@@ -26,7 +26,7 @@ typedef struct _wrap {
 } t_wrap;
 
 
-void wrap_float(t_wrap *x, t_float f)
+static void wrap_float(t_wrap *x, t_float f)
 {
   if (x->f_lower==x->f_upper)
     outlet_float(x->x_obj.ob_outlet, x->f_lower);
@@ -37,7 +37,7 @@ void wrap_float(t_wrap *x, t_float f)
     outlet_float(x->x_obj.ob_outlet, x->f_lower+modulo);
   }
 }
-void wrap_set(t_wrap *x, t_symbol *s, int argc, t_atom *argv){
+static void wrap_set(t_wrap *x, t_symbol *s, int argc, t_atom *argv){
   t_float f1, f2;
   switch (argc){
   case 0:
@@ -56,7 +56,7 @@ void wrap_set(t_wrap *x, t_symbol *s, int argc, t_atom *argv){
   x->f_upper=(f1>f2)?f1:f2;
 }
 
-void *wrap_new(t_symbol *s, int argc, t_atom*argv)
+static void *wrap_new(t_symbol *s, int argc, t_atom*argv)
 {
   t_wrap *x = (t_wrap *)pd_new(wrap_class);
   wrap_set(x, s, argc, argv);
@@ -64,7 +64,7 @@ void *wrap_new(t_symbol *s, int argc, t_atom*argv)
   outlet_new(&x->x_obj, &s_float);
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("set"));
 
-  return (void *)x;
+  return (x);
 }
 
 void wrap_setup(void) {

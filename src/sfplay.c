@@ -135,7 +135,7 @@ static int sfplay_am_i_big_endian(void)
 }
 
 
-void helper(t_sfplay *x)
+static void sfplay_helper(t_sfplay *x)
 {
 	post("\nsfplay :: a soundfile-player (c) winfried ritsch 1999");
 	post("\ncreation :: sfplay <channels> <bytes> : channels set the number of channels, bytes skip fileheader");
@@ -157,7 +157,7 @@ void helper(t_sfplay *x)
 Use of the buffered functions fopen, fseek fread fclose instead the 
 non buffered ones open read close */
 
-void sfplay_open(t_sfplay *x,t_symbol *filename,t_symbol *endian)
+static void sfplay_open(t_sfplay *x,t_symbol *filename,t_symbol *endian)
 {
 
    if(x->state != SFPLAY_WAIT)
@@ -302,7 +302,7 @@ static void sfplay_rewind(t_sfplay *x)
 
 /* restart with bang */
 
-void sfplay_bang(t_sfplay* x)
+static void sfplay_bang(t_sfplay* x)
 {
    x->skip = 1;
    sfplay_start(x);
@@ -648,7 +648,7 @@ void sfplay_setup(void)
    class_addmethod(sfplay_class, nullfn, gensym("signal"), 0);
    class_addmethod(sfplay_class, (t_method)sfplay_dsp, gensym("dsp"), 0);
 
-   class_addmethod(sfplay_class, (t_method)helper, gensym("help"), A_NULL);
+   class_addmethod(sfplay_class, (t_method)sfplay_helper, gensym("help"), A_NULL);
    class_sethelpsymbol(sfplay_class, gensym("zexy/sf-play_record"));
 
    /* method open with filename */

@@ -112,7 +112,7 @@ static void pdf_free(t_pdf *x)
 	freebytes(x->buf, x->size*sizeof(t_float));
 }
 
-static void helper(void)
+static void pdf_tilde_helper(void)
 {
 	post("\n%c pdf~\t:: get the probability density function of a signal (-1.0 to +1.0)", HEARTSYMBOL);
 	post("'bang'\t  : output a list of the probabilities of 'n' function values"
@@ -134,7 +134,7 @@ void pdf_tilde_setup(void)
   class_addmethod(pdf_class, (t_method)clear_pdfbuf, gensym("clear"), 0);
   class_addfloat(pdf_class, pdf_float);
 
-  class_addmethod(pdf_class, (t_method)helper, gensym("help"), 0);
+  class_addmethod(pdf_class, (t_method)pdf_tilde_helper, gensym("help"), 0);
   class_sethelpsymbol(pdf_class, gensym("zexy/pdf~"));
   zexy_register("pdf~");
 }

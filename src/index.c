@@ -52,7 +52,7 @@ typedef struct _index
 } t_index;
 
 /************************************
- * helpers
+ * index_helpers
  */
 
 
@@ -320,7 +320,7 @@ static void index_free(t_index *x)
 }
 
 
-static void helper(t_index *x)
+static void index_helper(t_index *x)
 {
   post("\n%c index :: index symbols to indices", HEARTSYMBOL);
   post("<symbol>             : look up the <symbol> in the index and return it's index\n"
@@ -364,7 +364,7 @@ void index_setup(void)
   class_addmethod(index_class, (t_method)index_compact,  gensym("compact"), 0);
   class_addmethod(index_class, (t_method)index_dump,  gensym("dump"), 0);
 
-  class_addmethod(index_class, (t_method)helper, gensym("help"), 0);
+  class_addmethod(index_class, (t_method)index_helper, gensym("help"), 0);
   class_sethelpsymbol(index_class, gensym("zexy/index"));
   zexy_register("index");
 }

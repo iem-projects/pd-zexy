@@ -119,7 +119,7 @@ static void state_out(t_sfrecord *x, int state)
 Use of the buffered functions fopen, fseek fread fclose instead the 
 non buffered ones open read close */
 
-void sfrecord_open(t_sfrecord *x,t_symbol *filename,t_symbol *endian)
+static void sfrecord_open(t_sfrecord *x,t_symbol *filename,t_symbol *endian)
 {
 
 	if(x->state != SFRECORD_WAIT)
@@ -219,7 +219,7 @@ static void sfrecord_float(t_sfrecord *x, t_floatarg f)
 }
 
 /* say what state we´re in */
-void sfrecord_bang(t_sfrecord* x)
+static void sfrecord_bang(t_sfrecord* x)
 {
 	if (x->state == SFRECORD_WRITE) state_out(x, 1); else state_out(x, 0);
 }
@@ -557,7 +557,7 @@ static void *sfrecord_new(t_floatarg chan)
 }
 
 
-static void helper(void)
+static void sfrecord_helper(void)
 {
 	post("\nsfplay :: a raw-data soundfile-recorder");
 	post("\ncreation :: sfrecord <channels>\t: channels set the number of channels");
@@ -597,7 +597,7 @@ void sfrecord_setup(void)
 	class_addbang(sfrecord_class,sfrecord_bang);
 
 	/* some help */
-	class_addmethod(sfrecord_class, (t_method)helper,  gensym("help"), A_NULL);
+	class_addmethod(sfrecord_class, (t_method)sfrecord_helper,  gensym("help"), A_NULL);
 	class_sethelpsymbol(sfrecord_class, gensym("zexy/sf-play_record"));
   zexy_register("sfrecord");
 }

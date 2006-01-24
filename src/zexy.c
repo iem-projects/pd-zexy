@@ -118,7 +118,7 @@ static void zexy_help(void)
 static void *zexy_new(void)
 {
   t_zexy *x = (t_zexy *)pd_new(zexy_class);
-  return (void *)x;
+  return (x);
 }
 
 void z_zexy_setup(void); /* defined in z_zexy.c */

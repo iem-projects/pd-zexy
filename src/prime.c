@@ -26,7 +26,7 @@ typedef struct _prime {
 } t_prime;
 
 
-void prime_float(t_prime *x, t_float f)
+static void prime_float(t_prime *x, t_float f)
 {
 
   unsigned int i=f;
@@ -54,13 +54,13 @@ void prime_float(t_prime *x, t_float f)
   outlet_float(x->x_obj.ob_outlet, 1.0);
 }
 
-void *prime_new(void)
+static void *prime_new(void)
 {
   t_prime *x = (t_prime *)pd_new(prime_class);
 
   outlet_new(&x->x_obj, &s_float);
 
-  return (void *)x;
+  return (x);
 }
 
 void prime_setup(void) {

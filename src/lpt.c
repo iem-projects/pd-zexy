@@ -280,7 +280,7 @@ static void lpt_free(t_lpt *x)
 }
 
 
-static void helper(t_lpt *x)
+static void lpt_helper(t_lpt *x)
 {
   post("\n%c lpt :: direct access to the parallel port", HEARTSYMBOL);
   post("<byte>\t: write byte to the parallel-port");
@@ -299,7 +299,7 @@ void lpt_setup(void)
   class_addmethod(lpt_class, (t_method)lpt_control, gensym("control"), A_FLOAT, 0);
   class_addbang(lpt_class, (t_method)lpt_bang);
 
-  class_addmethod(lpt_class, (t_method)helper, gensym("help"), 0);
+  class_addmethod(lpt_class, (t_method)lpt_helper, gensym("help"), 0);
   class_sethelpsymbol(lpt_class, gensym("zexy/lpt"));
   zexy_register("lpt");
 }

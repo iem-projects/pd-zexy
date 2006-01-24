@@ -76,7 +76,7 @@ static void sigzero_dsp(t_sigzero *x, t_signal **sp)
 	dsp_add(sigzero_perform, 3, sp[0]->s_vec, x, sp[0]->s_n);
 }
 
-static void helper(void)
+static void sigzero_tilde_helper(void)
 {
 	post("\n%c sigzero~-object :: for detecting whether a signal is currently zero or not", HEARTSYMBOL);
 	post("'bang'\t: turn the detector on\n"
@@ -105,7 +105,7 @@ void sigzero_tilde_setup(void)
 	class_addmethod(sigzero_class, nullfn, gensym("signal"), 0);
 	class_addmethod(sigzero_class, (t_method)sigzero_dsp, gensym("dsp"), 0);
 
-	class_addmethod(sigzero_class, (t_method)helper, gensym("help"), 0);
+	class_addmethod(sigzero_class, (t_method)sigzero_tilde_helper, gensym("help"), 0);
 	class_sethelpsymbol(sigzero_class, gensym("zexy/sigzero~"));
   zexy_register("sigzero~");
 }
