@@ -169,7 +169,3 @@ void s2l_setup(void)
 {
   symbol2list_setup();
 }
-void z_symbol2list_setup(void)
-{
-  symbol2list_setup();
-}

@@ -200,8 +200,3 @@ void drip_setup(void)
   class_sethelpsymbol(drip_class, gensym("zexy/drip"));
   zexy_register("drip");
 }
-
-void z_drip_setup(void)
-{
-  drip_setup();
-}

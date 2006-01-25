@@ -166,8 +166,3 @@ void noisi_tilde_setup(void){
   class_sethelpsymbol(noisi_class, gensym("zexy/noisi~"));
   zexy_register("noisi~");
 }
-
-void z_noisi__setup(void)
-{
-  noisi_tilde_setup();
-}

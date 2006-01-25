@@ -240,7 +240,7 @@ static void scalaroror_tilde_dsp(t_scalaroror_tilde *x, t_signal **sp)
     dsp_add(scalaroror_tilde_perf8, 4, in, &x->x_g, out, n);
 }
 
-static void oror_tilde_setup(void)
+void setup_0x7c0x7c0x7e(void)
 {
   oror_tilde_class = class_new(gensym("||~"), (t_newmethod)oror_tilde_new, 0,
 			  sizeof(t_oror_tilde), 0, A_GIMME, 0);
@@ -255,17 +255,3 @@ static void oror_tilde_setup(void)
   class_sethelpsymbol(scalaroror_tilde_class, gensym("zexy/sigbinops+"));
   zexy_register("||~");
 }
-
-
-
-/* ---------------------- global setup ------------------------- */
-void z_0x7c0x7c0x7e_setup(void)
-{
-	oror_tilde_setup();
-}
-
-void setup_0x7c0x7c0x7e(void)
-{
-	oror_tilde_setup();
-}
-

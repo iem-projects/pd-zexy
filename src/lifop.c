@@ -243,8 +243,3 @@ void lifop_setup(void)
   class_sethelpsymbol(lifop_class, gensym("zexy/lifop"));
   zexy_register("lifop");
 }
-
-void z_lifop_setup(void)
-{
-  lifop_setup();
-}

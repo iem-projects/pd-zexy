@@ -96,8 +96,3 @@ void atoi_setup(void)
   class_sethelpsymbol(atoi_class, gensym("zexy/atoi"));
   zexy_register("atoi");
 }
-
-void z_atoi_setup(void)
-{
-  atoi_setup();
-}

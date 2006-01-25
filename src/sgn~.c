@@ -152,10 +152,3 @@ void sgn_tilde_setup(void)
   class_sethelpsymbol(sgnTilde_class, gensym("zexy/sigbinops+"));
   zexy_register("sgn~");
 }
-
-
-
-void z_sgn__setup(void)
-{
-  sgn_tilde_setup();
-}

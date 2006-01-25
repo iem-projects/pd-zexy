@@ -62,8 +62,3 @@ void repeat_setup(void)
   class_sethelpsymbol(repeat_class, gensym("zexy/repeat"));
   zexy_register("repeat");
 }
-
-void z_repeat_setup(void)
-{
-  repeat_setup();
-}

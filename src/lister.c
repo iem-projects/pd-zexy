@@ -87,8 +87,3 @@ void l_setup(void)
 {
   lister_setup();
 }
-
-void z_lister_setup(void)
-{
-  lister_setup();
-}

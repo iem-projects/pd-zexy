@@ -84,8 +84,3 @@ void pack_tilde_setup(void)
 
   zexy_register("pack~");
 }
-
-void z_pack__setup(void)
-{
-  pack_tilde_setup();
-}

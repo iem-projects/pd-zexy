@@ -117,7 +117,3 @@ void demux_setup(void)
 {
   demultiplex_setup();
 }
-void z_demultiplex_setup(void)
-{
-  demultiplex_setup();
-}

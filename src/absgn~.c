@@ -133,8 +133,3 @@ void absgn_tilde_setup(void)
 
   zexy_register("absgn~");
 }
-
-void z_absgn__setup(void)
-{
-  absgn_tilde_setup();
-}

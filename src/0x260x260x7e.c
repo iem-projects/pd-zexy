@@ -264,7 +264,7 @@ static void scalarandand_tilde_dsp(t_scalarandand_tilde *x, t_signal **sp)
     dsp_add(scalarandand_tilde_perf8,   4, in, &x->x_g, out, n);
 }
 
-static void andand_tilde_setup(void)
+void setup_0x260x260x7e(void)
 {
   andand_tilde_class = class_new(gensym("&&~"), (t_newmethod)andand_tilde_new, 0,
 			   sizeof(t_andand_tilde), 0, A_GIMME, 0);
@@ -280,16 +280,3 @@ static void andand_tilde_setup(void)
 
   zexy_register("&&~");
 }
-
-
-/* ---------------------- global setup ------------------------- */
-void z_0x260x260x7e_setup(void)
-{
-	andand_tilde_setup();
-}
-
-void setup_0x260x260x7e(void)
-{
-	andand_tilde_setup();
-}
-

@@ -159,8 +159,3 @@ void abs_tilde_setup(void)
 
   zexy_register("abs~");
 }
-
-void z_abs__setup(void)
-{
-  abs_tilde_setup();
-}

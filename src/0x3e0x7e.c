@@ -225,7 +225,7 @@ static void scalargt_tilde_dsp(t_scalargt_tilde *x, t_signal **sp)
   else	
     dsp_add(scalargt_tilde_perf8,   4, in, &x->x_g, out, n);
 }
-static void gt_tilde_setup(void)
+void setup_0x3e0x7e(void)
 {
   gt_tilde_class = class_new(gensym(">~"), (t_newmethod)gt_tilde_new, 0,
 			   sizeof(t_gt_tilde), 0, A_GIMME, 0);
@@ -240,16 +240,3 @@ static void gt_tilde_setup(void)
   class_sethelpsymbol(scalargt_tilde_class, gensym("zexy/sigbinops+"));
   zexy_register(">~");
 }
-
-
-/* ---------------------- global setup ------------------------- */
-void z_0x3e0x7e_setup(void)
-{
-	gt_tilde_setup();
-}
-
-void setup_0x3e0x7e(void)
-{
-	gt_tilde_setup();
-}
-

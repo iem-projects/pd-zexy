@@ -78,8 +78,3 @@ void wrap_setup(void) {
   class_sethelpsymbol(wrap_class, gensym("zexy/wrap"));
   zexy_register("wrap");
 }
-
-void z_wrap_setup(void)
-{
-  wrap_setup();
-}

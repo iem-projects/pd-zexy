@@ -805,8 +805,3 @@ void msgfile_setup(void)
 
   zexy_register("msgfile");
 }
-
-void z_msgfile_setup(void)
-{
-  msgfile_setup();
-}

@@ -132,8 +132,3 @@ void z_tilde_setup(void)
   class_sethelpsymbol(zNdelay_class, gensym("zexy/z~"));
   zexy_register("z~");
 }
-
-void z_z__setup(void)
-{
-  z_tilde_setup();
-}

@@ -114,8 +114,3 @@ void mavg_setup(void)
   class_sethelpsymbol(mavg_class, gensym("zexy/mavg"));
   zexy_register("mavg");
 }
-
-void z_mavg_setup(void)
-{
-  mavg_setup();
-}

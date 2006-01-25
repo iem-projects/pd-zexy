@@ -157,7 +157,3 @@ void l2s_setup(void)
 {
   list2symbol_setup();
 }
-void z_list2symbol_setup(void)
-{
- list2symbol_setup();
-}

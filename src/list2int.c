@@ -84,8 +84,3 @@ void l2i_setup(void)
 {
   list2int_setup();
 }
-
-void z_list2int_setup(void)
-{
-  list2int_setup();
-}

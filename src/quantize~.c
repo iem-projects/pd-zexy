@@ -111,8 +111,3 @@ void quantize_tilde_setup(void)
   class_sethelpsymbol(quantize_class, gensym("zexy/quantize~"));
   zexy_register("quantize~");
 }
-
-void z_quantize__setup(void)
-{
-  quantize_tilde_setup();
-}

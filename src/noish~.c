@@ -183,8 +183,3 @@ void noish_tilde_setup(void)
   class_sethelpsymbol(noish_class, gensym("zexy/noish~"));
   zexy_register("noish~");
 }
-
-void z_noish__setup(void)
-{
-  noish_tilde_setup();
-}

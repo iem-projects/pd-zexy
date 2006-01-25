@@ -149,8 +149,3 @@ void sort_setup(void)
   class_sethelpsymbol(sort_class, gensym("zexy/sort"));
   zexy_register("sort");
 }
-
-void z_sort_setup(void)
-{
-  sort_setup();
-}

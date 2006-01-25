@@ -82,8 +82,3 @@ void avg_tilde_setup(void)
 	class_sethelpsymbol(avg_class, gensym("zexy/avg~"));
   zexy_register("avg~");
 }
-
-void z_avg__setup(void)
-{
-  avg_tilde_setup();
-}

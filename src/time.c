@@ -120,8 +120,3 @@ void time_setup(void)
   class_sethelpsymbol(time_class, gensym("zexy/time"));
   zexy_register("time");
 }
-
-void z_time_setup(void)
-{
-  time_setup();
-}

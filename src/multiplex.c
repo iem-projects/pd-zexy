@@ -125,8 +125,3 @@ void multiplex_setup(void)
 
   zexy_register("multiplex");
 }
-
-void z_multiplex_setup(void)
-{
-  multiplex_setup();
-}

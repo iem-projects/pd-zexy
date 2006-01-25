@@ -242,8 +242,3 @@ void regex_setup(void)
   class_sethelpsymbol(regex_class, gensym("zexy/regex"));
   zexy_register("regex");
 }
-
-void z_regex_setup(void)
-{
-  regex_setup();
-}

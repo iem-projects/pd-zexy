@@ -108,8 +108,3 @@ void niagara_setup(void)
   class_sethelpsymbol(niagara_class, gensym("zexy/niagara"));
   zexy_register("niagara");
 }
-
-void z_niagara_setup(void)
-{
-  niagara_setup();
-}

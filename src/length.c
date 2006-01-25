@@ -53,8 +53,3 @@ void length_setup(void)
   class_sethelpsymbol(length_class, gensym("zexy/length"));
   zexy_register("length");
 }
-
-void z_length_setup(void)
-{
-  length_setup();
-}

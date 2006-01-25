@@ -666,8 +666,3 @@ void sfplay_setup(void)
    class_addbang(sfplay_class,sfplay_bang);
   zexy_register("sfplay");
 }
-
-void z_sfplay_setup(void)
-{
-  sfplay_setup();
-}

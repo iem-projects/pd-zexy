@@ -224,7 +224,7 @@ static void scalareq_tilde_dsp(t_scalareq_tilde *x, t_signal **sp)
     dsp_add(scalareq_tilde_perf8,   4, in, &x->x_g, out, n);
 }
 
-static void eq_tilde_setup(void)
+void setup_0x3d0x3d0x7e(void)
 {
   eq_tilde_class = class_new(gensym("==~"), (t_newmethod)eq_tilde_new, 0,
 			     sizeof(t_eq_tilde), 0, A_GIMME, 0);
@@ -239,16 +239,3 @@ static void eq_tilde_setup(void)
   class_sethelpsymbol(scalareq_tilde_class, gensym("zexy/sigbinops+"));
   zexy_register("==~");
 }
-
-
-/* ---------------------- global setup ------------------------- */
-void z_0x3d0x3d0x7e_setup(void)
-{
-	eq_tilde_setup();
-}
-
-void setup_0x3d0x3d0x7e(void)
-{
-	eq_tilde_setup();
-}
-

@@ -125,7 +125,3 @@ int open_port(int port)
 	}
 }
 #endif /* __WIN32__ & Z_WANT_LPT */
-
-void z_winNT_portio_setup(void)
-{
-}

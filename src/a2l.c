@@ -88,8 +88,3 @@ void a2l_setup(void)
   class_sethelpsymbol(a2l_class, gensym("zexy/any2list"));
   zexy_register("a2l");
 }
-
-void z_a2l_setup(void)
-{
-  a2l_setup();
-}

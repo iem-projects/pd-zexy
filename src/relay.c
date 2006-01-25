@@ -177,7 +177,3 @@ void relay_setup(void)
     class_addanything(relay_class, relay_anything);
     zexy_register("relay");
 }
-void z_relay_setup(void)
-{
-  relay_setup();
-}
