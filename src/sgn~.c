@@ -141,7 +141,7 @@ static void *sgnTilde_new()
   return (x);
 }
 
-static void sgn_tilde_setup(void)
+void sgn_tilde_setup(void)
 {
   sgnTilde_class = class_new(gensym("sgn~"), (t_newmethod)sgnTilde_new, 0,
 			   sizeof(t_sgnTilde), 0, A_DEFFLOAT, 0);
