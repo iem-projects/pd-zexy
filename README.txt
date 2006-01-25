@@ -67,6 +67,7 @@ note on generating dependencies:
  try:
    make CPP=cc
 
+
 win32 :
 ------------------------------------------------------------------------------
 
@@ -83,12 +84,15 @@ to compile:
  OR
  + cross-compilation for windows on linux using mingw (assumes that the 
    crosscompiler is "i586-mingw32msvc-cc")
-	#> CFLAGS="" ./configure --host=i586-mingw32msvc --with-extension=dll \
-	   --with-pd=/path/to/win/pd/ --disable-PIC
+	#> ./configure --host=i586-mingw32msvc --with-extension=dll \
+	   --disable-PIC --with-pd=/path/to/win/pd/
+	#> make CFLAGS="-fno-unit-at-a-time"
      notes: configure tries to set the CFLAGS to "-g -O2" if the compiler
-            accepts this; however, i noticed that when doing a cross-compilation
-	    for w32, pd will not be able to load certain externals if "-O2"
-	    is turned on; the 'CFLAGS=""' will prevent this
+            accepts this; however, this optimization sometimes generates 
+	    binaries that cannot be loaded by pd; it seems that disabling
+	    the "unit-at-a-time" optimization (which gets enabled by "-O2")
+	    is the cause of this problem. turning it off might help
+
 
 irix :
 ------------------------------------------------------------------------------
