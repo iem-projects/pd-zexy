@@ -146,7 +146,7 @@ static void *scalmul_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
-void dot_setup(void)
+static void dot_setup(void)
 {
   scalmul_class = class_new(gensym("."), (t_newmethod)scalmul_new, 
 			    (t_method)scalmul_free, sizeof(t_scalmul), 0, A_GIMME, 0);
@@ -161,11 +161,6 @@ void dot_setup(void)
   zexy_register(".");
 }
 
-void z_dot_setup(void)
-{
-  dot_setup();
-}
-
 void z_0x2e_setup(void)
 {
 	dot_setup();
@@ -175,4 +170,3 @@ void setup_0x2e(void)
 {
 	dot_setup();
 }
-
