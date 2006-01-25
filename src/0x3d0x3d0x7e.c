@@ -60,7 +60,7 @@ static void *eq_tilde_new(t_symbol *s, int argc, t_atom *argv)
     }
 }
 
-t_int *eq_tilde_perform(t_int *w)
+static t_int *eq_tilde_perform(t_int *w)
 {
   t_float *in1 = (t_float *)(w[1]);
   t_float *in2 = (t_float *)(w[2]);
@@ -70,7 +70,7 @@ t_int *eq_tilde_perform(t_int *w)
   return (w+5);
 }
 
-t_int *eq_tilde_perf8(t_int *w)
+static t_int *eq_tilde_perf8(t_int *w)
 {
   t_float *in1 = (t_float *)(w[1]);
   t_float *in2 = (t_float *)(w[2]);
@@ -90,7 +90,7 @@ t_int *eq_tilde_perf8(t_int *w)
   return (w+5);
 }
 
-t_int *scalareq_tilde_perform(t_int *w)
+static t_int *scalareq_tilde_perform(t_int *w)
 {
   t_float *in = (t_float *)(w[1]);
   t_float f = *(t_float *)(w[2]);
@@ -100,7 +100,7 @@ t_int *scalareq_tilde_perform(t_int *w)
   return (w+5);
 }
 
-t_int *scalareq_tilde_perf8(t_int *w)
+static t_int *scalareq_tilde_perf8(t_int *w)
 {
   t_float *in = (t_float *)(w[1]);
   t_float g = *(t_float *)(w[2]);
@@ -118,7 +118,7 @@ t_int *scalareq_tilde_perf8(t_int *w)
 }
 
 #ifdef __SSE__
-t_int *eq_tilde_performSSE(t_int *w)
+static t_int *eq_tilde_performSSE(t_int *w)
 {
   __m128 *in1 = (__m128 *)(w[1]);
   __m128 *in2 = (__m128 *)(w[2]);
@@ -147,7 +147,7 @@ t_int *eq_tilde_performSSE(t_int *w)
 
   return (w+5);
 }
-t_int *scalareq_tilde_performSSE(t_int *w)
+static t_int *scalareq_tilde_performSSE(t_int *w)
 {
   __m128 *in = (__m128 *)(w[1]);
   __m128 *out = (__m128 *)(w[3]);
@@ -242,11 +242,6 @@ static void eq_tilde_setup(void)
 
 
 /* ---------------------- global setup ------------------------- */
-void z_eq__setup(void)
-{
-  eq_tilde_setup();
-}
-
 void z_0x3d0x3d0x7e_setup(void)
 {
 	eq_tilde_setup();

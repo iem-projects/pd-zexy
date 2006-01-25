@@ -63,7 +63,7 @@ static void *lt_tilde_new(t_symbol *s, int argc, t_atom *argv)
     }
 }
 
-t_int *lt_tilde_perform(t_int *w)
+static t_int *lt_tilde_perform(t_int *w)
 {
   t_float *in1 = (t_float *)(w[1]);
   t_float *in2 = (t_float *)(w[2]);
@@ -73,7 +73,7 @@ t_int *lt_tilde_perform(t_int *w)
   return (w+5);
 }
 
-t_int *lt_tilde_perf8(t_int *w)
+static t_int *lt_tilde_perf8(t_int *w)
 {
   t_float *in1 = (t_float *)(w[1]);
   t_float *in2 = (t_float *)(w[2]);
@@ -93,7 +93,7 @@ t_int *lt_tilde_perf8(t_int *w)
   return (w+5);
 }
 
-t_int *scalarlt_tilde_perform(t_int *w)
+static t_int *scalarlt_tilde_perform(t_int *w)
 {
   t_float *in = (t_float *)(w[1]);
   t_float f = *(t_float *)(w[2]);
@@ -103,7 +103,7 @@ t_int *scalarlt_tilde_perform(t_int *w)
   return (w+5);
 }
 
-t_int *scalarlt_tilde_perf8(t_int *w)
+static t_int *scalarlt_tilde_perf8(t_int *w)
 {
   t_float *in = (t_float *)(w[1]);
   t_float g = *(t_float *)(w[2]);
@@ -120,7 +120,7 @@ t_int *scalarlt_tilde_perf8(t_int *w)
   return (w+5);
 }
 #ifdef __SSE__
-t_int *lt_tilde_performSSE(t_int *w)
+static t_int *lt_tilde_performSSE(t_int *w)
 {
   __m128 *in1 = (__m128 *)(w[1]);
   __m128 *in2 = (__m128 *)(w[2]);
@@ -149,7 +149,7 @@ t_int *lt_tilde_performSSE(t_int *w)
 
   return (w+5);
 }
-t_int *scalarlt_tilde_performSSE(t_int *w)
+static t_int *scalarlt_tilde_performSSE(t_int *w)
 {
   __m128 *in = (__m128 *)(w[1]);
   __m128 *out = (__m128 *)(w[3]);
@@ -246,11 +246,6 @@ static void lt_tilde_setup(void)
 
 
 /* ---------------------- global setup ------------------------- */
-void z_lt__setup(void)
-{
-  lt_tilde_setup();
-}
-
 void z_0x3c0x7e_setup(void)
 {
 	lt_tilde_setup();
