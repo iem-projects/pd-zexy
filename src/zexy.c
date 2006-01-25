@@ -122,8 +122,6 @@ static void *zexy_new(void)
   return (x);
 }
 
-void z_zexy_setup(void); /* defined in z_zexy.c */
-
 void zexy_setup(void) 
 {
   int i;

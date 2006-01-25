@@ -22,6 +22,8 @@ function head_h() {
 }
 
 function foot_h() {
+ echo ""
+ echo "void z_zexy_setup(void);"
  echo "#endif /* Z_ZEXY_H__ */"
  echo ""
 }
@@ -49,15 +51,18 @@ function foot_c() {
 head_h > $ZEXY_H
 head_c > $ZEXY_C
 
-for i in `ls *.c | grep -v zexy.c`
+for f in `ls *.c | grep -v zexy.c`
 do
 ## each c-file in zexy needs to have a z_<file>_setup()-function
 ## that calls all needed setup-functions
 ## any non-alpha-numeric-character is replaced by "_"
 ## e.g. "multiplex~.c" -> "z_multiplex__setup()"
-  SETUPNAME=z_`echo ${i%.c} | sed -e 's/[^[:alnum:]]/_/g'`_setup
-  echo "void ${SETUPNAME}(void); /* $i */" >> $ZEXY_H
-  echo "	${SETUPNAME}(); /* $i */" >> $ZEXY_C
+  i=${f%.c}
+  SETUPNAME=$(echo $i | sed -e "s/.*0x.*/setup_&/g" -e "s/~$/_tilde/g" -e "/0x/! s/.*/&_setup/")
+  if grep -w ${SETUPNAME} $f > /dev/null; then
+   echo "void ${SETUPNAME}(void); /* $i */" >> $ZEXY_H
+   echo "	${SETUPNAME}(); /* $i */" >> $ZEXY_C
+  fi
 done
 
 foot_h >> $ZEXY_H
