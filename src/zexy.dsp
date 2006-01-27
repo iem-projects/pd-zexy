@@ -60,7 +60,39 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\0x260x260x7e.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\0x2e.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\0x3c0x7e.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\0x3d0x3d0x7e.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\0x3e0x7e.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\0x7c0x7c0x7e.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\a2l.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\absgn~.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\abs~.c
 # End Source File
 # Begin Source File
 
@@ -97,10 +129,6 @@ SOURCE=.\dfreq~.c
 # Begin Source File
 
 SOURCE=.\dirac~.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\dot.c
 # End Source File
 # Begin Source File
 
@@ -216,6 +244,14 @@ SOURCE=.\quantize~.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\regex.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\relay.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\repack.c
 # End Source File
 # Begin Source File
@@ -229,6 +265,10 @@ SOURCE=.\sfplay.c
 # Begin Source File
 
 SOURCE=.\sfrecord.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\sgn~.c
 # End Source File
 # Begin Source File
 
@@ -296,7 +336,7 @@ SOURCE=.\wrap.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\z_sigbin.c
+SOURCE=.\z_zexy.c
 # End Source File
 # Begin Source File
 
