@@ -20,6 +20,7 @@
 */
 
 #include "zexy.h"
+#include "z_zexy.h"
 
 /* do a little help thing */
 
