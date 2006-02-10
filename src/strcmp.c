@@ -50,7 +50,6 @@ typedef struct _strcmp_proxy
 static void strcmp_bang(t_strcmp *x)
 {
   int result = 0;
-
   if(x->str1){
     if(x->str2)
       result = strcmp(x->str1, x->str2);
@@ -70,13 +69,11 @@ static void list2binbuf(t_binbuf**bbuf, int *n, char**str, int argc, t_atom*argv
 {
   int i=0;
   char*s=0;
-  if(*str&&*n)freebytes(str, *n);
+  if(*str&&*n)freebytes(*str, *n);
 
   binbuf_clear(*bbuf);
   binbuf_add(*bbuf, argc, argv);
-
   binbuf_gettext(*bbuf, str, n);
-
   i=*n;
   s=*str;
 
@@ -143,7 +140,6 @@ static void strcmp_free(t_strcmp *x)
 {
   binbuf_free(x->bbuf1);
   binbuf_free(x->bbuf2);
-
   if(x->str1&&x->n1)freebytes(x->str1, x->n1);
   if(x->str2&&x->n2)freebytes(x->str2, x->n2);
 
