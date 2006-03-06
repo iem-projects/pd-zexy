@@ -4,10 +4,7 @@ default: all
 	clean realclean distclean \
 	install install-bin install-doc install-abs
 
-SOURCES=$(sort $(filter %.c, $(wildcard *.c)))
-
-Make.config: Make.config.in configure
-	./configure
+SOURCES=$(sort $(filter %.c, $(wildcard *.c)) z_zexy.c)
 
 zexyconf.h: zexyconf.h.in configure
 	./configure
@@ -20,8 +17,16 @@ configure: configure.ac
 
 ifeq (,$(findstring clean, $(MAKECMDGOALS)))
 -include $(SOURCES:.c=.d)
--include Make.config
+
+Make.config: Make.config.in configure
+	./configure
+
+z_zexy.c z_zexy.h:
+	./makesource.sh
 endif
+
+-include Make.config
+
 
 ##  2nd only generate depend-files when we have Make.config included
 ##  and thus MAKEDEP_FLAGS defined
@@ -43,7 +48,7 @@ TARGETS = $(SOURCES:.c=.o)
 all: $(LIBNAME)
 	cp $(LIBNAME).$(EXT) ..
 
-$(LIBNAME): $(TARGETS)
+$(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
 	$(LD) $(LFLAGS) -o $(LIBNAME).$(EXT) *.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $(LIBNAME).$(EXT)
 
