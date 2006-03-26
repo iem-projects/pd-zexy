@@ -37,19 +37,20 @@ static void minmax_bang(t_minmax *x)
 
 static void minmax_list(t_minmax *x, t_symbol *s, int argc, t_atom *argv)
 {
-  t_float min = atom_getfloat(argv++);
-  t_float max=min;
-  argc--;
-
-  while(argc--){
-    t_float f = atom_getfloat(argv++);
-    if (f<min)min=f;
-    else if (f>max)max=f;
+  if(argc){
+    t_float min = atom_getfloat(argv++);
+    t_float max=min;
+    argc--;
+    
+    while(argc--){
+      t_float f = atom_getfloat(argv++);
+      if (f<min)min=f;
+      else if (f>max)max=f;
+    }
+    
+    x->min=min;
+    x->max=max;
   }
-
-  x->min=min;
-  x->max=max;
-
   minmax_bang(x);
 }
 
