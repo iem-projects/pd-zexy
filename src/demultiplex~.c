@@ -119,3 +119,10 @@ void demultiplex_tilde_setup(void)
 
   zexy_register("demultiplex~");
 }
+void demux_tilde_setup(void)
+{
+	demultiplex_tilde_setup();
+}
+
+
+

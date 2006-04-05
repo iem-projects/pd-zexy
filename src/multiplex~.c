@@ -112,3 +112,8 @@ void multiplex_tilde_setup(void)
 	class_sethelpsymbol(mux_class, gensym("zexy/multiplex~"));
   zexy_register("multiplex~");
 }
+void mux_tilde_setup(void)
+{
+	multiplex_tilde_setup();
+}
+

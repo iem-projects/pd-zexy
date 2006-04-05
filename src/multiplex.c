@@ -127,3 +127,9 @@ void multiplex_setup(void)
 
   zexy_register("multiplex");
 }
+
+void mux_setup(void)
+{
+  multiplex_setup();
+}
+
