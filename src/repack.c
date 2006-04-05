@@ -117,6 +117,7 @@ static void repack_list(t_repack *x, t_symbol *s, int argc, t_atom *argv)
 {
   int remain = x->outputsize - x->current;
   t_atom *ap = argv;
+  ZEXY_USEVAR(s);
 
   if (argc >= remain) {
     memcpy(x->buffer+x->current, ap, remain * sizeof(t_atom));

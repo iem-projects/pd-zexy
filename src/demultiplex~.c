@@ -89,6 +89,8 @@ static void *demux_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_demux *x = (t_demux *)pd_new(demux_class);
 	int i;
+        ZEXY_USEVAR(s);
+        ZEXY_USEVAR(argv);
 
 	if (!argc)argc=2;
 	x->n_out=argc;

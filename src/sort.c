@@ -79,6 +79,7 @@ static void sort_list(t_sort *x, t_symbol *s, int argc, t_atom *argv)
   t_int   *idx;
 
   int i, loops = 1;
+  ZEXY_USEVAR(s);
 
   sort_buffer(x, argc, argv);
   buf = x->buffer;

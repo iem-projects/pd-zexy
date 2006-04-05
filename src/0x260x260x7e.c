@@ -42,6 +42,7 @@ typedef struct _scalarandand_tilde
 
 static void *andand_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
   if (argc > 1) post("&&~: extra arguments ignored");
   if (argc) 
     {
@@ -240,6 +241,8 @@ static void andand_tilde_dsp(t_andand_tilde *x, t_signal **sp)
     dsp_add(andand_tilde_perform, 4, in1, in2, out, n);
   else	
     dsp_add(andand_tilde_perf8, 4, in1, in2, out, n);
+
+  ZEXY_USEVAR(x);
 }
 
 static void scalarandand_tilde_dsp(t_scalarandand_tilde *x, t_signal **sp)

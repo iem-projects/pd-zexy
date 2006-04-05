@@ -40,6 +40,7 @@ typedef struct _scalareq_tilde
 
 static void *eq_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
   if (argc > 1) post("==~: extra arguments ignored");
   if (argc) 
     {
@@ -184,6 +185,8 @@ static void eq_tilde_dsp(t_eq_tilde *x, t_signal **sp)
   t_sample*out=sp[2]->s_vec;
 
   int n=sp[0]->s_n;
+
+  ZEXY_USEVAR(x);
 
 #ifdef __SSE__
   if(

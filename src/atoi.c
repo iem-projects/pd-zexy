@@ -56,6 +56,7 @@ static void atoi_list(t_atoi *x, t_symbol *s, int argc, t_atom *argv)
 {
   int base=10;
   const char* c;
+  ZEXY_USEVAR(s);
 
   if (argv->a_type==A_FLOAT){
     x->i=atom_getfloat(argv);

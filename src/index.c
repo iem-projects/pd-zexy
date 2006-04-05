@@ -170,6 +170,7 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
 static void index_delete(t_index *x, t_symbol *s, int argc, t_atom*argv)
 {
   int index=-1;
+  ZEXY_USEVAR(s);
   if(argc!=1){
     error("index :: delete what ?");
     return;
@@ -291,6 +292,8 @@ static void *index_new(t_symbol *s, int argc, t_atom *argv)
 
   int maxentries = 0, automod=0;
 
+  ZEXY_USEVAR(s);
+
   if (argc--) {
     maxentries = (int)atom_getfloat(argv++);
     if (argc) automod = (int)atom_getfloat(argv++);
@@ -322,6 +325,7 @@ static void index_free(t_index *x)
 
 static void index_helper(t_index *x)
 {
+  ZEXY_USEVAR(x);
   post("\n%c index :: index symbols to indices", HEARTSYMBOL);
   post("<symbol>             : look up the <symbol> in the index and return it's index\n"
        "\n<int>                : look up the element at index <int> in the index"

@@ -133,6 +133,7 @@ static t_lifop_prioritylist*getLifo(t_lifop_prioritylist*plifo)
 static void lifop_list(t_lifop *x, t_symbol *s, int argc, t_atom *argv)
 {
   t_lifop_prioritylist*plifo=0;
+  ZEXY_USEVAR(s);
   if(!(plifo=lifop_genprioritylist(x, x->priority))) {
     error("[lifop]: couldn't get priority lifo");
     return;
@@ -216,7 +217,7 @@ static void lifop_free(t_lifop *x)
   outlet_free(x->x_infout);
 }
 
-static void *lifop_new(t_symbol *s, int argc, t_atom *argv)
+static void *lifop_new(void)
 {
   t_lifop *x = (t_lifop *)pd_new(lifop_class);
 
@@ -234,7 +235,7 @@ static void *lifop_new(t_symbol *s, int argc, t_atom *argv)
 void lifop_setup(void)
 {
   lifop_class = class_new(gensym("lifop"), (t_newmethod)lifop_new,
-                             (t_method)lifop_free, sizeof(t_lifop), 0, A_GIMME, 0);
+                             (t_method)lifop_free, sizeof(t_lifop), 0, A_NULL);
 
   class_addbang    (lifop_class, lifop_bang);
   class_addlist    (lifop_class, lifop_list);

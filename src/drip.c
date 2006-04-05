@@ -109,6 +109,7 @@ static void drip_tick(t_drip *x)
 
 static void drip_list(t_drip *x, t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
   if (x->flush && x->current) { /* do we want to flush */
     drip_all(x, x->bufsize - (x->current - x->buffer), x->current);
   }
@@ -171,6 +172,7 @@ static void drip_free(t_drip *x)
 static void *drip_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_drip *x = (t_drip *)pd_new(drip_class);
+  ZEXY_USEVAR(s);
 
   if (argc>1) x->flush = 1;
   else x->flush = 0;

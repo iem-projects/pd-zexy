@@ -48,7 +48,7 @@ static void operating_system_bang(t_operating_system *x)
   outlet_symbol(x->x_obj.ob_outlet, s);
 }
 
-static void *operating_system_new(t_floatarg f)
+static void *operating_system_new()
 {
   t_operating_system *x = (t_operating_system *)pd_new(operating_system_class);
   outlet_new(&x->x_obj, 0);
@@ -58,7 +58,7 @@ static void *operating_system_new(t_floatarg f)
 void operating_system_setup(void)
 {
   operating_system_class = class_new(gensym("operating_system"), (t_newmethod)operating_system_new, 
-			      0, sizeof(t_operating_system), 0, A_DEFFLOAT,  0);
+                                     0, sizeof(t_operating_system), 0, A_NULL);
   
   class_addbang  (operating_system_class, operating_system_bang);
   class_sethelpsymbol(operating_system_class, gensym("zexy/operating_system"));

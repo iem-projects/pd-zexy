@@ -36,12 +36,12 @@ static void sigzero_activate(t_sigzero *x, t_floatarg activate)
 	x->activate = (activate)?1:0;
 }
 
-static void sigzero_banged(t_sigzero *x, t_floatarg activate)
+static void sigzero_banged(t_sigzero *x)
 {
 	x->activate = 1;
 }
 
-static void sigzero_off(t_sigzero *x, t_floatarg activate)
+static void sigzero_off(t_sigzero *x)
 {
 	x->activate = 0;
 }
@@ -87,11 +87,11 @@ static void sigzero_tilde_helper(void)
 	post("outlet :: 1/0\t: signal turned to non-zero/zero\n");
 }
 
-static void *sigzero_new(t_symbol s)
+static void *sigzero_new()
 {
-	t_sigzero *x = (t_sigzero *)pd_new(sigzero_class);
-    outlet_new(&x->x_obj, &s_float);
-	return (x);
+  t_sigzero *x = (t_sigzero *)pd_new(sigzero_class);
+  outlet_new(&x->x_obj, &s_float);
+  return (x);
 }
 
 void sigzero_tilde_setup(void)

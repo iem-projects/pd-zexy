@@ -39,6 +39,7 @@ typedef struct _scalmul
 static void scalmul_lst2(t_scalmul *x, t_symbol *s, int argc, t_atom *argv)
 {
   t_float *fp;
+  ZEXY_USEVAR(s);
   if (x->n2 != argc) {
     freebytes(x->buf2, x->n2 * sizeof(t_float));
     x->n2 = argc;
@@ -53,6 +54,7 @@ static void scalmul_lst(t_scalmul *x, t_symbol *s, int argc, t_atom *argv)
   t_float *fp;
   t_atom  *ap;
   int n;
+  ZEXY_USEVAR(s);
 
   if (argc){
     if (x->n1 != argc) {
@@ -122,7 +124,7 @@ static void scalmul_free(t_scalmul *x)
 static void *scalmul_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_scalmul *x;
-
+  ZEXY_USEVAR(s);
   if (argc-1){
     x = (t_scalmul *)pd_new(scalmul_class);
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym(""));

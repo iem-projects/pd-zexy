@@ -80,6 +80,8 @@ static void *mux_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_mux *x = (t_mux *)pd_new(mux_class);
 	int i;
+        ZEXY_USEVAR(s);
+        ZEXY_USEVAR(argv);
 
 	if (!argc)argc=2;
 	x->n_in=argc;

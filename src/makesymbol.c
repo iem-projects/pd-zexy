@@ -80,6 +80,7 @@ static t_symbol* list2symbol(char *masque, int argc, t_atom *argv)
 
 static void makesymbol_list(t_makesymbol *x, t_symbol *s, int argc, t_atom *argv)
 {
+        ZEXY_USEVAR(s);
 	x->x_sym = list2symbol(x->mask, argc, argv);
 	outlet_symbol(x->x_obj.ob_outlet, x->x_sym);
 }
@@ -93,6 +94,7 @@ static void makesymbol_bang(t_makesymbol *x)
 static void *makesymbol_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_makesymbol *x = (t_makesymbol *)pd_new(makesymbol_class);
+        ZEXY_USEVAR(s);
 
 	x->buf = (char *)getbytes(MAXSTRINGLENG * sizeof(char));
 
@@ -120,6 +122,7 @@ static void makesymbol_free(t_makesymbol *x)
 
 static void makesymbol_helper(t_makesymbol *x)
 {
+  ZEXY_USEVAR(x);
 	post("\n%c makesymbol :: create a formatted symbol", HEARTSYMBOL);
 	post("<list of anything>\t: glue up to 10 list-elements to 1 formatted symbol\n"
 		"'bang'\t\t\t: re-output\n"

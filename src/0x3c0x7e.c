@@ -43,6 +43,7 @@ typedef struct _scalarlt_tilde
 
 static void *lt_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
   if (argc > 1) post("<~: extra arguments ignored");
   if (argc) 
     {
@@ -186,7 +187,7 @@ static void lt_tilde_dsp(t_lt_tilde *x, t_signal **sp)
   t_sample*out=sp[2]->s_vec;
 
   int n=sp[0]->s_n;
-
+  ZEXY_USEVAR(x);
 #ifdef __SSE__
   if(
      Z_SIMD_CHKBLOCKSIZE(n)&&

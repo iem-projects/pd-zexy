@@ -43,6 +43,7 @@ static void repeat_anything(t_repeat *x, t_symbol *s, int argc, t_atom *argv)
 static void *repeat_new(t_symbol*s, int argc, t_atom*argv)
 {
   t_repeat *x = (t_repeat *)pd_new(repeat_class);
+  ZEXY_USEVAR(s);
   if(argc){
     if(A_FLOAT==argv->a_type)
       x->fcount = atom_getfloat(argv);

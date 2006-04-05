@@ -27,10 +27,14 @@ typedef struct _length
 
 static void length_list(t_length *x, t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
+  ZEXY_USEVAR(argv);
   outlet_float(x->x_obj.ob_outlet, (t_float)argc);
 }
 static void length_any(t_length *x, t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
+  ZEXY_USEVAR(argv);
   outlet_float(x->x_obj.ob_outlet, (t_float)argc+1);
 }
 

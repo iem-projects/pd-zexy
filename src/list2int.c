@@ -56,6 +56,8 @@ static void *list2int_new(t_symbol *s, int argc, t_atom *argv)
   outlet_new(&x->x_obj, 0);
   x->x_n = 0;
   x->x_list = 0;
+
+  list2int_any(x, s, argc, argv);
   return (x);
 }
 

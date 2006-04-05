@@ -66,7 +66,8 @@ static void *date_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_date *x = (t_date *)pd_new(date_class);
   char buf[5];
-  
+  ZEXY_USEVAR(s);
+ 
   x->GMT=0;
   if (argc) {
     atom_string(argv, buf, 5);
@@ -106,6 +107,7 @@ static void date_bang(t_date *x)
 
 static void help_date(t_date *x)
 {
+  ZEXY_USEVAR(x);
   post("\n%c date\t\t:: get the current system date", HEARTSYMBOL);
   post("\noutputs are\t: year / month / day / day of week /day of year / daylightsaving (1/0)");
   post("\ncreation\t::'date [GMT]': show local date or GMT");

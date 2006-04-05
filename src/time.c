@@ -63,7 +63,8 @@ static void *time_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_time *x = (t_time *)pd_new(time_class);
   char buf[5];
-  
+  ZEXY_USEVAR(s);
+ 
   x->GMT=0;
   if (argc) {
     atom_string(argv, buf, 5);
@@ -103,6 +104,7 @@ static void time_bang(t_time *x)
 
 static void help_time(t_time *x)
 {
+  ZEXY_USEVAR(x);
   post("\n%c time\t\t:: get the current system time", HEARTSYMBOL);
   post("\noutputs are\t:  hour / minute / sec / msec");
   post("\ncreation\t:: 'time [GMT]': show local time or GMT");

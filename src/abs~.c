@@ -119,6 +119,7 @@ static t_int *sigABS_performSSE(t_int *w)
 
 static void sigABS_dsp(t_abs *x, t_signal **sp)
 {
+  ZEXY_USEVAR(x);
 #ifdef __SSE__
   if(
      Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&

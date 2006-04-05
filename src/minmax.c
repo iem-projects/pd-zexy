@@ -37,6 +37,7 @@ static void minmax_bang(t_minmax *x)
 
 static void minmax_list(t_minmax *x, t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
   if(argc){
     t_float min = atom_getfloat(argv++);
     t_float max=min;

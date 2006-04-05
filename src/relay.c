@@ -149,6 +149,7 @@ static void *relay_new(t_symbol *s, int argc, t_atom *argv)
     t_relayelement *e;
     t_relay *x = (t_relay *)pd_new(relay_class);
     t_atom a;
+    ZEXY_USEVAR(s);
     if (argc == 0)
     {
         argc = 1;

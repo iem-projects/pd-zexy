@@ -136,6 +136,7 @@ static void symbol2list_symbol(t_symbol2list *x, t_symbol *s){
 static void *symbol2list_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_symbol2list *x = (t_symbol2list *)pd_new(symbol2list_class);
+  ZEXY_USEVAR(s);
 
   outlet_new(&x->x_obj, 0);
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym(""));
@@ -150,6 +151,7 @@ static void *symbol2list_new(t_symbol *s, int argc, t_atom *argv)
 
 static void symbol2list_free(t_symbol2list *x)
 {
+  ZEXY_USEVAR(x);
 }
 
 void symbol2list_setup(void)

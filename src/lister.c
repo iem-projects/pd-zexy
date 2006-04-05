@@ -28,6 +28,7 @@ static t_class *mypdlist_class;
 
 static void mypdlist_secondlist(t_mypdlist *x, t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
   if (argc) {
     if (x->x_n != argc) {
       freebytes(x->x_list, x->x_n * sizeof(t_atom));
@@ -39,6 +40,7 @@ static void mypdlist_secondlist(t_mypdlist *x, t_symbol *s, int argc, t_atom *ar
 
 static void mypdlist_list(t_mypdlist *x, t_symbol *s, int argc, t_atom *argv)
 {
+  ZEXY_USEVAR(s);
   if (x->x_n != argc) {
     freebytes(x->x_list, x->x_n * sizeof(t_atom));
     x->x_n = argc;
@@ -56,6 +58,7 @@ static void mypdlist_free(t_mypdlist *x)
 static void *mypdlist_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_mypdlist *x = (t_mypdlist *)pd_new(mypdlist_class);
+  ZEXY_USEVAR(s);
 
   outlet_new(&x->x_obj, 0);
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym("lst2"));

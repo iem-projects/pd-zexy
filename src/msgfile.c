@@ -284,6 +284,7 @@ static void delete_region(t_msgfile *x, int start, int stop)
 
 static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
+  ZEXY_USEVAR(s);
   if (ac==1) {
     int pos = atom_getfloat(av);
     int oldwhere = node_wherearewe(x);
@@ -309,12 +310,14 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 
 static void msgfile_add(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
+  ZEXY_USEVAR(s);
   msgfile_end(x);
   add_currentnode(x);
   write_currentnode(x, ac, av);
 }
 static void msgfile_add2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
+  ZEXY_USEVAR(s);
   msgfile_end(x);
   if (x->current->previous) x->current = x->current->previous;
   write_currentnode(x, ac, av);
@@ -322,6 +325,7 @@ static void msgfile_add2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 }
 static void msgfile_append(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
+  ZEXY_USEVAR(s);
   add_currentnode(x);
   write_currentnode(x, ac, av);
 }
@@ -333,6 +337,7 @@ static void msgfile_append2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 static void msgfile_insert(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   t_msglist *cur = x->current;
+  ZEXY_USEVAR(s);
   insert_currentnode(x);
   write_currentnode(x, ac, av);
   x->current = cur;
@@ -340,6 +345,7 @@ static void msgfile_insert(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 static void msgfile_insert2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   t_msglist *cur = x->current;
+  ZEXY_USEVAR(s);
   if ((x->current) && (x->current->previous)) x->current = x->current->previous;
   write_currentnode(x, ac, av);
   x->current = cur;
@@ -353,6 +359,7 @@ static void msgfile_set(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 
 static void msgfile_replace(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
+  ZEXY_USEVAR(s);
   freebytes(x->current->thislist, sizeof(x->current->thislist));
   x->current->thislist = 0;
   x->current->n = 0;
@@ -426,6 +433,7 @@ static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   t_msglist *found = 0;
   t_msglist *cur=x->current;
+  ZEXY_USEVAR(s);
 
   while (cur) {
     int n = cur->n;
@@ -692,6 +700,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
 
 static void msgfile_help(t_msgfile *x)
 {
+  ZEXY_USEVAR(x);
   post("\n%c msgfile\t:: handle and store files of lists", HEARTSYMBOL);
   post("goto <n>\t: goto line <n>"
        "\nrewind\t\t: goto the beginning of the file"
@@ -732,6 +741,7 @@ static void msgfile_free(t_msgfile *x)
 static void *msgfile_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_msgfile *x = (t_msgfile *)pd_new(msgfile_class);
+    ZEXY_USEVAR(s);
 
     /* an empty node indicates the end of our listbuffer */
     x->current = 0;

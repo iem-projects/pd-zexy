@@ -87,6 +87,8 @@
 # endif /* OSX-10.3 */
 #endif /* APPLE */
 
+#define ZEXY_USEVAR(x) x=x
+
 typedef struct _mypdlist
 {
   t_object x_obj;
@@ -107,7 +109,7 @@ static void zexy_register(char*object){
   }
 }
 #else
-static void zexy_register(char*object){}
+static void zexy_register(char*object){object=0;}
 #endif /* ZEXY_LIBRARY */
 
 #if (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION > 38)

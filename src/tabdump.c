@@ -63,6 +63,7 @@ static void tabdump_bang(t_tabdump *x)
 static void tabdump_list(t_tabdump *x, t_symbol*s,int argc, t_atom*argv)
 {
   int a,b;
+  ZEXY_USEVAR(s);
   switch(argc){
   case 2:
     a=atom_getint(argv);

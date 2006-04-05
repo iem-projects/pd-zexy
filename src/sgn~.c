@@ -111,6 +111,7 @@ static t_int *sgnTilde_performSSE(t_int *w)
 
 static void sgnTilde_dsp(t_sgnTilde *x, t_signal **sp)
 {
+  ZEXY_USEVAR(x);
 #ifdef __SSE__
   if(
      Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&

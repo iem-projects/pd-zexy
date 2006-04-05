@@ -149,6 +149,7 @@ static t_fifop_prioritylist*getFifo(t_fifop_prioritylist*pfifo)
 static void fifop_list(t_fifop *x, t_symbol *s, int argc, t_atom *argv)
 {
   t_fifop_prioritylist*pfifo=0;
+  ZEXY_USEVAR(s);
   if(!(pfifo=fifop_genprioritylist(x, x->priority))) {
     error("[fifop]: couldn't get priority fifo");
     return;
@@ -234,7 +235,7 @@ static void fifop_free(t_fifop *x)
   outlet_free(x->x_infout);
 }
 
-static void *fifop_new(t_symbol *s, int argc, t_atom *argv)
+static void *fifop_new(void)
 {
   t_fifop *x = (t_fifop *)pd_new(fifop_class);
 
@@ -251,7 +252,7 @@ static void *fifop_new(t_symbol *s, int argc, t_atom *argv)
 void fifop_setup(void)
 {
   fifop_class = class_new(gensym("fifop"), (t_newmethod)fifop_new,
-                             (t_method)fifop_free, sizeof(t_fifop), 0, A_GIMME, 0);
+                             (t_method)fifop_free, sizeof(t_fifop), 0, A_NULL);
 
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);

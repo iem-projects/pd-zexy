@@ -137,6 +137,7 @@ static int sfplay_am_i_big_endian(void)
 
 static void sfplay_helper(t_sfplay *x)
 {
+  ZEXY_USEVAR(x);
 	post("\nsfplay :: a soundfile-player (c) winfried ritsch 1999");
 	post("\ncreation :: sfplay <channels> <bytes> : channels set the number of channels, bytes skip fileheader");
 	post("\nopen [<path>]<filename> [<endianity>]\t::open b(ig) or l(ittle) endian file"

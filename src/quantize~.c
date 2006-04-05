@@ -75,6 +75,7 @@ static void quantize_dsp(t_quantize *x, t_signal **sp)
 
 static void quantize_tilde_helper(t_quantize *x)
 {
+  ZEXY_USEVAR(x);
 	post("%c quantize~-object\t:: used for quantizing signals by various degrees", HEARTSYMBOL);
 	post("<quants> : quantize a signal into <quants> steps ('0' turns quantizing off)\n"
 		 "'8bit'   : quantize to 8 bit\n"

@@ -113,6 +113,7 @@ static char*regex_l2s(int *reslen, t_symbol*s, int argc, t_atom*argv)
 
 static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
 {
+  ZEXY_USEVAR(s);
 #ifdef HAVE_REGEX_H
   char*result=0;
   int length=0;
@@ -145,6 +146,7 @@ static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
 }
 static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
 {
+  ZEXY_USEVAR(s);
 #ifdef HAVE_REGEX_H
   char*teststring=0;
   int length=0;
@@ -204,6 +206,7 @@ static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
 static void *regex_new(t_symbol *s, int argc, t_atom*argv)
 {
   t_regex *x = (t_regex *)pd_new(regex_class);
+  ZEXY_USEVAR(s);
 
   outlet_new(&x->x_obj, 0);
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("regex"));

@@ -111,8 +111,8 @@ static void urn_seed(t_urn *x, t_float f)
 static void *urn_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_urn *x = (t_urn *)pd_new(urn_class);
-
   t_float f=0.;
+  ZEXY_USEVAR(s);
 
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
   x->x_floatout=outlet_new(&x->x_obj, &s_float);

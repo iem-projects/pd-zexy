@@ -47,6 +47,7 @@ static void sigunpack_list(t_sigunpack *x, t_symbol *s, int argc, t_atom *argv)
 {
   t_atom *ap = argv;
   int i;
+  ZEXY_USEVAR(s);
 
   for (i = 0, ap = argv; i < argc; ap++, i++) {
     //    if (ap->a_type == A_FLOAT) {

@@ -64,6 +64,8 @@ static void *mux_new(t_symbol *s, int argc, t_atom *argv)
   int n = (argc < 2)?2:argc;
   t_mux *x = (t_mux *)pd_new(mux_class);
   //  t_muxproxy *y=(t_muxproxy*)pd_new(muxproxy_class);
+  ZEXY_USEVAR(s);
+  ZEXY_USEVAR(argv);
 
   x->i_selected=0;
   x->i_count = n;
