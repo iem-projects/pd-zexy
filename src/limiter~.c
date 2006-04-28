@@ -597,8 +597,6 @@ static void limiter_dsp(t_limiter *x, t_signal **sp)
 static void *limiter_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_limiter *x = (t_limiter *)pd_new(limiter_class);
-  ZEXY_USEVAR(s);
-
   int i = 0;
 
   if (argc) set_bufsize(x, atom_getfloat(argv));
