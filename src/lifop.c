@@ -231,7 +231,10 @@ static void *lifop_new(void)
 
   return (x);
 }
-
+static void lifop_help(t_lifop*x)
+{
+  post("\n%c lifop\t\t:: a Last-In-First-Out queue with priorities", HEARTSYMBOL);
+}
 void lifop_setup(void)
 {
   lifop_class = class_new(gensym("lifop"), (t_newmethod)lifop_new,
@@ -240,6 +243,7 @@ void lifop_setup(void)
   class_addbang    (lifop_class, lifop_bang);
   class_addlist    (lifop_class, lifop_list);
   class_addmethod  (lifop_class, (t_method)lifop_query, gensym("info"), A_NULL);
+  class_addmethod  (lifop_class, (t_method)lifop_help, gensym("help"), A_NULL);
 
   class_sethelpsymbol(lifop_class, gensym("zexy/lifop"));
   zexy_register("lifop");

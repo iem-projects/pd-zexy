@@ -243,18 +243,27 @@ static void scalaroror_tilde_dsp(t_scalaroror_tilde *x, t_signal **sp)
     dsp_add(scalaroror_tilde_perf8, 4, in, &x->x_g, out, n);
 }
 
+static void oror_tilde_help(t_object*x)
+{
+  post("\n%c &&~\t\t:: logical OR operation on 2 signals", HEARTSYMBOL);
+}
+
 void setup_0x7c0x7c0x7e(void)
 {
   oror_tilde_class = class_new(gensym("||~"), (t_newmethod)oror_tilde_new, 0,
 			  sizeof(t_oror_tilde), 0, A_GIMME, 0);
   class_addmethod(oror_tilde_class, (t_method)oror_tilde_dsp, gensym("dsp"), 0);
   CLASS_MAINSIGNALIN(oror_tilde_class, t_oror_tilde, x_f);
+  class_addmethod  (oror_tilde_class, (t_method)oror_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(oror_tilde_class, gensym("zexy/sigbinops+"));
+
   scalaroror_tilde_class = class_new(gensym("||~"), 0, 0,
 				sizeof(t_scalaroror_tilde), 0, 0);
   CLASS_MAINSIGNALIN(scalaroror_tilde_class, t_scalaroror_tilde, x_f);
   class_addmethod(scalaroror_tilde_class, (t_method)scalaroror_tilde_dsp, gensym("dsp"),
 		  0);
+  class_addmethod  (oror_tilde_class, (t_method)oror_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(scalaroror_tilde_class, gensym("zexy/sigbinops+"));
+
   zexy_register("||~");
 }

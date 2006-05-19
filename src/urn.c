@@ -138,6 +138,11 @@ static void *urn_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
+static void urn_help(t_urn*x)
+{
+  post("\n%c urn\t\t:: generate randum numbers without repetition", HEARTSYMBOL);
+}
+
 void urn_setup(void)
 {
   urn_class = class_new(gensym("urn"), (t_newmethod)urn_new, 
@@ -148,6 +153,7 @@ void urn_setup(void)
   class_addmethod(urn_class, (t_method)urn_flt2, gensym(""), A_DEFFLOAT, 0);
   class_addmethod(urn_class, (t_method)urn_seed, gensym("seed"), A_DEFFLOAT, 0);
   
+  class_addmethod(urn_class, (t_method)urn_help, gensym("help"), A_NULL);
 
   class_sethelpsymbol(urn_class, gensym("zexy/urn"));
   zexy_register("urn");

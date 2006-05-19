@@ -68,6 +68,11 @@ static void *wrap_new(t_symbol *s, int argc, t_atom*argv)
   return (x);
 }
 
+static void wrap_help(t_wrap*x)
+{
+  post("\n%c wrap\t\t:: wrap a float between to boundaries", HEARTSYMBOL);
+}
+
 void wrap_setup(void) {
   wrap_class = class_new(gensym("wrap"),
 			  (t_newmethod)wrap_new,
@@ -76,6 +81,7 @@ void wrap_setup(void) {
 
   class_addfloat (wrap_class, wrap_float);
   class_addmethod(wrap_class, (t_method)wrap_set, gensym("set"), A_GIMME, 0);
+  class_addmethod(wrap_class, (t_method)wrap_help, gensym("help"), A_NULL);
   class_sethelpsymbol(wrap_class, gensym("zexy/wrap"));
   zexy_register("wrap");
 }

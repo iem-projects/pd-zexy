@@ -228,6 +228,10 @@ static void scalarlt_tilde_dsp(t_scalarlt_tilde *x, t_signal **sp)
   else	
     dsp_add(scalarlt_tilde_perf8, 4, in, &x->x_g, out, n);
 }
+static void lt_tilde_help(t_object*x)
+{
+  post("\n%c <~\t\t:: compare 2 signals", HEARTSYMBOL);
+}
 
 void setup_0x3c0x7e(void)
 {
@@ -235,12 +239,15 @@ void setup_0x3c0x7e(void)
 			    sizeof(t_lt_tilde), 0, A_GIMME, 0);
   class_addmethod(lt_tilde_class, (t_method)lt_tilde_dsp, gensym("dsp"), 0);
   CLASS_MAINSIGNALIN(lt_tilde_class, t_lt_tilde, x_f);
+  class_addmethod  (lt_tilde_class, (t_method)lt_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(lt_tilde_class, gensym("zexy/sigbinops+"));
+
   scalarlt_tilde_class = class_new(gensym("<~"), 0, 0,
 				  sizeof(t_scalarlt_tilde), 0, 0);
   CLASS_MAINSIGNALIN(scalarlt_tilde_class, t_scalarlt_tilde, x_f);
   class_addmethod(scalarlt_tilde_class, (t_method)scalarlt_tilde_dsp, gensym("dsp"),
 		  0);
+  class_addmethod  (lt_tilde_class, (t_method)lt_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(scalarlt_tilde_class, gensym("zexy/sigbinops+"));
   zexy_register("<~");
 }

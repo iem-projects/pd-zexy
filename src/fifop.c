@@ -204,6 +204,13 @@ static void fifop_query(t_fifop*x)
   
   outlet_float(x->x_infout, (t_float)x->counter);
 }
+
+static void fifop_help(t_fifop*x)
+{
+  post("\n%c fifop\t\t:: a First-In-First-Out queue with priorities", HEARTSYMBOL);
+}
+
+
 static void fifop_free(t_fifop *x)
 {
   t_fifop_prioritylist *fifo_list=x->fifo_list;
@@ -257,6 +264,7 @@ void fifop_setup(void)
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);
   class_addmethod  (fifop_class, (t_method)fifop_query, gensym("info"), A_NULL);
+  class_addmethod  (fifop_class, (t_method)fifop_help, gensym("help"), A_NULL);
 
   class_sethelpsymbol(fifop_class, gensym("zexy/fifop"));
   zexy_register("fifop");

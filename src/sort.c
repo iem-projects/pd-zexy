@@ -139,6 +139,10 @@ static void *sort_new(t_floatarg f)
   return (x);
 }
 
+static void sort_help(t_sort*x)
+{
+  post("\n%c sort\t\t:: sort a list of numbers", HEARTSYMBOL);
+}
 void sort_setup(void)
 {
   sort_class = class_new(gensym("sort"), (t_newmethod)sort_new, 
@@ -146,6 +150,7 @@ void sort_setup(void)
   
   class_addlist    (sort_class, sort_list);
   class_addmethod   (sort_class, (t_method)sort_dir, gensym("direction"), A_DEFFLOAT, 0);
+  class_addmethod(sort_class, (t_method)sort_help, gensym("help"), A_NULL);
 
   class_sethelpsymbol(sort_class, gensym("zexy/sort"));
   zexy_register("sort");

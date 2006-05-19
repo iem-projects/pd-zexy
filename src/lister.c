@@ -71,6 +71,12 @@ static void *mypdlist_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
+
+static void mypdlist_help(t_mypdlist*x)
+{
+  post("\n%c lister\t\t:: basic list storage (use pd>=0.39 for real [list] objects)", HEARTSYMBOL);
+}
+
 void lister_setup(void)
 {
   mypdlist_class = class_new(gensym("lister"), (t_newmethod)mypdlist_new, 
@@ -83,6 +89,7 @@ void lister_setup(void)
   class_addlist    (mypdlist_class, mypdlist_list);
   class_addmethod  (mypdlist_class, (t_method)mypdlist_secondlist, gensym("lst2"), A_GIMME, 0);
 
+  class_addmethod(mypdlist_class, (t_method)mypdlist_help, gensym("help"), A_NULL);
   class_sethelpsymbol(mypdlist_class, gensym("zexy/lister"));
   zexy_register("lister");
 }

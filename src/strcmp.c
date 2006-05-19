@@ -152,6 +152,12 @@ static void strcmp_free(t_strcmp *x)
 }
 
 
+static void strcmp_help(t_strcmp*x)
+{
+  post("\n%c strcmp\t\t:: compare to lists as strings", HEARTSYMBOL);
+}
+
+
 void strcmp_setup(void)
 {
   strcmp_class = class_new(gensym("strcmp"), (t_newmethod)strcmp_new, 
@@ -166,7 +172,7 @@ void strcmp_setup(void)
                                  CLASS_PD | CLASS_NOINLET, 0);
   class_addsymbol(strcmp_proxy_class, strcmp_proxy_symbol);
   class_addlist(strcmp_proxy_class, strcmp_proxy_list);
-
+  class_addmethod(strcmp_class, (t_method)strcmp_help, gensym("help"), A_NULL);
   class_sethelpsymbol(strcmp_class, gensym("zexy/strcmp"));
   zexy_register("strcmp");
 }

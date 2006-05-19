@@ -148,15 +148,23 @@ static void *scalmul_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
+static void scalmul_help(t_scalmul*x)
+{
+  post("\n%c .\t\t:: scalar multiplication (in-product)", HEARTSYMBOL);
+}
+
 void setup_0x2e(void)
 {
   scalmul_class = class_new(gensym("."), (t_newmethod)scalmul_new, 
 			    (t_method)scalmul_free, sizeof(t_scalmul), 0, A_GIMME, 0);
   class_addlist(scalmul_class, scalmul_lst);
   class_addmethod  (scalmul_class, (t_method)scalmul_lst2, gensym(""), A_GIMME, 0);
+  class_addmethod(scalmul_class, (t_method)scalmul_help, gensym("help"), A_NULL);
+
   scalmul_scal_class = class_new(gensym("."), 0, (t_method)scalmul_free, 
 				 sizeof(t_scalmul), 0, 0);
   class_addlist(scalmul_scal_class, scalmul_lst);
+  class_addmethod(scalmul_scal_class, (t_method)scalmul_help, gensym("help"), A_NULL);
 
   class_sethelpsymbol(scalmul_class, gensym("zexy/scalarmult"));
   class_sethelpsymbol(scalmul_scal_class, gensym("zexy/scalarmult"));

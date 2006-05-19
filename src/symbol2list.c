@@ -150,8 +150,11 @@ static void *symbol2list_new(t_symbol *s, int argc, t_atom *argv)
 }
 
 static void symbol2list_free(t_symbol2list *x)
+{}
+
+static void symbol2list_help(t_symbol2list*x)
 {
-  ZEXY_USEVAR(x);
+  post("\n%c symbol2list\t:: split a symbol into a list of atoms", HEARTSYMBOL);
 }
 
 void symbol2list_setup(void)
@@ -163,6 +166,7 @@ void symbol2list_setup(void)
   class_addsymbol (symbol2list_class, symbol2list_symbol);
   class_addbang   (symbol2list_class, symbol2list_bang);
   class_addmethod  (symbol2list_class, (t_method)symbol2list_delimiter, gensym(""), A_SYMBOL, 0);
+  class_addmethod(symbol2list_class, (t_method)symbol2list_help, gensym("help"), A_NULL);
 
   class_sethelpsymbol(symbol2list_class, gensym("zexy/symbol2list"));
   zexy_register("symbol2list");

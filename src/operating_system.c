@@ -37,6 +37,7 @@ typedef struct _operating_system
 
 static void operating_system_bang(t_operating_system *x)
 {
+  /* LATER think about querying the version of the system at runtime! */
   t_symbol *s=gensym("unknown");
 #ifdef __linux__
   s=gensym("linux");
@@ -55,12 +56,18 @@ static void *operating_system_new()
   return (x);
 }
 
+static void operating_system_help(t_operating_system*x)
+{
+  post("\n%c operating_system\t:: get the current operating system", HEARTSYMBOL);
+}
+
 void operating_system_setup(void)
 {
   operating_system_class = class_new(gensym("operating_system"), (t_newmethod)operating_system_new, 
                                      0, sizeof(t_operating_system), 0, A_NULL);
   
   class_addbang  (operating_system_class, operating_system_bang);
+  class_addmethod(operating_system_class, (t_method)operating_system_help, gensym("help"), A_NULL);
   class_sethelpsymbol(operating_system_class, gensym("zexy/operating_system"));
   zexy_register("operating_system");
 }

@@ -63,6 +63,12 @@ static void *prime_new(void)
   return (x);
 }
 
+static void prime_help(t_prime*x)
+{
+  post("\n%c prime\t\t:: test whether a given number is prime", HEARTSYMBOL);
+}
+
+
 void prime_setup(void) {
   prime_class = class_new(gensym("prime"),
 			  (t_newmethod)prime_new,
@@ -70,5 +76,6 @@ void prime_setup(void) {
 			  CLASS_DEFAULT, 0);
 
   class_addfloat(prime_class, prime_float);
+  class_addmethod(prime_class, (t_method)prime_help, gensym("help"), A_NULL);
   zexy_register("prime");
 }

@@ -227,18 +227,26 @@ static void scalareq_tilde_dsp(t_scalareq_tilde *x, t_signal **sp)
     dsp_add(scalareq_tilde_perf8,   4, in, &x->x_g, out, n);
 }
 
+static void eq_tilde_help(t_object*x)
+{
+  post("\n%c &&~\t\t:: test 2 signals for equality", HEARTSYMBOL);
+}
 void setup_0x3d0x3d0x7e(void)
 {
   eq_tilde_class = class_new(gensym("==~"), (t_newmethod)eq_tilde_new, 0,
 			     sizeof(t_eq_tilde), 0, A_GIMME, 0);
   class_addmethod(eq_tilde_class, (t_method)eq_tilde_dsp, gensym("dsp"), 0);
   CLASS_MAINSIGNALIN(eq_tilde_class, t_eq_tilde, x_f);
+  class_addmethod  (eq_tilde_class, (t_method)eq_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(eq_tilde_class, gensym("zexy/sigbinops+"));
+
   scalareq_tilde_class = class_new(gensym("==~"), 0, 0,
 				   sizeof(t_scalareq_tilde), 0, 0);
   CLASS_MAINSIGNALIN(scalareq_tilde_class, t_scalareq_tilde, x_f);
   class_addmethod(scalareq_tilde_class, (t_method)scalareq_tilde_dsp, gensym("dsp"),
 		  0);
+  class_addmethod  (eq_tilde_class, (t_method)eq_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(scalareq_tilde_class, gensym("zexy/sigbinops+"));
+
   zexy_register("==~");
 }

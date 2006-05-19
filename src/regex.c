@@ -233,6 +233,10 @@ static void regex_free(t_regex *x)
 #endif
 }
 
+static void regex_help(t_regex*x)
+{
+  post("\n%c regex\t\t:: test the input whether it matches a regular expression", HEARTSYMBOL);
+}
 
 void regex_setup(void)
 {
@@ -242,6 +246,7 @@ void regex_setup(void)
   class_addlist  (regex_class, regex_symbol);
   class_addmethod  (regex_class, (t_method)regex_regex, gensym("regex"), A_GIMME, 0);
 
+  class_addmethod(regex_class, (t_method)regex_help, gensym("help"), A_NULL);
   class_sethelpsymbol(regex_class, gensym("zexy/regex"));
   zexy_register("regex");
 }

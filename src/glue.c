@@ -104,6 +104,11 @@ static void *glue_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
+static void glue_help(t_glue*x)
+{
+  post("\n%c glue\t\t:: glue together 2 lists (like [list append])", HEARTSYMBOL);
+}
+
 void glue_setup(void)
 {
   glue_class = class_new(gensym("glue"), (t_newmethod)glue_new, 
@@ -111,6 +116,7 @@ void glue_setup(void)
   class_addlist(glue_class, glue_lst);
   class_addmethod  (glue_class, (t_method)glue_lst2, gensym(""), A_GIMME, 0);
   class_addbang(glue_class, glue_bang);
+  class_addmethod  (glue_class, (t_method)glue_help, gensym("help"), 0);
 
   class_sethelpsymbol(glue_class, gensym("zexy/glue"));
   zexy_register("glue");

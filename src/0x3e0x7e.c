@@ -228,18 +228,28 @@ static void scalargt_tilde_dsp(t_scalargt_tilde *x, t_signal **sp)
   else	
     dsp_add(scalargt_tilde_perf8,   4, in, &x->x_g, out, n);
 }
+
+static void gt_tilde_help(t_object*x)
+{
+  post("\n%c >~\t\t:: compare 2 signals", HEARTSYMBOL);
+}
+
 void setup_0x3e0x7e(void)
 {
   gt_tilde_class = class_new(gensym(">~"), (t_newmethod)gt_tilde_new, 0,
 			   sizeof(t_gt_tilde), 0, A_GIMME, 0);
   class_addmethod(gt_tilde_class, (t_method)gt_tilde_dsp, gensym("dsp"), 0);
   CLASS_MAINSIGNALIN(gt_tilde_class, t_gt_tilde, x_f);
+  class_addmethod  (gt_tilde_class, (t_method)gt_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(gt_tilde_class, gensym("zexy/sigbinops+"));
+
   scalargt_tilde_class = class_new(gensym(">~"), 0, 0,
 				 sizeof(t_scalargt_tilde), 0, 0);
   CLASS_MAINSIGNALIN(scalargt_tilde_class, t_scalargt_tilde, x_f);
   class_addmethod(scalargt_tilde_class, (t_method)scalargt_tilde_dsp, gensym("dsp"),
 		  0);
+  class_addmethod  (gt_tilde_class, (t_method)gt_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(scalargt_tilde_class, gensym("zexy/sigbinops+"));
+
   zexy_register(">~");
 }

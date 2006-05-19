@@ -267,18 +267,27 @@ static void scalarandand_tilde_dsp(t_scalarandand_tilde *x, t_signal **sp)
     dsp_add(scalarandand_tilde_perf8,   4, in, &x->x_g, out, n);
 }
 
+static void andand_tilde_help(t_object*x)
+{
+  post("\n%c &&~\t\t:: logical AND operation on 2 signals", HEARTSYMBOL);
+}
+
 void setup_0x260x260x7e(void)
 {
   andand_tilde_class = class_new(gensym("&&~"), (t_newmethod)andand_tilde_new, 0,
 			   sizeof(t_andand_tilde), 0, A_GIMME, 0);
   class_addmethod(andand_tilde_class, (t_method)andand_tilde_dsp, gensym("dsp"), 0);
   CLASS_MAINSIGNALIN(andand_tilde_class, t_andand_tilde, x_f);
+  class_addmethod  (andand_tilde_class, (t_method)andand_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(andand_tilde_class, gensym("zexy/sigbinops+"));
+
+
   scalarandand_tilde_class = class_new(gensym("&&~"), 0, 0,
 				 sizeof(t_scalarandand_tilde), 0, 0);
   CLASS_MAINSIGNALIN(scalarandand_tilde_class, t_scalarandand_tilde, x_f);
   class_addmethod(scalarandand_tilde_class, (t_method)scalarandand_tilde_dsp, gensym("dsp"),
 		  0);
+  class_addmethod  (scalarandand_tilde_class, (t_method)andand_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(scalarandand_tilde_class, gensym("zexy/sigbinops+"));
 
   zexy_register("&&~");
