@@ -4,7 +4,11 @@ default: all
 	clean realclean distclean \
 	install install-bin install-doc install-abs
 
-SOURCES=$(sort $(filter %.c, $(wildcard *.c)) z_zexy.c)
+HELPERSOURCES=z_zexy.c zexy.c winNT_portio.c
+
+OBJECTSOURCES=$(sort $(filter-out $(HELPERSOURCES), $(filter %.c, $(wildcard *.c))))
+
+SOURCES=$(OBJECTSOURCES) $(HELPERSOURCES)
 
 zexyconf.h: zexyconf.h.in configure
 	./configure
@@ -44,7 +48,7 @@ endif
 
 TARGETS = $(SOURCES:.c=.o)
 
-OBJECTS = $(SOURCES:.c=)
+OBJECTS = $(OBJECTSOURCES:.c=)
 
 ## if $(BUILDLIBRARY) is defined, we build everything as a single library
 ## else we build separate externals
@@ -52,7 +56,7 @@ ifneq "$(BUILDLIBRARY)" ""
 all: $(LIBNAME)
 	cp $(LIBNAME).$(EXT) ..
 else
-all: externals
+all: $(OBJECTS)
 endif
 
 
