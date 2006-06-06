@@ -44,17 +44,30 @@ endif
 
 TARGETS = $(SOURCES:.c=.o)
 
+OBJECTS = $(SOURCES:.c=)
 
+## if $(BUILDLIBRARY) is defined, we build everything as a single library
+## else we build separate externals
+ifneq "$(BUILDLIBRARY)" ""
 all: $(LIBNAME)
 	cp $(LIBNAME).$(EXT) ..
+else
+all: externals
+endif
+
+
+$(OBJECTS): $(TARGETS)
+	$(LD) $(LFLAGS) -o $@.$(EXT) $@.o $(LIBS)
+	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
 
 $(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
-	$(LD) $(LFLAGS) -o $(LIBNAME).$(EXT) *.o $(LIBS)
-	$(STRIP) $(STRIPFLAGS) $(LIBNAME).$(EXT)
+	$(LD) $(LFLAGS) -o $@.$(EXT) *.o $(LIBS)
+	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
 
 $(TARGETS): %.o : %.c
 	$(CC) $(Z_CFLAGS) -c -o $@ $*.c
 
+externals: $(OBJECTS)
 
 clean:
 	-rm -f *.$(EXT) *.o 

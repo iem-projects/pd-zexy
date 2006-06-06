@@ -1,5 +1,10 @@
 LIBNAME    =@LIBNAME@
 
+# when build as a library this holds a pre-processor define
+# (e.g. "-DZEXY_LIBRARY")
+# when build as single externals this is empty
+BUILDLIBRARY =@BUILDLIBRARY@
+
 PREFIX     =@prefix@@PDLIBDIR@
 
 INSTALL_BIN=$(PREFIX)/extra
@@ -18,10 +23,10 @@ AFLAGS =
 LFLAGS = @LFLAGS@
 WFLAGS =
 
-TARNAME =  $(LIBNAME)-@ZEXY_VERSION@.tgz
+TARNAME =  $(LIBNAME)-@LIBRARY_VERSION@.tgz
 
 # ICCFLAGS=-march=pentiumiii -axK
-Z_CFLAGS = $(IFLAGS) $(DEFS) -DPD $(WFLAGS) @CFLAGS@ $(CFLAGS)
+Z_CFLAGS = $(IFLAGS) $(DEFS) $(BUILDLIBRARY) -DPD $(WFLAGS) @CFLAGS@ $(CFLAGS)
 
 MAKEDEP_FLAGS = @MAKEDEP_FLAGS@
 

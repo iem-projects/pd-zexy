@@ -16,7 +16,8 @@ AC_SUBST(EXT)
 AC_SUBST(LD)
 AC_SUBST(STRIP)
 AC_SUBST(STRIPFLAGS)
-AC_SUBST(ZEXY_VERSION)
+AC_SUBST(LIBRARY_VERSION)
+AC_SUBST(BUILDLIBRARY)
 AC_SUBST(REFERENCEPATH)
 AC_SUBST(PDLIBDIR)
 AC_SUBST(INCLUDES)
@@ -35,6 +36,8 @@ then
 AC_ARG_ENABLE(bundle, [  --enable-bundleloader   use bundle_loader (default: autodetect)])
 fi
 
+AC_ARG_ENABLE(library,[  --disable-library       split the library into single externals])
+
 if test "x" = "x${enable_PIC}" ; then
  enable_PIC="${with_PIC}"
 fi
@@ -50,6 +53,12 @@ fi
 if test "x" = "x${enable_bundle}" ; then
  enable_bundle="${with_bundle}"
 fi
+
+if test "xno" != "x${enable_library}" ; then
+dnl LATER: find a more generic way to generate the .._LIBRARY define
+ BUILDLIBRARY="-DZEXY_LIBRARY"
+fi
+
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lc:
@@ -184,9 +193,6 @@ fi
 dnl STRIP=${STRIP:=strip}
 
 
-DFLAGS="-DZEXY_LIBRARY"
-
-
 dnl Checks for pd-version, to set the correct help-path
 AC_MSG_CHECKING("pd\>=0.37")
 
@@ -237,7 +243,7 @@ AC_MSG_CHECKING("zexy-version")
 if test "$with_version" != ""
 then
   echo -n "($with_version)...forced "
-  ZEXY_VERSION="$with_version"
+  LIBRARY_VERSION="$with_version"
 else
  if test "x$cross_compiling" = "xno"
  then
@@ -252,14 +258,14 @@ EOF
 
   if $CC $INCLUDES $DFLAGS -o conftest.o conftest.c > /dev/null 2>&1
   then
-   ZEXY_VERSION=`./conftest.o`
-   echo "$ZEXY_VERSION"
+   LIBRARY_VERSION=`./conftest.o`
+   echo "$LIBRARY_VERSION"
   else
-   ZEXY_VERSION="X"
+   LIBRARY_VERSION="X"
    echo "(unknown)"
   fi
  else
-   ZEXY_VERSION="X"
+   LIBRARY_VERSION="X"
    echo "(X)"
  fi
 fi
