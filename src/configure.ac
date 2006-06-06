@@ -194,7 +194,7 @@ dnl STRIP=${STRIP:=strip}
 
 
 dnl Checks for pd-version, to set the correct help-path
-AC_MSG_CHECKING("pd\>=0.37")
+AC_MSG_CHECKING("pd>=0.37")
 
 if test "$with_pdversion" != ""
 then
