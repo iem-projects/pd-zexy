@@ -95,7 +95,10 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
   /* append list to the current node list */
   
   t_msglist *cur=x->current;
-
+  if(ac&&av&&A_SYMBOL==av->a_type&&gensym("")==atom_getsymbol(av)){
+    /* ignoring empty symbols! */
+    return;
+  }
   if (cur) {
     t_atom *ap;
     int newsize = cur->n + ac; 
@@ -234,7 +237,6 @@ static void msgfile_skip(t_msgfile *x, t_float f)
   if (i<0) i=0;
 
   msgfile_goto(x, i);
-
 }
 
 static void msgfile_clear(t_msgfile *x)
@@ -520,9 +522,10 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
   int rmode = 0;
 
   int fd;
-  long readlength, length;
+  long readlength, length, pos;
   char filnam[MAXPDSTRING], namebuf[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
+  char *charbinbuf=NULL, *cbb;
   char*dirname=canvas_getdir(x->x_canvas)->s_name;
 
   int mode = x->mode;
@@ -542,21 +545,6 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
       error("%s: can't open in %s", filename->s_name, dirname);
       return;
     }
-  } else {
-    close (fd);
-
-    namebuf[0] = 0;
-    if (*buf)
-      strcat(namebuf, buf), strcat(namebuf, "/");
-    strcat(namebuf, bufptr);
-    
-    /* open and get length */
-    sys_bashfilename(namebuf, filnam);
-    
-    if ((fd = open(filnam, rmode)) < 0) {
-      error("msgfile_read: unable to open %s", filnam);
-      return;
-    }
   }
 
   if (gensym("cr")==format) {
@@ -571,14 +559,14 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
   switch (mode) {
   case CR_MODE:
     separator = ' ';
-    eol = ' ';
+    eol = '\n';
     break;
   case CSV_MODE:
     separator = ',';
     eol = ' ';
     break;
   default:
-    separator = ' ';
+    separator = '\n';
     eol = ';';
     break;
   }
@@ -601,24 +589,53 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
   /* close */
   close(fd);
 
-  /* undo separators and eols */
+  /* convert separators and eols to what pd expects in a binbuf*/
   bufptr=readbuf;
 
-  while (readlength--) {
-    if (*bufptr == separator) {
-      *bufptr = ' ';
-    }
-    else if ((*bufptr == eol) && (bufptr[1] == '\n')) *bufptr = ';';
-    bufptr++;
-  }
+# define MSGFILE_HEADROOM 1024
 
+  charbinbuf=(char*)getbytes(length+MSGFILE_HEADROOM);
+  cbb=charbinbuf;
+  for(pos=0; pos<length+MSGFILE_HEADROOM; pos++)charbinbuf[pos]=0;
+
+  *cbb++=';';
+  pos=1;
+  while (readlength--) {
+    if(pos>=length+MSGFILE_HEADROOM){
+      error("msgfile: read error (headroom %d too small!)", MSGFILE_HEADROOM);
+      goto read_error;
+      break;
+    }
+    if (*bufptr == separator) {
+      *cbb = ' ';
+    } else if (*bufptr==eol) {
+      *cbb++=';';pos++;
+      *cbb='\n';
+    }
+    else {
+      *cbb=*bufptr;
+    }
+
+    bufptr++;
+    cbb++;
+    pos++;
+  }
+#if 0
+  //  if(';'==cbb[-1])cbb[-1]=0;
+  pos--;
+  while(pos>0&&('\n'==charbinbuf[pos]||';'==charbinbuf[pos]||' '==charbinbuf[pos])){
+    charbinbuf[pos]=0;
+    pos--;
+  }
+#endif
   /* convert to binbuf */
-  binbuf_text(bbuf, readbuf, length);
+  binbuf_text(bbuf, charbinbuf, length+MSGFILE_HEADROOM);
   msgfile_binbuf2listbuf(x, bbuf);
 
-
+ read_error:
   binbuf_free(bbuf);
   t_freebytes(readbuf, length);
+  t_freebytes(charbinbuf, length+MSGFILE_HEADROOM);
 }
 
 static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
