@@ -435,7 +435,6 @@ static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   t_msglist *found = 0;
   t_msglist *cur=x->current;
-  ZEXY_USEVAR(s);
 
   while (cur) {
     int n = cur->n;
@@ -443,11 +442,14 @@ static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
     t_atom *that = av;
     t_atom *this = cur->thislist;
 
-    if(0==this)continue;
+    if(0==this){
+      cur=cur->next;
+      continue;
+    }
     
     if (ac < n) n = ac;
 
-    while (n--) {
+    while (n-->0) {
       if ( (strcmp("*", atom_getsymbol(that)->s_name) && atomcmp(that, this)) ) {
 	equal = 0;
       }
