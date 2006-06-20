@@ -1,0 +1,7 @@
+[drip]
+	- sometimes crashes with small delays
+	. according to the backtrace this should be a memory corruption
+	. (actually the crashing bug was buggy by design and i haven't got a simple bug-patch yet)
+
+[s2l]
+	- numerically looking sub-symbols are converted wrongly to floats: e.g. "192.168.0.1" -> 192,168

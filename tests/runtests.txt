@@ -69,3 +69,4 @@ help-msg/wrap;
 help-msg/zexy;
 help-msg/z~;
 repeat/noargs;
+s2l/numsymbols;

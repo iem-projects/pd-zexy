@@ -2,7 +2,11 @@ default: all
 
 .PHONEY: default all everything dist \
 	clean realclean distclean \
-	install install-bin install-doc install-abs
+	install install-bin install-doc install-abs \
+	tests
+
+
+TESTDIR=../tests
 
 HELPERSOURCES=z_zexy.c zexy.c winNT_portio.c
 
@@ -85,6 +89,9 @@ distclean: realclean
 	-rm -f zexy.exp  zexy.lib  zexy.ncb  \
 		zexy.opt  zexy.plg
 	-rm -rf autom4te.cache/
+
+tests:  all
+	make -C $(TESTDIR)
 
 install: install-bin install-doc install-abs
 

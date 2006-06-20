@@ -8,7 +8,7 @@ RUNTESTS_LOG=log-runtests.${SUFFIX}
 
 ls -1 */*.pd | sed 's/\.pd/;/' > ${RUNTESTS_TXT}
 
-LIBFLAGS="-lib ../zexy -path ../abs/"
+LIBFLAGS="-path ../src -lib zexy -path ../abs/"
 
 function run_nogui() {
  pd ${LIBFLAGS} -nogui runtests_nogui.pd > ${RUNTESTS_LOG} 2>&1 
