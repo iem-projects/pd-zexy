@@ -19,6 +19,7 @@ void z_zexy_setup(void)
 	atoi_setup(); /* atoi */
 	avg_tilde_setup(); /* avg~ */
 	blockmirror_tilde_setup(); /* blockmirror~ */
+	blockshuffle_tilde_setup(); /* blockshuffle~ */
 	blockswap_tilde_setup(); /* blockswap~ */
 	date_setup(); /* date */
 	demultiplex_tilde_setup(); /* demultiplex~ */

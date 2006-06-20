@@ -17,6 +17,7 @@ void absgn_tilde_setup(void); /* absgn~ */
 void atoi_setup(void); /* atoi */
 void avg_tilde_setup(void); /* avg~ */
 void blockmirror_tilde_setup(void); /* blockmirror~ */
+void blockshuffle_tilde_setup(void); /* blockshuffle~ */
 void blockswap_tilde_setup(void); /* blockswap~ */
 void date_setup(void); /* date */
 void demultiplex_tilde_setup(void); /* demultiplex~ */
