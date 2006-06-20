@@ -1,5 +1,10 @@
 #!/bin/sh
 
+## TODO:
+##  find zexy (either in ../src or ../)
+##  if it is not there, assume it is split into externals
+
+
 #SUFFIX="$$"
 SUFFIX=$(date +%y%m%d-%H%M%S)
 
@@ -8,7 +13,8 @@ RUNTESTS_LOG=log-runtests.${SUFFIX}
 
 ls -1 */*.pd | sed 's/\.pd/;/' > ${RUNTESTS_TXT}
 
-LIBFLAGS="-path ../src -lib zexy -path ../abs/"
+
+LIBFLAGS="-path ../src:../ -lib zexy -path ../abs/"
 
 function run_nogui() {
  pd ${LIBFLAGS} -nogui runtests_nogui.pd > ${RUNTESTS_LOG} 2>&1 
