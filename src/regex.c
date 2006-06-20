@@ -38,9 +38,19 @@ typedef struct _regex
 {
   t_object x_obj;
 #ifdef HAVE_REGEX_H
+  char    *x_regexstring; /* the uncompiled regular expression */
+  int      x_regexstringlength; 
+
   regex_t *x_regexp;
   int x_matchnum;
+
+  int x_flags; /* flags for the regex-compiler; REG_EXTENDED is always enabled */
 #endif
+
+  t_outlet*x_outResult;
+  t_outlet*x_outDetails;
+  t_outlet*x_outNumDetails;
+
 } t_regex;
 
 #ifdef HAVE_REGEX_H
@@ -109,20 +119,13 @@ static char*regex_l2s(int *reslen, t_symbol*s, int argc, t_atom*argv)
   if(reslen)*reslen=length;
   return result;
 }
-#endif
 
-static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
+static void regex_compile(t_regex *x)
 {
-  ZEXY_USEVAR(s);
-#ifdef HAVE_REGEX_H
-  char*result=0;
-  int length=0;
-  int flags =  0;
+  int flags =  x->x_flags;
   flags |= REG_EXTENDED;
 
-  result=regex_l2s(&length, 0, argc, argv);
-
-  if(0==result || 0==length){
+  if(0==x->x_regexstring || 0==x->x_regexstringlength){
     pd_error(x, "[regex]: no regular expression given");
     return;
   }
@@ -135,25 +138,63 @@ static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
   }
   x->x_regexp=(regex_t*)getbytes(sizeof(t_regex));
 
-  if(regcomp(x->x_regexp, result, flags)) {
-    pd_error(x, "[regex]: invalid regular expression: %s", result);
+  if(regcomp(x->x_regexp, x->x_regexstring, flags)) {
+    pd_error(x, "[regex]: invalid regular expression: %s", x->x_regexstring);
     if(x->x_regexp)freebytes(x->x_regexp, sizeof(t_regex));
     x->x_regexp=0;
   }
+}
+#endif
 
-  if(result)freebytes(result, length);
+
+static void regex_case(t_regex *x, t_float f){
+#if HAVE_REGEX_H
+  if(f>0.f)
+    x->x_flags |= REG_ICASE;
+  else
+    x->x_flags ^= REG_ICASE;
+
+  regex_compile(x);
 #endif
 }
+
+
+static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
+{
+#ifdef HAVE_REGEX_H
+  char*result=0;
+  int length=0;
+
+  result=regex_l2s(&length, 0, argc, argv);
+
+  if(0==result || 0==length){
+    pd_error(x, "[regex]: no regular expression given");
+    return;
+  }
+
+  if(x->x_regexstring) {
+    freebytes(x->x_regexstring, x->x_regexstringlength);
+    x->x_regexstring=0;
+    x->x_regexstringlength=0;
+  }
+  
+  x->x_regexstring=result;
+  x->x_regexstringlength=length;
+
+  regex_compile(x);
+#endif
+}
+
+/* compare the given list as string with the precompiled regex */
 static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
 {
-  ZEXY_USEVAR(s);
 #ifdef HAVE_REGEX_H
   char*teststring=0;
   int length=0;
 
   int num_matches=x->x_matchnum;
   regmatch_t*match=(regmatch_t*)getbytes(sizeof(regmatch_t)*num_matches);
-  t_atom*ap=(t_atom*)getbytes(sizeof(t_atom)*(1+2*num_matches));
+  t_atom*ap=(t_atom*)getbytes(sizeof(t_atom)*(3*num_matches));
   int ap_length=0;
 
   int err=0;
@@ -168,36 +209,54 @@ static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
     goto cleanup;
   }
 
+  /* do the actual comparing against the regex */
   err=regexec(x->x_regexp, teststring, num_matches, match, 0);
+  if(teststring){
+    freebytes(teststring, length);
+    teststring=0;
+  }
 
-  if(err) {
-    ap_length=1;
-    SETFLOAT(ap, 0.f);
-  } else {
+  if(err) { /* NO match */
+    if(match){
+      freebytes(match, sizeof(regmatch_t)*num_matches);
+      match=0;
+    }
+
+    outlet_float(x->x_outResult, 0.f);
+  } else { /* match! */
     int num_results=0;
     int i=0;
-    t_atom*ap2=ap+1;
+    t_atom*ap2=ap;
+
     for(i=0; i<num_matches; i++){
       if(match[i].rm_so!=-1){
+        /* output the matches */
         if(i>0 && (match[i].rm_so==match[i-1].rm_so) && (match[i].rm_eo==match[i-1].rm_eo)){
+          // duplicate matches
         } else {
-          SETFLOAT(ap2+0, match[i].rm_so);
-          SETFLOAT(ap2+1, match[i].rm_eo);
-          ap2+=2;
+          SETFLOAT(ap2+0, (t_float)i);
+          SETFLOAT(ap2+1, (t_float)match[i].rm_so);
+          SETFLOAT(ap2+2, (t_float)match[i].rm_eo);
+          ap2+=3;
           num_results++;
         }
       }
     }
-    ap_length=1+2*num_results;
-    SETFLOAT(ap, num_results);
+    if(match){
+      freebytes(match, sizeof(regmatch_t)*num_matches);
+      match=0;
+    }
+    outlet_float(x->x_outNumDetails, (t_float)num_results);
+    for(i=0; i<num_results; i++){
+      outlet_list(x->x_outDetails, gensym("list"), 3, ap+(i*3));
+    }
+    outlet_float(x->x_outResult, 1.f);
   }
-
  cleanup:
   if(teststring)freebytes(teststring, length);
   if(match)freebytes(match, sizeof(regmatch_t)*num_matches);
 
   if(ap){
-    outlet_list(x->x_obj.ob_outlet, gensym("list"), ap_length, ap);
     freebytes(ap, sizeof(t_atom)*(1+2*num_matches));
   }
 #endif
@@ -206,12 +265,20 @@ static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
 static void *regex_new(t_symbol *s, int argc, t_atom*argv)
 {
   t_regex *x = (t_regex *)pd_new(regex_class);
-  ZEXY_USEVAR(s);
 
-  outlet_new(&x->x_obj, 0);
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("regex"));
 
+  x->x_outResult=outlet_new(&x->x_obj, 0);
+  x->x_outDetails=outlet_new(&x->x_obj, gensym("list"));
+  x->x_outNumDetails=outlet_new(&x->x_obj, gensym("float"));
+
+
 #ifdef HAVE_REGEX_H
+  x->x_flags=0;
+
+  x->x_regexstring=0;
+  x->x_regexstringlength=0;
+
   x->x_regexp=0;
   x->x_matchnum=NUM_REGMATCHES;
   if(argc)regex_regex(x, gensym(""), argc, argv);
@@ -225,6 +292,12 @@ static void *regex_new(t_symbol *s, int argc, t_atom*argv)
 static void regex_free(t_regex *x)
 {
 #ifdef HAVE_REGEX_H
+  if(x->x_regexstring){
+    freebytes(x->x_regexstring, x->x_regexstringlength);
+    x->x_regexstring=0;
+    x->x_regexstringlength=0;
+  }
+
   if(x->x_regexp) {
     regfree(x->x_regexp);
     freebytes(x->x_regexp, sizeof(t_regex));
@@ -244,7 +317,9 @@ void regex_setup(void)
 			 (t_method)regex_free, sizeof(t_regex), 0, A_GIMME, 0);
 
   class_addlist  (regex_class, regex_symbol);
-  class_addmethod  (regex_class, (t_method)regex_regex, gensym("regex"), A_GIMME, 0);
+  class_addmethod(regex_class, (t_method)regex_regex, gensym("regex"), A_GIMME, 0);
+
+  class_addmethod(regex_class, (t_method)regex_case, gensym("case"), A_FLOAT, 0);
 
   class_addmethod(regex_class, (t_method)regex_help, gensym("help"), A_NULL);
   class_sethelpsymbol(regex_class, gensym("zexy/regex"));
