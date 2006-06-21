@@ -29,8 +29,7 @@
 static t_class *blockshuffle_class;
 
 typedef struct _blockshuffle
-{
-  t_object x_obj;
+{  t_object x_obj;
 
   t_sample*blockbuf;
   t_int*   indices;
@@ -115,9 +114,9 @@ static void blockshuffle_helper(void)
   post("outlet : signal~");
 }
 static void blockshuffle_free(t_blockshuffle *x){
-  if(x->indices)freebytes(x->indices, x->size);
-  if(x->blockbuf)freebytes(x->blockbuf, x->size);
-  if(x->shuffle)freebytes(x->shuffle, x->shufflesize);
+  if(x->indices) freebytes(x->indices,  sizeof(t_int)   *x->size);
+  if(x->blockbuf)freebytes(x->blockbuf, sizeof(t_sample)*x->size);
+  if(x->shuffle) freebytes(x->shuffle,  sizeof(t_float) *x->shufflesize);
 }
 
 static void *blockshuffle_new(void)

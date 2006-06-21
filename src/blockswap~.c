@@ -67,12 +67,20 @@ static void blockswap_dsp(t_blockswap *x, t_signal **sp)
   dsp_add(blockswap_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void blockswap_helper(void)
+static void blockswap_helper(t_blockswap *x)
 {
   post("\n%c blockswap~-object for blockwise-swapping of a signal ", HEARTSYMBOL);
   post("'help' : view this\n"
        "signal~");
   post("outlet : signal~");
+}
+
+static void blockswap_free(t_blockswap *x)
+{
+  if(x->blockbuffer){
+    freebytes(x->blockbuffer, sizeof(t_float)*x->blocksize);
+  }
+  x->blockbuffer=0;
 }
 
 static void *blockswap_new(void)

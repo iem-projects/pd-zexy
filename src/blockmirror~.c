@@ -72,14 +72,19 @@ static void blockmirror_dsp(t_blockmirror *x, t_signal **sp)
   dsp_add(blockmirror_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void blockmirror_helper(void)
+static void blockmirror_helper(t_blockmirror*x)
 {
   post("\n%c blockmirror~-object for reverting a signal", HEARTSYMBOL);
   post("'help' : view this\n"
        "signal~");
   post("outlet : signal~");
 }
-
+static void blockmirror_free(t_blockmirror*x)
+{
+  if(x->blockbuffer)
+    freebytes(x->blockbuffer, sizeof(t_float)*x->blocksize);
+  x->blockbuffer=0;
+}
 static void *blockmirror_new(void)
 {
   t_blockmirror *x = (t_blockmirror *)pd_new(blockmirror_class);
@@ -91,8 +96,9 @@ static void *blockmirror_new(void)
 
 void blockmirror_tilde_setup(void)
 {
-  blockmirror_class = class_new(gensym("blockmirror~"), (t_newmethod)blockmirror_new, 0,
-			 sizeof(t_blockmirror), 0, A_NULL);
+  blockmirror_class = class_new(gensym("blockmirror~"), (t_newmethod)blockmirror_new, 
+                                (t_method)blockmirror_free,
+                                sizeof(t_blockmirror), 0, A_NULL);
   class_addmethod(blockmirror_class, nullfn, gensym("signal"), 0);
   class_addmethod(blockmirror_class, (t_method)blockmirror_dsp, gensym("dsp"), 0);
   
