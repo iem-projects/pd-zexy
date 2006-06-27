@@ -112,7 +112,7 @@ if the [msgfile];
 #X connect 20 0 0 0;
 #X connect 22 0 0 0;
 #X restore 443 104 pd editing;
-#N canvas -25 21 576 302 searching 0;
+#N canvas 0 21 576 302 searching 0;
 #X obj 54 272 outlet;
 #X msg 70 180 find test 6;
 #X msg 70 239 find test * 7 *;
@@ -130,11 +130,11 @@ and the list is output (via the 2nd and 1st outlet).;
 #X connect 2 0 0 0;
 #X connect 6 0 0 0;
 #X restore 443 124 pd searching;
-#N canvas 0 0 626 356 file-i/o 0;
-#X obj 54 272 outlet;
-#X text 195 75 read a file;
-#X text 229 96 write one;
-#X text 254 164 write a file \, terminating lines only with carriage
+#N canvas 0 0 853 402 file-i/o 0;
+#X obj 54 312 outlet;
+#X text 265 75 read a file;
+#X text 299 96 write one;
+#X text 305 164 write a file \, terminating lines only with carriage
 return (omitting semicolons.) You can read files this way too \, in
 which case carriage returns are mapped to semicolons.;
 #X msg 87 76 read msgfile.txt;
@@ -143,13 +143,19 @@ which case carriage returns are mapped to semicolons.;
 #X msg 87 97 write /tmp/msgfile.txt;
 #X text 51 26 reading from and writing the contents of [msgfile] to
 files;
+#X msg 111 248 write /tmp/msgfile3.txt $$;
+#X text 331 238 on writing replace every occurence of $$ with a single
+$. This way you can write pd-patches which can handle arguments.;
+#X msg 146 291 add #X obj f $$1;
 #X connect 4 0 0 0;
 #X connect 5 0 0 0;
 #X connect 6 0 0 0;
 #X connect 7 0 0 0;
+#X connect 9 0 0 0;
+#X connect 11 0 0 0;
 #X restore 443 144 pd file-i/o;
-#N canvas 0 0 450 199 misc 0;
-#X obj 84 142 outlet;
+#N canvas 0 0 450 397 misc 0;
+#X obj 84 282 outlet;
 #X msg 84 112 print;
 #X text 40 72 miscellaneous functionality of [msgfile];
 #X text 126 114 debugging printout of the contents to the console;

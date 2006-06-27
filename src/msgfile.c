@@ -653,6 +653,8 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   char separator, eol;
   int mode = x->mode;
 
+  int dollarmode = 0;
+
   FILE *f=0;
 
   while (x->current && x->current->previous) x->current=x->current->previous;
@@ -667,6 +669,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   canvas_makefilename(x->x_canvas, filename->s_name,
 		      buf, MAXPDSTRING);
 
+#if 0
   if (!strcmp(format->s_name, "cr")) {
     mode = CR_MODE;
   } else if (!strcmp(format->s_name, "csv")) {
@@ -675,6 +678,22 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
     mode = PD_MODE;
   } else if (*format->s_name)
     error("msgfile_write: unknown flag: %s", format->s_name);
+#else
+  if(gensym("cr")==format) {
+    mode = CR_MODE;
+  } else if(gensym("cvs")==format) {
+    mode = CSV_MODE;
+  } else if(gensym("pd")==format) {
+    mode = PD_MODE;
+  } else if(gensym("$$")==format) {
+    mode = PD_MODE;
+    dollarmode=1;
+  } else if(format&&format->s_name) {
+    error("msgfile_write: ignoring unknown flag: %s", format->s_name);
+  }
+ 
+
+#endif
 
   switch (mode) {
   case CR_MODE:
@@ -696,11 +715,15 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   i = textlen;
 
   while(i--) {
-    if (*dumtext==' ') *dumtext=separator;
-    if ((*dumtext==';') && (dumtext[1]=='\n')) *dumtext = eol;
+    if (*dumtext==' ')
+      *dumtext=separator;
+    else if ((*dumtext==';') && (dumtext[1]=='\n'))
+      *dumtext = eol;
+    else if(dollarmode && (*dumtext=='$') && (dumtext[1]=='$'))
+      *dumtext='\\';
     dumtext++;
   }
-
+  
   /* open */
   sys_bashfilename(filename->s_name, filnam);
   if (!(f = fopen(filnam, "w"))) {
@@ -787,6 +810,7 @@ static void *msgfile_new(t_symbol *s, int argc, t_atom *argv)
 
     x->eol=' ';
     x->separator=',';
+
     return (x);
 }
 
