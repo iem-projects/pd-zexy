@@ -68,5 +68,7 @@ help-msg/urn;
 help-msg/wrap;
 help-msg/zexy;
 help-msg/z~;
+l2s/argument;
+l2s/delimiter;
 repeat/noargs;
 s2l/numsymbols;

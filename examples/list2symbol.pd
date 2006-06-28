@@ -1,13 +1,11 @@
-#N canvas 228 508 809 343 10;
+#N canvas 14 156 817 446 10;
 #X obj 135 48 list2symbol;
-#X text 219 48 convert a list into a symbol;
+#X text 228 49 convert a list into a symbol;
 #X obj 457 50 l2s;
 #X symbolatom 75 286 0 0 0 0 - - -;
 #X msg 75 97 list this was a list and is now a symbol;
 #X msg 159 118 anythings work fine too;
-#X obj 507 268 l2s my bonnie is over the ocean;
 #X obj 507 288 print;
-#X msg 507 247 bang;
 #X symbolatom 147 223 10 0 0 0 - - -;
 #X msg 147 158 symbol --;
 #X text 230 157 by default \, list-elements are separated by spaces.
@@ -16,11 +14,19 @@ You can set the separator to any symbol;
 #X msg 156 201 symbol;
 #X obj 75 258 list2symbol;
 #X text 222 203 even to a zero-length symbol!;
-#X connect 4 0 14 0;
-#X connect 5 0 14 0;
-#X connect 6 0 7 0;
-#X connect 8 0 6 0;
-#X connect 9 0 14 1;
-#X connect 10 0 9 0;
-#X connect 13 0 9 0;
-#X connect 14 0 3 0;
+#X msg 507 247 my bonnie is over the ovean;
+#X obj 507 268 l2s .;
+#X text 537 61 updated for zexy-2.2;
+#X text 554 270 argument: default delimiter;
+#X text 316 326 in prior versions of [list2symbol] \, the default delimiter
+was not settable via arguments \; instead the arguments denoted the
+incoming list. this has changed!!!!;
+#X text 321 302 Attention:;
+#X connect 4 0 12 0;
+#X connect 5 0 12 0;
+#X connect 7 0 12 1;
+#X connect 8 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 3 0;
+#X connect 14 0 15 0;
+#X connect 15 0 6 0;

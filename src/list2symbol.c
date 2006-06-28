@@ -32,6 +32,8 @@ typedef struct _list2symbol
   int       ac;
   t_atom   *ap;
   t_symbol *s,*connector;
+  t_inlet *x_inlet2;
+  t_outlet*x_outlet;
 } t_list2symbol;
 
 static void list2symbol_connector(t_list2symbol *x, t_symbol *s){
@@ -48,9 +50,11 @@ static void list2symbol_bang(t_list2symbol *x)
   char *connector=0;
   char connlen=0;
   char*buffer = (char*)getbytes(MAXPDSTRING*sizeof(char));
-  if(x->connector)connector=x->connector->s_name;
-  if(connector)connlen=strlen(connector);
-
+  if(x->connector){
+    connector=x->connector->s_name;
+    connlen=strlen(connector);
+  }
+      
   /* 1st get the length of the symbol */
   if(x->s)length+=strlen(x->s->s_name);
   else length-=connlen;
@@ -79,10 +83,11 @@ static void list2symbol_bang(t_list2symbol *x)
   /* 2nd create the symbol */
   if (x->s){
     char *buf = x->s->s_name;
-    strcpy(result+len, buf);
-    len+=strlen(buf);
+    int buflen=strlen(buf);
+    strncpy(result+len, buf, length-len);
+    len+=buflen;
     if(i && connector){
-      strcpy(result+len, connector);
+      strncpy(result+len, connector, length-len);
       len += connlen;
     }
   }
@@ -90,16 +95,16 @@ static void list2symbol_bang(t_list2symbol *x)
   argv=x->ap;
   while(i--){
     if(A_SYMBOL==argv->a_type){
-      strcpy(result+len, argv->a_w.w_symbol->s_name);
+      strncpy(result+len, argv->a_w.w_symbol->s_name, length-len);
       len+= strlen(argv->a_w.w_symbol->s_name);
     } else {
       atom_string(argv, buffer, MAXPDSTRING);
-      strcpy(result+len, buffer);
+      strncpy(result+len, buffer, length-len);
       len += strlen(buffer);
     }
     argv++;
     if(i && connector){
-      strcpy(result+len, connector);
+      strncpy(result+len, connector, length-len);
       len += connlen;
     }
   }
@@ -112,41 +117,64 @@ static void list2symbol_bang(t_list2symbol *x)
 
 static void list2symbol_anything(t_list2symbol *x, t_symbol *s, int argc, t_atom *argv)
 {
+  if(x->ap){
+    freebytes(x->ap, x->ac*sizeof(t_atom));
+    x->ap=0;
+  }
+
   x->s =s;
   x->ac=argc;
-  x->ap=argv;
-  
+
+  x->ap=(t_atom*)getbytes(x->ac*sizeof(t_atom));
+  if(x->ap){
+    t_atom*ap=x->ap;
+    while(argc--){
+      *ap++=*argv++;
+    }
+  }
   list2symbol_bang(x);
 }
 
 static void list2symbol_list(t_list2symbol *x, t_symbol *s, int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
   list2symbol_anything(x, 0, argc, argv);
 }
 static void *list2symbol_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_list2symbol *x = (t_list2symbol *)pd_new(list2symbol_class);
-  ZEXY_USEVAR(s);
 
-  outlet_new(&x->x_obj, 0);
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym(""));
+  x->x_outlet=outlet_new(&x->x_obj, 0);
+  x->x_inlet2=inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym(""));
+
+#if 0
+  /* old behaviour: the argument list is used as the list-to-be-converted */
   x->connector = gensym(" ");
   list2symbol_anything(x, 0, argc, argv);
+#else
+  /* new behaviour: set the delimiter with the argument */
+  list2symbol_connector(x, (argc)?atom_getsymbol(argv):gensym(" "));
+#endif
+   
 
   return (x);
 }
 
 static void list2symbol_free(t_list2symbol *x)
 {
-  ZEXY_USEVAR(x);
+  if(x->ap){
+    freebytes(x->ap, x->ac*sizeof(t_atom));
+    x->ap=0;
+  }
+  outlet_free(x->x_outlet);
+  inlet_free(x->x_inlet2);
 }
 
 
 void list2symbol_setup(void)
 {
   list2symbol_class = class_new(gensym("list2symbol"), (t_newmethod)list2symbol_new, 
-			 (t_method)list2symbol_free, sizeof(t_list2symbol), 0, A_GIMME, 0);
+                                (t_method)list2symbol_free, sizeof(t_list2symbol), 0,
+                                A_GIMME, 0);
 
   class_addcreator((t_newmethod)list2symbol_new, gensym("l2s"), A_GIMME, 0);
   class_addbang    (list2symbol_class, list2symbol_bang);
