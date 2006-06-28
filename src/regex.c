@@ -282,6 +282,11 @@ static void *regex_new(t_symbol *s, int argc, t_atom*argv)
   x->x_regexp=0;
   x->x_matchnum=NUM_REGMATCHES;
   if(argc)regex_regex(x, gensym(""), argc, argv);
+  else{
+    t_atom a;
+    SETSYMBOL(&a, gensym(".*"));
+    regex_regex(x, 0, 1, &a);
+  }
 #else
   error("[regex] non-functional: compiled without regex-support!");
 #endif
