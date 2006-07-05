@@ -534,6 +534,7 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
   char separator, eol;
 
   t_binbuf *bbuf = binbuf_new();
+  int dollarmode = 0;
 
 
 #ifdef __WIN32__
@@ -555,6 +556,9 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
     mode = CSV_MODE;
   } else if (gensym("pd")==format) {
     mode = PD_MODE;
+  } else if(gensym("$$")==format) {
+    mode = PD_MODE;
+    dollarmode=1;
   } else if (*format->s_name)
     error("msgfile_read: unknown flag: %s", format->s_name);
 
@@ -613,6 +617,8 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
     } else if (*bufptr==eol) {
       *cbb++=';';pos++;
       *cbb='\n';
+    } else if (dollarmode && (bufptr[0]=='\\' && bufptr[1]=='$')) {
+      *cbb='$';
     }
     else {
       *cbb=*bufptr;
@@ -622,14 +628,7 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
     cbb++;
     pos++;
   }
-#if 0
-  //  if(';'==cbb[-1])cbb[-1]=0;
-  pos--;
-  while(pos>0&&('\n'==charbinbuf[pos]||';'==charbinbuf[pos]||' '==charbinbuf[pos])){
-    charbinbuf[pos]=0;
-    pos--;
-  }
-#endif
+
   /* convert to binbuf */
   binbuf_text(bbuf, charbinbuf, length+MSGFILE_HEADROOM);
   msgfile_binbuf2listbuf(x, bbuf);
@@ -669,19 +668,9 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   canvas_makefilename(x->x_canvas, filename->s_name,
 		      buf, MAXPDSTRING);
 
-#if 0
-  if (!strcmp(format->s_name, "cr")) {
-    mode = CR_MODE;
-  } else if (!strcmp(format->s_name, "csv")) {
-    mode = CSV_MODE;
-  } else if (!strcmp(format->s_name, "pd")) {
-    mode = PD_MODE;
-  } else if (*format->s_name)
-    error("msgfile_write: unknown flag: %s", format->s_name);
-#else
   if(gensym("cr")==format) {
     mode = CR_MODE;
-  } else if(gensym("cvs")==format) {
+  } else if(gensym("csv")==format) {
     mode = CSV_MODE;
   } else if(gensym("pd")==format) {
     mode = PD_MODE;
@@ -692,9 +681,6 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
     error("msgfile_write: ignoring unknown flag: %s", format->s_name);
   }
  
-
-#endif
-
   switch (mode) {
   case CR_MODE:
     separator = ' ';
