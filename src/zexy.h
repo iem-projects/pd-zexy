@@ -100,12 +100,8 @@ typedef struct _mypdlist
 #ifndef ZEXY_LIBRARY
 static void zexy_register(char*object){
   if(object!=0){
-    post("[%s]", object);
-    post("\tpart of zexy-%s", VERSION);
-    post("\tCopyright (l) IOhannes m zmölnig, 1999-2006");
-    post("\tforum::für::umläute");
-    post("\tIEM");
-    post("\tcompiled:  "__DATE__" ");
+    post("[%s] part of zexy-%s (compiled: "__DATE__")", object, VERSION);
+    post("\tCopyright (l) 1999-2006 IOhannes m zmölnig, forum::für::umläute & IEM");
   }
 }
 #else
