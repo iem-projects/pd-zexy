@@ -1,11 +1,11 @@
-#N canvas 437 75 639 390 10;
+#N canvas 437 75 639 543 10;
 #X obj 259 82 inlet z;
 #X text 63 26 convert cartesian to spherical coordinates;
 #X obj 99 82 inlet x;
 #X obj 179 82 inlet y;
-#X obj 99 351 outlet r;
-#X obj 199 351 outlet phi;
-#X obj 279 351 outlet theta;
+#X obj 99 481 outlet r;
+#X obj 206 481 outlet phi;
+#X obj 279 481 outlet theta;
 #X obj 99 125 unpack 0 0 0;
 #X text 263 136 r=sqrt(x^2+y^2+z^2);
 #X text 263 158 phi=atan2(y \, x);
@@ -29,6 +29,8 @@
 #X msg 279 312 \$2 \$1;
 #X obj 99 105 pack \$1 \$2 \$3;
 #X text 464 24 part of zexy;
+#X obj 167 426 unpack 0 0 0;
+#X obj 167 406 pack 0 0 0;
 #X connect 0 0 28 2;
 #X connect 2 0 28 0;
 #X connect 3 0 28 1;
@@ -36,9 +38,9 @@
 #X connect 7 1 19 0;
 #X connect 7 2 23 0;
 #X connect 11 0 20 0;
-#X connect 12 0 5 0;
-#X connect 13 0 6 0;
-#X connect 14 0 4 0;
+#X connect 12 0 31 1;
+#X connect 13 0 31 2;
+#X connect 14 0 31 0;
 #X connect 15 0 24 0;
 #X connect 16 0 14 0;
 #X connect 17 0 11 0;
@@ -60,3 +62,7 @@
 #X connect 26 0 12 0;
 #X connect 27 0 13 0;
 #X connect 28 0 7 0;
+#X connect 30 0 4 0;
+#X connect 30 1 5 0;
+#X connect 30 2 6 0;
+#X connect 31 0 30 0;
