@@ -30,7 +30,6 @@ z_zexy.c z_zexy.h:
 
 -include Make.config
 
-
 ##  2nd only generate depend-files when we have Make.config included
 ##  and thus MAKEDEP_FLAGS defined
 ifdef MAKEDEP_FLAGS
@@ -47,7 +46,7 @@ endif
 
 TARGETS = $(SOURCES:.c=.o)
 
-OBJECTS = $(OBJECTSOURCES:.c=)
+OBJECTS = $(OBJECTSOURCES:.c=.$(EXT))
 
 ## if $(BUILDLIBRARY) is defined, we build everything as a single library
 ## else we build separate externals
@@ -58,9 +57,9 @@ else
 all: $(OBJECTS)
 endif
 
-$(OBJECTS): % : %.o
-	$(LD) $(LFLAGS) -o $@.$(EXT) $@.o $(LIBS)
-	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
+$(OBJECTS): %.$(EXT) : %.o
+	$(LD) $(LFLAGS) -o $@ $*.o $(LIBS)
+	$(STRIP) $(STRIPFLAGS) $@
 
 $(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
 	$(LD) $(LFLAGS) -o $@.$(EXT) *.o $(LIBS)
