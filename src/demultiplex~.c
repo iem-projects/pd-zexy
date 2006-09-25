@@ -28,7 +28,7 @@ typedef struct _demux {
   int output;
 
   int n_out;
-  t_float **out;
+  t_sample **out;
 
 } t_demux;
 
@@ -44,16 +44,14 @@ static void demux_output(t_demux *x, t_floatarg f)
 static t_int *demux_perform(t_int *w)
 {
   t_demux *x = (t_demux *)(w[1]);
-  t_float *in = (t_float *)(w[2]);
+  t_sample *in = (t_sample *)(w[2]);
   int N = (int)(w[3]);
   int n = N;
 
-
   int channel=x->n_out;
 
-
   while(channel--){
-    t_float*out=x->out[channel];
+    t_sample*out=x->out[channel];
     n=N;
     if(x->output==channel){
       while(n--)*out++=*in++;
@@ -66,7 +64,7 @@ static t_int *demux_perform(t_int *w)
 static void demux_dsp(t_demux *x, t_signal **sp)
 {
   int n = x->n_out;
-  t_float **dummy=x->out;
+  t_sample **dummy=x->out;
   while(n--)*dummy++=sp[x->n_out-n]->s_vec;
   dsp_add(demux_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
@@ -82,7 +80,7 @@ static void demux_helper(void)
 
 static void demux_free(t_demux *x)
 {
-  freebytes(x->out, x->n_out * sizeof(t_float *));
+  freebytes(x->out, x->n_out * sizeof(t_sample *));
 }
 
 static void *demux_new(t_symbol *s, int argc, t_atom *argv)
@@ -98,7 +96,7 @@ static void *demux_new(t_symbol *s, int argc, t_atom *argv)
 
 	while(argc--)outlet_new(&x->x_obj, gensym("signal"));
 
-	x->out = (t_float **)getbytes(x->n_out * sizeof(t_float *));
+	x->out = (t_sample **)getbytes(x->n_out * sizeof(t_sample *));
 	i=x->n_out;
 	while(i--)x->out[i]=0;
 
