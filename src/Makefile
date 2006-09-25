@@ -20,10 +20,6 @@ zexyconf.h: zexyconf.h.in configure
 configure: configure.ac
 	autoconf
 
-## uaehh, here comes some magic
-##  1st we don't want depend and config-makefiles to be included on "clean"-targets
-
-ifeq (,$(findstring clean, $(MAKECMDGOALS)))
 -include $(SOURCES:.c=.d)
 
 Make.config: Make.config.in configure
@@ -31,7 +27,6 @@ Make.config: Make.config.in configure
 
 z_zexy.c z_zexy.h:
 	./makesource.sh
-endif
 
 -include Make.config
 
@@ -63,8 +58,7 @@ else
 all: $(OBJECTS)
 endif
 
-
-$(OBJECTS): $(TARGETS)
+$(OBJECTS): % : %.o
 	$(LD) $(LFLAGS) -o $@.$(EXT) $@.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
 
