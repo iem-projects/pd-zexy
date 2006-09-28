@@ -302,10 +302,10 @@ then
   fi
 fi
 
-AC_CHECK_LDFLAGS([-dynamiclib -mmacosx-version-min=10.3 -undefined dynamic_lookup],
-                  ,
+#AC_CHECK_LDFLAGS([-dynamiclib -mmacosx-version-min=10.3 -undefined dynamic_lookup],
+#                  ,
 	          AC_CHECK_LDFLAGS([-bundle -undefined suppress -flat_namespace])
-                 )
+#                 )
 
 if test `uname | sed -e 's/^MINGW.*/NT/'` = NT ; 
 then
