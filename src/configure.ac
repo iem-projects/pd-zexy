@@ -31,11 +31,6 @@ AC_ARG_WITH(pdpath,   [  --with-pd=</path/to/pd> where to look for pd-headers an
 AC_ARG_ENABLE(PIC,    [  --disable-PIC           disable compilation with PIC-flag])
 AC_ARG_ENABLE(lpt,    [  --enable-lpt            enable parallelport-support])
 AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
-if test `uname -s` = Darwin; 
-then
-AC_ARG_ENABLE(bundle, [  --enable-bundleloader   use bundle_loader (default: autodetect)])
-fi
-
 AC_ARG_ENABLE(library,[  --disable-library       split the library into single externals])
 
 if test "x" = "x${enable_PIC}" ; then
@@ -48,10 +43,6 @@ fi
 
 if test "x" = "x${enable_icc}" ; then
  enable_icc="${with_icc}"
-fi
-
-if test "x" = "x${enable_bundle}" ; then
- enable_bundle="${with_bundle}"
 fi
 
 if test "xno" != "x${enable_library}" ; then
@@ -93,7 +84,7 @@ if test "x$with_pd" != "x"; then
   INCLUDES="-I${with_pd}/src ${INCLUDES}"
  fi
  if test -d "${with_pd}/bin"; then
-  LIBS="-L${with_pd}/bin ${LIBS}"
+  LFLAGS="-L${with_pd}/bin ${LFLAGS}"
  fi
 fi
 
@@ -108,7 +99,7 @@ if test $libdir
 then
  for id in $libdir
  do
-  if test -d $id; then LIBS="-L$id $LIBS"; fi
+  if test -d $id; then LFLAGS="-L$id $LFLAGS"; fi
  done
 fi
 
@@ -258,7 +249,7 @@ EOF
 
   if $CC $INCLUDES $DFLAGS -o conftest.o conftest.c > /dev/null 2>&1
   then
-   LIBRARY_VERSION=`./conftest.o`
+   LIBRARY_VERSION=$(./conftest.o)
    echo "$LIBRARY_VERSION"
   else
    LIBRARY_VERSION="X"
@@ -275,10 +266,10 @@ dnl
 dnl  OK, checks which machines are here now
 dnl this needs some rethinking when cross-compiling (?)
 dnl
+AC_CHECK_LDFLAGS([-export_dynamic -shared])
 
 if test `uname -s` = Linux; 
 then
-  LFLAGS="-export_dynamic -shared"
   EXT=pd_linux	
   STRIPFLAGS="--strip-unneeded"
   if test "$enable_icc" = "yes"; then
@@ -288,10 +279,8 @@ then
   if test $CC = "icc"
   then
     LD=$CC
-    LFLAGS="-ip -ipo_obj "$LFLAGS
-    CFLAGS="-ip -ipo_obj "$CFLAGS
-  else
-    :
+    AC_CHECK_LDFLAGS([-ip -ipo_obj])
+    AC_CHECK_CFLAGS([-ip -ipo_obj])
   fi
 fi
 
@@ -299,26 +288,10 @@ dnl This should use '-bundle_loader /path/to/pd/bin/pd' instead of'-undefined su
 dnl then strip might do something
 if test `uname -s` = Darwin; 
 then
-  LD=cc
+  LD=${CC}
   EXT=pd_darwin
   STRIP="echo faking strip"
   STRIPFLAGS=
-
-  if test "$enable_bundleloader" = ""; then
-    if test "$PD_MAJORVERSION" -gt 0 || test "$PD_MINORVERSION" -ge 39; then
-      enable_bundleloader="yes"
-    else
-      enable_bundleloader="no"
-    fi
-  fi
-  if test "$enable_bundleloader" = "yes"; then
-dnl i hope "prefix" points to where we want it...
-dnl should it rather be @exec_prefix@ ???
-    LFLAGS="-bundle -bundle_loader @prefix@/bin/pd"
-  else
-    LFLAGS="-bundle -undefined suppress -flat_namespace"
-  fi
-    
 
   if test "$enable_lpt" = "yes"; then
     AC_MSG_ERROR("lpt not supported on this platform");
@@ -329,22 +302,31 @@ dnl should it rather be @exec_prefix@ ???
   fi
 fi
 
+AC_CHECK_LDFLAGS([-dynamiclib -mmacosx-version-min=10.3 -undefined dynamic_lookup],
+                  ,
+	          AC_CHECK_LDFLAGS([-bundle -undefined suppress -flat_namespace])
+                 )
+
 if test `uname | sed -e 's/^MINGW.*/NT/'` = NT ; 
 then
-  LD=gcc
-  INCLUDES="-I@prefix@/src"
-dnl mingw should (does?) define __WIN32__ which is now used
-dnl  DFLAGS="-DMSW -DNT"
-  LFLAGS="-shared @prefix@/bin/pd.dll"
+  LD=${CC}
+  LDFLAGS="-shared pd.dll"
   EXT=dll
 else
   PDLIBDIR="/lib/pd"
 dnl this is handled by AC_CHECK_LIB above
-dnl  LIBS="-lc -lm"
 fi
+
+AC_CHECK_LDFLAGS([-shared pd.dll])
+
+
+
+
+
+
 if test `uname -s` = IRIX64; 
 then
-  LFLAGS="-n32 -DUNIX -DIRIX -DN32 -woff 1080,1064,1185 \
+  LDFLAGS="-n32 -DUNIX -DIRIX -DN32 -woff 1080,1064,1185 \
 	-OPT:roundoff=3 -OPT:IEEE_arithmetic=3 -OPT:cray_ivdep=true \
         -shared -rdata_shared"
   EXT=pd_irix6
@@ -361,7 +343,7 @@ fi
 
 if test `uname -s` = IRIX32; 
 then
-  LFLAGS="-o32 -DUNIX -DIRIX -O2 
+  LDFLAGS="-o32 -DUNIX -DIRIX -O2 
          -shared -rdata_shared"
   EXT=pd_irix5
   dnl DFLAGS="-DUNIX -DIRIX5"
@@ -427,6 +409,8 @@ AC_CHECK_HEADERS(m_pd.h, , AC_ERROR([m_pd.h is desperately needed!
         install pd and/or use
         "--with-pd=</path/to/pd/>"     or
         "--includedir=</path/to/pd/src/>"]))
+
+LFLAGS=${LDFLAGS}
 
 AC_OUTPUT(Make.config)
 
