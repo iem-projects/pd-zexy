@@ -51,6 +51,30 @@ dnl LATER: find a more generic way to generate the .._LIBRARY define
 fi
 
 
+if test "x$with_pd" != "x"; then
+ if test -d "${with_pd}/src"; then
+  INCLUDES="-I${with_pd}/src ${INCLUDES}"
+ fi
+ if test -d "${with_pd}/bin"; then
+  LDFLAGS="-L${with_pd}/bin ${LDFLAGS}"
+ fi
+fi
+
+if test $includedir
+then
+ for id in $includedir
+ do
+  if test -d $id; then INCLUDES="-I$id $INCLUDES"; fi
+ done
+fi
+if test $libdir
+then
+ for id in $libdir
+ do
+  if test -d $id; then LDFLAGS="-L$id $LDFLAGS"; fi
+ done
+fi
+
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lc:
 AC_CHECK_LIB(c, main)
@@ -77,41 +101,6 @@ then
   CC=icc
   LD=icc
  fi
-fi
-
-if test "x$with_pd" != "x"; then
- if test -d "${with_pd}/src"; then
-  INCLUDES="-I${with_pd}/src ${INCLUDES}"
- fi
- if test -d "${with_pd}/bin"; then
-  LFLAGS="-L${with_pd}/bin ${LFLAGS}"
- fi
-fi
-
-if test $includedir
-then
- for id in $includedir
- do
-  if test -d $id; then INCLUDES="-I$id $INCLUDES"; fi
- done
-fi
-if test $libdir
-then
- for id in $libdir
- do
-  if test -d $id; then LFLAGS="-L$id $LFLAGS"; fi
- done
-fi
-
-if test $includedir
-then
- for id in $includedir
- do
-   if test -d $id
-   then 
-    INCLUDES="-I$id $INCLUDES"
-   fi
- done
 fi
 
 AC_CHECK_LIB(pd, nullfn)
@@ -310,19 +299,11 @@ fi
 if test `uname | sed -e 's/^MINGW.*/NT/'` = NT ; 
 then
   LD=${CC}
-  LDFLAGS="-shared pd.dll"
+#  LDFLAGS="-shared pd.dll"
   EXT=dll
-else
-  PDLIBDIR="/lib/pd"
-dnl this is handled by AC_CHECK_LIB above
 fi
 
 AC_CHECK_LDFLAGS([-shared pd.dll])
-
-
-
-
-
 
 if test `uname -s` = IRIX64; 
 then
@@ -411,7 +392,8 @@ AC_CHECK_HEADERS(m_pd.h, , AC_ERROR([m_pd.h is desperately needed!
         "--includedir=</path/to/pd/src/>"]))
 
 LFLAGS=${LDFLAGS}
-
 AC_OUTPUT(Make.config)
+
+touch zexyconf.h
 
 #rm -f conftest.*
