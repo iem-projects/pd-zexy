@@ -1,0 +1,9 @@
+#N canvas 151 169 450 300 10;
+#X obj 121 122 inlet;
+#X obj 121 155 any2list;
+#X obj 121 184 outlet;
+#X text 302 48 part of zexy;
+#X text 74 35 convert anything into lists;
+#X text 89 20 [a2l] == alias for [any2list];
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
