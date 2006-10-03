@@ -1,0 +1,17 @@
+#N canvas 404 326 452 302 12;
+#X obj 119 132 metro 100;
+#X obj 119 155 random 10;
+#X floatatom 119 235 4 0 0 0 - - -;
+#X msg 120 107 1;
+#X msg 153 108 0;
+#X obj 119 202 mavg 4;
+#X floatatom 220 181 4 0 0 0 - - -;
+#X text 59 20 moving average filter;
+#X text 261 181 samples to average;
+#X text 277 47 part of zexy;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 5 1;
