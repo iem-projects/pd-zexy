@@ -1,0 +1,13 @@
+#N canvas 231 541 421 294 10;
+#X floatatom 72 206 4 0 0 0 - - -;
+#X text 324 19 part of zexy;
+#X obj 72 186 sum;
+#X obj 77 40 sum;
+#X text 109 41 sum the elements of a list;
+#X msg 72 79 1;
+#X msg 83 108 1 2 3 4 5 6 7 8 9 10;
+#X msg 93 141 1000 3 2 -100 2 12;
+#X connect 2 0 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
