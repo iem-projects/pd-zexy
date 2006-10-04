@@ -18,8 +18,18 @@
 /* 
 (l) 1210:forum::für::umläute:1999
 
-  "makesymbol" is something between "symbol" and "makefilename", thus storing and creating (formatted)
-  symbols...
+"makesymbol" is something between "symbol" and "makefilename", 
+   thus storing and creating (formatted) symbols...
+
+
+   TODO:
+    the use of only "%s" is really not very satisfying   
+   LATER: 
+   split the entire format string into subformats with only 
+   one format-placeholder ("%[^%]*[diufFgGxXoscpn]") .
+   split the entire format string into subformats with only one format-placeholder,
+   store the types
+   when a list comes in, evaluate each subformat (with prior type-conversion)
 
 */
 
