@@ -33,12 +33,12 @@ fi
 AC_DEFUN([AC_CHECK_CFLAGS],
 [
   AC_MSG_CHECKING([whether $CC accepts "$1"])
-cat > conftest.c++ << EOF
+cat > conftest.c << EOF
 int main(){
   return 0;
 }
 EOF
-if $CC $CFLAGS -o conftest.o conftest.c++ [$1] > /dev/null 2>&1
+if $CC $CFLAGS [$1] -o conftest.o conftest.c > /dev/null 2>&1
 then
   AC_MSG_RESULT([yes])
   CFLAGS="${CFLAGS} [$1]"
