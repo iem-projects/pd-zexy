@@ -286,7 +286,6 @@ static void delete_region(t_msgfile *x, int start, int stop)
 
 static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
-  ZEXY_USEVAR(s);
   if (ac==1) {
     int pos = atom_getfloat(av);
     int oldwhere = node_wherearewe(x);
@@ -312,14 +311,12 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 
 static void msgfile_add(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
-  ZEXY_USEVAR(s);
   msgfile_end(x);
   add_currentnode(x);
   write_currentnode(x, ac, av);
 }
 static void msgfile_add2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
-  ZEXY_USEVAR(s);
   msgfile_end(x);
   if (x->current->previous) x->current = x->current->previous;
   write_currentnode(x, ac, av);
@@ -327,7 +324,6 @@ static void msgfile_add2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 }
 static void msgfile_append(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
-  ZEXY_USEVAR(s);
   add_currentnode(x);
   write_currentnode(x, ac, av);
 }
@@ -339,7 +335,6 @@ static void msgfile_append2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 static void msgfile_insert(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   t_msglist *cur = x->current;
-  ZEXY_USEVAR(s);
   insert_currentnode(x);
   write_currentnode(x, ac, av);
   x->current = cur;
@@ -347,7 +342,6 @@ static void msgfile_insert(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 static void msgfile_insert2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   t_msglist *cur = x->current;
-  ZEXY_USEVAR(s);
   if ((x->current) && (x->current->previous)) x->current = x->current->previous;
   write_currentnode(x, ac, av);
   x->current = cur;
@@ -361,7 +355,6 @@ static void msgfile_set(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 
 static void msgfile_replace(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
-  ZEXY_USEVAR(s);
   freebytes(x->current->thislist, sizeof(x->current->thislist));
   x->current->thislist = 0;
   x->current->n = 0;
@@ -519,7 +512,7 @@ static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
   delete_emptynodes(x);
 }
 
-static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
+static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
 {
   int rmode = 0;
 
@@ -545,7 +538,7 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
 		  filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0)) < 0) {
 
     if((fd=open(filename->s_name, rmode)) < 0) {
-      error("%s: can't open in %s", filename->s_name, dirname);
+      pd_error(x, "%s: can't open in %s", filename->s_name, dirname);
       return;
     }
   }
@@ -560,7 +553,7 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
     mode = PD_MODE;
     dollarmode=1;
   } else if (*format->s_name)
-    error("msgfile_read: unknown flag: %s", format->s_name);
+    pd_error(x, "msgfile_read: unknown flag: %s", format->s_name);
 
   switch (mode) {
   case CR_MODE:
@@ -579,14 +572,14 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
 
   if ((length = lseek(fd, 0, SEEK_END)) < 0 || lseek(fd, 0,SEEK_SET) < 0
       || !(readbuf = t_getbytes(length))) {
-    error("msgfile_read: unable to lseek %s", filnam);
+    pd_error(x, "msgfile_read: unable to lseek %s", filnam);
     close(fd);
     return;
   }
 
   /* read */
   if ((readlength = read(fd, readbuf, length)) < length) {
-    error("msgfile_read: unable to read %s", filnam);
+    pd_error(x, "msgfile_read: unable to read %s", filnam);
     close(fd);
     t_freebytes(readbuf, length);
     return;
@@ -608,7 +601,7 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
   pos=1;
   while (readlength--) {
     if(pos>=length+MSGFILE_HEADROOM){
-      error("msgfile: read error (headroom %d too small!)", MSGFILE_HEADROOM);
+      pd_error(x, "msgfile: read error (headroom %d too small!)", MSGFILE_HEADROOM);
       goto read_error;
       break;
     }
@@ -637,6 +630,11 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
   binbuf_free(bbuf);
   t_freebytes(readbuf, length);
   t_freebytes(charbinbuf, length+MSGFILE_HEADROOM);
+}
+static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
+{
+  msgfile_clear(x);
+  msgfile_read2(x, filename, format);
 }
 
 static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
@@ -668,17 +666,19 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   canvas_makefilename(x->x_canvas, filename->s_name,
 		      buf, MAXPDSTRING);
 
-  if(gensym("cr")==format) {
-    mode = CR_MODE;
-  } else if(gensym("csv")==format) {
-    mode = CSV_MODE;
-  } else if(gensym("pd")==format) {
-    mode = PD_MODE;
-  } else if(gensym("$$")==format) {
-    mode = PD_MODE;
-    dollarmode=1;
-  } else if(format&&format->s_name) {
-    error("msgfile_write: ignoring unknown flag: %s", format->s_name);
+  if(format&&gensym("")!=format) {
+    if(gensym("cr")==format) {
+      mode = CR_MODE;
+    } else if(gensym("csv")==format) {
+      mode = CSV_MODE;
+    } else if(gensym("pd")==format) {
+      mode = PD_MODE;
+    } else if(gensym("$$")==format) {
+      mode = PD_MODE;
+      dollarmode=1;
+    } else if(format&&format->s_name) {
+      pd_error(x, "msgfile_write: ignoring unknown flag: %s", format->s_name);
+    }
   }
  
   switch (mode) {
@@ -705,7 +705,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
       *dumtext=separator;
     else if ((*dumtext==';') && (dumtext[1]=='\n'))
       *dumtext = eol;
-    else if(dollarmode && (*dumtext=='$') && (dumtext[1]=='$'))
+    else if(dollarmode && (*dumtext=='$') && (dumtext[1]=='$')) /* only works with pd<0.40 */
       *dumtext='\\';
     dumtext++;
   }
@@ -713,11 +713,11 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   /* open */
   sys_bashfilename(filename->s_name, filnam);
   if (!(f = fopen(filnam, "w"))) {
-    error("msgfile : failed to open %s", filnam);
+    pd_error(x, "msgfile : failed to open %s", filnam);
   } else {
   /* write */
     if (fwrite(mytext, textlen*sizeof(char), 1, f) < 1) {
-      error("msgfile : failed to write %s", filnam);
+      pd_error(x, "msgfile : failed to write %s", filnam);
     }
   }
   /* close */
@@ -728,7 +728,6 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
 
 static void msgfile_help(t_msgfile *x)
 {
-  ZEXY_USEVAR(x);
   post("\n%c msgfile\t:: handle and store files of lists", HEARTSYMBOL);
   post("goto <n>\t: goto line <n>"
        "\nrewind\t\t: goto the beginning of the file"
@@ -769,26 +768,20 @@ static void msgfile_free(t_msgfile *x)
 static void *msgfile_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_msgfile *x = (t_msgfile *)pd_new(msgfile_class);
-    ZEXY_USEVAR(s);
 
     /* an empty node indicates the end of our listbuffer */
     x->current = 0;
-    /*
-      x->curent = (t_msglist *)getbytes(sizeof(t_msglist));
-      x->current->n = 0;
-      x->current->thislist = 0;
-      x->current->previous = x->current->next = 0;
-    */
+    x->mode=PD_MODE; /* that's the default */
 
     if ((argc==1) && (argv->a_type == A_SYMBOL)) {
-      if (!strcmp(argv->a_w.w_symbol->s_name, "cr")) x->mode = CR_MODE;
-      else if (!strcmp(argv->a_w.w_symbol->s_name, "csv")) x->mode = CSV_MODE;
-      else if (!strcmp(argv->a_w.w_symbol->s_name, "pd")) x->mode = PD_MODE;
+      t_symbol*mode=atom_getsymbol(argv);
+      if      (gensym("cr") == mode) x->mode = CR_MODE;
+      else if (gensym("csv")== mode) x->mode = CSV_MODE;
+      else if (gensym("pd") == mode) x->mode = PD_MODE;
       else {
-	error("msgfile: unknown argument %s", argv->a_w.w_symbol->s_name);
-	x->mode = PD_MODE;
+	pd_error(x, "msgfile: unknown argument %s", argv->a_w.w_symbol->s_name);
       }
-    } else x->mode = PD_MODE;
+    }
 
     outlet_new(&x->x_obj, &s_list);
     x->x_secondout = outlet_new(&x->x_obj, &s_float);
@@ -831,6 +824,7 @@ void msgfile_setup(void)
   class_addmethod(msgfile_class, (t_method)msgfile_find, gensym("find"), A_GIMME, 0);
 
   class_addmethod(msgfile_class, (t_method)msgfile_read, gensym("read"), A_SYMBOL, A_DEFSYM, 0);
+  class_addmethod(msgfile_class, (t_method)msgfile_read2, gensym("read2"), A_SYMBOL, A_DEFSYM, 0);
   class_addmethod(msgfile_class, (t_method)msgfile_write, gensym("write"), A_SYMBOL, A_DEFSYM, 0);
   class_addmethod(msgfile_class, (t_method)msgfile_print, gensym("print"), 0);
   class_addmethod(msgfile_class, (t_method)msgfile_flush, gensym("flush"), 0);
