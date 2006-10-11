@@ -53,9 +53,11 @@ fi
 
 if test "x$with_pd" != "x"; then
  if test -d "${with_pd}/src"; then
+  AC_MSG_RESULT([adding ${with_pd}/src to INCLUDES])
   INCLUDES="-I${with_pd}/src ${INCLUDES}"
  fi
  if test -d "${with_pd}/bin"; then
+  AC_MSG_RESULT([adding ${with_pd}/bin to LDFLAGS])
   LDFLAGS="-L${with_pd}/bin ${LDFLAGS}"
  fi
 fi
@@ -386,7 +388,9 @@ fi
 
 CFLAGS="${INCLUDES} ${CFLAGS}"
 INCLUDES=""
-AC_CHECK_HEADERS(m_pd.h, , AC_ERROR([m_pd.h is desperately needed!
+AC_CHECK_HEADERS(m_pd.h, , 
+	cat config.log
+	AC_ERROR([m_pd.h is desperately needed!
         install pd and/or use
         "--with-pd=</path/to/pd/>"     or
         "--includedir=</path/to/pd/src/>"]))
