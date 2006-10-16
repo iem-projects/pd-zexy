@@ -77,6 +77,11 @@ then
  done
 fi
 
+
+CFLAGS="${INCLUDES} ${CFLAGS}"
+CPPFLAGS="${INCLUDES} ${CPPFLAGS}"
+INCLUDES=""
+
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lc:
 AC_CHECK_LIB(c, main)
@@ -194,7 +199,7 @@ int main(){
   return 0;
 }
 EOF
-  if $CC $INCLUDES -o conftest.o conftest.c > /dev/null 2>&1
+  if $CC $CFLAGS -o conftest.o conftest.c > /dev/null 2>&1
   then
    PD_VERSION=`./conftest.o`
   else
@@ -238,7 +243,7 @@ int main(){
 }
 EOF
 
-  if $CC $INCLUDES $DFLAGS -o conftest.o conftest.c > /dev/null 2>&1
+  if $CC $CFLAGS $LDFLAGS -o conftest.o conftest.c > /dev/null 2>&1
   then
    LIBRARY_VERSION=$(./conftest.o)
    echo "$LIBRARY_VERSION"
@@ -368,7 +373,7 @@ int main(){
 }
 EOF
 
-   if $CC $INCLUDES -o conftest.o conftest.c > /dev/null 2>&1
+   if $CC $CFLAGS -o conftest.o conftest.c > /dev/null 2>&1
    then
      AC_DEFINE([Z_WANT_LPT])
      if test "x$have_ppdev" = "xyes"
@@ -386,8 +391,6 @@ else
 fi
 
 
-CFLAGS="${INCLUDES} ${CFLAGS}"
-INCLUDES=""
 AC_CHECK_HEADERS(m_pd.h, , 
 	cat config.log
 	AC_ERROR([m_pd.h is desperately needed!
