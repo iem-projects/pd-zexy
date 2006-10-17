@@ -39,14 +39,7 @@
 # endif
 #endif
 
-#ifdef ZEXY_LIBRARY
-/* some defines, which turn on special compile-options 
- * (like parallel-port)
- * the ifdef is here, to not break the externals/build-system
- * (read: build-systems outside of zexy)
- */
-# include "zexyconf.h"
-#endif
+#include "zexyconf.h"
 
 #include "m_pd.h"
 
