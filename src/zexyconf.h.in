@@ -1,3 +1,5 @@
+#ifndef _ZEXYCONF_H_
+#define _ZEXYCONF_H_
 
 /* Define if you have the <regex.h> header file.  */
 #undef HAVE_REGEX_H
@@ -14,4 +16,5 @@
  */
 #undef HAVE_LINUX_PPDEV_H
 
+#endif /* _ZEXYCONF_H_ */
 

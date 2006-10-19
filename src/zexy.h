@@ -39,7 +39,13 @@
 # endif
 #endif
 
-#include "zexyconf.h"
+/* usually the re-inclusion magic is done in the header-file itself
+ * however, we do it outside, so we can force zexyconf.h to not be used
+ * (e.g. from by definig the INCLUDE_SH1T in externals/build/src/*
+ */
+#ifndef INCLUDE_ZEXYCONF_H__
+# include "zexyconf.h"
+#endif /* INCLUDE_ZEXYCONF_H__ */
 
 #include "m_pd.h"
 
