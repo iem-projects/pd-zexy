@@ -89,6 +89,8 @@ AC_CHECK_LIB(crtdll, fclose)
 
 AC_CHECK_LIB(coldname, lseek)
 AC_CHECK_LIB(kernel32, main)
+AC_CHECK_LIB(user32, main)
+AC_CHECK_LIB(gdi32, main)
 
 dnl Replace `main' with a function in -lm:
 AC_CHECK_LIB(m, main)
@@ -111,6 +113,9 @@ then
 fi
 
 AC_CHECK_LIB(pd, nullfn)
+
+AC_CHECK_LIB(regex, regcomp)
+
 
 dnl Checks for header files.
 AC_HEADER_STDC
