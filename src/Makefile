@@ -15,15 +15,18 @@ OBJECTSOURCES=$(sort $(filter-out $(HELPERSOURCES), $(filter %.c, $(wildcard *.c
 SOURCES=$(OBJECTSOURCES) $(HELPERSOURCES)
 
 zexyconf.h: zexyconf.h.in configure
-	./configure
+	./configure $(CONFIGUREFLAGS)
 
-configure: configure.ac
+configure: configure.ac aclocal.m4
 	autoconf
+
+aclocal.m4: acinclude.m4
+	aclocal
 
 -include $(SOURCES:.c=.d)
 
 Make.config: Make.config.in configure
-	./configure
+	./configure $(CONFIGUREFLAGS)
 
 z_zexy.c z_zexy.h:
 	./makesource.sh

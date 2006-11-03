@@ -23,6 +23,13 @@ AC_SUBST(PDLIBDIR)
 AC_SUBST(INCLUDES)
 AC_SUBST(SOURCES)
 AC_SUBST(LIBNAME)
+AC_SUBST(CONFIGUREFLAGS)
+
+## store the flags passed to us
+## is there no way to get the flags without quotes?
+#CONFIGUREFLAGS=${ac_configure_args}
+## and is this solution portable? time will show....
+CONFIGUREFLAGS=$(echo ${ac_configure_args} | sed "s/'//g")
 
 AC_ARG_WITH(pdversion,[  --with-pdversion=<ver>  enforce a certain pd-version (e.g. 0.37)])
 AC_ARG_WITH(version,  [  --with-version=<ver>    enforce a certain zexy-version (e.g. 2.0)])
