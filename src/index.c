@@ -169,24 +169,24 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
 /* delete a symbol from the map (if it is in there) */
 static void index_delete(t_index *x, t_symbol *s, int argc, t_atom*argv)
 {
-  int index=-1;
+  int idx=-1;
   ZEXY_USEVAR(s);
   if(argc!=1){
     error("index :: delete what ?");
     return;
   } else {
     if(argv->a_type==A_FLOAT){
-      index=atom_getint(argv)-1;
+      idx=atom_getint(argv)-1;
     } else if (argv->a_type==A_SYMBOL){
-      index=find_item(atom_getsymbol(argv),x->names, x->maxentries);
+      idx=find_item(atom_getsymbol(argv),x->names, x->maxentries);
     } else {
       error("index :: delete what ?");
       return;    
     }
   }
 
-  if ( index >= 0 && index < x->maxentries) {
-    x->names[index]=0;
+  if ( idx >= 0 && idx < x->maxentries) {
+    x->names[idx]=0;
     x->entries--;
     outlet_float(x->x_obj.ob_outlet, 0.0);
   } else {

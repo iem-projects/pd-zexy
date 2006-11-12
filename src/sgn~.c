@@ -134,7 +134,7 @@ static void sgnTilde_helper(void)
   post("\n%c sgn~ \t\t:: sign of a signal", HEARTSYMBOL);
 }
 
-static void *sgnTilde_new()
+static void *sgnTilde_new(void)
 {
   t_sgnTilde *x = (t_sgnTilde *)pd_new(sgnTilde_class);
   outlet_new(&x->x_obj, gensym("signal"));

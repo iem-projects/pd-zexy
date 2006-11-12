@@ -49,7 +49,7 @@ static void operating_system_bang(t_operating_system *x)
   outlet_symbol(x->x_obj.ob_outlet, s);
 }
 
-static void *operating_system_new()
+static void *operating_system_new(void)
 {
   t_operating_system *x = (t_operating_system *)pd_new(operating_system_class);
   outlet_new(&x->x_obj, 0);

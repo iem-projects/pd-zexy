@@ -87,7 +87,7 @@ static void sigzero_tilde_helper(void)
 	post("outlet :: 1/0\t: signal turned to non-zero/zero\n");
 }
 
-static void *sigzero_new()
+static void *sigzero_new(void)
 {
   t_sigzero *x = (t_sigzero *)pd_new(sigzero_class);
   outlet_new(&x->x_obj, &s_float);

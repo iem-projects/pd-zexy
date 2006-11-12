@@ -62,14 +62,14 @@ static void list2symbol_bang(t_list2symbol *x)
   length+=i*connlen;
 
   while(i--){
-    int len=0;
+    int len2=0;
     if(A_SYMBOL==argv->a_type){
-      len=strlen(argv->a_w.w_symbol->s_name);
+      len2=strlen(argv->a_w.w_symbol->s_name);
     } else {
       atom_string(argv, buffer, MAXPDSTRING);
-      len=strlen(buffer);
+      len2=strlen(buffer);
     }
-    length+=len;
+    length+=len2;
     argv++;
   }
 
