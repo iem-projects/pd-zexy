@@ -187,7 +187,7 @@ static void lifop_query(t_lifop*x)
   
   outlet_float(x->x_infout, (t_float)x->counter);
 }
-static void lifop_free(t_lifop *x)
+static void lifop_clear(t_lifop *x)
 {
   t_lifop_prioritylist *lifo_list=x->lifo_list;
   while(lifo_list){
@@ -212,6 +212,37 @@ static void lifop_free(t_lifop *x)
     freebytes(lifo_list2, sizeof( t_lifop_prioritylist));
   }
   x->lifo_list=0;
+  x->counter=0;
+}
+
+/* this is NOT re-entrant! */
+static void lifop_dump(t_lifop*x)
+{  
+  t_lifop_prioritylist*plifo=getLifo(x->lifo_list);
+
+  if(!plifo||!plifo->lifo_start) {
+    outlet_bang(x->x_infout);
+    return;
+  }
+
+  while(plifo) {
+    t_lifop_list*lifo=plifo->lifo_start;
+    while(lifo) {
+      t_atom*argv=lifo->argv;
+      int argc=lifo->argc;
+
+      /* output the list */
+      outlet_list(x->x_out, &s_list, argc, argv);
+
+      lifo=lifo->next;
+    }
+    plifo=plifo->next;
+  }
+}
+
+static void lifop_free(t_lifop *x)
+{
+  lifop_clear(x);
 
   outlet_free(x->x_out);
   outlet_free(x->x_infout);
@@ -242,6 +273,10 @@ void lifop_setup(void)
 
   class_addbang    (lifop_class, lifop_bang);
   class_addlist    (lifop_class, lifop_list);
+
+  class_addmethod  (lifop_class, (t_method)lifop_clear, gensym("clear"), A_NULL);
+  class_addmethod  (lifop_class, (t_method)lifop_dump, gensym("dump"), A_NULL);
+
   class_addmethod  (lifop_class, (t_method)lifop_query, gensym("info"), A_NULL);
   class_addmethod  (lifop_class, (t_method)lifop_help, gensym("help"), A_NULL);
 

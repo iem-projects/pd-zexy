@@ -205,13 +205,7 @@ static void fifop_query(t_fifop*x)
   outlet_float(x->x_infout, (t_float)x->counter);
 }
 
-static void fifop_help(t_fifop*x)
-{
-  post("\n%c fifop\t\t:: a First-In-First-Out queue with priorities", HEARTSYMBOL);
-}
-
-
-static void fifop_free(t_fifop *x)
+static void fifop_clear(t_fifop*x)
 {
   t_fifop_prioritylist *fifo_list=x->fifo_list;
   while(fifo_list){
@@ -237,6 +231,42 @@ static void fifop_free(t_fifop *x)
     freebytes(fifo_list2, sizeof( t_fifop_prioritylist));
   }
   x->fifo_list=0;
+  x->counter=0;
+}
+/* this is NOT re-entrant! */
+static void fifop_dump(t_fifop*x)
+{  
+  t_fifop_prioritylist*pfifo=getFifo(x->fifo_list);
+
+  if(!pfifo||!pfifo->fifo_start) {
+    outlet_bang(x->x_infout);
+    return;
+  }
+
+  while(pfifo) {
+    t_fifop_list*fifo=pfifo->fifo_start;
+    while(fifo) {
+      t_atom*argv=fifo->argv;
+      int argc=fifo->argc;
+
+      /* output the list */
+      outlet_list(x->x_out, &s_list, argc, argv);
+
+      fifo=fifo->next;
+    }
+    pfifo=pfifo->next;
+  }
+}
+
+static void fifop_help(t_fifop*x)
+{
+  post("\n%c fifop\t\t:: a First-In-First-Out queue with priorities", HEARTSYMBOL);
+}
+
+
+static void fifop_free(t_fifop *x)
+{
+  fifop_clear(x);
 
   outlet_free(x->x_out);
   outlet_free(x->x_infout);
@@ -263,6 +293,10 @@ void fifop_setup(void)
 
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);
+
+  class_addmethod  (fifop_class, (t_method)fifop_clear, gensym("clear"), A_NULL);
+  class_addmethod  (fifop_class, (t_method)fifop_dump, gensym("dump"), A_NULL);
+
   class_addmethod  (fifop_class, (t_method)fifop_query, gensym("info"), A_NULL);
   class_addmethod  (fifop_class, (t_method)fifop_help, gensym("help"), A_NULL);
 
