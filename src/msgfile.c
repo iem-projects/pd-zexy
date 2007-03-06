@@ -531,13 +531,13 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
   char filnam[MAXPDSTRING], namebuf[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
   char *charbinbuf=NULL, *cbb;
+  int charbinbuflength=0;
   char*dirname=canvas_getdir(x->x_canvas)->s_name;
 
   int mode = x->mode;
   char separator, eol;
 
   t_binbuf *bbuf = binbuf_new();
-
 
 #ifdef __WIN32__
   rmode |= O_BINARY;
@@ -598,15 +598,17 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
   bufptr=readbuf;
 
 # define MSGFILE_HEADROOM 1024
+  charbinbuflength=2*length+MSGFILE_HEADROOM;
 
-  charbinbuf=(char*)getbytes(length+MSGFILE_HEADROOM);
+  charbinbuf=(char*)getbytes(charbinbuflength);
+  
   cbb=charbinbuf;
-  for(pos=0; pos<length+MSGFILE_HEADROOM; pos++)charbinbuf[pos]=0;
+  for(pos=0; pos<charbinbuflength; pos++)charbinbuf[pos]=0;
 
   *cbb++=';';
   pos=1;
   while (readlength--) {
-    if(pos>=length+MSGFILE_HEADROOM){
+    if(pos>=charbinbuflength){
       pd_error(x, "msgfile: read error (headroom %d too small!)", MSGFILE_HEADROOM);
       goto read_error;
       break;
@@ -626,13 +628,13 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
   }
 
   /* convert to binbuf */
-  binbuf_text(bbuf, charbinbuf, length+MSGFILE_HEADROOM);
+  binbuf_text(bbuf, charbinbuf, charbinbuflength);
   msgfile_binbuf2listbuf(x, bbuf);
 
  read_error:
   binbuf_free(bbuf);
   t_freebytes(readbuf, length);
-  t_freebytes(charbinbuf, length+MSGFILE_HEADROOM);
+  t_freebytes(charbinbuf, charbinbuflength);
 }
 static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
 {
