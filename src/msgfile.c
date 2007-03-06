@@ -399,8 +399,18 @@ static void msgfile_prev(t_msgfile *x)
 
 static void msgfile_bang(t_msgfile *x)
 { 
+  if ((x->current) && (x->current->thislist)) {
+    t_msglist*cur=x->current;
+    x->current=cur->next;
+    outlet_list(x->x_obj.ob_outlet, gensym("list"), cur->n, cur->thislist);
+  } else {
+    outlet_bang(x->x_secondout);
+  }
+
+  /*
   msgfile_this(x);
   msgfile_skip(x, 1);
+  */
 }
 
 static int atomcmp(t_atom *this, t_atom *that)
@@ -527,7 +537,6 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
   char separator, eol;
 
   t_binbuf *bbuf = binbuf_new();
-  int dollarmode = 0;
 
 
 #ifdef __WIN32__
@@ -549,9 +558,6 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
     mode = CSV_MODE;
   } else if (gensym("pd")==format) {
     mode = PD_MODE;
-  } else if(gensym("$$")==format) {
-    mode = PD_MODE;
-    dollarmode=1;
   } else if (*format->s_name)
     pd_error(x, "msgfile_read: unknown flag: %s", format->s_name);
 
@@ -610,10 +616,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
     } else if (*bufptr==eol) {
       *cbb++=';';pos++;
       *cbb='\n';
-    } else if (dollarmode && (bufptr[0]=='\\' && bufptr[1]=='$')) {
-      *cbb='$';
-    }
-    else {
+    } else {
       *cbb=*bufptr;
     }
 
@@ -650,8 +653,6 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   char separator, eol;
   int mode = x->mode;
 
-  int dollarmode = 0;
-
   FILE *f=0;
 
   while (x->current && x->current->previous) x->current=x->current->previous;
@@ -673,9 +674,6 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
       mode = CSV_MODE;
     } else if(gensym("pd")==format) {
       mode = PD_MODE;
-    } else if(gensym("$$")==format) {
-      mode = PD_MODE;
-      dollarmode=1;
     } else if(format&&format->s_name) {
       pd_error(x, "msgfile_write: ignoring unknown flag: %s", format->s_name);
     }
@@ -705,8 +703,6 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
       *dumtext=separator;
     else if ((*dumtext==';') && (dumtext[1]=='\n'))
       *dumtext = eol;
-    else if(dollarmode && (*dumtext=='$') && (dumtext[1]=='$')) /* only works with pd<0.40 */
-      *dumtext='\\';
     dumtext++;
   }
   
