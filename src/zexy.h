@@ -60,7 +60,7 @@
 
 #include <math.h>
 
-#define VERSION "2.1.1"
+#define VERSION "2.2.0"
 
 /* these pragmas are only used for MSVC, not MinGW or Cygwin */
 #ifdef _MSC_VER

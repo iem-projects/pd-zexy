@@ -1,0 +1,60 @@
+#N canvas 80 59 728 623 10;
+#X text 68 47 you can store a number of lists by sending them to its
+right inlet.;
+#X text 50 23 [matchbox] - retrieve matching lists;
+#X text 67 76 when you send a list to the left inlet of [matchbox]
+\, it will be compared to each stored list \; any matches will be send
+to the first output of [matchbox]. the number of matches is sent to
+the 2nd outlet.;
+#X text 69 141 there are several matching algorithms available. you
+can choose between them via the "mode" message or by providing an argument
+at object creation.;
+#X text 70 185 currently available matching-modes:;
+#X text 90 204 '==': only matches if lists are exactly equal;
+#X text 91 223 'OSC': list-atoms are compared using OSC-pattern matching
+;
+#X obj 205 384 matchbox;
+#X floatatom 248 405 5 0 0 1 num_results - -;
+#X obj 205 439 print results;
+#X msg 248 351 list this is my string \, list this is your string \,
+list this was my string;
+#X text 278 385 default is exact matching;
+#X msg 205 266 list this is my string;
+#X msg 218 285 list this is no string;
+#X msg 233 305 list this is * string;
+#X msg 119 332 mode ==;
+#X msg 120 350 mode OSC;
+#X msg 110 407 clear;
+#X msg 111 450 dump;
+#X text 37 395 delete all stored lists;
+#X text 35 438 output all stored lists;
+#X floatatom 240 595 5 0 0 1 num_results - -;
+#X msg 240 551 list this is my string \, list this is your string \,
+list this was my string;
+#X msg 173 480 list this is my string;
+#X obj 173 578 matchbox OSC;
+#X obj 173 613 print OSCresults;
+#X msg 201 513 list this *s * string;
+#X msg 186 496 list this is * string;
+#X obj 240 535 loadbang;
+#X obj 248 335 loadbang;
+#X text 301 336 add lists to the pool;
+#X text 52 314 change matching mode;
+#X connect 7 0 9 0;
+#X connect 7 1 8 0;
+#X connect 10 0 7 1;
+#X connect 12 0 7 0;
+#X connect 13 0 7 0;
+#X connect 14 0 7 0;
+#X connect 15 0 7 0;
+#X connect 16 0 7 0;
+#X connect 17 0 7 0;
+#X connect 18 0 7 0;
+#X connect 22 0 24 1;
+#X connect 23 0 24 0;
+#X connect 24 0 25 0;
+#X connect 24 1 21 0;
+#X connect 26 0 24 0;
+#X connect 27 0 24 0;
+#X connect 28 0 22 0;
+#X connect 29 0 10 0;

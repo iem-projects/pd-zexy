@@ -1,0 +1,502 @@
+/******************************************************
+ *
+ * zexy - implementation file
+ *
+ * copyleft (c) IOhannes m zmölnig
+ *
+ *   1999:forum::für::umläute:2004
+ *
+ *   institute of electronic music and acoustics (iem)
+ *
+ ******************************************************
+ *
+ * license: GNU General Public License v.2
+ *
+ ******************************************************/
+
+
+
+/*
+OSC pattern matching code was written by Matt Wright, 
+The Center for New Music and Audio Technologies,
+University of California, Berkeley.  Copyright (c) 1998,99,2000,01,02,03,04
+The Regents of the University of California (Regents).  
+
+Permission to use, copy, modify, distribute, and distribute modified versions
+of this software and its documentation without fee and without a signed
+licensing agreement, is hereby granted, provided that the above copyright
+notice, this paragraph and the following two paragraphs appear in all copies,
+modifications, and distributions.
+
+IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING
+OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF REGENTS HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE. THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
+HEREUNDER IS PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE
+MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+The OSC webpage is http://cnmat.cnmat.berkeley.edu/OpenSoundControl
+*/
+
+#include "zexy.h"
+
+#include <string.h>
+
+/*
+ * matchbox    : see whether a regular expression matches the given symbol
+ */
+
+/* ------------------------- matchbox ------------------------------- */
+
+/* match the atoms of 2 lists */
+
+static t_class *matchbox_class;
+
+#define MATCHBOX_EXACT 0
+#define MATCHBOX_OSC 1
+
+
+typedef struct _listlist {
+  int                 argc;
+  t_atom             *argv;
+  struct _listlist *next;
+} t_listlist;
+
+
+typedef struct _matchbox
+{
+  t_object x_obj;
+
+  t_listlist*x_lists;
+  unsigned int x_numlists;
+
+  int x_mode;
+
+  t_outlet*x_outResult;
+  t_outlet*x_outNumResults;
+} t_matchbox;
+
+
+/* ----------- here comes some infrastructure stuff -------------- */
+
+
+static t_listlist* addlistlist(t_listlist*list, int argc, t_atom*argv) {
+  t_listlist*ll=(t_listlist*)getbytes(sizeof(t_listlist));
+  ll->next=0;
+  ll->argc=argc;
+  ll->argv=(t_atom*)getbytes(argc*sizeof(t_atom));
+  memcpy(ll->argv, argv, argc*sizeof(t_atom)); 
+
+  if(0==list) {
+    return ll;
+  }
+  
+  t_listlist*lp=list;
+  while(0!=lp->next)lp=lp->next;
+  lp->next=ll;
+
+  return list;
+}
+
+static void clearlistlist(t_listlist*list) {
+  while(list){
+    t_listlist*ll=list;
+    list=list->next;
+
+    if(ll->argv)freebytes(ll->argv, ll->argc*sizeof(t_atom));
+    ll->argv=0;
+    ll->argc=0;
+    ll->next=0;
+    freebytes(ll, sizeof(t_listlist));
+  }
+}
+
+
+
+/* -------------- here comes the matching algorithms ----------- */
+
+
+static int atommatch_exact(t_atom*pattern, t_atom*atom) {
+  if(pattern->a_type==atom->a_type) {
+    switch(pattern->a_type) {
+    case A_FLOAT:
+      return atom_getfloat(pattern)==atom_getfloat(atom);
+    case A_SYMBOL:
+      return atom_getsymbol(pattern)==atom_getsymbol(atom);
+    default:
+      return pattern==atom;
+    }
+  } else {
+    post("types don't match!");
+    return 0;
+  }
+
+  return 0;
+}
+
+#ifdef MATCHBOX_OSC /* OSC */
+
+#define OSCWarning post
+#define FALSE 0
+#define TRUE  1
+static int OSC_MatchBrackets (const char *pattern, const char *test, const char*theWholePattern);
+static int OSC_MatchList (const char *pattern, const char *test, const char*theWholePattern);
+
+static int OSC_PatternMatch (const char *  pattern, const char * test, const char*theWholePattern) {
+  if (pattern == 0 || pattern[0] == 0) {
+    return test[0] == 0;
+  } 
+  
+  if (test[0] == 0) {
+    if (pattern[0] == '*')
+      return OSC_PatternMatch (pattern+1,test, theWholePattern);
+    else
+      return FALSE;
+  }
+
+  switch (pattern[0]) {
+  case 0      : return test[0] == 0;
+  case '?'    : return OSC_PatternMatch (pattern + 1, test + 1, theWholePattern);
+  case '*'    : 
+    if (OSC_PatternMatch (pattern+1, test, theWholePattern)) {
+      return TRUE;
+    } else {
+      return OSC_PatternMatch (pattern, test+1, theWholePattern);
+    }
+  case ']'    :
+  case '}'    :
+    OSCWarning("Spurious %c in pattern \".../%s/...\"",pattern[0], theWholePattern);
+    return FALSE;
+  case '['    :
+    return OSC_MatchBrackets (pattern,test, theWholePattern);
+  case '{'    :
+    return OSC_MatchList (pattern,test, theWholePattern);
+  case '\\'   :  
+    if (pattern[1] == 0) {
+      return test[0] == 0;
+    } else if (pattern[1] == test[0]) {
+      return OSC_PatternMatch (pattern+2,test+1, theWholePattern);
+    } else {
+      return FALSE;
+    }
+  default     :
+    if (pattern[0] == test[0]) {
+      return OSC_PatternMatch (pattern+1,test+1, theWholePattern);
+    } else {
+      return FALSE;
+    }
+  }
+}
+
+
+/* we know that pattern[0] == '[' and test[0] != 0 */
+
+static int OSC_MatchBrackets (const char *pattern, const char *test, const char*theWholePattern) {
+  int result;
+  int negated = FALSE;
+  const char *p = pattern;
+
+  if (pattern[1] == 0) {
+    OSCWarning("Unterminated [ in pattern \".../%s/...\"", theWholePattern);
+    return FALSE;
+  }
+
+  if (pattern[1] == '!') {
+    negated = TRUE;
+    p++;
+  }
+
+  while (*p != ']') {
+    if (*p == 0) {
+      OSCWarning("Unterminated [ in pattern \".../%s/...\"", theWholePattern);
+      return FALSE;
+    }
+    if (p[1] == '-' && p[2] != 0) {
+      if (test[0] >= p[0] && test[0] <= p[2]) {
+	result = !negated;
+	goto advance;
+      }
+    }
+    if (p[0] == test[0]) {
+      result = !negated;
+      goto advance;
+    }
+    p++;
+  }
+
+  result = negated;
+
+ advance:
+
+  if (!result)
+    return FALSE;
+
+  while (*p != ']') {
+    if (*p == 0) {
+      OSCWarning("Unterminated [ in pattern \".../%s/...\"", theWholePattern);
+      return FALSE;
+    }
+    p++;
+  }
+
+  return OSC_PatternMatch (p+1,test+1, theWholePattern);
+}
+
+static int OSC_MatchList (const char *pattern, const char *test, const char* theWholePattern) {
+
+  const char *restOfPattern, *tp = test;
+
+  for(restOfPattern = pattern; *restOfPattern != '}'; restOfPattern++) {
+    if (*restOfPattern == 0) {
+      OSCWarning("Unterminated { in pattern \".../%s/...\"", theWholePattern);
+      return FALSE;
+    }
+  }
+
+  restOfPattern++; /* skip close curly brace */
+
+
+  pattern++; /* skip open curly brace */
+
+  while (1) {
+   
+    if (*pattern == ',') {
+      if (OSC_PatternMatch (restOfPattern, tp, theWholePattern)) {
+        return TRUE;
+      } else {
+        tp = test;
+        ++pattern;
+      }
+    } else if (*pattern == '}') {
+      return OSC_PatternMatch (restOfPattern, tp, theWholePattern);
+    } else if (*pattern == *tp) {
+      ++pattern;
+      ++tp;
+    } else {
+      tp = test;
+      while (*pattern != ',' && *pattern != '}') {
+        pattern++;
+      }
+      if (*pattern == ',') {
+        pattern++;
+      }
+    }
+  }
+}
+
+static int atommatch_osc(t_atom*pattern, t_atom*test) {
+  char*s_pattern=0;
+  char*s_test=0;
+  int pattern_size=0, test_size=0;
+
+  int result = FALSE;
+
+  //startpost("atommatch::OSC -> ");
+
+  if(pattern->a_type==A_SYMBOL) {
+    s_pattern=pattern->a_w.w_symbol->s_name;
+  } else {
+    pattern_size=sizeof(char)*MAXPDSTRING;
+    s_pattern=(char*)getbytes(pattern_size);
+    atom_string(pattern, s_pattern, pattern_size);
+  }
+  if(test->a_type==A_SYMBOL) {
+    s_test=test->a_w.w_symbol->s_name;
+  } else {
+    test_size=sizeof(char)*MAXPDSTRING;
+    s_test=(char*)getbytes(test_size);
+    atom_string(test, s_test, test_size);
+  }
+
+
+  result = OSC_PatternMatch(s_pattern, s_test, s_pattern);
+
+  //post("'%s' <-> '%s' = %d", s_pattern, s_test, result);
+
+  if(pattern_size>0) {
+    freebytes(s_pattern, pattern_size);
+    s_pattern=0; pattern_size=0;
+  }
+  if(test_size>0) {
+    freebytes(s_test, test_size);
+    s_test=0; test_size=0;
+  }
+
+
+  return result;
+}
+#endif /* OSC */
+
+
+
+
+static int matchbox_atommatch(t_atom*pattern, t_atom*atom, int mode) {
+  switch(mode) {
+  default:
+  case MATCHBOX_EXACT: return atommatch_exact(pattern, atom);
+#ifdef MATCHBOX_OSC
+  case MATCHBOX_OSC  : return atommatch_osc(pattern, atom);
+#endif /* OSC */
+  }
+  return atommatch_exact(pattern, atom);
+}
+
+static int matchlist(int argc_pattern, t_atom*argv_pattern,
+                     int argc, t_atom*argv, int mode) {
+  int i=0;
+
+  if(argc!=argc_pattern)
+    return 0;
+
+  for(i=0; i<argc; i++) {
+    if(0==matchbox_atommatch(argv_pattern+i, argv+i, mode))
+      return 0;
+  }
+
+  return 1;
+}
+
+static t_listlist*matchlistlist(unsigned int*numresults, t_listlist*searchlist, int p_argc, t_atom*p_argv, int mode) {
+  unsigned int num=0;
+  t_listlist*matchinglist=0, *sl;
+
+  for(sl=searchlist; 0!=sl; sl=sl->next) {
+    if(matchlist(p_argc, p_argv, sl->argc, sl->argv, mode)) {
+      matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
+      num++;
+    }
+  }
+  
+  if(numresults!=0)
+    *numresults=num;
+  return matchinglist;
+}
+
+
+static void matchbox_list(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
+  int results=0;
+  int mode=x->x_mode;
+  t_listlist*resultlist=matchlistlist(&results, x->x_lists, argc, argv, mode);
+  t_listlist*dummylist;
+
+  outlet_float(x->x_outNumResults, results);
+  
+  for(dummylist=resultlist; 0!=dummylist; dummylist=dummylist->next)
+    outlet_list(x->x_outResult,  &s_list, dummylist->argc, dummylist->argv);
+  
+
+}
+
+static void matchbox_add(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
+  // 1st match, whether we already have this entry
+  if(matchlistlist(0, x->x_lists, argc, argv, MATCHBOX_EXACT)) {
+    // already there, skip the rest
+    z_verbose(1, "this list is already in the buffer!, skipping...");
+    return;
+  }
+
+  // 2nd if this is a new entry, add it
+  x->x_lists=addlistlist(x->x_lists, argc, argv);
+  x->x_numlists++;
+}
+
+
+
+static void matchbox_dump(t_matchbox*x) {
+  t_listlist*lp=0;
+
+  if(0==x->x_lists){
+    outlet_float(x->x_outNumResults, 0);
+    return;
+  }
+
+  outlet_float(x->x_outNumResults, x->x_numlists);
+
+  for(lp=x->x_lists; 0!=lp; lp=lp->next)
+  {
+    outlet_list(x->x_outResult,  &s_list, lp->argc, lp->argv);
+  }
+}
+
+
+static void matchbox_clear(t_matchbox*x) {
+  clearlistlist(x->x_lists);
+
+  x->x_lists=0;
+  x->x_numlists=0;
+}
+
+
+static void matchbox_mode(t_matchbox*x, t_symbol*s) {
+  if (gensym("OSC")==s)
+    x->x_mode=MATCHBOX_OSC;
+  else if(gensym("==")==s)
+    x->x_mode=MATCHBOX_EXACT;
+  else {
+    pd_error(x, "mode '%s' is unknown, switching to 'exact' mode", s->s_name);
+    x->x_mode=MATCHBOX_EXACT;
+  }
+}
+
+
+
+static void *matchbox_new(t_symbol *s, int argc, t_atom*argv)
+{
+  t_matchbox *x = (t_matchbox *)pd_new(matchbox_class);
+
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("add"));
+
+  x->x_outResult    =outlet_new(&x->x_obj, gensym("list"));
+  x->x_outNumResults=outlet_new(&x->x_obj, gensym("float"));
+
+
+  x->x_lists=0;
+  x->x_numlists=0;
+
+  x->x_mode = MATCHBOX_EXACT;
+
+  if(argc && argv->a_type==A_SYMBOL) {
+    matchbox_mode(x, atom_getsymbol(argv));
+  }
+
+
+  return (x);
+}
+
+static void matchbox_free(t_matchbox *x)
+{
+  matchbox_clear(x);
+}
+
+static void matchbox_help(t_matchbox*x)
+{
+  post("\n%c matchbox\t\t:: find a list in a pool of lists", HEARTSYMBOL);
+}
+
+void matchbox_setup(void)
+{
+#ifdef MATCHBOX_OSC
+  post("matchbox: OSC-pattern matching code (c) Matt Wright, CNMAT");
+#endif /* MATCHBOX_OSC */
+
+
+
+  matchbox_class = class_new(gensym("matchbox"), (t_newmethod)matchbox_new, 
+			 (t_method)matchbox_free, sizeof(t_matchbox), 0, A_GIMME, 0);
+
+  class_addlist  (matchbox_class, matchbox_list);
+
+  class_addmethod(matchbox_class, (t_method)matchbox_add, gensym("add"), A_GIMME, 0);
+  class_addmethod(matchbox_class, (t_method)matchbox_clear, gensym("clear"), A_NULL, 0);
+  class_addmethod(matchbox_class, (t_method)matchbox_dump, gensym("dump"), A_NULL);
+
+  class_addmethod(matchbox_class, (t_method)matchbox_mode, gensym("mode"), A_SYMBOL, 0);
+
+  class_addmethod(matchbox_class, (t_method)matchbox_help, gensym("help"), A_NULL);
+  class_sethelpsymbol(matchbox_class, gensym("zexy/matchbox"));
+  zexy_register("matchbox");
+}

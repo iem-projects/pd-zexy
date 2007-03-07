@@ -39,6 +39,7 @@ void z_zexy_setup(void)
 	lister_setup(); /* lister */
 	lpt_setup(); /* lpt */
 	makesymbol_setup(); /* makesymbol */
+	matchbox_setup(); /* matchbox */
 	mavg_setup(); /* mavg */
 	minmax_setup(); /* minmax */
 	msgfile_setup(); /* msgfile */

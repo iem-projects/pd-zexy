@@ -37,6 +37,7 @@ void list2symbol_setup(void); /* list2symbol */
 void lister_setup(void); /* lister */
 void lpt_setup(void); /* lpt */
 void makesymbol_setup(void); /* makesymbol */
+void matchbox_setup(void); /* matchbox */
 void mavg_setup(void); /* mavg */
 void minmax_setup(void); /* minmax */
 void msgfile_setup(void); /* msgfile */
