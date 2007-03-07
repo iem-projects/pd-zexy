@@ -60,7 +60,7 @@
 
 #include <math.h>
 
-#define VERSION "2.1"
+#define VERSION "2.1.1"
 
 /* these pragmas are only used for MSVC, not MinGW or Cygwin */
 #ifdef _MSC_VER
@@ -100,7 +100,7 @@ typedef struct _mypdlist
 static void zexy_register(char*object){
   if(object!=0){
     post("[%s] part of zexy-%s (compiled: "__DATE__")", object, VERSION);
-    post("\tCopyright (l) 1999-2006 IOhannes m zmölnig, forum::für::umläute & IEM");
+    post("\tCopyright (l) 1999-2007 IOhannes m zmölnig, forum::für::umläute & IEM");
   }
 }
 #else
