@@ -21,6 +21,7 @@
 
 #include "zexy.h"
 #include "z_zexy.h"
+#include <stdarg.h>
 
 /* do a little help thing */
 
@@ -143,4 +144,17 @@ void zexy_setup(void)
   class_addmethod(zexy_class, zexy_help, gensym("help"), 0);
 
   zexy_register("zexy");
+}
+
+void verbose(int level, const char *fmt, ...){
+  char buf[MAXPDSTRING];
+  va_list ap;
+  t_int arg[8];
+  int i;
+ 
+  va_start(ap, fmt);
+  vsnprintf(buf, MAXPDSTRING-1, fmt, ap);
+  va_end(ap);
+
+  post("zverbose(%d): %s", level, buf);
 }

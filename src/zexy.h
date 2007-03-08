@@ -113,6 +113,12 @@ static void zexy_register(char*object){object=0;}
  * btw, this finally makes zexy binary incompatible with older version
  */
 # define z_verbose verbose
+
+/* when compiling zexy as library, we also provide now provide a dummy verbose() function,
+ * which will chime in, when pd is lacking one
+ * this should make zexy binary compatible with older pd versions again
+ */
+void verbose(int level, const char *fmt, ...);
 #else
 /* 
  * this might not work on compilers other than gcc
