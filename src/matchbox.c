@@ -15,36 +15,21 @@
  ******************************************************/
 
 
-
-/*
-OSC pattern matching code was written by Matt Wright, 
-The Center for New Music and Audio Technologies,
-University of California, Berkeley.  Copyright (c) 1998,99,2000,01,02,03,04
-The Regents of the University of California (Regents).  
-
-Permission to use, copy, modify, distribute, and distribute modified versions
-of this software and its documentation without fee and without a signed
-licensing agreement, is hereby granted, provided that the above copyright
-notice, this paragraph and the following two paragraphs appear in all copies,
-modifications, and distributions.
-
-IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING
-OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF REGENTS HAS
-BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE. THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
-HEREUNDER IS PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE
-MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-The OSC webpage is http://cnmat.cnmat.berkeley.edu/OpenSoundControl
-*/
-
 #include "zexy.h"
 
+#define MATCHBOX_EXACT 0
+#define MATCHBOX_OSC 1
+
+#ifdef HAVE_REGEX_H
+# include <sys/types.h>
+# include <regex.h>
+#define MATCHBOX_REGEX 2
+#endif
+
 #include <string.h>
+
+#define FALSE 0
+#define TRUE  1
 
 /*
  * matchbox    : see whether a regular expression matches the given symbol
@@ -55,9 +40,6 @@ The OSC webpage is http://cnmat.cnmat.berkeley.edu/OpenSoundControl
 /* match the atoms of 2 lists */
 
 static t_class *matchbox_class;
-
-#define MATCHBOX_EXACT 0
-#define MATCHBOX_OSC 1
 
 
 typedef struct _listlist {
@@ -131,18 +113,42 @@ static int atommatch_exact(t_atom*pattern, t_atom*atom) {
       return pattern==atom;
     }
   } else {
-    post("types don't match!");
-    return 0;
+    //post("types don't match!");
+    return FALSE;
   }
 
-  return 0;
+  return TRUE;
 }
 
 #ifdef MATCHBOX_OSC /* OSC */
 
+/*
+OSC pattern matching code was written by Matt Wright, 
+The Center for New Music and Audio Technologies,
+University of California, Berkeley.  Copyright (c) 1998,99,2000,01,02,03,04
+The Regents of the University of California (Regents).  
+
+Permission to use, copy, modify, distribute, and distribute modified versions
+of this software and its documentation without fee and without a signed
+licensing agreement, is hereby granted, provided that the above copyright
+notice, this paragraph and the following two paragraphs appear in all copies,
+modifications, and distributions.
+
+IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING
+OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF REGENTS HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE. THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, IF ANY, PROVIDED
+HEREUNDER IS PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE
+MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+The OSC webpage is http://cnmat.cnmat.berkeley.edu/OpenSoundControl
+*/
+
 #define OSCWarning post
-#define FALSE 0
-#define TRUE  1
 static int OSC_MatchBrackets (const char *pattern, const char *test, const char*theWholePattern);
 static int OSC_MatchList (const char *pattern, const char *test, const char*theWholePattern);
 
@@ -169,7 +175,7 @@ static int OSC_PatternMatch (const char *  pattern, const char * test, const cha
     }
   case ']'    :
   case '}'    :
-    OSCWarning("Spurious %c in pattern \".../%s/...\"",pattern[0], theWholePattern);
+    z_verbose(1, "Spurious %c in pattern \".../%s/...\"",pattern[0], theWholePattern);
     return FALSE;
   case '['    :
     return OSC_MatchBrackets (pattern,test, theWholePattern);
@@ -192,7 +198,6 @@ static int OSC_PatternMatch (const char *  pattern, const char * test, const cha
   }
 }
 
-
 /* we know that pattern[0] == '[' and test[0] != 0 */
 
 static int OSC_MatchBrackets (const char *pattern, const char *test, const char*theWholePattern) {
@@ -201,7 +206,7 @@ static int OSC_MatchBrackets (const char *pattern, const char *test, const char*
   const char *p = pattern;
 
   if (pattern[1] == 0) {
-    OSCWarning("Unterminated [ in pattern \".../%s/...\"", theWholePattern);
+    z_verbose(1, "Unterminated [ in pattern \".../%s/...\"", theWholePattern);
     return FALSE;
   }
 
@@ -212,7 +217,7 @@ static int OSC_MatchBrackets (const char *pattern, const char *test, const char*
 
   while (*p != ']') {
     if (*p == 0) {
-      OSCWarning("Unterminated [ in pattern \".../%s/...\"", theWholePattern);
+      z_verbose(1, "Unterminated [ in pattern \".../%s/...\"", theWholePattern);
       return FALSE;
     }
     if (p[1] == '-' && p[2] != 0) {
@@ -237,7 +242,7 @@ static int OSC_MatchBrackets (const char *pattern, const char *test, const char*
 
   while (*p != ']') {
     if (*p == 0) {
-      OSCWarning("Unterminated [ in pattern \".../%s/...\"", theWholePattern);
+      z_verbose(1, "Unterminated [ in pattern \".../%s/...\"", theWholePattern);
       return FALSE;
     }
     p++;
@@ -252,7 +257,7 @@ static int OSC_MatchList (const char *pattern, const char *test, const char* the
 
   for(restOfPattern = pattern; *restOfPattern != '}'; restOfPattern++) {
     if (*restOfPattern == 0) {
-      OSCWarning("Unterminated { in pattern \".../%s/...\"", theWholePattern);
+      z_verbose(1, "Unterminated { in pattern \".../%s/...\"", theWholePattern);
       return FALSE;
     }
   }
@@ -332,6 +337,107 @@ static int atommatch_osc(t_atom*pattern, t_atom*test) {
 #endif /* OSC */
 
 
+#ifdef MATCHBOX_REGEX
+static int atommatch_regex(regex_t*pattern,  t_atom*test) {
+  int result=FALSE;
+  char*s_test=0;
+  int test_size=0;
+
+  if(0==pattern)return FALSE;
+  if(0==test)   return FALSE;
+
+  if(test->a_type==A_SYMBOL) {
+    s_test=test->a_w.w_symbol->s_name;
+  } else {
+    test_size=sizeof(char)*MAXPDSTRING;
+    s_test=(char*)getbytes(test_size);
+    atom_string(test, s_test, test_size);
+  }
+
+  result=!(regexec(pattern, s_test, 0, 0, 0));
+
+  if(test_size>0) {
+    freebytes(s_test, test_size);
+    s_test=0; test_size=0;
+  } 
+  
+  return result;
+}
+
+static int listmatch_regex(int p_argc, regex_t**pattern, int t_argc, t_atom*test) {
+  /* match the patterns to the test */
+  int argc=p_argc;
+  if(p_argc!=t_argc)
+    return FALSE;
+
+  while(argc--) {
+    if(FALSE==atommatch_regex(*pattern++, test++)) {
+      return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
+static t_listlist*matchlistlist_regex(unsigned int*numresults, t_listlist*searchlist, int p_argc, t_atom*p_argv, int flags) {
+  regex_t**regexpressions=0;
+  t_listlist*matchinglist=0, *sl;
+  int i=0;
+  flags|=REG_EXTENDED;
+
+  int num=0;
+
+  /* 1st compile the patterns */
+  regexpressions=(regex_t**)getbytes(sizeof(regex_t*)*p_argc);
+  for(i=0; i<p_argc; i++) {
+    char*s_pattern=0;
+    int pattern_size=0;
+    t_atom*pattern=p_argv+i;
+    if(pattern->a_type==A_SYMBOL) {
+      s_pattern=pattern->a_w.w_symbol->s_name;
+    } else {
+      pattern_size=sizeof(char)*MAXPDSTRING;
+      s_pattern=(char*)getbytes(pattern_size);
+      atom_string(pattern, s_pattern, pattern_size);
+    }
+    regexpressions[i]=(regex_t*)getbytes(sizeof(regex_t));
+    if(regcomp(regexpressions[i], s_pattern, flags)) {
+      z_verbose(1, "[matchbox]: invalid regular expression: %s", s_pattern);
+      if(regexpressions[i])freebytes(regexpressions[i], sizeof(regex_t));
+       regexpressions[i]=0;
+    }
+    if(pattern_size>0) {
+      freebytes(s_pattern, pattern_size);
+      s_pattern=0; pattern_size=0;
+    }
+  }
+ 
+  /* match the patterns to the tests */
+  for(sl=searchlist; 0!=sl; sl=sl->next) {
+    if(TRUE==listmatch_regex(p_argc, regexpressions, sl->argc, sl->argv)) {
+      matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
+      num++;
+    }
+  }
+
+  /* clear the patterns */
+  for(i=0; i<p_argc; i++) {
+    if(regexpressions[i]){
+      regfree(regexpressions[i]);
+      freebytes(regexpressions[i], sizeof(regex_t));
+    }
+  }
+  freebytes(regexpressions, sizeof(regex_t*)*p_argc);
+
+  /* return the result */  
+  if(numresults!=0)
+    *numresults=num;
+  return matchinglist;
+}
+#endif /* MATCHBOX_REGEX */
+
+
+
 
 
 static int matchbox_atommatch(t_atom*pattern, t_atom*atom, int mode) {
@@ -350,20 +456,27 @@ static int matchlist(int argc_pattern, t_atom*argv_pattern,
   int i=0;
 
   if(argc!=argc_pattern)
-    return 0;
+    return FALSE;
 
   for(i=0; i<argc; i++) {
     if(0==matchbox_atommatch(argv_pattern+i, argv+i, mode))
-      return 0;
+      return FALSE;
   }
-
-  return 1;
+  
+  return TRUE;
 }
 
 static t_listlist*matchlistlist(unsigned int*numresults, t_listlist*searchlist, int p_argc, t_atom*p_argv, int mode) {
   unsigned int num=0;
   t_listlist*matchinglist=0, *sl;
 
+  /* extra handling of regex matching (because we want to compile only once */
+#ifdef MATCHBOX_REGEX
+  if(MATCHBOX_REGEX==mode) {
+    matchinglist=matchlistlist_regex(&num, searchlist, p_argc, p_argv, 0);
+  } else 
+#endif /* MATCHBOX_REGEX */
+  /* normal matching */
   for(sl=searchlist; 0!=sl; sl=sl->next) {
     if(matchlist(p_argc, p_argv, sl->argc, sl->argv, mode)) {
       matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
@@ -432,17 +545,25 @@ static void matchbox_clear(t_matchbox*x) {
 
 
 static void matchbox_mode(t_matchbox*x, t_symbol*s) {
-  if (gensym("OSC")==s)
-    x->x_mode=MATCHBOX_OSC;
-  else if(gensym("==")==s)
+  if(gensym("==")==s)
     x->x_mode=MATCHBOX_EXACT;
-  else {
+  else if (gensym("OSC")==s) {
+#ifdef MATCHBOX_OSC
+    x->x_mode=MATCHBOX_OSC;
+#else
+     pd_error(x, "[matchbox] has been compiled without 'OSC' support; ignoring your request");
+#endif /* MATCHBOX_OSC */
+  } else if(gensym("regex")==s) {
+#ifdef MATCHBOX_REGEX
+    x->x_mode=MATCHBOX_REGEX;
+#else
+    pd_error(x, "[matchbox] has been compiled without 'regex' support; ignoring your request");
+#endif /* MATCHBOX_REGEX */
+  } else {
     pd_error(x, "mode '%s' is unknown, switching to 'exact' mode", s->s_name);
     x->x_mode=MATCHBOX_EXACT;
   }
 }
-
-
 
 static void *matchbox_new(t_symbol *s, int argc, t_atom*argv)
 {
@@ -482,7 +603,6 @@ void matchbox_setup(void)
 #ifdef MATCHBOX_OSC
   post("matchbox: OSC-pattern matching code (c) Matt Wright, CNMAT");
 #endif /* MATCHBOX_OSC */
-
 
 
   matchbox_class = class_new(gensym("matchbox"), (t_newmethod)matchbox_new, 
