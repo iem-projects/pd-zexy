@@ -57,6 +57,5 @@ void sum_setup(void)
   class_addlist(sum_class, (t_method)sum_list);
   class_addmethod(sum_class, (t_method)sum_help, gensym("help"), 0);
 
-  class_sethelpsymbol(sum_class, gensym("zexy/sum"));
   zexy_register("sum");
 }

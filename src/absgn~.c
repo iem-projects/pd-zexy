@@ -130,7 +130,7 @@ void absgn_tilde_setup(void)
   class_addmethod(sigABSGN_class, (t_method)sigABSGN_dsp, gensym("dsp"), 0);
   
   class_addmethod(sigABSGN_class, (t_method)sigABSGN_helper, gensym("help"), 0);
-  class_sethelpsymbol(sigABSGN_class, gensym("zexy/sigbinops+"));
+  class_sethelpsymbol(sigABSGN_class, gensym("zigbinops"));
 
   zexy_register("absgn~");
 }

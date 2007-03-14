@@ -105,6 +105,5 @@ void blockmirror_tilde_setup(void)
   class_addfloat(blockmirror_class, blockmirror_float);
   
   class_addmethod(blockmirror_class, (t_method)blockmirror_helper, gensym("help"), 0);
-  class_sethelpsymbol(blockmirror_class, gensym("zexy/blockmirror~"));
   zexy_register("blockmirror~");
 }

@@ -182,7 +182,6 @@ void list2symbol_setup(void)
   class_addanything(list2symbol_class, list2symbol_anything);
   class_addmethod  (list2symbol_class, (t_method)list2symbol_connector, gensym(""), A_SYMBOL, 0);
 
-  class_sethelpsymbol(list2symbol_class, gensym("zexy/list2symbol"));
   zexy_register("list2symbol");
 }
 void l2s_setup(void)

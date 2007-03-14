@@ -107,6 +107,5 @@ void dfreq_tilde_setup(void)
     class_addmethod(dfreq_class, (t_method)dfreq_dsp, gensym("dsp"), 0);
 
 	class_addmethod(dfreq_class, (t_method)dfreq_tilde_helper, gensym("help"), 0);
-	class_sethelpsymbol(dfreq_class, gensym("zexy/dfreq~"));
   zexy_register("dfreq~");
 }

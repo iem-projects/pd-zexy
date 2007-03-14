@@ -96,6 +96,5 @@ void swap_tilde_setup(void)
   class_addbang(swap_class, swap_bang);
   
   class_addmethod(swap_class, (t_method)swap_helper, gensym("help"), 0);
-  class_sethelpsymbol(swap_class, gensym("zexy/swap~"));
   zexy_register("swap~");
 }

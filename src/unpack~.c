@@ -129,6 +129,5 @@ void unpack_tilde_setup(void)
 
 
   class_addmethod(sigunpack_class, (t_method)sigunpack_help, gensym("help"), 0);
-  class_sethelpsymbol(sigunpack_class, gensym("zexy/unpack~"));
   zexy_register("unpack~");
 }

@@ -105,6 +105,5 @@ void niagara_setup(void)
   class_addlist    (niagara_class, niagara_list);
   class_addanything(niagara_class, niagara_any);
 
-  class_sethelpsymbol(niagara_class, gensym("zexy/niagara"));
   zexy_register("niagara");
 }

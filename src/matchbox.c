@@ -617,6 +617,5 @@ void matchbox_setup(void)
   class_addmethod(matchbox_class, (t_method)matchbox_mode, gensym("mode"), A_SYMBOL, 0);
 
   class_addmethod(matchbox_class, (t_method)matchbox_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(matchbox_class, gensym("zexy/matchbox"));
   zexy_register("matchbox");
 }

@@ -135,6 +135,5 @@ void pdf_tilde_setup(void)
   class_addfloat(pdf_class, pdf_float);
 
   class_addmethod(pdf_class, (t_method)pdf_tilde_helper, gensym("help"), 0);
-  class_sethelpsymbol(pdf_class, gensym("zexy/pdf~"));
   zexy_register("pdf~");
 }

@@ -650,7 +650,7 @@ void sfplay_setup(void)
    class_addmethod(sfplay_class, (t_method)sfplay_dsp, gensym("dsp"), 0);
 
    class_addmethod(sfplay_class, (t_method)sfplay_helper, gensym("help"), A_NULL);
-   class_sethelpsymbol(sfplay_class, gensym("zexy/sf-play_record"));
+   class_sethelpsymbol(sfplay_class, gensym("sf-play_record"));
 
    /* method open with filename */
    class_addmethod(sfplay_class, (t_method)sfplay_open, gensym("open"), A_SYMBOL,A_SYMBOL,A_NULL);

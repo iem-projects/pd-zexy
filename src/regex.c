@@ -327,6 +327,5 @@ void regex_setup(void)
   class_addmethod(regex_class, (t_method)regex_case, gensym("case"), A_FLOAT, 0);
 
   class_addmethod(regex_class, (t_method)regex_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(regex_class, gensym("zexy/regex"));
   zexy_register("regex");
 }

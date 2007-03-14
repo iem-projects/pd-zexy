@@ -832,7 +832,6 @@ void msgfile_setup(void)
   class_addmethod(msgfile_class, (t_method)msgfile_where, gensym("where"), 0);
 
   class_addmethod(msgfile_class, (t_method)msgfile_help, gensym("help"), 0);
-  class_sethelpsymbol(msgfile_class, gensym("zexy/msgfile"));
 
   zexy_register("msgfile");
 }

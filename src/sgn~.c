@@ -150,6 +150,6 @@ void sgn_tilde_setup(void)
   class_addmethod(sgnTilde_class, (t_method)sgnTilde_dsp, gensym("dsp"), 0);
   
   class_addmethod(sgnTilde_class, (t_method)sgnTilde_helper, gensym("help"), 0);
-  class_sethelpsymbol(sgnTilde_class, gensym("zexy/sigbinops+"));
+  class_sethelpsymbol(sgnTilde_class, gensym("zigbinops"));
   zexy_register("sgn~");
 }

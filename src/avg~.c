@@ -79,6 +79,5 @@ void avg_tilde_setup(void)
     class_addmethod(avg_class, (t_method)avg_dsp, gensym("dsp"), 0);
 
 	class_addmethod(avg_class, (t_method)avg_help, gensym("help"), 0);
-	class_sethelpsymbol(avg_class, gensym("zexy/avg~"));
   zexy_register("avg~");
 }

@@ -154,6 +154,5 @@ void makesymbol_setup(void)
 	class_addmethod(makesymbol_class, (t_method)reset_mask, gensym("sym1"), A_SYMBOL, 0);
 
 	class_addmethod(makesymbol_class, (t_method)makesymbol_helper, gensym("help"), 0);
-	class_sethelpsymbol(makesymbol_class, gensym("zexy/makesymbol"));
   zexy_register("makesymbol");
 }

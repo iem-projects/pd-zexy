@@ -279,7 +279,7 @@ void setup_0x260x260x7e(void)
   class_addmethod(andand_tilde_class, (t_method)andand_tilde_dsp, gensym("dsp"), 0);
   CLASS_MAINSIGNALIN(andand_tilde_class, t_andand_tilde, x_f);
   class_addmethod  (andand_tilde_class, (t_method)andand_tilde_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(andand_tilde_class, gensym("zexy/sigbinops+"));
+  class_sethelpsymbol(andand_tilde_class, gensym("zigbinops"));
 
 
   scalarandand_tilde_class = class_new(gensym("&&~"), 0, 0,
@@ -288,7 +288,7 @@ void setup_0x260x260x7e(void)
   class_addmethod(scalarandand_tilde_class, (t_method)scalarandand_tilde_dsp, gensym("dsp"),
 		  0);
   class_addmethod  (scalarandand_tilde_class, (t_method)andand_tilde_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(scalarandand_tilde_class, gensym("zexy/sigbinops+"));
+  class_sethelpsymbol(scalarandand_tilde_class, gensym("zigbinops"));
 
   zexy_register("&&~");
 }

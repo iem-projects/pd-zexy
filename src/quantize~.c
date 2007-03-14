@@ -109,6 +109,5 @@ void quantize_tilde_setup(void)
   class_addmethod(quantize_class, (t_method)quantize_16bit, gensym("16bit"), 0);
   
   class_addmethod(quantize_class, (t_method)quantize_tilde_helper, gensym("help"), 0);
-  class_sethelpsymbol(quantize_class, gensym("zexy/quantize~"));
   zexy_register("quantize~");
 }

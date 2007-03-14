@@ -1,0 +1,37 @@
+#N canvas 396 157 628 611 10;
+#X floatatom 71 423 0 0 0 0 - - -;
+#X text 426 24 part of zexy;
+#X obj 90 54 regex;
+#X text 147 54 -- check whether a symbol matches a regular expression
+;
+#X symbolatom 235 406 10 0 0 0 - - -;
+#X msg 93 333 list aba Aa Ac;
+#X symbolatom 137 361 10 0 0 0 - - -;
+#X msg 18 337 case \$1;
+#X obj 24 315 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 60 459 print result;
+#X obj 153 498 print details;
+#X obj 188 465 print num;
+#X obj 71 398 regex;
+#X obj 214 374 symbol;
+#X msg 252 335 Ab;
+#X msg 261 364 bA;
+#X msg 265 385 bAc;
+#X msg 213 339 aba;
+#X msg 72 274 list a a a;
+#X connect 4 0 12 1;
+#X connect 5 0 12 0;
+#X connect 6 0 12 0;
+#X connect 7 0 12 0;
+#X connect 8 0 7 0;
+#X connect 12 0 0 0;
+#X connect 12 0 9 0;
+#X connect 12 1 10 0;
+#X connect 12 2 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 15 0 13 0;
+#X connect 16 0 13 0;
+#X connect 17 0 13 0;
+#X connect 18 0 12 0;

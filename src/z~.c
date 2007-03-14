@@ -129,6 +129,5 @@ void z_tilde_setup(void)
   class_addfloat(zNdelay_class, zdel_float);
   class_addmethod(zNdelay_class, (t_method)zdel_float, gensym("ft1"), A_FLOAT, 0);
   class_addmethod(zNdelay_class, (t_method)zdel_helper, gensym("help"), 0);
-  class_sethelpsymbol(zNdelay_class, gensym("zexy/z~"));
   zexy_register("z~");
 }

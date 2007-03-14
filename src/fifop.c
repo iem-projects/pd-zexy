@@ -300,6 +300,5 @@ void fifop_setup(void)
   class_addmethod  (fifop_class, (t_method)fifop_query, gensym("info"), A_NULL);
   class_addmethod  (fifop_class, (t_method)fifop_help, gensym("help"), A_NULL);
 
-  class_sethelpsymbol(fifop_class, gensym("zexy/fifop"));
   zexy_register("fifop");
 }

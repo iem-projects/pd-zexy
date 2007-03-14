@@ -89,7 +89,7 @@ distclean: realclean
 tests:  all
 	make -C $(TESTDIR)
 
-install: install-bin install-doc install-abs
+install: install-abs install-bin install-doc
 
 install-bin:
 	-install -d $(INSTALL_BIN)
@@ -97,7 +97,7 @@ install-bin:
 
 install-doc:
 	-install -d $(INSTALL_DOC)
-	-install -m 644 ../examples/*.pd $(INSTALL_DOC)
+	-install -m 644 ../reference/*.pd $(INSTALL_DOC)
 
 install-abs:
 	-install -d $(INSTALL_BIN)

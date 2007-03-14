@@ -83,6 +83,5 @@ void tavg_tilde_setup(void)
 	class_addbang(tavg_class, tavg_bang);
 
 	class_addmethod(tavg_class, (t_method)tavg_help, gensym("help"), 0);
-	class_sethelpsymbol(tavg_class, gensym("zexy/tavg~"));
   zexy_register("tavg~");
 }

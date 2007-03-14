@@ -78,7 +78,6 @@ void list2int_setup(void)
   class_addfloat(list2int_class, list2int_float);
   class_addsymbol(list2int_class, list2int_symbol);
   class_addpointer(list2int_class, list2int_pointer);
-  class_sethelpsymbol(list2int_class, gensym("zexy/list2int"));
   zexy_register("list2int");
 }
 

@@ -142,6 +142,5 @@ void blockshuffle_tilde_setup(void)
   class_addlist(blockshuffle_class, blockshuffle_list);
   
   class_addmethod(blockshuffle_class, (t_method)blockshuffle_helper, gensym("help"), 0);
-  class_sethelpsymbol(blockshuffle_class, gensym("zexy/blockshuffle~"));
   zexy_register("blockshuffle~");
 }

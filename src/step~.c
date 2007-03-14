@@ -135,7 +135,6 @@ void step_tilde_setup(void)
 	class_addmethod(step_class, (t_method)step_dsp, gensym("dsp"), 0);
 
 	class_addmethod(step_class, (t_method)step_helper, gensym("help"), 0);
-	class_sethelpsymbol(step_class, gensym("zexy/step~"));
 
   zexy_register("step~");
 }

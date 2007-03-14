@@ -675,7 +675,6 @@ void limiter_tilde_setup(void)
 
   class_addmethod(limiter_class, (t_method)limiter_tilde_helper,	gensym("help"), 0);
   class_addmethod(limiter_class, (t_method)status,	gensym("print"), 0);
-  class_sethelpsymbol(limiter_class, gensym("zexy/limiter~"));
 
   class_addmethod(limiter_class, (t_method)set_mode,	gensym("mode"), A_FLOAT, 0);
   class_addmethod(limiter_class, (t_method)set_LIMIT,	gensym("LIMIT"),  0);

@@ -144,6 +144,5 @@ void envrms_tilde_setup(void)
     class_addmethod(sigenvrms_class, (t_method)sigenvrms_dsp, gensym("dsp"), 0);
 
 	class_addmethod(sigenvrms_class, (t_method)sigenvrms_help, gensym("help"), 0);
-	class_sethelpsymbol(sigenvrms_class, gensym("zexy/envrms~"));
   zexy_register("envrms~");
 }

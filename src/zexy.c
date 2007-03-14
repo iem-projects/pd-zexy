@@ -132,7 +132,7 @@ void zexy_setup(void)
   startpost("\n\t");
   for (i=0; i<28; i++) startpost("%c", HEARTSYMBOL);
   endpost();
-  post("\t%c  the zexy external  "VERSION"  %c", HEARTSYMBOL, HEARTSYMBOL);
+  post("\t%c the zexy external  "VERSION" %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c (l)  forum::für::umläute %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c  compiled:  "__DATE__"  %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c send me a 'help' message %c", HEARTSYMBOL, HEARTSYMBOL);

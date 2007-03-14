@@ -102,6 +102,5 @@ void blockswap_tilde_setup(void)
   class_addfloat(blockswap_class, blockswap_float);
   
   class_addmethod(blockswap_class, (t_method)blockswap_helper, gensym("help"), 0);
-  class_sethelpsymbol(blockswap_class, gensym("zexy/blockswap~"));
   zexy_register("blockswap~");
 }

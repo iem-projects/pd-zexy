@@ -137,6 +137,5 @@ void tabminmax_setup(void)
 		  A_SYMBOL, 0);
 
   class_addmethod(tabminmax_class, (t_method)tabminmax_helper, gensym("help"), 0);
-  class_sethelpsymbol(tabminmax_class, gensym("zexy/tabminmax"));
   zexy_register("tabminmax");
 }

@@ -150,6 +150,5 @@ void dirac_tilde_setup(void)
 	class_addmethod(dirac_class, (t_method)dirac_dsp, gensym("dsp"), 0);
 
 	class_addmethod(dirac_class, (t_method)dirac_helper, gensym("help"), 0);
-    class_sethelpsymbol(dirac_class, gensym("zexy/dirac~"));
   zexy_register("dirac~");
 }

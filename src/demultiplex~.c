@@ -113,7 +113,6 @@ void demultiplex_tilde_setup(void)
 	class_addmethod(demux_class, nullfn, gensym("signal"), 0);
 
 	class_addmethod(demux_class, (t_method)demux_helper, gensym("help"), 0);
-	class_sethelpsymbol(demux_class, gensym("zexy/demultiplex~"));
 
   zexy_register("demultiplex~");
 }

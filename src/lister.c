@@ -90,7 +90,6 @@ void lister_setup(void)
   class_addmethod  (mypdlist_class, (t_method)mypdlist_secondlist, gensym("lst2"), A_GIMME, 0);
 
   class_addmethod(mypdlist_class, (t_method)mypdlist_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(mypdlist_class, gensym("zexy/lister"));
   zexy_register("lister");
 }
 void l_setup(void)

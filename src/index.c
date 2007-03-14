@@ -369,6 +369,5 @@ void index_setup(void)
   class_addmethod(index_class, (t_method)index_dump,  gensym("dump"), 0);
 
   class_addmethod(index_class, (t_method)index_helper, gensym("help"), 0);
-  class_sethelpsymbol(index_class, gensym("zexy/index"));
   zexy_register("index");
 }

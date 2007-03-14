@@ -598,6 +598,6 @@ void sfrecord_setup(void)
 
 	/* some help */
 	class_addmethod(sfrecord_class, (t_method)sfrecord_helper,  gensym("help"), A_NULL);
-	class_sethelpsymbol(sfrecord_class, gensym("zexy/sf-play_record"));
+	class_sethelpsymbol(sfrecord_class, gensym("sf-play_record"));
   zexy_register("sfrecord");
 }

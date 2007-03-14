@@ -118,6 +118,5 @@ void glue_setup(void)
   class_addbang(glue_class, glue_bang);
   class_addmethod  (glue_class, (t_method)glue_help, gensym("help"), 0);
 
-  class_sethelpsymbol(glue_class, gensym("zexy/glue"));
   zexy_register("glue");
 }

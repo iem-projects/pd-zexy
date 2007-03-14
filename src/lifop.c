@@ -280,6 +280,5 @@ void lifop_setup(void)
   class_addmethod  (lifop_class, (t_method)lifop_query, gensym("info"), A_NULL);
   class_addmethod  (lifop_class, (t_method)lifop_help, gensym("help"), A_NULL);
 
-  class_sethelpsymbol(lifop_class, gensym("zexy/lifop"));
   zexy_register("lifop");
 }

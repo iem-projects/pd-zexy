@@ -265,6 +265,5 @@ void multiline_tilde_setup(void)
   class_addmethod(mline_class, (t_method)mline_stop, gensym("stop"), 0);
 
   class_addmethod  (mline_class, (t_method)mline_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(mline_class, gensym("zexy/multiline~"));
   zexy_register("multiline_tilde");
 }

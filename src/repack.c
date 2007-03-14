@@ -178,6 +178,5 @@ void repack_setup(void)
   class_addanything(repack_class, repack_anything);
   class_addmethod  (repack_class, (t_method)repack_set, gensym(""), A_DEFFLOAT, 0);
 
-  class_sethelpsymbol(repack_class, gensym("zexy/repack"));
   zexy_register("repack");
 }

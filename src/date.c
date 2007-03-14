@@ -122,6 +122,5 @@ void date_setup(void)
   class_addbang(date_class, date_bang);
   
   class_addmethod(date_class, (t_method)help_date, gensym("help"), 0);
-  class_sethelpsymbol(date_class, gensym("zexy/date"));
   zexy_register("date");
 }

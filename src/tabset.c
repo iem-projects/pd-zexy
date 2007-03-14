@@ -99,6 +99,5 @@ void tabset_setup(void)
 		  A_SYMBOL, 0);
 
   class_addmethod(tabset_class, (t_method)tabset_helper, gensym("help"), 0);
-  class_sethelpsymbol(tabset_class, gensym("zexy/tabset"));
   zexy_register("tabset");
 }

@@ -123,7 +123,6 @@ void multiplex_setup(void)
 			    CLASS_PD | CLASS_NOINLET, 0);
   class_addanything(muxproxy_class, mux_anything);
 
-  class_sethelpsymbol(mux_class, gensym("zexy/multiplex"));
 
   zexy_register("multiplex");
 }

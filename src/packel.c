@@ -102,6 +102,5 @@ void packel_setup(void)
   class_addlist  (packel_class, packel_list);
   class_addanything(packel_class, packel_anything);
 
-  class_sethelpsymbol(packel_class, gensym("zexy/packel"));
   zexy_register("packel");
 }

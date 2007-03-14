@@ -241,7 +241,7 @@ void setup_0x3e0x7e(void)
   class_addmethod(gt_tilde_class, (t_method)gt_tilde_dsp, gensym("dsp"), 0);
   CLASS_MAINSIGNALIN(gt_tilde_class, t_gt_tilde, x_f);
   class_addmethod  (gt_tilde_class, (t_method)gt_tilde_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(gt_tilde_class, gensym("zexy/sigbinops+"));
+  class_sethelpsymbol(gt_tilde_class, gensym("zigbinops"));
 
   scalargt_tilde_class = class_new(gensym(">~"), 0, 0,
 				 sizeof(t_scalargt_tilde), 0, 0);
@@ -249,7 +249,7 @@ void setup_0x3e0x7e(void)
   class_addmethod(scalargt_tilde_class, (t_method)scalargt_tilde_dsp, gensym("dsp"),
 		  0);
   class_addmethod  (gt_tilde_class, (t_method)gt_tilde_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(scalargt_tilde_class, gensym("zexy/sigbinops+"));
+  class_sethelpsymbol(scalargt_tilde_class, gensym("zigbinops"));
 
   zexy_register(">~");
 }

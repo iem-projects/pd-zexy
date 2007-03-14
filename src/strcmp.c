@@ -173,6 +173,5 @@ void strcmp_setup(void)
   class_addsymbol(strcmp_proxy_class, strcmp_proxy_symbol);
   class_addlist(strcmp_proxy_class, strcmp_proxy_list);
   class_addmethod(strcmp_class, (t_method)strcmp_help, gensym("help"), A_NULL);
-  class_sethelpsymbol(strcmp_class, gensym("zexy/strcmp"));
   zexy_register("strcmp");
 }

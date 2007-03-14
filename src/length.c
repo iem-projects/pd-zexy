@@ -53,6 +53,5 @@ void length_setup(void)
   class_addanything(length_class, (t_method)length_any);
   //  class_addbang(length_class, (t_method)length_bang);
 
-  class_sethelpsymbol(length_class, gensym("zexy/length"));
   zexy_register("length");
 }

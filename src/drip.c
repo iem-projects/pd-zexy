@@ -199,6 +199,5 @@ void drip_setup(void)
   class_addbang    (drip_class, drip_bang);
   class_addlist    (drip_class, drip_list);
   class_addanything(drip_class, drip_anything);
-  class_sethelpsymbol(drip_class, gensym("zexy/drip"));
   zexy_register("drip");
 }

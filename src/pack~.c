@@ -80,7 +80,6 @@ void pack_tilde_setup(void)
   class_addmethod(sigpack_class, (t_method)sigpack_dsp, gensym("dsp"), 0);
 
   class_addmethod(sigpack_class, (t_method)sigpack_help, gensym("help"), 0);
-  class_sethelpsymbol(sigpack_class, gensym("zexy/pack~"));
 
   zexy_register("pack~");
 }

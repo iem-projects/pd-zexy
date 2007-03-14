@@ -119,6 +119,5 @@ void time_setup(void)
   class_addbang(time_class, time_bang);
   
   class_addmethod(time_class, (t_method)help_time, gensym("help"), 0);
-  class_sethelpsymbol(time_class, gensym("zexy/time"));
   zexy_register("time");
 }

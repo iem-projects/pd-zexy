@@ -229,7 +229,7 @@ let PD_MINORVERSION=`echo $PD_VERSION | cut -d"." -f2`+0
 
 if test "$PD_MAJORVERSION" -gt 0 || test "$PD_MINORVERSION" -ge 37
 then
-  REFERENCEPATH=extra/help-
+  REFERENCEPATH=extra/
   echo "yes"
 else
   REFERENCEPATH=doc/5.reference/

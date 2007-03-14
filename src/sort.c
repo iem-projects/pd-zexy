@@ -152,6 +152,5 @@ void sort_setup(void)
   class_addmethod   (sort_class, (t_method)sort_dir, gensym("direction"), A_DEFFLOAT, 0);
   class_addmethod(sort_class, (t_method)sort_help, gensym("help"), A_NULL);
 
-  class_sethelpsymbol(sort_class, gensym("zexy/sort"));
   zexy_register("sort");
 }

@@ -166,7 +166,7 @@ void setup_0x2e(void)
   class_addlist(scalmul_scal_class, scalmul_lst);
   class_addmethod(scalmul_scal_class, (t_method)scalmul_help, gensym("help"), A_NULL);
 
-  class_sethelpsymbol(scalmul_class, gensym("zexy/scalarmult"));
-  class_sethelpsymbol(scalmul_scal_class, gensym("zexy/scalarmult"));
+  class_sethelpsymbol(scalmul_class, gensym("scalarmult"));
+  class_sethelpsymbol(scalmul_scal_class, gensym("scalarmult"));
   zexy_register(".");
 }

@@ -168,7 +168,6 @@ void symbol2list_setup(void)
   class_addmethod  (symbol2list_class, (t_method)symbol2list_delimiter, gensym(""), A_SYMBOL, 0);
   class_addmethod(symbol2list_class, (t_method)symbol2list_help, gensym("help"), A_NULL);
 
-  class_sethelpsymbol(symbol2list_class, gensym("zexy/symbol2list"));
   zexy_register("symbol2list");
 }
 void s2l_setup(void)

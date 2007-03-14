@@ -112,6 +112,5 @@ void mavg_setup(void)
   class_addmethod(mavg_class, (t_method)mavg_set, gensym("set"), A_GIMME, 0);
   class_addmethod(mavg_class, (t_method)mavg_resize, gensym(""), A_DEFFLOAT, 0);
 
-  class_sethelpsymbol(mavg_class, gensym("zexy/mavg"));
   zexy_register("mavg");
 }

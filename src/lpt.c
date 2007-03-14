@@ -301,6 +301,5 @@ void lpt_setup(void)
   class_addbang(lpt_class, (t_method)lpt_bang);
 
   class_addmethod(lpt_class, (t_method)lpt_helper, gensym("help"), 0);
-  class_sethelpsymbol(lpt_class, gensym("zexy/lpt"));
   zexy_register("lpt");
 }
