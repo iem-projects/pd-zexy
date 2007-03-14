@@ -8,12 +8,15 @@ HOW TESTS WORK:
 each test is a patch with one (1) inlet and one (1) outlet.
 a bang is sent to the inlet to start the test.
 the test has to send "1" to the outlet if the test succeeded.
-any other result (be it !=1 or no result at all will be 
-considered a failure of the test.
+any other result will be considered a failure of the test.
+the test MUST return a result, else it will halt the entire
+testrun. (this is needed to allow objects that do not return 
+in zero-time (signal-objects or other timed objects) to be
+tested with this framework too)
 
 example tests of [==]:
 
-test1:
+GOOD test:
  [inlet]
  |
  [10 10(
@@ -22,7 +25,7 @@ test1:
  |
  [outlet]
 
-test2:
+BAD test (will hang forever):
  [inlet]
  |
  [10 10.1(
@@ -38,10 +41,11 @@ test2:
 
 HOW THE FRAMEWORK WORKS
 -----------------------
-only .pd-files in one-level-subdirectories are considered tests.
-(e.g. ./subdir/patch1.pd is tested, while ./patch2.pd and 
-./sub/dir/patch3.pd are not taken into account)
-see directory layout below
+all .pd-files in one-level-subdirectories are considered tests.
+e.g. ./subdir/patch1.pd is tested, while ./patch2.pd and 
+./sub/dir/patch3.pd are not taken into account
+this is important if you need abstractions for your test
+
 at the beginning of the testrun a file "runtests.txt" is generated
 which contains all test-patches, one per line and each line
 terminated by semicolon.
@@ -57,8 +61,12 @@ this logfile is printed to the stdout after pd quit.
 
 CAVEATS
 =======
- no testing of signal objects
- no testing of timed objects
+ pd-0.40 has problems creating an path-prefixed abstraction when a
+ library of the same name is already loaded.
+ e.g. if the library "zexy" is loaded, then the abstraction ./path/zexy.pd
+ CANNOT be instantiated as object [./path/zexy];
+ this seems to be fixed in newer versions of pd
+ 
 
 
 
