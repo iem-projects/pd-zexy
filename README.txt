@@ -39,6 +39,14 @@ installation::
 linux :
 ------------------------------------------------------------------------------
 
+
+short:
+#1> cd src/
+#2> make
+#3> make install
+(this will automatically call autoconf and ./configure if needed (see "long"))
+
+long:
 #1>  cd src/
 #2>  autoconf
 #3>  ./configure
@@ -93,7 +101,6 @@ to compile:
 	    the "unit-at-a-time" optimization (which gets enabled by "-O2")
 	    is the cause of this problem. turning it off might help
 
-
 irix :
 ------------------------------------------------------------------------------
 
@@ -120,7 +127,7 @@ or load it via the object "zexy" at runtime
 authors::
 ==============================================================================
 this software is 
-copyleft 1999-2005 by iohannes m zmoelnig <zmoelnig@iem.kug.ac.at>
+copyleft 1999-2007 by IOhannes m zmoelnig <zmoelnig [at] iem [dot] at>
 with some contributions by winfried ritsch, guenter geiger, miller.s.puckette 
 and surely some others
 

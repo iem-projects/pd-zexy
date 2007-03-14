@@ -1,6 +1,6 @@
 Title Zexy for Pd
 Version MSP standard paths
-Description iohannes m zmoelnig's zexy
+Description IOhannes m zmoelnig's zexy
 DefaultLocation /usr/local/lib
 DeleteWarning 
 

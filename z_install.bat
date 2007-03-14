@@ -11,6 +11,13 @@ REM which pd-version do we have ?
 set PDVERSION=0.38
 
 
+
+
+
+
+
+
+
 REM ==============================================
 REM do not edit below this line !!!
 REM ==============================================
@@ -30,7 +37,7 @@ pause
 IF NOT EXIST %PDPATH%\bin\pd.exe goto location_error
 
 set BINPATH=extra
-set REFPATH=extra\help-zexy
+set REFPATH=extra\zexy
 
 if %PDVERSION% LSS 0.37 set REFPATH=doc\5.reference\zexy
 
@@ -39,7 +46,7 @@ copy zexy.dll %PDPATH%\%BINPATH% > tempInstall.trash
 
 echo copying help files
 mkdir %PDPATH%\%REFPATH%
-copy examples\* %PDPATH%\%REFPATH% > tempInstall.trash
+copy reference\* %PDPATH%\%REFPATH% > tempInstall.trash
 
 echo copying abstractions
 copy abs\*.pd %PDPATH%\%BINPATH% > tempInstall.trash
