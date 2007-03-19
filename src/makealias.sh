@@ -27,17 +27,29 @@ function debug() {
 }
 
 function do_makealias() {
+ local source
+ local dest
+
+ source=$1
+ dest=$2
+
  if [ "x${CLEANMODE}" = "xyes" ]
  then
-   if [ -e "$2" ]; then
-    debug "removing alias $2"
-    rm $2
+   if [ -e "${dest}" ]; then
+    debug "removing alias ${dest}"
+    rm ${dest}
    else
-     debug "alias $2 does not exist"
+     debug "alias ${dest} does not exist"
    fi
  else
-   debug "aliasing $1 to $2"
-   ln -s $1 $2
+   debug "aliasing ${source} to ${dest}"
+   if [ "x${COPYMODE}" = "xyes" ]
+   then
+    cp ${source} ${dest}
+   else
+    source=${source##*/}
+    ln -s ${source} ${dest}
+   fi
  fi
 }
 
