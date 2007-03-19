@@ -73,9 +73,9 @@ static void *a2l_new(void)
 void a2l_setup(void)
 {
   
-  a2l_class = class_new(gensym("any2list"), (t_newmethod)a2l_new, 
+  a2l_class = class_new(gensym("a2l"), (t_newmethod)a2l_new, 
 			      0, sizeof(t_a2l), 0, 0);
-  class_addcreator((t_newmethod)a2l_new, gensym("a2l"), 0);
+  class_addcreator((t_newmethod)a2l_new, gensym("any2list"), 0);
 
 
   class_addbang    (a2l_class, a2l_bang);

@@ -89,7 +89,17 @@ distclean: realclean
 tests:  all
 	make -C $(TESTDIR)
 
-install: install-abs install-bin install-doc
+alias: alias-bin alias-abs
+
+alias-bin: all
+	./makealias.sh ../src/alias ../src ../reference
+
+
+alias-abs:
+	./makealias.sh ../abs/alias ../abs
+
+
+install: all install-abs install-bin install-doc
 
 install-bin:
 	-install -d $(INSTALL_BIN)
