@@ -1,0 +1,48 @@
+#N canvas 60 24 894 518 10;
+#X text 511 26 part of zexy;
+#X obj 48 34 pack;
+#X text 93 33 - combine several atoms into one message;
+#X obj 121 248 zexy/pack;
+#X obj 121 277 print pack;
+#X floatatom 121 190 5 0 0 0 - - -;
+#X floatatom 184 207 5 0 0 0 - - -;
+#X symbolatom 141 170 10 0 0 0 - - -;
+#X symbolatom 189 225 10 0 0 0 - - -;
+#X text 66 68 this object is quite the same as pd's built-in [pack]
+\, but it does not have fixed types;
+#X text 68 98 an atom can be intialized as a number \, then become
+a symbol \, later become a number again \, ....;
+#X floatatom 409 191 5 0 0 0 - - -;
+#X floatatom 472 208 5 0 0 0 - - -;
+#X symbolatom 429 171 10 0 0 0 - - -;
+#X symbolatom 477 226 10 0 0 0 - - -;
+#X obj 409 249 zexy/pack 1 2 3;
+#X obj 409 278 print pack1;
+#X obj 638 283 print pack1;
+#X msg 638 226 bang;
+#X msg 367 215 bang;
+#X msg 85 214 bang;
+#X obj 638 254 zexy/pack s f another symbol;
+#X text 85 150 default;
+#X text 368 152 initialization;
+#X text 632 149 initialization with symbols;
+#X text 77 400 a note on symbol-initialization:;
+#X text 120 419 pd's built-in [pack] does not allow you to initialize
+symbols in a list \; instead things like 's' and 'f' are used for specifying
+the _type_ of the atoms.;
+#X text 123 466 therefore [pack f] will output the number "0" \, while
+[zexy/pack f] will output a symbol "f";
+#X connect 3 0 4 0;
+#X connect 5 0 3 0;
+#X connect 6 0 3 1;
+#X connect 7 0 3 0;
+#X connect 8 0 3 1;
+#X connect 11 0 15 0;
+#X connect 12 0 15 1;
+#X connect 13 0 15 0;
+#X connect 14 0 15 1;
+#X connect 15 0 16 0;
+#X connect 18 0 21 0;
+#X connect 19 0 15 0;
+#X connect 20 0 3 0;
+#X connect 21 0 17 0;
