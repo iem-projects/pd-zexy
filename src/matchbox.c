@@ -14,6 +14,13 @@
  *
  ******************************************************/
 
+// LATER: add a creation argument to specify the initial search mode
+
+// LATER: bind a "name" to the [matchbox] so several objects can share the same entries
+// if no name is given at creation time, the entries are local only
+
+// even LATER: dynamically bind to several searchlists (via "set" message)
+
 
 #include "zexy.h"
 

@@ -76,7 +76,7 @@ externals: $(OBJECTS)
 clean:
 	-rm -f *.$(EXT) *.o 
 
-realclean: clean
+realclean: clean alias-clean
 	-rm -f *~ _* config.*
 	-rm -f *.d *.d.*
 
@@ -94,12 +94,18 @@ alias: alias-bin alias-abs
 alias-bin: all
 	./makealias.sh ../src/alias ../src ../reference
 
-
 alias-abs:
 	./makealias.sh ../abs/alias ../abs
 
+alias-clean:  alias-clean-bin alias-clean-abs
 
-install: all install-abs install-bin install-doc
+alias-clean-bin:
+	./makealias.sh -clean ../src/alias ../src ../reference
+
+alias-clean-abs:
+	./makealias.sh -clean ../abs/alias ../abs
+
+install: all alias install-abs install-bin install-doc
 
 install-bin:
 	-install -d $(INSTALL_BIN)
@@ -112,6 +118,20 @@ install-doc:
 install-abs:
 	-install -d $(INSTALL_BIN)
 	-install -m 644 ../abs/*.pd $(INSTALL_BIN)
+
+
+uninstall-bin:
+	-install -d $(INSTALL_BIN)
+	-install -m 644 $(LIBNAME).$(EXT) $(INSTALL_BIN)
+
+uninstall-doc:
+	-install -d $(INSTALL_DOC)
+	-install -m 644 ../reference/*.pd $(INSTALL_DOC)
+
+uninstall-abs:
+	-install -d $(INSTALL_BIN)
+	-install -m 644 ../abs/*.pd $(INSTALL_BIN)
+
 
 dist: all realclean
 	(cd ../..;tar czvf $(TARNAME) $(LIBNAME))

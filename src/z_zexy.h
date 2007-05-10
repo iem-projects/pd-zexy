@@ -49,6 +49,7 @@ void noish_tilde_setup(void); /* noish~ */
 void noisi_tilde_setup(void); /* noisi~ */
 void operating_system_setup(void); /* operating_system */
 void pack_tilde_setup(void); /* pack~ */
+void pack_setup(void); /* pack */
 void packel_setup(void); /* packel */
 void pdf_tilde_setup(void); /* pdf~ */
 void prime_setup(void); /* prime */
@@ -73,6 +74,7 @@ void tabset_setup(void); /* tabset */
 void tavg_tilde_setup(void); /* tavg~ */
 void time_setup(void); /* time */
 void unpack_tilde_setup(void); /* unpack~ */
+void unpack_setup(void); /* unpack */
 void urn_setup(void); /* urn */
 void wrap_setup(void); /* wrap */
 void z_tilde_setup(void); /* z~ */

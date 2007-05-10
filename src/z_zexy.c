@@ -51,6 +51,7 @@ void z_zexy_setup(void)
 	noisi_tilde_setup(); /* noisi~ */
 	operating_system_setup(); /* operating_system */
 	pack_tilde_setup(); /* pack~ */
+	pack_setup(); /* pack */
 	packel_setup(); /* packel */
 	pdf_tilde_setup(); /* pdf~ */
 	prime_setup(); /* prime */
@@ -75,6 +76,7 @@ void z_zexy_setup(void)
 	tavg_tilde_setup(); /* tavg~ */
 	time_setup(); /* time */
 	unpack_tilde_setup(); /* unpack~ */
+	unpack_setup(); /* unpack */
 	urn_setup(); /* urn */
 	wrap_setup(); /* wrap */
 	z_tilde_setup(); /* z~ */
