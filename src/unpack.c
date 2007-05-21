@@ -30,7 +30,6 @@ typedef struct _zunpack
 {
   t_object x_obj;
   t_outlet**x_out;
-  t_int*x_index;
   t_int x_numouts;
 } t_zunpack;
 
@@ -55,11 +54,9 @@ static void zunpack_free(t_zunpack *x)
   for(i=0; i<x->x_numouts; i++) {
     outlet_free(x->x_out[i]);
   }
-  freebytes(x->x_index, x->x_numouts*sizeof(t_int));
   freebytes(x->x_out, x->x_numouts*sizeof(t_outlet*));
 
   x->x_numouts=0;
-  x->x_index=0;
   x->x_out=0;  
 }
 
@@ -70,15 +67,10 @@ static void *zunpack_new(t_symbol*s, int argc, t_atom*argv)
   int i=0;
   
   x->x_numouts=count;
-  x->x_index=(t_int*)  getbytes(count*sizeof(t_int));
   x->x_out=(t_outlet**)getbytes(count*sizeof(t_outlet*));
 
   for(i=0; i<count; i++) {
     x->x_out[i]  =outlet_new(&x->x_obj, 0);
-    x->x_index[i]=count;
-    if(i<argc && argv[i].a_type == A_FLOAT) {
-      x->x_index[i]=atom_getint(argv+i);
-    }
   } 
 
   return (x);
