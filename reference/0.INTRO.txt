@@ -73,6 +73,8 @@ date		get system date
 time		get system time
 index		map symbols to indices
 msgfile		a powerful "textfile" derivative
+freadln		a simplified "textfile" derivative for reading line-wise
+fwriteln	a simplified "textfile" derivative for writing line-wise
 demultiplex	demultiplex the input to a specified outlet
 lpt		write to the (parallel) port
 operating_system      get the current OS
