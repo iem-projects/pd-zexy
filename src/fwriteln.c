@@ -1,4 +1,22 @@
-#include "m_pd.h"
+
+/******************************************************
+ *
+ * zexy - implementation file
+ *
+ * copyleft (c) Franz Zotter
+ *
+ *   2105:forum::für::umläute:2007
+ *
+ *   institute of electronic music and acoustics (iem)
+ *
+ ******************************************************
+ *
+ * license: GNU General Public License v.2
+ *
+ ******************************************************/
+
+#include "zexy.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -156,5 +174,7 @@ void fwriteln_setup(void)
    class_addmethod(fwriteln_class, (t_method)fwriteln_open, gensym("open"), A_SYMBOL, A_DEFSYM, 0);
    class_addmethod(fwriteln_class, (t_method)fwriteln_close, gensym("close"), A_NULL, 0);
    class_addanything(fwriteln_class, (t_method)fwriteln_write);
+
+   zexy_register("fwriteln");
 }
 

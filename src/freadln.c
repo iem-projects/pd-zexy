@@ -217,5 +217,7 @@ void freadln_setup(void)
    class_addmethod(freadln_class, (t_method)freadln_open, gensym("open"), A_SYMBOL, A_DEFSYM, 0);
    class_addmethod(freadln_class, (t_method)freadln_close, gensym("close"), A_NULL, 0);
    class_addbang(freadln_class, (t_method)freadln_readline);
+
+   zexy_register("freadln");
 }
 
