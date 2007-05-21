@@ -27,6 +27,8 @@ void dirac_tilde_setup(void); /* dirac~ */
 void drip_setup(void); /* drip */
 void envrms_tilde_setup(void); /* envrms~ */
 void fifop_setup(void); /* fifop */
+void freadln_setup(void); /* freadln */
+void fwriteln_setup(void); /* fwriteln */
 void glue_setup(void); /* glue */
 void index_setup(void); /* index */
 void length_setup(void); /* length */

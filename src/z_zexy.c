@@ -29,6 +29,8 @@ void z_zexy_setup(void)
 	drip_setup(); /* drip */
 	envrms_tilde_setup(); /* envrms~ */
 	fifop_setup(); /* fifop */
+	freadln_setup(); /* freadln */
+	fwriteln_setup(); /* fwriteln */
 	glue_setup(); /* glue */
 	index_setup(); /* index */
 	length_setup(); /* length */
