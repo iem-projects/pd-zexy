@@ -196,7 +196,6 @@ static void lt_tilde_dsp(t_lt_tilde *x, t_signal **sp)
      Z_SIMD_CHKALIGN(out)
      )
     {
-      post("SIMD");
       dsp_add(lt_tilde_performSSE, 4, in1, in2, out, n);
     } else
 #endif
@@ -219,7 +218,6 @@ static void scalarlt_tilde_dsp(t_scalarlt_tilde *x, t_signal **sp)
      Z_SIMD_CHKALIGN(out)
      )
     {
-      post("SIMD");
       dsp_add(scalarlt_tilde_performSSE, 4, in, &x->x_g, out, n);
     } else
 #endif
