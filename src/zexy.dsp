@@ -39,7 +39,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "ZEXY_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /Zp16 /W3 /GX /I "..\..\..\pd\src" /I "C:\Programme\pd-0.38-3\src" /D "__WIN32__" /D "ZEXY" /D "Z_WANT_LPT" /D "ZEXY_LIBRARY" /FR /YX /FD /c
+# ADD CPP /nologo /Zp16 /W3 /GX /I "..\..\..\pd\src" /I "C:\Programme\pd\src" /D "__WIN32__" /D "ZEXY" /D "Z_WANT_LPT" /D "ZEXY_LIBRARY" /FR /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /win32
 # SUBTRACT MTL /mktyplib203
@@ -50,7 +50,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib wsock32.lib uuid.lib libc.lib oldnames.lib pd.lib /nologo /dll /machine:I386 /nodefaultlib /out:"..\zexy.dll" /libpath:"../../bin" /libpath:"C:\Programme\pd\bin" /libpath:"C:\Programme\pd-0.38-3\bin" /export:zexy_setup
+# ADD LINK32 kernel32.lib wsock32.lib uuid.lib libc.lib oldnames.lib pd.lib /nologo /dll /machine:I386 /nodefaultlib /out:"..\zexy.dll" /libpath:"../../bin" /libpath:"C:\Programme\pd\bin" /export:zexy_setup
 # SUBTRACT LINK32 /pdb:none
 # Begin Target
 
@@ -108,6 +108,10 @@ SOURCE=.\blockmirror~.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\blockshuffle~.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\blockswap~.c
 # End Source File
 # Begin Source File
@@ -141,6 +145,14 @@ SOURCE=.\envrms~.c
 # Begin Source File
 
 SOURCE=.\fifop.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\freadln.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\fwriteln.c
 # End Source File
 # Begin Source File
 
@@ -184,6 +196,10 @@ SOURCE=.\makesymbol.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\matchbox.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\mavg.c
 # End Source File
 # Begin Source File
@@ -221,6 +237,10 @@ SOURCE=.\noisi~.c
 # Begin Source File
 
 SOURCE=.\operating_system.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\pack.c
 # End Source File
 # Begin Source File
 
@@ -317,6 +337,10 @@ SOURCE=.\tavg~.c
 # Begin Source File
 
 SOURCE=.\time.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\unpack.c
 # End Source File
 # Begin Source File
 
