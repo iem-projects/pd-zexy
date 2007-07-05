@@ -17,6 +17,10 @@
 
 #include "zexy.h"
 
+#ifdef __WIN32__
+# define snprintf _snprintf
+#endif
+
 #include <stdio.h>
 #include <string.h>
 

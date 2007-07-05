@@ -23,6 +23,11 @@
 #include "z_zexy.h"
 #include <stdarg.h>
 
+
+#ifdef __WIN32__
+# define vsnprintf _vsnprintf
+#endif
+
 /* do a little help thing */
 
 typedef struct zexy 
