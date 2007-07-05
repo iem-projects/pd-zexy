@@ -75,6 +75,7 @@ typedef struct _matchbox
 
 static t_listlist* addlistlist(t_listlist*list, int argc, t_atom*argv) {
   t_listlist*ll=(t_listlist*)getbytes(sizeof(t_listlist));
+  t_listlist*lp=0;
   ll->next=0;
   ll->argc=argc;
   ll->argv=(t_atom*)getbytes(argc*sizeof(t_atom));
@@ -84,7 +85,7 @@ static t_listlist* addlistlist(t_listlist*list, int argc, t_atom*argv) {
     return ll;
   }
   
-  t_listlist*lp=list;
+  lp=list;
   while(0!=lp->next)lp=lp->next;
   lp->next=ll;
 
