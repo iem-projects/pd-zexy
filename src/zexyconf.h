@@ -3,7 +3,7 @@
 #define _ZEXYCONF_H_
 
 /* Define if you have the <regex.h> header file.  */
-#define HAVE_REGEX_H 1
+//#define HAVE_REGEX_H 1
 
 /* Define if you have the <alloca.h> header file.  */
 #define HAVE_ALLOCA_H 1
@@ -15,7 +15,7 @@
  * (for parport _device_ support) 
  * you need Z_WANT_LPT for this to have an effect ! 
  */
-#define HAVE_LINUX_PPDEV_H 1
+//#define HAVE_LINUX_PPDEV_H 1
 
 #endif /* _ZEXYCONF_H_ */
 
