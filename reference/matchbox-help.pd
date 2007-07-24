@@ -1,4 +1,4 @@
-#N canvas 80 59 728 623 10;
+#N canvas 80 59 640 602 10;
 #X text 68 47 you can store a number of lists by sending them to its
 right inlet.;
 #X text 50 23 [matchbox] - retrieve matching lists;
@@ -13,12 +13,12 @@ at object creation.;
 #X text 90 204 '==': only matches if lists are exactly equal;
 #X text 90 216 'OSC': list-atoms are compared using OSC-pattern matching
 ;
-#X obj 205 384 matchbox;
-#X floatatom 248 405 5 0 0 1 num_results - -;
-#X obj 205 439 print results;
+#X obj 205 424 matchbox;
+#X floatatom 248 445 5 0 0 1 num_results - -;
+#X obj 205 479 print results;
 #X msg 248 351 list this is my string \, list this is your string \,
 list this was my string;
-#X text 278 385 default is exact matching;
+#X text 268 426 default is exact matching;
 #X msg 205 256 list this is my string;
 #X msg 218 275 list this is no string;
 #X msg 233 295 list this is * string;
@@ -28,15 +28,6 @@ list this was my string;
 #X msg 111 450 dump;
 #X text 37 395 delete all stored lists;
 #X text 35 438 output all stored lists;
-#X floatatom 240 595 5 0 0 1 num_results - -;
-#X msg 240 551 list this is my string \, list this is your string \,
-list this was my string;
-#X msg 173 480 list this is my string;
-#X obj 173 578 matchbox OSC;
-#X obj 173 613 print OSCresults;
-#X msg 201 513 list this *s * string;
-#X msg 186 496 list this is * string;
-#X obj 240 535 loadbang;
 #X obj 248 335 loadbang;
 #X text 301 336 add lists to the pool;
 #X text 52 294 change matching mode;
@@ -46,6 +37,71 @@ pattern-matching;
 #X msg 247 313 list this .+ my string;
 #X text 394 295 an OSC pattern;
 #X text 394 314 a regular expression;
+#N canvas 0 0 556 395 default 0;
+#X floatatom 100 295 5 0 0 1 num_results - -;
+#X msg 100 161 list this is my string \, list this is your string \,
+list this was my string;
+#X msg 33 90 list this is my string;
+#X obj 33 238 matchbox OSC;
+#X obj 33 313 print OSCresults;
+#X msg 61 123 list this *s * string;
+#X msg 46 106 list this is * string;
+#X obj 100 145 loadbang;
+#X text 57 38 you can give the matching mode as 1st argument to matchbox]
+;
+#X text 118 239 <-- this object does OSC-pattern matching;
+#X connect 1 0 3 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 1 0 0;
+#X connect 5 0 3 0;
+#X connect 6 0 3 0;
+#X connect 7 0 1 0;
+#X restore 206 527 pd default mode;
+#N canvas 220 74 737 499 deleting 0;
+#X obj 205 284 matchbox;
+#X obj 205 369 print results;
+#X msg 248 241 list this is my string \, list this is your string \,
+list this was my string;
+#X text 268 286 default is exact matching;
+#X msg 119 172 mode ==;
+#X msg 120 190 mode OSC;
+#X msg 110 267 clear;
+#X msg 351 342 dump;
+#X text 37 255 delete all stored lists;
+#X obj 248 225 loadbang;
+#X text 301 226 add lists to the pool;
+#X text 52 154 change matching mode;
+#X msg 120 210 mode regex;
+#X text 400 156 an OSC pattern;
+#X text 398 174 a regular expression;
+#X msg 205 116 delete this is my string;
+#X msg 217 135 delete this is no string;
+#X msg 234 155 delete this is * string;
+#X msg 247 173 delete this .+ my string;
+#X text 80 51 you can either "clear" all stored lists \, or "delete"
+them based pattern matching;
+#X text 327 316 after you have deleted something \, click "dump" to
+see the currently stored lists.;
+#X text 70 426 when "delete"ing \, [matchbox] will output the deleted
+list(s) with a "deleted" prepended;
+#X text 73 456 you can use [route delete] to distinguish between 'deleted'
+and 'found' results;
+#X connect 0 0 1 0;
+#X connect 2 0 0 1;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 9 0 2 0;
+#X connect 12 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 18 0 0 0;
+#X restore 206 547 pd deleting;
+#X text 114 539 more info;
+#X text 475 15 part of zexy (2.1);
 #X connect 7 0 9 0;
 #X connect 7 1 8 0;
 #X connect 10 0 7 1;
@@ -56,13 +112,6 @@ pattern-matching;
 #X connect 16 0 7 0;
 #X connect 17 0 7 0;
 #X connect 18 0 7 0;
-#X connect 22 0 24 1;
-#X connect 23 0 24 0;
-#X connect 24 0 25 0;
-#X connect 24 1 21 0;
-#X connect 26 0 24 0;
-#X connect 27 0 24 0;
-#X connect 28 0 22 0;
-#X connect 29 0 10 0;
-#X connect 33 0 7 0;
-#X connect 34 0 7 0;
+#X connect 21 0 10 0;
+#X connect 25 0 7 0;
+#X connect 26 0 7 0;

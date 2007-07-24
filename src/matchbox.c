@@ -92,20 +92,26 @@ static t_listlist* addlistlist(t_listlist*list, int argc, t_atom*argv) {
   return list;
 }
 
-static void clearlistlist(t_listlist*list) {
-  while(list){
-    t_listlist*ll=list;
-    list=list->next;
-
-    if(ll->argv)freebytes(ll->argv, ll->argc*sizeof(t_atom));
-    ll->argv=0;
-    ll->argc=0;
-    ll->next=0;
-    freebytes(ll, sizeof(t_listlist));
-  }
+/* delete the _next_ element from the list */
+static t_listlist* deletelistnext(t_listlist*list) {
+  if(!list || !list->next)return list; /* nothing to delete */
+  t_listlist*ll=list->next;
+  list->next=ll->next;
+  if(ll->argv)freebytes(ll->argv, ll->argc*sizeof(t_atom));
+  ll->argv=0;
+  ll->argc=0;
+  ll->next=0;
+  freebytes(ll, sizeof(t_listlist));
+  return list;
 }
 
-
+/* delete the entire list of lists */
+static void clearlistlist(t_listlist*list) {
+  if(!list)return; /* nothing to delete */
+  while(list->next){
+    list=deletelistnext(list);
+  }
+}
 
 /* -------------- here comes the matching algorithms ----------- */
 
@@ -387,7 +393,7 @@ static int listmatch_regex(int p_argc, regex_t**pattern, int t_argc, t_atom*test
   return TRUE;
 }
 
-static t_listlist*matchlistlist_regex(unsigned int*numresults, t_listlist*searchlist, int p_argc, t_atom*p_argv, int flags) {
+static t_listlist*matchlistlist_regex(unsigned int*numresults, t_listlist*searchlist, int p_argc, t_atom*p_argv, int flags, int delete_results) {
   regex_t**regexpressions=0;
   t_listlist*matchinglist=0, *sl;
   int i=0;
@@ -421,10 +427,25 @@ static t_listlist*matchlistlist_regex(unsigned int*numresults, t_listlist*search
   }
  
   /* match the patterns to the tests */
-  for(sl=searchlist; 0!=sl; sl=sl->next) {
-    if(TRUE==listmatch_regex(p_argc, regexpressions, sl->argc, sl->argv)) {
-      matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
-      num++;
+  if(FALSE==delete_results) {
+    for(sl=searchlist; 0!=sl; sl=sl->next) {
+      if(TRUE==listmatch_regex(p_argc, regexpressions, sl->argc, sl->argv)) {
+        matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
+        num++;
+      }
+    }
+  } else if (TRUE==delete_results) {
+    /* yummy: delete matching lists! */
+    t_listlist*lastgood=searchlist;
+    for(sl=searchlist; 0!=sl; sl=sl->next) {
+      if(TRUE==listmatch_regex(p_argc, regexpressions, sl->argc, sl->argv)) {
+        matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
+        num++;
+
+        sl=deletelistnext(lastgood); 
+      } else {
+        lastgood=sl;
+      }
     }
   }
 
@@ -474,24 +495,39 @@ static int matchlist(int argc_pattern, t_atom*argv_pattern,
   return TRUE;
 }
 
-static t_listlist*matchlistlist(unsigned int*numresults, t_listlist*searchlist, int p_argc, t_atom*p_argv, int mode) {
+static t_listlist*matchlistlist(unsigned int*numresults, t_listlist*searchlist, int p_argc, t_atom*p_argv, int mode, int delete_results) {
   unsigned int num=0;
   t_listlist*matchinglist=0, *sl;
 
   /* extra handling of regex matching (because we want to compile only once */
 #ifdef MATCHBOX_REGEX
   if(MATCHBOX_REGEX==mode) {
-    matchinglist=matchlistlist_regex(&num, searchlist, p_argc, p_argv, 0);
+    matchinglist=matchlistlist_regex(&num, searchlist, p_argc, p_argv, 0, delete_results);
   } else 
 #endif /* MATCHBOX_REGEX */
   /* normal matching */
-  for(sl=searchlist; 0!=sl; sl=sl->next) {
-    if(matchlist(p_argc, p_argv, sl->argc, sl->argv, mode)) {
-      matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
-      num++;
+  if(FALSE==delete_results) {
+    for(sl=searchlist->next; 0!=sl; sl=sl->next) {
+      if(matchlist(p_argc, p_argv, sl->argc, sl->argv, mode)) {
+        matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
+        num++;
+      }
+    }
+  } else if (TRUE==delete_results) {
+    /* yummy: delete matching lists! */
+    t_listlist*lastgood=searchlist;
+    for(sl=searchlist->next; 0!=sl; sl=sl->next) {
+      if(matchlist(p_argc, p_argv, sl->argc, sl->argv, mode)) {
+        matchinglist=addlistlist(matchinglist, sl->argc, sl->argv);
+        num++;
+
+        sl=deletelistnext(lastgood);
+      } else {
+        lastgood=sl;
+      }
     }
   }
-  
+
   if(numresults!=0)
     *numresults=num;
   return matchinglist;
@@ -501,20 +537,18 @@ static t_listlist*matchlistlist(unsigned int*numresults, t_listlist*searchlist, 
 static void matchbox_list(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
   int results=0;
   int mode=x->x_mode;
-  t_listlist*resultlist=matchlistlist(&results, x->x_lists, argc, argv, mode);
+  t_listlist*resultlist=matchlistlist(&results, x->x_lists, argc, argv, mode, FALSE);
   t_listlist*dummylist;
 
   outlet_float(x->x_outNumResults, results);
   
   for(dummylist=resultlist; 0!=dummylist; dummylist=dummylist->next)
     outlet_list(x->x_outResult,  &s_list, dummylist->argc, dummylist->argv);
-  
-
 }
 
 static void matchbox_add(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
   // 1st match, whether we already have this entry
-  if(matchlistlist(0, x->x_lists, argc, argv, MATCHBOX_EXACT)) {
+  if(matchlistlist(0, x->x_lists, argc, argv, MATCHBOX_EXACT, FALSE)) {
     // already there, skip the rest
     z_verbose(1, "this list is already in the buffer!, skipping...");
     return;
@@ -525,19 +559,32 @@ static void matchbox_add(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
   x->x_numlists++;
 }
 
+static void matchbox_delete(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
+  int results=0;
+  int mode=x->x_mode;
+  t_listlist*resultlist=matchlistlist(&results, x->x_lists, argc, argv, mode, TRUE);
+  t_listlist*dummylist;
+  t_symbol*delsym=gensym("deleted");
 
+  x->x_numlists-=results;
+
+  outlet_float(x->x_outNumResults, results);
+  
+  for(dummylist=resultlist; 0!=dummylist; dummylist=dummylist->next)
+    outlet_anything(x->x_outResult, delsym, dummylist->argc, dummylist->argv);
+}
 
 static void matchbox_dump(t_matchbox*x) {
   t_listlist*lp=0;
 
-  if(0==x->x_lists){
+  if(0==x->x_lists || 0==x->x_lists->next){
     outlet_float(x->x_outNumResults, 0);
     return;
   }
 
   outlet_float(x->x_outNumResults, x->x_numlists);
 
-  for(lp=x->x_lists; 0!=lp; lp=lp->next)
+  for(lp=x->x_lists->next; 0!=lp; lp=lp->next)
   {
     outlet_list(x->x_outResult,  &s_list, lp->argc, lp->argv);
   }
@@ -546,8 +593,6 @@ static void matchbox_dump(t_matchbox*x) {
 
 static void matchbox_clear(t_matchbox*x) {
   clearlistlist(x->x_lists);
-
-  x->x_lists=0;
   x->x_numlists=0;
 }
 
@@ -583,7 +628,10 @@ static void *matchbox_new(t_symbol *s, int argc, t_atom*argv)
   x->x_outNumResults=outlet_new(&x->x_obj, gensym("float"));
 
 
-  x->x_lists=0;
+  x->x_lists=(t_listlist*)getbytes(sizeof(t_listlist));
+  x->x_lists->next=0;
+  x->x_lists->argc=0;
+  x->x_lists->argv=0;
   x->x_numlists=0;
 
   x->x_mode = MATCHBOX_EXACT;
@@ -599,6 +647,8 @@ static void *matchbox_new(t_symbol *s, int argc, t_atom*argv)
 static void matchbox_free(t_matchbox *x)
 {
   matchbox_clear(x);
+  freebytes(x->x_lists, sizeof(t_listlist));  
+  x->x_lists=0;
 }
 
 static void matchbox_help(t_matchbox*x)
@@ -619,6 +669,7 @@ void matchbox_setup(void)
   class_addlist  (matchbox_class, matchbox_list);
 
   class_addmethod(matchbox_class, (t_method)matchbox_add, gensym("add"), A_GIMME, 0);
+  class_addmethod(matchbox_class, (t_method)matchbox_delete, gensym("delete"), A_GIMME, 0);
   class_addmethod(matchbox_class, (t_method)matchbox_clear, gensym("clear"), A_NULL, 0);
   class_addmethod(matchbox_class, (t_method)matchbox_dump, gensym("dump"), A_NULL);
 
