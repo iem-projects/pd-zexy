@@ -1,0 +1,21 @@
+#N canvas 385 348 685 429 10;
+#X text 497 29 part of zexy;
+#X obj 63 13 list2lists;
+#X text 136 13 - split a list into sublists;
+#X obj 88 220 print sublists;
+#X obj 88 175 list2lists;
+#X msg 88 83 1 2 3 4 5 6 7 8 9 10;
+#X text 216 154 an array of lengths of the sublists;
+#X text 226 84 a list to be split;
+#X text 186 214 outputs a number of sublists each having the length
+as specified to the object.;
+#X text 91 266 if the total length of the sublists exceeds the length
+of the input list \, the rest of the sublists is discarded;
+#X msg 143 153 4 3 0 0 -1 -2;
+#X text 94 293 zero-length sublists are "bangs";
+#X text 77 351 see also;
+#X obj 150 350 repack;
+#X text 206 351 fixed sized sublists;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 10 0 4 1;

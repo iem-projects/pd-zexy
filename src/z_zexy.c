@@ -37,8 +37,10 @@ void z_zexy_setup(void)
 	lifop_setup(); /* lifop */
 	limiter_tilde_setup(); /* limiter~ */
 	list2int_setup(); /* list2int */
+	list2lists_setup(); /* list2lists */
 	list2symbol_setup(); /* list2symbol */
 	lister_setup(); /* lister */
+	listfind_setup(); /* listfind */
 	lpt_setup(); /* lpt */
 	makesymbol_setup(); /* makesymbol */
 	matchbox_setup(); /* matchbox */

@@ -1,0 +1,26 @@
+#N canvas 385 348 685 518 10;
+#X text 497 29 part of zexy;
+#X obj 63 13 listfind;
+#X text 122 14 - find sublists in lists;
+#X obj 88 175 listfind;
+#X msg 279 154 1 2 3 2 1 8 2 3 4;
+#X obj 279 128 loadbang;
+#X msg 88 71 1;
+#X text 283 174 set the list to be searched;
+#X text 85 55 the list to be found;
+#X msg 100 95 list bla;
+#X msg 114 119 list 2 3;
+#X msg 126 142 list 8;
+#X obj 88 220 print found@;
+#X text 180 223 outputs a list of (0-based) indices of all occurences
+of the sublist;
+#X text 84 281 this is similar (and hopefully compatible) to foobar's
+[list-find] but it searches not only for single elements but for entire
+sub-lists;
+#X connect 3 0 12 0;
+#X connect 4 0 3 1;
+#X connect 5 0 4 0;
+#X connect 6 0 3 0;
+#X connect 9 0 3 0;
+#X connect 10 0 3 0;
+#X connect 11 0 3 0;

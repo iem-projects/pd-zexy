@@ -35,8 +35,10 @@ void length_setup(void); /* length */
 void lifop_setup(void); /* lifop */
 void limiter_tilde_setup(void); /* limiter~ */
 void list2int_setup(void); /* list2int */
+void list2lists_setup(void); /* list2lists */
 void list2symbol_setup(void); /* list2symbol */
 void lister_setup(void); /* lister */
+void listfind_setup(void); /* listfind */
 void lpt_setup(void); /* lpt */
 void makesymbol_setup(void); /* makesymbol */
 void matchbox_setup(void); /* matchbox */
