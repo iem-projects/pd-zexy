@@ -190,7 +190,6 @@ static void freadln_readline (t_freadln *x)
 
    if (linebreak_pos-1  < items_read - strlen(x->linebreak_chr)) {
       rewind_after=items_read-linebreak_pos;
-      post("rewinding by %d", rewind_after);
       fseek(x->x_file,-(long)(rewind_after),SEEK_CUR);
    }
    if (linebreak_pos==-1) 
