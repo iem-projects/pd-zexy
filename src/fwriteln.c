@@ -42,6 +42,7 @@ typedef struct fwriteln
    FILE *x_file;
    char *x_filename;
    char *x_textbuf;
+   char linebreak_chr[3];
 } t_fwriteln;
 
 
@@ -65,10 +66,15 @@ static void fwriteln_open (t_fwriteln *x, t_symbol *s, t_symbol*type)
    filename[MAXPDSTRING-1]=0;
    fwriteln_close (x);
 
-   if(0==type || type!=gensym("cr")) {
+/*   if(0==type || type!=gensym("cr")) {
      pd_error(x, "unknown type '%s'", (type)?type->s_name:"");
      return;
-   }
+   }*/
+
+   if (type==gensym("cr"))
+      strcpy(x->linebreak_chr,"\n");
+   else
+      strcpy(x->linebreak_chr,";\n");
 
    if (!(x->x_file=fopen(filename, "w"))) {
       pd_error(x, "failed to open %128s",filename);
@@ -144,7 +150,7 @@ static void fwriteln_write (t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
          argv++;
       }
 
-      snprintf(text,MAXPDSTRING,"\n");
+      snprintf(text,MAXPDSTRING,x->linebreak_chr);
       length=strlen(text);
       if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
          pd_error(x, "failed to write %128s",x->x_filename);

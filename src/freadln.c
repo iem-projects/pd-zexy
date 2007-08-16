@@ -17,17 +17,21 @@
 
 #include "zexy.h"
 
+#ifdef __WIN32__
+# define snprintf _snprintf
+#endif
+
 #include <stdio.h>
 #include <string.h>
-#include <stdarg.h>
-#include <fcntl.h>
+//#include <stdarg.h>
+//#include <fcntl.h>
 
-#ifdef __WIN32__
-# include <io.h>
-#else
-# include <sys/types.h>
-# include <unistd.h>
-#endif
+//#ifdef __WIN32__
+//# include <io.h>
+//#else
+//# include <sys/types.h>
+//# include <unistd.h>
+//#endif
 
 #define MIN_FREADLN_LENGTH 10
 
@@ -48,9 +52,13 @@ typedef struct freadln
    FILE *x_file;
    char *x_filename;
    char *x_textbuf;
-   int x_textbuf_length;
+   int  x_textbuf_length;
    t_outlet *x_message_outlet;
    t_outlet *x_readybang_outlet;
+
+   char linebreak_chr[3];
+
+   t_canvas *x_canvas;
 } t_freadln;
 
 
@@ -71,31 +79,41 @@ static void freadln_close (t_freadln *x)
 static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
 {
    char filenamebuf[MAXPDSTRING], *filenamebufptr;
-   int fd;
+   char*dirname=canvas_getdir(x->x_canvas)->s_name;
+   int fd, len;
+
    freadln_close(x);
 
-   if(type!=gensym("cr")) {
+/*   if(type!=gensym("cr")) {
      pd_error(x, "currently only 'cr' type files are implemented!");
      return;
-   }
+   }*/
+   if (type==gensym("cr"))
+      strcpy(x->linebreak_chr,"\n");
+   else
+      strcpy(x->linebreak_chr,";\n");
+      
 
    // directory, filename, extension, dirresult, nameresult, unsigned int size, int bin
-   if ((fd=open_via_path("",s->s_name,"", filenamebuf, &filenamebufptr, MAXPDSTRING,0))==-1) {
-      pd_error(x, "failed to open %128s", filenamebuf);
-      close(fd);
+   if ((fd=open_via_path(dirname,
+	       s->s_name,"", filenamebuf, &filenamebufptr, MAXPDSTRING,0)) < 0 ) {
+      pd_error(x, "%s: failed to open %s", s->s_name, filenamebuf);
       return;
    }
    close(fd);
-   if (!(x->x_file=fopen(filenamebuf, "r"))) {
-      pd_error(x, "failed to open %128s",filenamebuf);
-      return;
-   }
-   if (!(x->x_filename=(char*)getbytes(sizeof(char)*strlen(filenamebuf)))) {
+   len=strlen(filenamebuf);
+   if (!(x->x_filename=(char*)getbytes(sizeof(char)*(len+strlen(s->s_name)+2)))) {
       pd_error(x, "out of memory");
       freadln_close(x);
       return;
    }
    strcpy(x->x_filename,filenamebuf);
+   strcpy(x->x_filename+len,"/");
+   strcpy(x->x_filename+len+1,s->s_name);
+   if (!(x->x_file=fopen(x->x_filename, "r"))) {
+      pd_error("freadln: failed to open %128s",filenamebuf);
+      return;
+   }
    if (!(x->x_textbuf = (char *) getbytes (MIN_FREADLN_LENGTH * sizeof(char)))) {
       pd_error(x, "out of memory");
       freadln_close(x);
@@ -137,21 +155,23 @@ static int cstr_char_pos(const char *c_str, const char c)
 static void freadln_readline (t_freadln *x)
 {
    int min_length=(x->x_textbuf_length < 1)?1:x->x_textbuf_length;
-   int ret_pos=0;
+   int linebreak_pos=0;
+   int items_read;
    t_binbuf *bbuf;
    t_atom *abuf;
    int abuf_length;
    t_symbol *s;
+   int rewind_after;
 
-   if (!x->x_file) {
+   if (x->x_file < 0) {
       pd_error(x, "no file opened for reading");
       return;
    }
 
    do {
-      if (ret_pos==-1) {
-	 min_length++;
-	 fseek(x->x_file,-(long)(x->x_textbuf_length-1),SEEK_CUR);
+      if (linebreak_pos==-1) {
+	 min_length<<=1;
+	 fseek(x->x_file,-(long)(x->x_textbuf_length),SEEK_CUR);
       }
       if (!enlarge_cstr_if_required((const char**) &x->x_textbuf, &x->x_textbuf_length, min_length)) {
          pd_error(x, "out of memory");
@@ -159,20 +179,30 @@ static void freadln_readline (t_freadln *x)
          freadln_close(x);
          return;
       }
-      if (!(fgets(x->x_textbuf, x->x_textbuf_length, x->x_file))) {
-         freadln_close(x);
-         outlet_bang(x->x_readybang_outlet);
-         return;
+      if (!(items_read=fread(x->x_textbuf,sizeof(char),x->x_textbuf_length,x->x_file))) {
+	 freadln_close(x);
+	 outlet_bang(x->x_readybang_outlet);
+	 return;
       }
-   } while ((ret_pos=cstr_char_pos(x->x_textbuf,'\n'))==-1);
-   x->x_textbuf[ret_pos-1]='\0';
+      x->x_textbuf[x->x_textbuf_length-1]=0;
+   } while (((linebreak_pos=cstr_char_pos(x->x_textbuf,x->linebreak_chr[0]))==-1) && 
+	 !(items_read < x->x_textbuf_length));
+
+   if (linebreak_pos-1  < items_read - strlen(x->linebreak_chr)) {
+      rewind_after=items_read-linebreak_pos;
+      post("rewinding by %d", rewind_after);
+      fseek(x->x_file,-(long)(rewind_after),SEEK_CUR);
+   }
+   if (linebreak_pos==-1) 
+      linebreak_pos=items_read;
+   x->x_textbuf[linebreak_pos-1]='\0';
    //post("analyzing \"%s\"",x->x_textbuf);
    if (!(bbuf=binbuf_new())) {
       pd_error(x, "out of memory");
       freadln_close(x);
       return;
    }
-   binbuf_text(bbuf, x->x_textbuf, ret_pos-1);
+   binbuf_text(bbuf, x->x_textbuf, linebreak_pos-1);
    abuf = binbuf_getvec(bbuf);
    abuf_length = binbuf_getnatom(bbuf);
    if (abuf_length>0) {
@@ -207,6 +237,7 @@ static void *freadln_new(void)
    x->x_filename=0;
    x->x_file=0;
    x->x_textbuf=0;
+   x->x_canvas = canvas_getcurrent();
    return (void *)x;
 }
 
