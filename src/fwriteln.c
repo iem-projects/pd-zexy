@@ -43,6 +43,7 @@ typedef struct fwriteln
    char *x_filename;
    char *x_textbuf;
    char linebreak_chr[3];
+   char format_string_afloats[20];
 } t_fwriteln;
 
 
@@ -105,7 +106,7 @@ static void fwriteln_write (t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
       {
          switch (argv->a_type) {
             case A_FLOAT:
-               snprintf(text,MAXPDSTRING,"%.16g ", atom_getfloat(argv));
+               snprintf(text,MAXPDSTRING,x->format_string_afloats, atom_getfloat(argv));
                text[MAXPDSTRING-1]=0;
                length=strlen(text);
                if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
@@ -168,19 +169,26 @@ static void fwriteln_free (t_fwriteln *x)
    fwriteln_close(x);
 }
 
-static void *fwriteln_new(void)
+static void *fwriteln_new(t_symbol *s)
 {
    t_fwriteln *x = (t_fwriteln *)pd_new(fwriteln_class);
    x->x_filename=0;
    x->x_file=0;
    x->x_textbuf=0;
+   if (s!=gensym("")) {
+      strcpy(x->format_string_afloats,s->s_name);
+      strcpy(x->format_string_afloats+strlen(s->s_name)," ");
+   }
+   else
+      strcpy(x->format_string_afloats,"%.16g ");
+   post("fwriteln: float format string \"%s%\"",x->format_string_afloats);
    return (void *)x;
 }
 
 void fwriteln_setup(void)
 {
    fwriteln_class = class_new(gensym("fwriteln"), (t_newmethod)fwriteln_new, 
-         (t_method) fwriteln_free, sizeof(t_fwriteln), 0, 0);
+         (t_method) fwriteln_free, sizeof(t_fwriteln), CLASS_DEFAULT, A_DEFSYM, 0);
    class_addmethod(fwriteln_class, (t_method)fwriteln_open, gensym("open"), A_SYMBOL, A_DEFSYM, 0);
    class_addmethod(fwriteln_class, (t_method)fwriteln_close, gensym("close"), A_NULL, 0);
    class_addanything(fwriteln_class, (t_method)fwriteln_write);
