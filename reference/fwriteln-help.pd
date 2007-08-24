@@ -23,6 +23,9 @@ all);
 #X msg 443 216 list is a list is a list;
 #X msg 435 116 open /tmp/test.txt cr;
 #X text 489 249 close the file (ensure that it gets written);
+#X text 167 322 you can use the arguments "w" and "p" to set the width
+and precision of floating point numbers \, e.g.:;
+#X obj 602 331 fwriteln w 8 p 2;
 #X connect 7 0 14 0;
 #X connect 15 0 14 0;
 #X connect 16 0 14 0;
