@@ -43,7 +43,9 @@ typedef struct fwriteln
    char *x_filename;
    char *x_textbuf;
    char linebreak_chr[3];
-   char format_string_afloats[20];
+   char format_string_afloats[10];
+   int  width;
+   int  precision;
 } t_fwriteln;
 
 
@@ -106,7 +108,8 @@ static void fwriteln_write (t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
       {
          switch (argv->a_type) {
             case A_FLOAT:
-               snprintf(text,MAXPDSTRING,x->format_string_afloats, atom_getfloat(argv));
+               snprintf(text,MAXPDSTRING,x->format_string_afloats, 
+		     x->width,x->precision,atom_getfloat(argv));
                text[MAXPDSTRING-1]=0;
                length=strlen(text);
                if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
@@ -169,26 +172,41 @@ static void fwriteln_free (t_fwriteln *x)
    fwriteln_close(x);
 }
 
-static void *fwriteln_new(t_symbol *s)
+static void *fwriteln_new(t_symbol *s, int argc, t_atom *argv)
 {
+   int k;
    t_fwriteln *x = (t_fwriteln *)pd_new(fwriteln_class);
    x->x_filename=0;
    x->x_file=0;
    x->x_textbuf=0;
-   if (s!=gensym("")) {
-      strcpy(x->format_string_afloats,s->s_name);
-      strcpy(x->format_string_afloats+strlen(s->s_name)," ");
+   x->width=5;
+   x->precision=2;
+   strcpy(x->format_string_afloats,"%*.*f ");
+   for (k=0; k<argc; k++) {
+      if ((atom_getsymbol(&argv[k])==gensym("p"))&&(k+1<argc)) {
+	 x->precision=atom_getint(&argv[++k]);
+	 x->precision=(x->precision<0)?0:x->precision;
+	 x->precision=(x->precision>30)?30:x->precision;
+      }
+      else if ((atom_getsymbol(&argv[k])==gensym("w"))&&(k+1<argc)) {
+	 x->width=atom_getint(&argv[++k]);
+	 x->width=(x->width<1)?1:x->width;
+	 x->width=(x->width>40)?40:x->width;
+      }
+      else if (atom_getsymbol(&argv[k])==gensym("-")) {
+	 strcpy(x->format_string_afloats,"%-*.*f ");
+      }
+      else if (atom_getsymbol(&argv[k])==gensym("+")) {
+	 strcpy(x->format_string_afloats,"%+*.*f ");
+      }
    }
-   else
-      strcpy(x->format_string_afloats,"%.16g ");
-   post("fwriteln: float format string \"%s%\"",x->format_string_afloats);
    return (void *)x;
 }
 
 void fwriteln_setup(void)
 {
    fwriteln_class = class_new(gensym("fwriteln"), (t_newmethod)fwriteln_new, 
-         (t_method) fwriteln_free, sizeof(t_fwriteln), CLASS_DEFAULT, A_DEFSYM, 0);
+         (t_method) fwriteln_free, sizeof(t_fwriteln), CLASS_DEFAULT, A_GIMME, 0);
    class_addmethod(fwriteln_class, (t_method)fwriteln_open, gensym("open"), A_SYMBOL, A_DEFSYM, 0);
    class_addmethod(fwriteln_class, (t_method)fwriteln_close, gensym("close"), A_NULL, 0);
    class_addanything(fwriteln_class, (t_method)fwriteln_write);
