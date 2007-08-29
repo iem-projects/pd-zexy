@@ -181,7 +181,7 @@ static void *fwriteln_new(t_symbol *s, int argc, t_atom *argv)
    x->x_textbuf=0;
    x->width=5;
    x->precision=2;
-   strcpy(x->format_string_afloats,"%*.*f ");
+   strcpy(x->format_string_afloats,"%*.*g ");
    for (k=0; k<argc; k++) {
       if ((atom_getsymbol(&argv[k])==gensym("p"))&&(k+1<argc)) {
 	 x->precision=atom_getint(&argv[++k]);
@@ -194,10 +194,10 @@ static void *fwriteln_new(t_symbol *s, int argc, t_atom *argv)
 	 x->width=(x->width>40)?40:x->width;
       }
       else if (atom_getsymbol(&argv[k])==gensym("-")) {
-	 strcpy(x->format_string_afloats,"%-*.*f ");
+	 strcpy(x->format_string_afloats,"%-*.*g ");
       }
       else if (atom_getsymbol(&argv[k])==gensym("+")) {
-	 strcpy(x->format_string_afloats,"%+*.*f ");
+	 strcpy(x->format_string_afloats,"%+*.*g ");
       }
    }
    return (void *)x;
