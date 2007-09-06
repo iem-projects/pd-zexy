@@ -25,7 +25,7 @@ function list_tests() {
 
 function debug() {
  :
-# echo $@
+if [ "x${DEBUG}" = "xyes" ]; then echo $@; fi
 }
 
 
@@ -40,8 +40,21 @@ function evaluate_tests() {
  debug "now evaluating results in ${logfile} (${testfile}"
 
  numtests=$(grep -c . ${testfile})
+ numpass=$(egrep -c "regression-test: (.*/fail.*: failed|.*: OK)$" ${logfile})
+ let numfail=0
+ failtests=""
+ for t in $(egrep "regression-test: .*: (failed|OK)$" ${logfile} | egrep -v "regression-test: (.*/fail.*: failed|.*: OK)$" | awk '{print $2}')
+ do
+  failtests="${failtests} ${t%:}"
+  let numfail=numfail+1
+ done
  debug "number of tests = ${numtests}"
- echo "regression-test: ${numtests} tests total" >>  ${logfile}
+ echo "regression-test: ======================================" >>  ${logfile}
+ echo "regression-test: ${numtests} regression-tests total" >>  ${logfile}
+ echo "regression-test: ${numpass} regression-tests passed" >>  ${logfile}
+ echo "regression-test: ${numfail} regression-tests failed" >>  ${logfile}
+ echo "regression-test: ======================================" >>  ${logfile}
+ echo "regression-test: failed tests: ${failtests}" >> ${logfile}
  debug "show results"
  cat ${logfile} | egrep "^regression-test: " | sed -e 's/^regression-test: //'
 }
@@ -57,16 +70,33 @@ function run_nogui() {
 
 function run_withgui() {
  debug "running test with gui"
- ${PD} ${LIBFLAGS} -stderr runtests.pd > ${RUNTESTS_LOG} 2>&1
- debug "testing completed, no evaluation will be done; see ${RUNTESTS_LOG} for results"
+ ${PD} ${LIBFLAGS} -stderr runtests.pd 2>&1 | tee ${RUNTESTS_LOG}
+ echo "testing completed, no evaluation will be done; see ${RUNTESTS_LOG} for results"
 }
 
 list_tests > ${RUNTESTS_TXT}
 
-if test "x$1" = "x-gui"; then
+USEGUI=""
+DEBUG=""
+
+while [ "$@" ]
+do
+ if test "x$1" = "x-gui"; then
+  USEGUI="yes"
+ fi
+ if test "x$1" = "x-debug"; then
+  DEBUG="yes"
+ fi
+ if test "x$1" = "x-d"; then
+  DEBUG="yes"
+ fi
+ shift
+done
+
+if [ "x${USEGUI}" = "xyes" ]; then
  run_withgui
 else
  run_nogui
 fi
 
-
+echo $@
