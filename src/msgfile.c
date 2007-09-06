@@ -63,7 +63,6 @@ typedef struct _msgfile
 
   int mode;
 
-
   t_msglist *current;         /* pointer to our list */
 
   t_symbol *x_dir;
@@ -118,14 +117,16 @@ static void delete_currentnode(t_msgfile *x)
     t_msglist *dummy = x->current;
     t_msglist *nxt=dummy->next;
     t_msglist *prv=dummy->previous;
-    freebytes(dummy->thislist, sizeof(dummy->thislist));
-    dummy->thislist = 0;
-    dummy->n = 0;
-    dummy->next=0;
-    dummy->previous=0;
+    if(dummy){
+      freebytes(dummy->thislist, sizeof(dummy->thislist));
+      dummy->thislist = 0;
+      dummy->n = 0;
+      dummy->next=0;
+      dummy->previous=0;
 
-    freebytes(dummy, sizeof(t_msglist));
-    dummy=0;
+      freebytes(dummy, sizeof(t_msglist));
+      dummy=0;
+    }
 
     if (nxt) nxt->previous = prv;
     if (prv) prv->next     = nxt;
@@ -355,9 +356,15 @@ static void msgfile_set(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 
 static void msgfile_replace(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
-  freebytes(x->current->thislist, sizeof(x->current->thislist));
-  x->current->thislist = 0;
-  x->current->n = 0;
+  if(x->current) {
+    if(x->current->thislist) {
+      freebytes(x->current->thislist, sizeof(x->current->thislist));
+    }
+    x->current->thislist = 0;
+    x->current->n = 0;
+  } else {
+    add_currentnode(x);
+  }
   write_currentnode(x, ac, av);
 }
 
