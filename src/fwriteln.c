@@ -55,18 +55,28 @@ static void fwriteln_close (t_fwriteln *x)
       fclose(x->x_file);
    x->x_file=0;
    if(x->x_filename)
-      freebytes(x->x_filename, sizeof(char)*MAXPDSTRING);
+      free(x->x_filename);
    x->x_filename=0;
    if(x->x_textbuf)
-      freebytes(x->x_textbuf, sizeof(char)*MAXPDSTRING);
+      freebytes(x->x_textbuf, MAXPDSTRING + 1);
    x->x_textbuf=0;
+}
+
+static void string_copy(const char* const from, char** to)
+{
+   if (*to = malloc(strlen(from) + 1)) {
+      strcpy(*to, from);
+   }
 }
 
 static void fwriteln_open (t_fwriteln *x, t_symbol *s, t_symbol*type)
 {
-   char filename[MAXPDSTRING];
-   sys_bashfilename (s->s_name, filename);
-   filename[MAXPDSTRING-1]=0;
+   char* filename;
+
+   string_copy(s->s_name, &filename);
+
+   sys_bashfilename (filename, filename);
+
    fwriteln_close (x);
 
 /*   if(0==type || type!=gensym("cr")) {
@@ -81,11 +91,12 @@ static void fwriteln_open (t_fwriteln *x, t_symbol *s, t_symbol*type)
 
    if (!(x->x_file=fopen(filename, "w"))) {
       pd_error(x, "failed to open %128s",filename);
+      free(filename);
       return;
    }
-   x->x_filename=(char*)getbytes(sizeof(char)*strlen(filename));
-   strcpy(x->x_filename,filename);
-   x->x_textbuf = (char *) getbytes (MAXPDSTRING * sizeof(char));
+   string_copy(filename, &x->x_filename);
+   free(filename);
+   x->x_textbuf = (char *) getbytes (MAXPDSTRING + 1);
 }
 
 static void fwriteln_write (t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
