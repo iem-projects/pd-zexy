@@ -44,8 +44,6 @@ typedef struct fwriteln
    char *x_textbuf;
    char linebreak_chr[3];
    char format_string_afloats[10];
-   int  width;
-   int  precision;
 } t_fwriteln;
 
 
@@ -119,8 +117,8 @@ static void fwriteln_write (t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
       {
          switch (argv->a_type) {
             case A_FLOAT:
-               snprintf(text,MAXPDSTRING,x->format_string_afloats, 
-		     x->width,x->precision,atom_getfloat(argv));
+               snprintf(text,MAXPDSTRING,x->format_string_afloats,
+		     atom_getfloat(argv));
                text[MAXPDSTRING-1]=0;
                length=strlen(text);
                if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
@@ -186,31 +184,61 @@ static void fwriteln_free (t_fwriteln *x)
 static void *fwriteln_new(t_symbol *s, int argc, t_atom *argv)
 {
    int k;
+   int width;
+   int precision;
+   char float_format[3]="g ";
+   char width_str[3]="";
+   char precision_str[4]="";
+   char prefix[2]="%";
    t_fwriteln *x = (t_fwriteln *)pd_new(fwriteln_class);
    x->x_filename=0;
    x->x_file=0;
    x->x_textbuf=0;
-   x->width=5;
-   x->precision=2;
-   strcpy(x->format_string_afloats,"%*.*g ");
    for (k=0; k<argc; k++) {
-      if ((atom_getsymbol(&argv[k])==gensym("p"))&&(k+1<argc)) {
-	 x->precision=atom_getint(&argv[++k]);
-	 x->precision=(x->precision<0)?0:x->precision;
-	 x->precision=(x->precision>30)?30:x->precision;
+      if (atom_getsymbol(&argv[k])==gensym("p")) {
+         if ((k+1>=argc)||(argv[k+1].a_type!=A_FLOAT)) {
+            post("fwriteln: no value given for precision!");
+         }
+         else {
+            precision=atom_getint(&argv[++k]);
+            precision=(precision<0)?0:precision;
+            precision=(precision>30)?30:precision;
+            snprintf(precision_str,4,".%d",precision);
+         }
       }
-      else if ((atom_getsymbol(&argv[k])==gensym("w"))&&(k+1<argc)) {
-	 x->width=atom_getint(&argv[++k]);
-	 x->width=(x->width<1)?1:x->width;
-	 x->width=(x->width>40)?40:x->width;
+      else if (atom_getsymbol(&argv[k])==gensym("w")) {
+         if ((k+1>=argc)||(argv[k+1].a_type!=A_FLOAT)) {
+            post("fwriteln: no value given for width!");
+         }
+         else {
+            width=atom_getint(&argv[++k]);
+            width=(width<1)?1:width;
+            width=(width>40)?40:width;
+            snprintf(width_str,3,"%d",width);
+         }
+      }
+      else if (atom_getsymbol(&argv[k])==gensym("g")) {
+            float_format[0]='g';
+      }
+      else if (atom_getsymbol(&argv[k])==gensym("f")) {
+            float_format[0]='f';
+      }
+      else if (atom_getsymbol(&argv[k])==gensym("e")) {
+            float_format[0]='e';
       }
       else if (atom_getsymbol(&argv[k])==gensym("-")) {
-	 strcpy(x->format_string_afloats,"%-*.*g ");
+	 strcpy(prefix,"%-");
       }
       else if (atom_getsymbol(&argv[k])==gensym("+")) {
-	 strcpy(x->format_string_afloats,"%+*.*g ");
+	 strcpy(prefix,"%+");
       }
    }
+   x->format_string_afloats[0]='\0';
+   strncat(x->format_string_afloats,prefix,2);
+   strncat(x->format_string_afloats,width_str,2);
+   strncat(x->format_string_afloats,precision_str,3);
+   strncat(x->format_string_afloats,float_format,2);
+   //post("format string: \"%s\"\n",x->format_string_afloats);
    return (void *)x;
 }
 
