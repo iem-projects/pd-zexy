@@ -1,4 +1,4 @@
-#N canvas 385 348 685 518 10;
+#N canvas 252 393 685 518 10;
 #X obj 110 16 lister;
 #X text 160 17 - store a list;
 #X msg 41 132 bang;
@@ -14,11 +14,6 @@
 #X text 64 77 of course \, this is similar to the "pack" object \,
 but here we handle list-lenghts dynamically and do not care about type
 checking !!!;
-#X text 40 434 of course \, this should be named "list" \, but there
-already appears to be a "list" object \, though i don't see any use
-in it;
-#X obj 443 440 list 1 two trois;
-#X text 40 473 it seems to store 1 atom only;
 #X obj 67 381 list2symbol;
 #X symbolatom 67 403 0 0 0 0 output: - -;
 #X msg 91 260 one 2 3 four;
@@ -35,13 +30,16 @@ a symbol \, you need to cast it as a list:;
 #X obj 202 52 int;
 #X obj 237 52 symbol;
 #X text 497 29 part of zexy;
+#X obj 202 470 list;
+#X text 35 448 this object has been deprecated by the advent of [list]
+in Pd-0.40 \; use that one instead!;
 #X connect 2 0 10 0;
 #X connect 9 0 10 1;
 #X connect 10 0 6 0;
-#X connect 10 0 16 0;
+#X connect 10 0 13 0;
 #X connect 11 0 10 0;
-#X connect 16 0 17 0;
-#X connect 18 0 10 0;
-#X connect 19 0 10 0;
-#X connect 24 0 10 0;
-#X connect 25 0 10 0;
+#X connect 13 0 14 0;
+#X connect 15 0 10 0;
+#X connect 16 0 10 0;
+#X connect 21 0 10 0;
+#X connect 22 0 10 0;
