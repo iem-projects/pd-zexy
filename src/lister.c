@@ -20,37 +20,67 @@
 #include "zexy.h"
 #include <string.h>
 
+#ifdef HAVE_ALLOCA_H
+# include <alloca.h>
+#endif
+
 /* ------------------------- list ------------------------------- */
 
 /* this is for packages, what "float" is for floats */
 
+#define LIST_NGETBYTE 100 /* bigger that this we use alloc, not alloca */
+
+
 static t_class *mypdlist_class;
 
+#ifdef HAVE_ALLOCA_H
+# define ATOMS_ALLOCA(x, n) ((x) = (t_atom *)((n) < LIST_NGETBYTE ?  \
+        alloca((n) * sizeof(t_atom)) : getbytes((n) * sizeof(t_atom))))
+# define ATOMS_FREEA(x, n) ( \
+    ((n) < LIST_NGETBYTE || (freebytes((x), (n) * sizeof(t_atom)), 0)))
+#else
+# define ATOMS_ALLOCA(x, n) ((x) = (t_atom *)getbytes((n) * sizeof(t_atom)))
+# define ATOMS_FREEA(x, n) (freebytes((x), (n) * sizeof(t_atom)))
+#endif
+
+static void atoms_copy(int argc, t_atom *from, t_atom *to)
+{
+  int i;
+  for (i = 0; i < argc; i++)
+    to[i] = from[i];
+}
+
+
+static void mypdlist_storelist(t_mypdlist *x, int argc, t_atom *argv)
+{
+  if(x->x_list)freebytes(x->x_list, x->x_n*sizeof(t_atom));
+  x->x_n=argc;
+  x->x_list=(t_atom*)getbytes(x->x_n*sizeof(t_atom));
+
+  atoms_copy(argc, argv, x->x_list);
+}
 static void mypdlist_secondlist(t_mypdlist *x, t_symbol *s, int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
-  if (argc) {
-    if (x->x_n != argc) {
-      freebytes(x->x_list, x->x_n * sizeof(t_atom));
-      x->x_n = argc;
-      x->x_list = copybytes(argv, argc * sizeof(t_atom));
-    } else memcpy(x->x_list, argv, argc * sizeof(t_atom));
-  }
+  mypdlist_storelist(x, argc, argv);
 }
+
+static void mypdlist_bang(t_mypdlist *x)
+{ 
+  int outc=x->x_n;
+  t_atom*outv;
+  ATOMS_ALLOCA(outv, outc);
+  atoms_copy(x->x_n, x->x_list, outv);
+  outlet_list(x->x_obj.ob_outlet, gensym("list"), outc, outv);
+  ATOMS_FREEA(outv, outc);
+}
+
 
 static void mypdlist_list(t_mypdlist *x, t_symbol *s, int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
-  if (x->x_n != argc) {
-    freebytes(x->x_list, x->x_n * sizeof(t_atom));
-    x->x_n = argc;
-    x->x_list = copybytes(argv, argc * sizeof(t_atom));
-  } else memcpy(x->x_list, argv, argc * sizeof(t_atom));
-  
-  outlet_list(x->x_obj.ob_outlet, gensym("list"), x->x_n, x->x_list);
+  mypdlist_secondlist(x, s, argc, argv);
+  mypdlist_bang(x);
 }
-static void mypdlist_bang(t_mypdlist *x)
-{ outlet_list(x->x_obj.ob_outlet, gensym("list"), x->x_n, x->x_list);}
+
 
 static void mypdlist_free(t_mypdlist *x)
 { freebytes(x->x_list, x->x_n * sizeof(t_atom)); }
@@ -58,7 +88,6 @@ static void mypdlist_free(t_mypdlist *x)
 static void *mypdlist_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_mypdlist *x = (t_mypdlist *)pd_new(mypdlist_class);
-  ZEXY_USEVAR(s);
 
   outlet_new(&x->x_obj, 0);
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym("lst2"));
@@ -66,7 +95,8 @@ static void *mypdlist_new(t_symbol *s, int argc, t_atom *argv)
   x->x_n = 0;
   x->x_list = 0;
 
-  mypdlist_secondlist(x, gensym("list"), argc, argv);
+  if(argc)
+    mypdlist_secondlist(x, gensym("list"), argc, argv);
 
   return (x);
 }
