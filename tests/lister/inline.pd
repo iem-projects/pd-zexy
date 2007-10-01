@@ -1,11 +1,11 @@
 #N canvas 330 540 450 376 10;
 #X obj 140 166 t l l;
-#X obj 170 216 + 1;
+#X obj 210 206 + 1;
 #X msg 140 118 1;
-#X msg 170 237 list \$1;
+#X msg 210 227 list \$1;
 #X obj 140 145 lister;
 #X obj 140 265 f;
-#X obj 170 188 f;
+#X obj 210 188 f;
 #X obj 140 285 == 1;
 #X obj 140 47 inlet;
 #X obj 140 75 t b;
