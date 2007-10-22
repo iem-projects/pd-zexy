@@ -6,7 +6,7 @@
 #define HAVE_REGEX_H 1
 
 /* Define if you have the <alloca.h> header file.  */
-#define HAVE_ALLOCA_H 1
+/* #undef HAVE_ALLOCA_H */
 
 /* define if you want parallelport-support (direct access to the port address) */
 #define Z_WANT_LPT 1
