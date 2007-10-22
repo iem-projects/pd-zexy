@@ -132,8 +132,7 @@ static void *zexy_new(void)
 void zexy_setup(void) 
 {
   int i;
-  z_zexy_setup();
-  /* ************************************** */
+
   startpost("\n\t");
   for (i=0; i<28; i++) startpost("%c", HEARTSYMBOL);
   endpost();
@@ -149,6 +148,9 @@ void zexy_setup(void)
   class_addmethod(zexy_class, zexy_help, gensym("help"), 0);
 
   zexy_register("zexy");
+
+  /* ************************************** */
+  z_zexy_setup();
 }
 
 void verbose(int level, const char *fmt, ...){

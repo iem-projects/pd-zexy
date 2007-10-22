@@ -39,13 +39,13 @@
 # endif
 #endif
 
-/* usually the re-inclusion magic is done in the header-file itself
- * however, we do it outside, so we can force zexyconf.h to not be used
- * (e.g. from by definig the INCLUDE_SH1T in externals/build/src/...)
+/* 
+ * to use the zexyconf.h compile-time configurations, you have to set HAVE_CONFIG_H
+ * usually this is done in Make.config by configure
  */
-#ifndef INCLUDE_ZEXYCONF_H__
+#ifdef HAVE_CONFIG_H
 # include "zexyconf.h"
-#endif /* INCLUDE_ZEXYCONF_H__ */
+#endif /* HAVE_CONFIG_H */
 
 #include "m_pd.h"
 
@@ -121,11 +121,7 @@ static void zexy_register(char*object){object=0;}
 void verbose(int level, const char *fmt, ...);
 #else
 /* 
- * this might not work on compilers other than gcc
- * is it ISO-C99 or just a gnu-cpp thing ?
- # define z_verbose(level, format, ...) post(format, ## __VA_ARGS__)
- *
- * so we make it simpler: on older version we just shut up!
+ * on older version we just shut up!
  */
 # define z_verbose
 #endif
