@@ -25,7 +25,7 @@
 typedef struct _abs
 {
   t_object x_obj;
-  float x_f;
+  t_float x_f;
 } t_abs;
 
 
@@ -35,8 +35,8 @@ static t_class *sigABS_class;
 
 static t_int *sigABS_perform(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
+  t_sample *in = (t_sample *)(w[1]);
+  t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3]);
   
   while (n--) *out++ = fabsf(*in++);
@@ -71,7 +71,7 @@ static t_int *sigABS_performSSE(t_int *w)
    * JMZ: the above (using intrinsics) is a little bit slower
    * but still about 4* as fast as the generic code
    * i prefer using intrinsics as i don't have to learn how to
-   * assemble
+   * assembler
    */
   asm(
       ".section	.rodata             \n"
@@ -119,12 +119,13 @@ static t_int *sigABS_performSSE(t_int *w)
 
 static void sigABS_dsp(t_abs *x, t_signal **sp)
 {
-  ZEXY_USEVAR(x);
 #ifdef __SSE__
   if(
      Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&
      Z_SIMD_CHKALIGN(sp[0]->s_vec)&&
-     Z_SIMD_CHKALIGN(sp[1]->s_vec))
+     Z_SIMD_CHKALIGN(sp[1]->s_vec)&&
+     ZEXY_TYPE_EQUAL(t_sample, float)
+     )
     {
       dsp_add(sigABS_performSSE, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
     } else

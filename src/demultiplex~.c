@@ -85,40 +85,40 @@ static void demux_free(t_demux *x)
 
 static void *demux_new(t_symbol *s, int argc, t_atom *argv)
 {
-	t_demux *x = (t_demux *)pd_new(demux_class);
-	int i;
-        ZEXY_USEVAR(s);
-        ZEXY_USEVAR(argv);
+  t_demux *x = (t_demux *)pd_new(demux_class);
+  int i;
+  ZEXY_USEVAR(s);
+  ZEXY_USEVAR(argv);
 
-	if (!argc)argc=2;
-	x->n_out=argc;
-	x->output=0;
+  if (!argc)argc=2;
+  x->n_out=argc;
+  x->output=0;
 
-	while(argc--)outlet_new(&x->x_obj, gensym("signal"));
+  while(argc--)outlet_new(&x->x_obj, gensym("signal"));
 
-	x->out = (t_sample **)getbytes(x->n_out * sizeof(t_sample *));
-	i=x->n_out;
-	while(i--)x->out[i]=0;
+  x->out = (t_sample **)getbytes(x->n_out * sizeof(t_sample *));
+  i=x->n_out;
+  while(i--)x->out[i]=0;
 
-	return (x);
+  return (x);
 }
 
 void demultiplex_tilde_setup(void)
 {
-	demux_class = class_new(gensym("demultiplex~"), (t_newmethod)demux_new, (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
-	class_addcreator((t_newmethod)demux_new, gensym("demux~"), A_GIMME, 0);
+  demux_class = class_new(gensym("demultiplex~"), (t_newmethod)demux_new, (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
+  class_addcreator((t_newmethod)demux_new, gensym("demux~"), A_GIMME, 0);
 
-	class_addfloat(demux_class, demux_output);
-	class_addmethod(demux_class, (t_method)demux_dsp, gensym("dsp"), 0);
-	class_addmethod(demux_class, nullfn, gensym("signal"), 0);
+  class_addfloat(demux_class, demux_output);
+  class_addmethod(demux_class, (t_method)demux_dsp, gensym("dsp"), 0);
+  class_addmethod(demux_class, nullfn, gensym("signal"), 0);
 
-	class_addmethod(demux_class, (t_method)demux_helper, gensym("help"), 0);
+  class_addmethod(demux_class, (t_method)demux_helper, gensym("help"), 0);
 
   zexy_register("demultiplex~");
 }
 void demux_tilde_setup(void)
 {
-	demultiplex_tilde_setup();
+  demultiplex_tilde_setup();
 }
 
 

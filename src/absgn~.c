@@ -16,7 +16,7 @@
 typedef struct _absgn
 {
   t_object x_obj;
-  float x_f;
+  t_float x_f;
 } t_absgn;
 
 
@@ -26,20 +26,20 @@ static t_class *sigABSGN_class;
 
 static t_int *sigABSGN_perform(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
-  t_float *out2 = (t_float *)(w[3]);
+  t_sample *in = (t_sample *)(w[1]);
+  t_sample *out = (t_sample *)(w[2]);
+  t_sample *out2 = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   
   while (n--)
-  {
-      t_float val = *in++;
+    {
+      t_sample val = *in++;
       *out++ = fabsf(val);
 
       if (val>0.) *out2++=1.;
       else if (val<0.) *out2++=-1.;
       else *out2++=0.;
-  }
+    }
 
   
   return (w+5);
@@ -94,7 +94,8 @@ static void sigABSGN_dsp(t_absgn *x, t_signal **sp)
      Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&
      Z_SIMD_CHKALIGN(sp[0]->s_vec)&&
      Z_SIMD_CHKALIGN(sp[1]->s_vec)&&
-     Z_SIMD_CHKALIGN(sp[2]->s_vec)
+     Z_SIMD_CHKALIGN(sp[2]->s_vec)&&
+     ZEXY_TYPE_EQUAL(t_sample, float)
      )
     {
       dsp_add(sigABSGN_performSSE, 4, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[0]->s_n);
@@ -125,7 +126,7 @@ static void *sigABSGN_new(void)
 void absgn_tilde_setup(void)
 {
   sigABSGN_class = class_new(gensym("absgn~"), (t_newmethod)sigABSGN_new, 0,
-			   sizeof(t_absgn), 0, A_DEFFLOAT, 0);
+                             sizeof(t_absgn), 0, A_DEFFLOAT, 0);
   CLASS_MAINSIGNALIN(sigABSGN_class, t_absgn, x_f);
   class_addmethod(sigABSGN_class, (t_method)sigABSGN_dsp, gensym("dsp"), 0);
   

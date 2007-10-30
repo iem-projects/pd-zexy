@@ -68,7 +68,7 @@ static void pdf_float(t_pdf *x, t_floatarg f)
 
 static t_int *pdf_perform(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
+  t_sample *in = (t_sample *)(w[1]);
   t_pdf *x = (t_pdf *)(w[2]);
   int n = (int)(w[3]);
 
@@ -77,7 +77,7 @@ static t_int *pdf_perform(t_int *w)
 
   while (n--)
     {
-      t_float f = *in++;
+      t_sample f = *in++;
       int iindex = ((f + 1.0) * halfsize)+0.5;
       buf[(iindex<0)?0:((iindex>=x->size)?x->size-1:iindex)]+=1.;
     }
@@ -98,7 +98,7 @@ static void *pdf_new(t_floatarg f)
   t_float *buf;
 
   x->size = (i)?i:64;
-  x->buf = (t_float *)getbytes(x->size * sizeof(t_float));
+  x->buf = (t_float *)getbytes(x->size * sizeof(*x->buf));
   buf = x->buf;
   clear_pdfbuf(x);
 
@@ -109,17 +109,18 @@ static void *pdf_new(t_floatarg f)
 
 static void pdf_free(t_pdf *x)
 {
-	freebytes(x->buf, x->size*sizeof(t_float));
+  if(x->buf)
+    freebytes(x->buf, x->size*sizeof(*x->buf));
 }
 
 static void pdf_tilde_helper(void)
 {
-	post("\n%c pdf~\t:: get the probability density function of a signal (-1.0 to +1.0)", HEARTSYMBOL);
-	post("'bang'\t  : output a list of the probabilities of 'n' function values"
-		"\n'clear'\t  : clear the buffer (set all probabilities to zero)"
-		"\n<1/0>\t  : short for 'bang' and 'clear'"
-		"\n'help'\t  : view this");
-	post("creation :: 'pdf~ [<n>]':: get the pdf for <n> (default: 64) values");
+  post("\n%c pdf~\t:: get the probability density function of a signal (-1.0 to +1.0)", HEARTSYMBOL);
+  post("'bang'\t  : output a list of the probabilities of 'n' function values"
+       "\n'clear'\t  : clear the buffer (set all probabilities to zero)"
+       "\n<1/0>\t  : short for 'bang' and 'clear'"
+       "\n'help'\t  : view this");
+  post("creation :: 'pdf~ [<n>]':: get the pdf for <n> (default: 64) values");
 }
 
 void pdf_tilde_setup(void)

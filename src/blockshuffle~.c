@@ -67,7 +67,7 @@ static void blockshuffle_list(t_blockshuffle *x, t_symbol*s, int argc, t_atom*ar
     x->shuffle=0;
   }
   x->shufflesize=argc;
-  x->shuffle=getbytes(sizeof(t_float)*argc);
+  x->shuffle=getbytes(sizeof(*x->shuffle)*argc);
 
   for(i=0; i<argc; i++){
     x->shuffle[i]=atom_getfloat(argv++);
@@ -86,13 +86,13 @@ static t_int *blockshuffle_perform(t_int *w)
   t_int    *idx =x->indices;
 
   if(idx){
-  for(i=0; i<n; i++){
-    temp[i]=in[idx[i]];
-  }
-  temp=x->blockbuf;
-  for(i=0; i<n; i++){
-    *out++=*temp++;
-  }
+    for(i=0; i<n; i++){
+      temp[i]=in[idx[i]];
+    }
+    temp=x->blockbuf;
+    for(i=0; i<n; i++){
+      *out++=*temp++;
+    }
   } else
     while(n--)*out++=*in++;
 
@@ -114,9 +114,9 @@ static void blockshuffle_helper(void)
   post("outlet : signal~");
 }
 static void blockshuffle_free(t_blockshuffle *x){
-  if(x->indices) freebytes(x->indices,  sizeof(t_int)   *x->size);
-  if(x->blockbuf)freebytes(x->blockbuf, sizeof(t_sample)*x->size);
-  if(x->shuffle) freebytes(x->shuffle,  sizeof(t_float) *x->shufflesize);
+  if(x->indices) freebytes(x->indices,  sizeof(*x->indices) *x->size);
+  if(x->blockbuf)freebytes(x->blockbuf, sizeof(*x->blockbuf)*x->size);
+  if(x->shuffle) freebytes(x->shuffle,  sizeof(*x->shuffle) *x->shufflesize);
 }
 
 static void *blockshuffle_new(void)

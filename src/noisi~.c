@@ -41,10 +41,10 @@ typedef struct _nois
 {
   t_object x_obj;
   int val;
-  t_float current;
-  t_float decrement;
-  t_float updater;		
-  t_float to_go;
+  t_sample current;
+  t_sample decrement;
+  t_sample updater;		
+  t_sample to_go;
 } t_nois;
 
 
@@ -58,21 +58,28 @@ static void set_noisfreq(t_nois *x, t_floatarg freq)
   x->to_go = 0;
 }
 
+
+static void set_noisseed(t_nois *x, t_floatarg seed)
+{
+  x->val = seed;
+}
+
+
+
 /* ------------------------ noisi~ ----------------------------- */ 
 
 static t_class *noisi_class;
 
 static t_int *noisi_perform(t_int *w){
   t_nois *x = (t_nois *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
+  t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3]);
 
-  int *vp = (int *)(&x->val); /* what the ... */ 
-  int i_value = *vp;
-  t_float f_value = x->current;
-  t_float decrement = x->decrement;
-  t_float all_to_go = x->updater;
-  t_float still_to_go = x->to_go;
+  int i_value = x->val;
+  t_sample f_value = x->current;
+  t_sample decrement = x->decrement;
+  t_sample all_to_go = x->updater;
+  t_sample still_to_go = x->to_go;
 
   if (all_to_go == 1)	{
     /* this is "pure white" noise, so we have to calculate each sample */ 
@@ -98,7 +105,7 @@ static t_int *noisi_perform(t_int *w){
 		 (f_value = 
 		  ((t_sample)((i_value & 0x7fffffff)-0x40000000))*(t_sample)(1.0 / 0x40000000)) -
 		 ((t_sample)(((i_value = i_value * 435898247 + 382842987) & 0x7fffffff)
-			  - 0x40000000)) * (t_sample)(1.0 / 0x40000000)
+                             - 0x40000000)) * (t_sample)(1.0 / 0x40000000)
 		 )  / all_to_go;
 
     while (n--)	{
@@ -119,7 +126,7 @@ static t_int *noisi_perform(t_int *w){
     }
   }
 
-  *vp = i_value;
+  x->val = i_value;
   x->current = f_value;
   x->decrement = decrement;
   x->to_go = still_to_go;
@@ -161,6 +168,8 @@ void noisi_tilde_setup(void){
 
   class_addfloat(noisi_class, set_noisfreq);
   class_addmethod(noisi_class, (t_method)noisi_dsp, gensym("dsp"), 0);
+
+  class_addmethod(noisi_class, (t_method)set_noisseed, gensym("seed"), A_FLOAT, 0);
 
   class_addmethod(noisi_class, (t_method)noisi_helper, gensym("help"), 0);
   zexy_register("noisi~");

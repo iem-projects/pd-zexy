@@ -16,12 +16,12 @@
 
 
 /*
-	--------------------------------- limiter/compressor ---------------------------------
+  --------------------------------- limiter/compressor ---------------------------------
 	
-	for details on how it works watch out for   "http://iem.kug.ac.at/~zmoelnig/pd"
-	...and search for "limiter"
+  for details on how it works watch out for   "http://iem.kug.ac.at/~zmoelnig/pd"
+  ...and search for "limiter"
 
-	mail2me4more!n4m8ion : zmoelnig@iem.kug.ac.at
+  mail2me4more!n4m8ion : zmoelnig@iem.kug.ac.at
 */
 
 /* 
@@ -62,22 +62,22 @@ static t_class *limiter_class;
 
 typedef struct _limctl
 {		// variables changed by user
-  float limit, hold_samples, change_of_amplification;
+  t_float limit, hold_samples, change_of_amplification;
 } t_limctl;
 
 typedef struct _cmpctl
 {
-  float treshold, ratio;		// uclimit is the very same is the limiter1-limit (decalculated relative to our treshold)
-  float uclimit, climit_inverse;	// climit == compressed limit (uclimit == uncompressed limit)
+  t_float treshold, ratio;		// uclimit is the very same is the limiter1-limit (decalculated relative to our treshold)
+  t_float uclimit, climit_inverse;	// climit == compressed limit (uclimit == uncompressed limit)
 
-  float limiter_limit;		// start limiting (stop compressing); == tresh/limit;
+  t_float limiter_limit;		// start limiting (stop compressing); == tresh/limit;
 
-  float treshdB, oneminusratio;
+  t_float treshdB, oneminusratio;
 } t_cmpctl;
 
 typedef struct _inbuf
 {
-  float*		ringbuf;
+  t_sample*	ringbuf;
   int		buf_position;
 } t_inbuf;
 
@@ -89,8 +89,8 @@ typedef struct _limiter
 
   // variables changed by process
 
-  float		amplification;
-  float		samples_left, still_left;
+  t_sample	amplification;
+  t_float	samples_left, still_left;
 
   int		mode;
 
@@ -114,7 +114,7 @@ typedef struct _limiter
 // calcs
 static t_float calc_holdsamples(t_float htime, int buf)
 {	// hold_time must be greater than buffer_time to make sure that any peak_sample is amplified with its own factor
-  float min_hold = buf / sys_getsr();
+  t_float min_hold = buf / sys_getsr();
   return (0.001 * sys_getsr() * ((htime > min_hold)?htime:((min_hold > 50)?min_hold:50)));
 }
 
@@ -137,10 +137,10 @@ static void set_uclimit(t_limiter *x)
 
 // settings
 
-static void set_treshold(t_limiter *x, float treshold)
+static void set_treshold(t_limiter *x, t_float treshold)
 {
   t_cmpctl *c = x->cmp;
-  float tresh = dbtorms (treshold);
+  t_float tresh = dbtorms (treshold);
   if (tresh > x->val1->limit) tresh = x->val1->limit;
 
   c->treshold = tresh;
@@ -148,7 +148,7 @@ static void set_treshold(t_limiter *x, float treshold)
   set_uclimit(x);
 }
 
-static void set_ratio(t_limiter *x, float ratio)
+static void set_ratio(t_limiter *x, t_float ratio)
 {
   if (ratio < 0) ratio = 1;
   x->cmp->ratio = ratio;
@@ -156,7 +156,7 @@ static void set_ratio(t_limiter *x, float ratio)
   set_uclimit(x);
 }
 
-static void set_mode(t_limiter *x, float  mode)
+static void set_mode(t_limiter *x, t_float mode)
 {
   int modus = mode;
 
@@ -192,7 +192,7 @@ static void set_COMPRESS(t_limiter *x)
   set_mode(x, COMPRESS);
 }
 
-static void set_bufsize(t_limiter *x, float size)
+static void set_bufsize(t_limiter *x, int size)
 { // this is really unneeded...and for historical reasons only
   if (size < BUFSIZE) size = BUFSIZE;
   x->buf_size = size + XTRASAMPS;
@@ -358,22 +358,22 @@ static t_int *oversampling_maxima(t_int *w)
 {
   t_limiter *x = (t_limiter *)w[1];
   t_inbuf *buf = (t_inbuf *)w[2];
-  t_float *in	 = (t_float *)w[3];
-  t_float *out = (t_float *)w[4];
+  t_sample *in	 = (t_sample *)w[3];
+  t_sample *out = (t_sample *)w[4];
 
   int n = x->s_n;
   int bufsize = x->buf_size;
 
   int i = buf->buf_position;
 
-  t_float *vp = buf->ringbuf, *ep = vp + bufsize, *bp = vp + XTRASAMPS + i;
+  t_sample *vp = buf->ringbuf, *ep = vp + bufsize, *bp = vp + XTRASAMPS + i;
 
   i += n;
 
   while (n--)
     {
-      t_float os1, os2, max;
-      t_float last4, last3, last2, last1, sinccurrent, current, next1, next2, next3, next4;
+      t_sample os1, os2, max;
+      t_sample last4, last3, last2, last1, sinccurrent, current, next1, next2, next3, next4;
 
       if (bp == ep)
 	{
@@ -436,8 +436,8 @@ static t_int *limiter_perform(t_int *w)
   t_limiter *x=(t_limiter *)w[1];
   int n = x->s_n;
 
-  t_float *in	= (t_float *)w[2];
-  t_float *out= (t_float *)w[3];
+  t_sample *in	= (t_sample *)w[2];
+  t_sample *out= (t_sample *)w[3];
 
   t_limctl *v1	= (t_limctl *)(x->val1);
   t_limctl *v2	= (t_limctl *)(x->val2);
@@ -481,15 +481,15 @@ static t_int *limiter_perform(t_int *w)
 	    amp = limit / max_val;
 	    samplesleft = holdlong;
 	  } else
-	    {
-	      if (samplesleft > 0)
-		{
-		  samplesleft--;
-		} else
-		  {
-		    if ((amp *= coa_long) > 1) amp = 1;
-		  }
-	    }
+          {
+            if (samplesleft > 0)
+              {
+                samplesleft--;
+              } else
+              {
+                if ((amp *= coa_long) > 1) amp = 1;
+              }
+          }
 
 	*out++ = amp;
 	*in++ = 0;
@@ -506,28 +506,28 @@ static t_int *limiter_perform(t_int *w)
 	    samplesleft = ((amp = (limit / max_val)) < alimit)?holdshort:holdlong;
 	    stillleft = holdlong;
 	  } else
-	    {
-	      if (samplesleft > 0)
-		{
-		  samplesleft--;
-		  stillleft--;
-		} else
-		  {
-		    if (amp < alimit)
-		      {
-			if ((amp *= coa_short) > 1) amp = 1;
-		      } else
-			{
-			  if (stillleft > 0)
-			    {
-			      samplesleft = stillleft;
-			    } else
-			      {
-				if ((amp *= coa_long) > 1) amp = 1;
-			      }
-			}
-		  }
-	    }
+          {
+            if (samplesleft > 0)
+              {
+                samplesleft--;
+                stillleft--;
+              } else
+              {
+                if (amp < alimit)
+                  {
+                    if ((amp *= coa_short) > 1) amp = 1;
+                  } else
+                  {
+                    if (stillleft > 0)
+                      {
+                        samplesleft = stillleft;
+                      } else
+                      {
+                        if ((amp *= coa_long) > 1) amp = 1;
+                      }
+                  }
+              }
+          }
 	*out++ = amp;
 	*in++ = 0;
       }
@@ -572,7 +572,7 @@ static t_int *limiter_perform(t_int *w)
 static void limiter_dsp(t_limiter *x, t_signal **sp)
 {
   int i = 0;
-  t_float* sig_buf = (t_float *)getbytes(sizeof(t_float) * sp[0]->s_n);
+  t_sample* sig_buf = (t_sample *)getbytes(sizeof(*sig_buf) * sp[0]->s_n);
 
   x->s_n = sp[0]->s_n;
 
@@ -622,7 +622,7 @@ static void *limiter_new(t_symbol *s, int argc, t_atom *argv)
   while (i < x->number_of_inlets)
     {
       int n;
-      t_float* buf = (float *)getbytes(sizeof(float) * x->buf_size);
+      t_sample* buf = (t_sample *)getbytes(sizeof(*buf) * x->buf_size);
       x->in[i].ringbuf		= buf;
       x->in[i].buf_position	= 0;
       for (n = 0; n < x->buf_size; n++) x->in[i].ringbuf[n] = 0.;
@@ -653,7 +653,7 @@ static void limiter_free(t_limiter *x)
   freebytes(x->val2, sizeof(t_limctl));
   freebytes(x->cmp , sizeof(t_cmpctl));
 
-  while (i < x->number_of_inlets)	freebytes(x->in[i++].ringbuf, x->buf_size * sizeof(t_float));
+  while (i < x->number_of_inlets)	freebytes(x->in[i++].ringbuf, x->buf_size * sizeof(t_sample));
 
   freebytes(x->in, x->number_of_inlets * sizeof(t_inbuf));
 }

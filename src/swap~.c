@@ -14,10 +14,10 @@
  ******************************************************/
 
 /*
-	the long waited for swap~-object that does a byte swap
-	of course, we unfortunately have to quantize the float-signal to 16bit (to get bytes)
+  the long waited for swap~-object that does a byte swap
+  of course, we unfortunately have to quantize the float-signal to 16bit (to get bytes)
 
-	1110:forum::für::umläute:1999
+  1110:forum::für::umläute:1999
 */
 
 #include "zexy.h"
@@ -47,8 +47,8 @@ static void swap_bang(t_swap *x)
 static t_int *swap_perform(t_int *w)
 {
   t_swap	*x = (t_swap *)(w[1]);
-  t_float *in = (t_float *)(w[2]);
-  t_float *out = (t_float *)(w[3]);
+  t_sample *in = (t_sample *)(w[2]);
+  t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
 
 

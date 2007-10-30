@@ -30,71 +30,71 @@ static t_class *quantize_class;
 
 typedef struct _quantize
 {
-    t_object x_obj;
-	t_float quantiz, dequantiz;
+  t_object x_obj;
+  t_sample quantiz, dequantiz;
 } t_quantize;
 
 static void quantize_float(t_quantize *x, t_floatarg f)
 {
-	x->quantiz   = f;
-	x->dequantiz = 1./f;
+  x->quantiz   = f;
+  x->dequantiz = 1./f;
 }
 
 static void quantize_16bit(t_quantize *x)
 {
-	x->quantiz   = 32768.;
-	x->dequantiz = 1./32768.;
+  x->quantiz   = 32768.;
+  x->dequantiz = 1./32768.;
 }
 
 static void quantize_8bit(t_quantize *x)
 {
-	x->quantiz   = 128.;
-	x->dequantiz = 1./128.;
+  x->quantiz   = 128.;
+  x->dequantiz = 1./128.;
 }
 
 static t_int *quantize_perform(t_int *w)
 {
-	t_quantize	*x = (t_quantize *)(w[1]);
-    t_float *in = (t_float *)(w[2]);
-    t_float *out = (t_float *)(w[3]);
-    int n = (int)(w[4]);
+  t_quantize	*x = (t_quantize *)(w[1]);
+  t_sample *in = (t_sample *)(w[2]);
+  t_sample *out = (t_sample *)(w[3]);
+  int n = (int)(w[4]);
 
-	t_float quantiz = x->quantiz, dequantiz = x->dequantiz;
+  t_sample quantiz = x->quantiz, dequantiz = x->dequantiz;
 
-	if (quantiz)
-		while (n--) *out++ = dequantiz*(int)(quantiz**in++);
-	else while (n--) *out++ = *in++;
+  if (quantiz)
+    while (n--) *out++ = dequantiz*(int)(quantiz**in++);
+  else while (n--) *out++ = *in++;
 
-	return (w+5);
+  return (w+5);
 }
 
 static void quantize_dsp(t_quantize *x, t_signal **sp)
 {
-    dsp_add(quantize_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+  dsp_add(quantize_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
 static void quantize_tilde_helper(t_quantize *x)
 {
   ZEXY_USEVAR(x);
-	post("%c quantize~-object\t:: used for quantizing signals by various degrees", HEARTSYMBOL);
-	post("<quants> : quantize a signal into <quants> steps ('0' turns quantizing off)\n"
-		 "'8bit'   : quantize to 8 bit\n"
-		 "'16bit'  : quantize to 16 bit (default)\n"
-		 "'float'  : pass-through the signal unchanged\n"
-		 "'help'   : view this\n"
-		 "signal~\n");
-	post("creation:: \"quantize~ [<quants>]\"");
+  post("%c quantize~-object\t:: used for quantizing signals by various degrees", HEARTSYMBOL);
+  post("<quants> : quantize a signal into <quants> steps ('0' turns quantizing off)\n"
+       "'8bit'   : quantize to 8 bit\n"
+       "'16bit'  : quantize to 16 bit (default)\n"
+       "'float'  : pass-through the signal unchanged\n"
+       "'help'   : view this\n"
+       "signal~\n");
+  post("creation:: \"quantize~ [<quants>]\"");
 
 }
 
 static void *quantize_new(t_floatarg f)
 {
-    t_quantize *x = (t_quantize *)pd_new(quantize_class);
-    outlet_new(&x->x_obj, gensym("signal"));
-	if (f) quantize_float(x, f);
-	else quantize_16bit(x);
+  t_quantize *x = (t_quantize *)pd_new(quantize_class);
+  outlet_new(&x->x_obj, gensym("signal"));
+  if (f) quantize_float(x, f);
+  else quantize_16bit(x);
 	
-    return (x);
+  return (x);
 }
 
 void quantize_tilde_setup(void)

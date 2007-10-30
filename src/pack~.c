@@ -33,15 +33,18 @@ typedef struct _sigpack
 
 static t_int *sigpack_perform(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
+  t_sample *in = (t_sample *)(w[1]);
   t_sigpack *x = (t_sigpack *)w[2];
   int n = (int)(w[3]), i = 0;
   t_atom *buf = x->buffer;
 
   while (n--) {
-    SETFLOAT(&buf[i], *in++);
+    t_float f=*in++;
+    SETFLOAT(&buf[i], f);
     i++;
   }
+#warning defer list-output to next block with a clock!
+
   outlet_list(x->x_obj.ob_outlet, &s_list, x->vector_length, x->buffer);
 
   return (w+4);
@@ -75,7 +78,7 @@ static void sigpack_help(void)
 void pack_tilde_setup(void)
 {
   sigpack_class = class_new(gensym("pack~"), (t_newmethod)sigpack_new, 0,
-			sizeof(t_sigpack), 0, A_DEFFLOAT, 0);
+                            sizeof(t_sigpack), 0, A_DEFFLOAT, 0);
   class_addmethod(sigpack_class, nullfn, gensym("signal"), 0);
   class_addmethod(sigpack_class, (t_method)sigpack_dsp, gensym("dsp"), 0);
 

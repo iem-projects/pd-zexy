@@ -29,7 +29,7 @@ typedef struct _blockswap
   t_object x_obj;
   int doit;
   int blocksize;
-  t_float *blockbuffer;
+  t_sample *blockbuffer;
 } t_blockswap;
 
 static void blockswap_float(t_blockswap *x, t_floatarg f)
@@ -40,13 +40,13 @@ static void blockswap_float(t_blockswap *x, t_floatarg f)
 static t_int *blockswap_perform(t_int *w)
 {
   t_blockswap	*x = (t_blockswap *)(w[1]);
-  t_float *in = (t_float *)(w[2]);
-  t_float *out = (t_float *)(w[3]);
+  t_sample *in = (t_sample *)(w[2]);
+  t_sample *out = (t_sample *)(w[3]);
   int N = (int)(w[4]);
   int N2=N/2;
   if (x->doit) {
     int n=N2;
-    t_float *dummy=x->blockbuffer;
+    t_sample *dummy=x->blockbuffer;
     while(n--)*dummy++=*in++;
     n=N-N2;
     while(n--)*out++=*in++;
@@ -60,9 +60,9 @@ static t_int *blockswap_perform(t_int *w)
 static void blockswap_dsp(t_blockswap *x, t_signal **sp)
 {
   if (x->blocksize*2<sp[0]->s_n){
-    if(x->blockbuffer)freebytes(x->blockbuffer, sizeof(t_float)*x->blocksize);
+    if(x->blockbuffer)freebytes(x->blockbuffer, sizeof(*x->blockbuffer)*x->blocksize);
     x->blocksize = sp[0]->s_n/2;
-    x->blockbuffer = getbytes(sizeof(t_float)*x->blocksize);
+    x->blockbuffer = getbytes(sizeof(*x->blockbuffer)*x->blocksize);
   }
   dsp_add(blockswap_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
@@ -78,7 +78,7 @@ static void blockswap_helper(t_blockswap *x)
 static void blockswap_free(t_blockswap *x)
 {
   if(x->blockbuffer){
-    freebytes(x->blockbuffer, sizeof(t_float)*x->blocksize);
+    freebytes(x->blockbuffer, sizeof(*x->blockbuffer)*x->blocksize);
   }
   x->blockbuffer=0;
 }
@@ -95,7 +95,7 @@ static void *blockswap_new(void)
 void blockswap_tilde_setup(void)
 {
   blockswap_class = class_new(gensym("blockswap~"), (t_newmethod)blockswap_new, 0,
-			 sizeof(t_blockswap), 0, A_NULL);
+                              sizeof(t_blockswap), 0, A_NULL);
   class_addmethod(blockswap_class, nullfn, gensym("signal"), 0);
   class_addmethod(blockswap_class, (t_method)blockswap_dsp, gensym("dsp"), 0);
   

@@ -15,11 +15,11 @@
  ******************************************************/
 
 /*
-	here we do some sample-wise delay, so you can do your own FIR-filter-designs
-	here are :: "z^(-1)", "z^(-N)"
-	to do :: a "lattice~" section ...
+  here we do some sample-wise delay, so you can do your own FIR-filter-designs
+  here are :: "z^(-1)", "z^(-N)"
+  to do :: a "lattice~" section ...
 
-	1302:forum::für::umläute:2000
+  1302:forum::für::umläute:2000
 */
 
 #include "zexy.h"
@@ -32,7 +32,7 @@ typedef struct _zNdelay
 {
   t_object x_obj;
 
-  t_float *buf;
+  t_sample *buf;
   int bufsize, phase;
 
 } t_zNdelay;
@@ -42,26 +42,26 @@ static void zdel_float(t_zNdelay *x, t_floatarg f)
   int i = f+1;
   if (i<1)i=1;
   if (i==x->bufsize)return;
-  freebytes(x->buf, x->bufsize*sizeof(t_float));
+  freebytes(x->buf, x->bufsize*sizeof(t_sample));
   x->bufsize=i;
-  x->buf=(t_float *)getbytes(x->bufsize*sizeof(t_float));
+  x->buf=(t_sample *)getbytes(x->bufsize*sizeof(t_sample));
   x->phase=0;
 }
 
 static t_int *zN_perform(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
+  t_sample *in = (t_sample *)(w[1]);
+  t_sample *out = (t_sample *)(w[2]);
   t_zNdelay *x = (t_zNdelay *)(w[3]);
   int n = (int)(w[4]);
 
-  t_float *buf = x->buf;
+  t_sample *buf = x->buf;
   int bufsize=x->bufsize, ph=x->phase;
 
   if (bufsize==1) {
     if (in!=out)while(n--)*out++=*in++;
   } else if (bufsize==2) {
-    register t_float f, last=*buf;
+    register t_sample f, last=*buf;
     while(n--){
       f=*in++;
       *out++=last;
@@ -88,13 +88,13 @@ static void *zNdelay_new(t_floatarg f)
 {
   t_zNdelay *x = (t_zNdelay *)pd_new(zNdelay_class);
   int i = f;
-  t_float *b;
+  t_sample *b;
 
   if (i<=0) i=1;
   i++;
 
   x->bufsize = i;
-  x->buf = (t_float *)getbytes(sizeof(t_float) * x->bufsize);
+  x->buf = (t_sample *)getbytes(sizeof(t_sample) * x->bufsize);
   b=x->buf;
   while (i--) {
     *b++=0;
@@ -108,7 +108,7 @@ static void *zNdelay_new(t_floatarg f)
 
 static void zNdelay_free(t_zNdelay *x)
 {
-  freebytes(x->buf, sizeof(t_float) * x->bufsize);
+  freebytes(x->buf, sizeof(t_sample) * x->bufsize);
 }
 
 

@@ -46,13 +46,13 @@ typedef struct _mline {
 
   t_float msec2tick;
 
-  t_float *value;
-  t_float *target;
-  t_float *increment; /* single precision is really a bad */
+  t_sample *value;
+  t_sample *target;
+  t_sample *increment; /* single precision is really a bad */
 
-  t_float **sigIN;
-  t_float **sigOUT;
-  t_float  *sigBUF;
+  t_sample **sigIN;
+  t_sample **sigOUT;
+  t_sample  *sigBUF;
   int       sigNUM;
 
 } t_mline;
@@ -103,12 +103,12 @@ static t_int *mline_perform(t_int *w)
   t_mline *x = (t_mline *)(w[1]);
   int n = (int)(w[2]);
 
-  t_float **out = x->sigOUT;
-  t_float **in  = x->sigIN;
-  t_float  *buf = x->sigBUF, *sigBUF = buf;
-  t_float  *inc = x->increment, *increment = inc;
-  t_float  *val = x->value, *value = val;
-  t_float  *tgt = x->target, *target = tgt;
+  t_sample **out = x->sigOUT;
+  t_sample **in  = x->sigIN;
+  t_sample  *buf = x->sigBUF, *sigBUF = buf;
+  t_sample  *inc = x->increment, *increment = inc;
+  t_sample  *val = x->value, *value = val;
+  t_sample  *tgt = x->target, *target = tgt;
 
   int sigNUM = x->sigNUM;
 
@@ -123,7 +123,7 @@ static t_int *mline_perform(t_int *w)
 
   if (x->ticksleft) {
     int N=n-1;
-    t_float oneovernos = 1./(x->ticksleft*n);
+    t_sample oneovernos = 1./(x->ticksleft*n);
 
     int i=sigNUM;
     while(i--)*inc++=(*tgt++-*val++)*oneovernos;
@@ -169,7 +169,7 @@ static t_int *mline_perform(t_int *w)
 static void mline_dsp(t_mline *x, t_signal **sp)
 {
   int i = x->sigNUM, n = 0;
-  t_float **dummy = x->sigIN;
+  t_sample **dummy = x->sigIN;
   while(i--)*dummy++=sp[n++]->s_vec;
 
   i = x->sigNUM;
@@ -197,54 +197,54 @@ static void mline_free(t_mline *x)
 
 static void *mline_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_mline *x = (t_mline *)pd_new(mline_class);
-    int i;
-    ZEXY_USEVAR(s);
+  t_mline *x = (t_mline *)pd_new(mline_class);
+  int i;
+  ZEXY_USEVAR(s);
 
-    if (!argc) {
-      argc = 1;
-      x->time = 0;
-    } else {
-      x->time = atom_getfloat(argv+argc-1);
-      if (x->time < 0) x->time = 0;
+  if (!argc) {
+    argc = 1;
+    x->time = 0;
+  } else {
+    x->time = atom_getfloat(argv+argc-1);
+    if (x->time < 0) x->time = 0;
 
-      argc--;
-      if (!argc) argc = 1;
-    }
+    argc--;
+    if (!argc) argc = 1;
+  }
 
-    x->sigNUM = argc;
+  x->sigNUM = argc;
 
-    i = argc-1;
+  i = argc-1;
 
+  outlet_new(&x->x_obj, &s_signal);
+
+  while (i--) {
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     outlet_new(&x->x_obj, &s_signal);
+  }
 
-    while (i--) {
-      inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-      outlet_new(&x->x_obj, &s_signal);
-    }
-
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
-    floatinlet_new(&x->x_obj, &x->time);
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym(""));
+  floatinlet_new(&x->x_obj, &x->time);
     
-    x->sigIN  = (t_float **)getbytes(x->sigNUM * sizeof(t_float **));
-    x->sigOUT = (t_float **)getbytes(x->sigNUM * sizeof(t_float **));
-    x->sigBUF = (t_float  *)getbytes(x->sigNUM * sizeof(t_float  *));
+  x->sigIN  = (t_sample **)getbytes(x->sigNUM * sizeof(t_sample **));
+  x->sigOUT = (t_sample **)getbytes(x->sigNUM * sizeof(t_sample **));
+  x->sigBUF = (t_sample  *)getbytes(x->sigNUM * sizeof(t_sample  *));
 
-    x->value     = (t_float *)getbytes(x->sigNUM * sizeof(t_float *));
-    x->target    = (t_float *)getbytes(x->sigNUM * sizeof(t_float *));
-    x->increment = (t_float *)getbytes(x->sigNUM * sizeof(t_float *));
+  x->value     = (t_sample *)getbytes(x->sigNUM * sizeof(t_sample *));
+  x->target    = (t_sample *)getbytes(x->sigNUM * sizeof(t_sample *));
+  x->increment = (t_sample *)getbytes(x->sigNUM * sizeof(t_sample *));
 
-    i = x->sigNUM;
+  i = x->sigNUM;
 
-    while (i--) {
-      x->sigIN[i] = x->sigOUT[i] = 0;
-      x->increment[i] = 0;
-      x->value[x->sigNUM-i-1] = x->target[x->sigNUM-i-1] = atom_getfloat(argv+i);
-    }
+  while (i--) {
+    x->sigIN[i] = x->sigOUT[i] = 0;
+    x->increment[i] = 0;
+    x->value[x->sigNUM-i-1] = x->target[x->sigNUM-i-1] = atom_getfloat(argv+i);
+  }
 
-    x->msec2tick = x->ticksleft = x->retarget = 0;
+  x->msec2tick = x->ticksleft = x->retarget = 0;
 
-    return (x);
+  return (x);
 }
 
 

@@ -28,7 +28,7 @@ typedef struct _mux {
   int input;
 
   int n_in;
-  t_float **in;
+  t_sample **in;
 } t_mux;
 
 static void mux_input(t_mux *x, t_floatarg f)
@@ -43,10 +43,10 @@ static void mux_input(t_mux *x, t_floatarg f)
 static t_int *mux_perform(t_int *w)
 {
   t_mux *x = (t_mux *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
+  t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3]);
   
-  t_float *in = x->in[x->input];
+  t_sample *in = x->in[x->input];
 
   while(n--)*out++=*in++;
 
@@ -56,7 +56,7 @@ static t_int *mux_perform(t_int *w)
 static void mux_dsp(t_mux *x, t_signal **sp)
 {
   int n = 0;
-  t_float **dummy=x->in;
+  t_sample **dummy=x->in;
 
   for(n=0;n<x->n_in;n++)*dummy++=sp[n]->s_vec;
 
@@ -73,46 +73,46 @@ static void mux_helper(void)
 
 static void mux_free(t_mux *x)
 {
-  freebytes(x->in, x->n_in * sizeof(t_float *));
+  freebytes(x->in, x->n_in * sizeof(t_sample *));
 }
 
 static void *mux_new(t_symbol *s, int argc, t_atom *argv)
 {
-	t_mux *x = (t_mux *)pd_new(mux_class);
-	int i;
-        ZEXY_USEVAR(s);
-        ZEXY_USEVAR(argv);
+  t_mux *x = (t_mux *)pd_new(mux_class);
+  int i;
+  ZEXY_USEVAR(s);
+  ZEXY_USEVAR(argv);
 
-	if (!argc)argc=2;
-	x->n_in=argc;
-	x->input=0;
+  if (!argc)argc=2;
+  x->n_in=argc;
+  x->input=0;
 
-	argc--;
-	while(argc--)inlet_new(&x->x_obj,&x->x_obj.ob_pd,&s_signal,&s_signal);
+  argc--;
+  while(argc--)inlet_new(&x->x_obj,&x->x_obj.ob_pd,&s_signal,&s_signal);
 
-	x->in = (t_float **)getbytes(x->n_in * sizeof(t_float *));
-	i=x->n_in;
-	while(i--)x->in[i]=0;
+  x->in = (t_sample **)getbytes(x->n_in * sizeof(t_sample *));
+  i=x->n_in;
+  while(i--)x->in[i]=0;
 
-	outlet_new(&x->x_obj, gensym("signal"));
+  outlet_new(&x->x_obj, gensym("signal"));
 
-	return (x);
+  return (x);
 }
 
 void multiplex_tilde_setup(void)
 {
-	mux_class = class_new(gensym("multiplex~"), (t_newmethod)mux_new, (t_method)mux_free, sizeof(t_mux), 0, A_GIMME, 0);
-	class_addcreator((t_newmethod)mux_new, gensym("mux~"), A_GIMME, 0);
+  mux_class = class_new(gensym("multiplex~"), (t_newmethod)mux_new, (t_method)mux_free, sizeof(t_mux), 0, A_GIMME, 0);
+  class_addcreator((t_newmethod)mux_new, gensym("mux~"), A_GIMME, 0);
 
-	class_addfloat(mux_class, mux_input);
-	class_addmethod(mux_class, (t_method)mux_dsp, gensym("dsp"), 0);
-	class_addmethod(mux_class, nullfn, gensym("signal"), 0);
+  class_addfloat(mux_class, mux_input);
+  class_addmethod(mux_class, (t_method)mux_dsp, gensym("dsp"), 0);
+  class_addmethod(mux_class, nullfn, gensym("signal"), 0);
 
-	class_addmethod(mux_class, (t_method)mux_helper, gensym("help"), 0);
+  class_addmethod(mux_class, (t_method)mux_helper, gensym("help"), 0);
   zexy_register("multiplex~");
 }
 void mux_tilde_setup(void)
 {
-	multiplex_tilde_setup();
+  multiplex_tilde_setup();
 }
 

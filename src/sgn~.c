@@ -34,10 +34,10 @@ static t_class *sgnTilde_class;
 
 static t_int *sgnTilde_perform(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
+  t_sample *in = (t_sample *)(w[1]);
+  t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3]);
-  t_float x;
+  t_sample x;
   while (n--) {
     if ((x=*in++)>0.) *out++=1.;
     else if	(x<0.) *out++=-1.;
@@ -48,25 +48,25 @@ static t_int *sgnTilde_perform(t_int *w)
 }
 static t_int *sgnTilde_perform8(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
+  t_sample *in = (t_sample *)(w[1]);
+  t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3])>>3;
-  t_float x;
+  t_sample x;
 
-    while(n--){
-      /* weirdly enough, the if/else/if/else is a lot faster than ()?:(()?:) */
-      if ((x=in[0])>0.) out[0]=1.; else if(x<0.) out[0]=-1.; else out[0]=0.;
-      if ((x=in[1])>0.) out[1]=1.; else if(x<0.) out[1]=-1.; else out[1]=0.;
-      if ((x=in[2])>0.) out[2]=1.; else if(x<0.) out[2]=-1.; else out[2]=0.;
-      if ((x=in[3])>0.) out[3]=1.; else if(x<0.) out[3]=-1.; else out[3]=0.;
-      if ((x=in[4])>0.) out[4]=1.; else if(x<0.) out[4]=-1.; else out[4]=0.;
-      if ((x=in[5])>0.) out[5]=1.; else if(x<0.) out[5]=-1.; else out[5]=0.;
-      if ((x=in[6])>0.) out[6]=1.; else if(x<0.) out[6]=-1.; else out[6]=0.;
-      if ((x=in[7])>0.) out[7]=1.; else if(x<0.) out[7]=-1.; else out[7]=0.;
+  while(n--){
+    /* weirdly enough, the if/else/if/else is a lot faster than ()?:(()?:) */
+    if ((x=in[0])>0.) out[0]=1.; else if(x<0.) out[0]=-1.; else out[0]=0.;
+    if ((x=in[1])>0.) out[1]=1.; else if(x<0.) out[1]=-1.; else out[1]=0.;
+    if ((x=in[2])>0.) out[2]=1.; else if(x<0.) out[2]=-1.; else out[2]=0.;
+    if ((x=in[3])>0.) out[3]=1.; else if(x<0.) out[3]=-1.; else out[3]=0.;
+    if ((x=in[4])>0.) out[4]=1.; else if(x<0.) out[4]=-1.; else out[4]=0.;
+    if ((x=in[5])>0.) out[5]=1.; else if(x<0.) out[5]=-1.; else out[5]=0.;
+    if ((x=in[6])>0.) out[6]=1.; else if(x<0.) out[6]=-1.; else out[6]=0.;
+    if ((x=in[7])>0.) out[7]=1.; else if(x<0.) out[7]=-1.; else out[7]=0.;
 
-      in+=8;
-      out+=8;
-    }
+    in+=8;
+    out+=8;
+  }
   
   return (w+4);
 }
@@ -111,12 +111,13 @@ static t_int *sgnTilde_performSSE(t_int *w)
 
 static void sgnTilde_dsp(t_sgnTilde *x, t_signal **sp)
 {
-  ZEXY_USEVAR(x);
 #ifdef __SSE__
   if(
      Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&
      Z_SIMD_CHKALIGN(sp[0]->s_vec)&&
-     Z_SIMD_CHKALIGN(sp[1]->s_vec))
+     Z_SIMD_CHKALIGN(sp[1]->s_vec)&&
+     ZEXY_TYPE_EQUAL(t_sample, float) // currently SSE2 code is only for float (not for double)
+     )
     {
       dsp_add(sgnTilde_performSSE, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
     } else
@@ -145,7 +146,7 @@ static void *sgnTilde_new(void)
 void sgn_tilde_setup(void)
 {
   sgnTilde_class = class_new(gensym("sgn~"), (t_newmethod)sgnTilde_new, 0,
-			   sizeof(t_sgnTilde), 0, A_DEFFLOAT, 0);
+                             sizeof(t_sgnTilde), 0, A_DEFFLOAT, 0);
   class_addmethod(sgnTilde_class, nullfn, gensym("signal"), 0);
   class_addmethod(sgnTilde_class, (t_method)sgnTilde_dsp, gensym("dsp"), 0);
   

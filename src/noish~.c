@@ -41,10 +41,10 @@ typedef struct _nois
 {
   t_object x_obj;
   int val;
-  t_float current;
-  t_float decrement;
-  t_float updater;		
-  t_float to_go;
+  t_sample current;
+  t_sample decrement;
+  t_sample updater;		
+  t_sample to_go;
 } t_nois;
 
 
@@ -59,6 +59,11 @@ static void set_freq(t_nois *x, t_floatarg freq)
 }
 
 
+static void set_noisseed(t_nois *x, t_floatarg seed)
+{
+  x->val = seed;
+}
+
 /* ------------------------ noish~ ----------------------------- */ 
 
 static t_class *noish_class;
@@ -66,15 +71,15 @@ static t_class *noish_class;
 static t_int *noish_perform(t_int *w)
 {
   t_nois *x = (t_nois *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
+  t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3]);
 	
   int *vp = (int *)(&x->val);
   int i_value = *vp;
-  t_float f_value = ((float)((i_value & 0x7fffffff) - 0x40000000)) *
-    (float)(1.0 / 0x40000000);
-  t_float all_to_go = x->updater;
-  t_float still_to_go = x->to_go;
+  t_sample f_value = ((t_sample)((i_value & 0x7fffffff) - 0x40000000)) *
+    (t_sample)(1.0 / 0x40000000);
+  t_sample all_to_go = x->updater;
+  t_sample still_to_go = x->to_go;
 
   if (all_to_go == 1)
     {	/* this is "pure white" noise, so we have to calculate each sample */ 
@@ -82,7 +87,7 @@ static t_int *noish_perform(t_int *w)
 	{
 	  i_value *= 435898247;
 	  i_value += 382842987;
-	  *out++ = ((float)((i_value & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
+	  *out++ = ((t_sample)((i_value & 0x7fffffff) - 0x40000000)) * (t_sample)(1.0 / 0x40000000);
 	}
     }
   else
@@ -107,7 +112,7 @@ static t_int *noish_perform(t_int *w)
 
 	  i_value *= 435898247;
 	  i_value += 382842987;
-	  f_value = ( (float)((i_value & 0x7fffffff) - 0x40000000) ) * (float)(1.0 / 0x40000000);
+	  f_value = ( (t_sample)((i_value & 0x7fffffff) - 0x40000000) ) * (t_sample)(1.0 / 0x40000000);
 
 	  while (n--)
 	    {
@@ -126,7 +131,7 @@ static t_int *noish_perform(t_int *w)
 		  i_value *= 435898247;
 		  i_value += 382842987;
 			
-		  f_value = ( (float)((i_value & 0x7fffffff) - 0x40000000) ) * (float)(1.0 / 0x40000000);		
+		  f_value = ( (t_sample)((i_value & 0x7fffffff) - 0x40000000) ) * (t_sample)(1.0 / 0x40000000);		
 		}
 	      *out++ = f_value;
 	    }
@@ -178,6 +183,8 @@ void noish_tilde_setup(void)
 
   class_addfloat(noish_class, set_freq);
   class_addmethod(noish_class, (t_method)noish_dsp, gensym("dsp"), 0);
+
+  class_addmethod(noish_class, (t_method)set_noisseed, gensym("seed"), A_FLOAT, 0);
 
   class_addmethod(noish_class, (t_method)noish_helper, gensym("help"), 0);
   zexy_register("noish~");

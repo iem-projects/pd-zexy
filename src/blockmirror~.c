@@ -33,7 +33,7 @@ typedef struct _blockmirror
   t_object x_obj;
   int doit;
   int blocksize;
-  t_float *blockbuffer;
+  t_sample *blockbuffer;
 } t_blockmirror;
 
 static void blockmirror_float(t_blockmirror *x, t_floatarg f)
@@ -44,13 +44,13 @@ static void blockmirror_float(t_blockmirror *x, t_floatarg f)
 static t_int *blockmirror_perform(t_int *w)
 {
   t_blockmirror	*x = (t_blockmirror *)(w[1]);
-  t_float *in = (t_float *)(w[2]);
-  t_float *out = (t_float *)(w[3]);
+  t_sample *in = (t_sample *)(w[2]);
+  t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   if (x->doit) {
     if (in==out){
       int N=n;
-      t_float *dummy=x->blockbuffer;
+      t_sample *dummy=x->blockbuffer;
       while(n--)*dummy++=*in++;
       dummy--;
       while(N--)*out++=*dummy--;
@@ -65,9 +65,9 @@ static t_int *blockmirror_perform(t_int *w)
 static void blockmirror_dsp(t_blockmirror *x, t_signal **sp)
 {
   if (x->blocksize<sp[0]->s_n){
-    if(x->blockbuffer)freebytes(x->blockbuffer, sizeof(t_float)*x->blocksize);
+    if(x->blockbuffer)freebytes(x->blockbuffer, sizeof(*x->blockbuffer)*x->blocksize);
     x->blocksize = sp[0]->s_n;
-    x->blockbuffer = getbytes(sizeof(t_float)*x->blocksize);
+    x->blockbuffer = getbytes(sizeof(*x->blockbuffer)*x->blocksize);
   }
   dsp_add(blockmirror_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
@@ -82,7 +82,7 @@ static void blockmirror_helper(t_blockmirror*x)
 static void blockmirror_free(t_blockmirror*x)
 {
   if(x->blockbuffer)
-    freebytes(x->blockbuffer, sizeof(t_float)*x->blocksize);
+    freebytes(x->blockbuffer, sizeof(*x->blockbuffer)*x->blocksize);
   x->blockbuffer=0;
 }
 static void *blockmirror_new(void)

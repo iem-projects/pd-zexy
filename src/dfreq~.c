@@ -28,35 +28,37 @@ typedef struct _dfreq
 {
   t_object x_obj;
 
-  t_float freq;  /*freqenz variable */
-  t_float alt;
-  float sampcount;
-  t_float sr;
+  t_sample freq;  /*frequenz variable */
+  t_sample alt;
+  t_sample sampcount;
+  t_sample sr;
 } t_dfreq;
 
 
 static t_int *dfreq_perform(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
-  t_float *out = (t_float *)(w[2]);
+  t_sample *in = (t_sample *)(w[1]);
+  t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3]);
   t_dfreq *x = (t_dfreq *) w[4];
 
-  t_float a = x->alt, c = x->sampcount;
-  t_float freq = x->freq, sr=x->sr;
+  t_sample a = x->alt;
+  t_sample  c = x->sampcount;
+  t_sample freq = x->freq;
+  t_sample  sr=x->sr;
 
-  t_float delta_inv;
+  t_sample delta_inv;
 
   while (n--) {
 
     if( (a * *in) < 0 && (a < *in)){
 
-	/* interpolate for real zerocross */
-	  delta_inv = 1./(*in-a);
+      /* interpolate for real zerocross */
+      delta_inv = 1./(*in-a);
       if(c > 0.0)
-		  freq = sr / ((t_float) c + a*delta_inv);
+        freq = sr / ((t_sample) c + a*delta_inv);
       else
-		  freq = sr;
+        freq = sr;
 
       c = *in*delta_inv; /*rest of time */
     };
@@ -76,7 +78,7 @@ static t_int *dfreq_perform(t_int *w)
 
 static void dfreq_dsp(t_dfreq *x, t_signal **sp)
 {
-    dsp_add(dfreq_perform, 4, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n,x);
+  dsp_add(dfreq_perform, 4, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n,x);
 }
 
 
@@ -93,19 +95,19 @@ static void *dfreq_new(void)
 
 static void dfreq_tilde_helper(void)
 {
-	post("\n%c dfreq~\t :: pitch-detector that counts zero-crossings", HEARTSYMBOL);
-	post("\noutputs a frequency estimate as a stream~ that will be updated every zero-X");
-	post("\ncreation::\t'dfreq~': that's all");
+  post("\n%c dfreq~\t :: pitch-detector that counts zero-crossings", HEARTSYMBOL);
+  post("\noutputs a frequency estimate as a stream~ that will be updated every zero-X");
+  post("\ncreation::\t'dfreq~': that's all");
 }
 
 
 void dfreq_tilde_setup(void)
 {
-    dfreq_class = class_new(gensym("dfreq~"), (t_newmethod)dfreq_new, 0,
-    	sizeof(t_dfreq), 0, A_NULL);
-    class_addmethod(dfreq_class, nullfn, gensym("signal"), 0);
-    class_addmethod(dfreq_class, (t_method)dfreq_dsp, gensym("dsp"), 0);
+  dfreq_class = class_new(gensym("dfreq~"), (t_newmethod)dfreq_new, 0,
+                          sizeof(t_dfreq), 0, A_NULL);
+  class_addmethod(dfreq_class, nullfn, gensym("signal"), 0);
+  class_addmethod(dfreq_class, (t_method)dfreq_dsp, gensym("dsp"), 0);
 
-	class_addmethod(dfreq_class, (t_method)dfreq_tilde_helper, gensym("help"), 0);
+  class_addmethod(dfreq_class, (t_method)dfreq_tilde_helper, gensym("help"), 0);
   zexy_register("dfreq~");
 }
