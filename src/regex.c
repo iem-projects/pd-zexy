@@ -270,7 +270,7 @@ static void *regex_new(t_symbol *s, int argc, t_atom*argv)
 
   x->x_outResult=outlet_new(&x->x_obj, 0);
   x->x_outDetails=outlet_new(&x->x_obj, gensym("list"));
-  x->x_outNumDetails=outlet_new(&x->x_obj, gensym("float"));
+  x->x_outNumDetails=outlet_new(&x->x_obj, &s_float);
 
 
 #ifdef HAVE_REGEX_H

@@ -59,8 +59,8 @@ static void *minmax_new(void)
 {
   t_minmax *x = (t_minmax *)pd_new(minmax_class);
 
-  x->mino=outlet_new(&x->x_obj, gensym("float"));
-  x->maxo=outlet_new(&x->x_obj, gensym("float"));
+  x->mino=outlet_new(&x->x_obj, &s_float);
+  x->maxo=outlet_new(&x->x_obj, &s_float);
 
   x->min = x->max = 0;
 

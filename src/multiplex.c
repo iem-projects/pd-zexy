@@ -79,7 +79,7 @@ static void *mux_new(t_symbol *s, int argc, t_atom *argv)
     x->in[n] = inlet_new ((t_object*)x, (t_pd*)x->x_proxy[n], 0,0);
   }
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym(""));
 
   outlet_new(&x->x_obj, 0);
   return (x);

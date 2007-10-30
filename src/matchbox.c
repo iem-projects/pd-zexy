@@ -625,7 +625,7 @@ static void *matchbox_new(t_symbol *s, int argc, t_atom*argv)
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("add"));
 
   x->x_outResult    =outlet_new(&x->x_obj, gensym("list"));
-  x->x_outNumResults=outlet_new(&x->x_obj, gensym("float"));
+  x->x_outNumResults=outlet_new(&x->x_obj, &s_float);
 
 
   x->x_lists=(t_listlist*)getbytes(sizeof(t_listlist));

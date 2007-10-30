@@ -63,7 +63,7 @@ static void *wrap_new(t_symbol *s, int argc, t_atom*argv)
   wrap_set(x, s, argc, argv);
 
   outlet_new(&x->x_obj, &s_float);
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("set"));
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym("set"));
 
   return (x);
 }

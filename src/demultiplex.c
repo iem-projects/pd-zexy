@@ -89,7 +89,7 @@ static void *demux_new(t_symbol *s, int argc, t_atom *argv)
 
   x->n_out = n - 1;
   
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("select"));
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym("select"));
   x->out = (t_outlet **)getbytes(n * sizeof(t_outlet *));
 
   for (n=0; n<=x->n_out; n++) {

@@ -278,7 +278,7 @@ static void *fifop_new(void)
 
   floatinlet_new(&x->x_obj, &x->priority);
   x->x_out   =outlet_new(&x->x_obj, gensym("list" ));
-  x->x_infout=outlet_new(&x->x_obj, gensym("float"));
+  x->x_infout=outlet_new(&x->x_obj, &s_float);
 
   x->fifo_list = 0;
   x->priority=0;

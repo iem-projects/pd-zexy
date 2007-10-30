@@ -40,7 +40,7 @@ static void length_any(t_length *x, t_symbol *s, int argc, t_atom *argv)
 static void *length_new(void)
 {
   t_length *x = (t_length *)pd_new(length_class);
-  outlet_new(&x->x_obj, gensym("float"));
+  outlet_new(&x->x_obj, &s_float);
   return (x);
 }
 

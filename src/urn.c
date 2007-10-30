@@ -114,7 +114,7 @@ static void *urn_new(t_symbol *s, int argc, t_atom *argv)
   t_float f=0.;
   ZEXY_USEVAR(s);
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym(""));
   x->x_floatout=outlet_new(&x->x_obj, &s_float);
   x->x_bangout =outlet_new(&x->x_obj, &s_bang);
 
