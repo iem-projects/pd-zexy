@@ -55,7 +55,6 @@
 # define Z_SIMD_BYTEALIGN (128/8)   /* assume 128 bits */
 # define Z_SIMD_CHKBLOCKSIZE(n) (!(n&(Z_SIMD_BLOCK-1)))
 # define Z_SIMD_CHKALIGN(ptr) ( ((unsigned long)(ptr) & (Z_SIMD_BYTEALIGN-1)) == 0 )
-
 #endif /* __SSE__ */
 
 #include <math.h>
@@ -87,6 +86,8 @@
 #endif /* APPLE */
 
 #define ZEXY_USEVAR(x) x=x
+
+#define ZEXY_TYPE_EQUAL(type1, type2) (sizeof(type1) == sizeof(type2))
 
 typedef struct _mypdlist
 {
