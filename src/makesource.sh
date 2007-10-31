@@ -58,7 +58,7 @@ do
 ## any non-alpha-numeric-character is replaced by "_"
 ## e.g. "multiplex~.c" -> "z_multiplex__setup()"
   i=${f%.c}
-  SETUPNAME=$(echo $i | sed -e "s/.*0x.*/setup_&/g" -e "s/~$/_tilde/g" -e "/0x/! s/.*/&_setup/")
+  SETUPNAME=$(echo $i | sed -e "s/.*0x.*/setup_&/g" -e "s/~/_tilde/g" -e "/0x/! s/.*/&_setup/")
   if grep -w ${SETUPNAME} $f > /dev/null; then
    echo "void ${SETUPNAME}(void); /* $i */" >> $ZEXY_H
    echo "	${SETUPNAME}(); /* $i */" >> $ZEXY_C

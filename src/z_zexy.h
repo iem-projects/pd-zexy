@@ -74,6 +74,7 @@ void swap_tilde_setup(void); /* swap~ */
 void symbol2list_setup(void); /* symbol2list */
 void tabdump_setup(void); /* tabdump */
 void tabminmax_setup(void); /* tabminmax */
+void tabread4_tilde_tilde_setup(void); /* tabread4~~ */
 void tabset_setup(void); /* tabset */
 void tavg_tilde_setup(void); /* tavg~ */
 void time_setup(void); /* time */

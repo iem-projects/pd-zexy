@@ -76,6 +76,7 @@ void z_zexy_setup(void)
 	symbol2list_setup(); /* symbol2list */
 	tabdump_setup(); /* tabdump */
 	tabminmax_setup(); /* tabminmax */
+	tabread4_tilde_tilde_setup(); /* tabread4~~ */
 	tabset_setup(); /* tabset */
 	tavg_tilde_setup(); /* tavg~ */
 	time_setup(); /* time */

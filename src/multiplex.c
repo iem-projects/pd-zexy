@@ -118,7 +118,7 @@ void multiplex_setup(void)
  
   class_addmethod   (mux_class, (t_method)mux_select, gensym(""), A_DEFFLOAT, 0);
 
-  muxproxy_class = class_new(gensym("mux proxy"), 0, 0,
+  muxproxy_class = class_new(0, 0, 0,
 			    sizeof(t_muxproxy),
 			    CLASS_PD | CLASS_NOINLET, 0);
   class_addanything(muxproxy_class, mux_anything);
