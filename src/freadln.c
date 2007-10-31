@@ -26,12 +26,13 @@
 //#include <stdarg.h>
 //#include <fcntl.h>
 
-//#ifdef __WIN32__
-//# include <io.h>
+#ifdef __WIN32__
+# include <io.h>
+# include <stdlib.h>
 //#else
 //# include <sys/types.h>
 //# include <unistd.h>
-//#endif
+#endif
 
 #define MIN_FREADLN_LENGTH 10
 

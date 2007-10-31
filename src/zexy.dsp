@@ -180,11 +180,19 @@ SOURCE=.\list2int.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\list2lists.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\list2symbol.c
 # End Source File
 # Begin Source File
 
 SOURCE=.\lister.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\listfind.c
 # End Source File
 # Begin Source File
 
@@ -325,6 +333,10 @@ SOURCE=.\tabdump.c
 # Begin Source File
 
 SOURCE=.\tabminmax.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\tabread4~~.c
 # End Source File
 # Begin Source File
 

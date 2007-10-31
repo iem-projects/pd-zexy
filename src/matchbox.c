@@ -94,10 +94,14 @@ static t_listlist* addlistlist(t_listlist*list, int argc, t_atom*argv) {
 
 /* delete the _next_ element from the list */
 static t_listlist* deletelistnext(t_listlist*list) {
+  t_listlist*ll=0;
+
   if(!list || !list->next)return list; /* nothing to delete */
-  t_listlist*ll=list->next;
+
+  ll=list->next;
   list->next=ll->next;
   if(ll->argv)freebytes(ll->argv, ll->argc*sizeof(t_atom));
+
   ll->argv=0;
   ll->argc=0;
   ll->next=0;
