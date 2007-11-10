@@ -66,13 +66,20 @@
 # pragma warning( disable : 4018 )
 # pragma warning( disable : 4244 )
 # pragma warning( disable : 4305 )
+# pragma warning( disable : 4996)  /* deprecated functions */
 #endif
 
 #ifdef __WIN32__
 # define HEARTSYMBOL 3
 # define STATIC_INLINE
-# define sqrtf sqrt
-# define fabsf fabs
+
+# ifndef sqrtf
+#  define sqrtf sqrt
+# endif /* sqrtf */
+# ifndef fabsf
+#  define fabsf fabs
+# endif /* fabsf */
+
 #else
 # define HEARTSYMBOL 169
 # define STATIC_INLINE static
