@@ -251,7 +251,7 @@ static void sfplay_start(t_sfplay *x)
 #endif
    
    /* new offset postion ? (fom inlet offset) */
-   if( ((float) of) != x->x_offset)
+   if( ((t_float) of) != x->x_offset)
    {
       x->skip=1;
       x->x_offset = of;

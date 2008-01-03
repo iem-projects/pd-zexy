@@ -30,13 +30,13 @@ static t_class *andand_tilde_class, *scalarandand_tilde_class;
 typedef struct _andand_tilde
 {
   t_object x_obj;
-  float x_f;
+  t_float x_f;
 } t_andand_tilde;
 
 typedef struct _scalarandand_tilde
 {
   t_object x_obj;
-  float x_f;
+  t_float x_f;
   t_float x_g;    	    /* inlet value */
 } t_scalarandand_tilde;
 
@@ -65,9 +65,9 @@ static void *andand_tilde_new(t_symbol *s, int argc, t_atom *argv)
 
 static t_int *andand_tilde_perform(t_int *w)
 {
-  t_float *in1 = (t_float *)(w[1]);
-  t_float *in2 = (t_float *)(w[2]);
-  t_float *out = (t_float *)(w[3]);
+  t_sample *in1 = (t_sample *)(w[1]);
+  t_sample *in2 = (t_sample *)(w[2]);
+  t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   while (n--){
     int f=(int)*in1++;
@@ -79,9 +79,9 @@ static t_int *andand_tilde_perform(t_int *w)
 
 static t_int *andand_tilde_perf8(t_int *w)
 {
-  t_float *in1 = (t_float *)(w[1]);
-  t_float *in2 = (t_float *)(w[2]);
-  t_float *out = (t_float *)(w[3]);
+  t_sample *in1 = (t_sample *)(w[1]);
+  t_sample *in2 = (t_sample *)(w[2]);
+  t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   for (; n; n -= 8, in1 += 8, in2 += 8, out += 8)
     {
@@ -99,19 +99,19 @@ static t_int *andand_tilde_perf8(t_int *w)
 
 static t_int *scalarandand_tilde_perform(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
-  t_float f = *(t_float *)(w[2]);
-  t_float *out = (t_float *)(w[3]);
+  t_sample *in = (t_sample *)(w[1]);
+  int f = *(t_float *)(w[2]);
+  t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
-  while (n--) *out++ = (int)*in++ && (int)f; 
+  while (n--) *out++ = (int)*in++ && f; 
   return (w+5);
 }
 
 static t_int *scalarandand_tilde_perf8(t_int *w)
 {
-  t_float *in = (t_float *)(w[1]);
+  t_sample *in = (t_sample *)(w[1]);
   int g = *(t_float *)(w[2]);
-  t_float *out = (t_float *)(w[3]);
+  t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   for (; n; n -= 8, in += 8, out += 8)
     {
@@ -178,7 +178,7 @@ static t_int *scalarandand_tilde_performSSE(t_int *w)
 {
   __m128 *in = (__m128 *)(w[1]);
   __m128 *out = (__m128 *)(w[3]);
-  t_float f = *(t_float *)(w[2]);
+  float f = *(t_float *)(w[2]);
   __m128 scalar = _mm_set1_ps(f);
   int n = (int)(w[4])>>4;
 
@@ -231,7 +231,8 @@ static void andand_tilde_dsp(t_andand_tilde *x, t_signal **sp)
      Z_SIMD_CHKBLOCKSIZE(n)&&
      Z_SIMD_CHKALIGN(in1)&&
      Z_SIMD_CHKALIGN(in2)&&
-     Z_SIMD_CHKALIGN(out)
+     Z_SIMD_CHKALIGN(out)&&
+     ZEXY_TYPE_EQUAL(t_sample, float)
      )
     {
       dsp_add(andand_tilde_performSSE, 4, in1, in2, out, n);
@@ -255,7 +256,8 @@ static void scalarandand_tilde_dsp(t_scalarandand_tilde *x, t_signal **sp)
   if(
      Z_SIMD_CHKBLOCKSIZE(n)&&
      Z_SIMD_CHKALIGN(in)&&
-     Z_SIMD_CHKALIGN(out)
+     Z_SIMD_CHKALIGN(out)&&
+     ZEXY_TYPE_EQUAL(t_sample, float)
      )
     {
       dsp_add(scalarandand_tilde_performSSE, 4, in, &x->x_g, out, n);

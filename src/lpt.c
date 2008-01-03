@@ -147,11 +147,11 @@ static void lpt_bang(t_lpt *x)
   if (x->device>0){
     unsigned char b=0;
     ioctl (x->device, PPRCONTROL, &b);
-      outlet_float(x->x_obj.ob_outlet, (float)b);
+      outlet_float(x->x_obj.ob_outlet, (t_float)b);
   } else
 # endif
   if (x->port)	{
-    outlet_float(x->x_obj.ob_outlet, (float)sys_inb(x->port+1));
+    outlet_float(x->x_obj.ob_outlet, (t_float)sys_inb(x->port+1));
   }
 #endif /*  Z_WANT_LPT */
 }

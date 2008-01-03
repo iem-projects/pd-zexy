@@ -74,7 +74,7 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
   int nelement;
   if (x->x_type == A_FLOAT)
     {
-      float f;
+      t_float f;
       if (!argc){
         outlet_bang(x->x_rejectout);
         return;

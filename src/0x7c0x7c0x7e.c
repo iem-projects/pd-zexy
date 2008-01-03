@@ -28,13 +28,13 @@ static t_class *oror_tilde_class, *scalaroror_tilde_class;
 typedef struct _oror_tilde
 {
   t_object x_obj;
-  float x_f;
+  t_float x_f;
 } t_oror_tilde;
 
 typedef struct _scalaroror_tilde
 {
   t_object x_obj;
-  float x_f;
+  t_float x_f;
   t_float x_g;    	    /* inlet value */
 } t_scalaroror_tilde;
 
@@ -209,7 +209,8 @@ static void oror_tilde_dsp(t_oror_tilde *x, t_signal **sp)
      Z_SIMD_CHKBLOCKSIZE(n)&&
      Z_SIMD_CHKALIGN(in1)&&
      Z_SIMD_CHKALIGN(in2)&&
-     Z_SIMD_CHKALIGN(out)
+     Z_SIMD_CHKALIGN(out)&&
+     ZEXY_TYPE_EQUAL(t_sample, float)
      )
     {
       dsp_add(oror_tilde_performSSE, 4, in1, in2, out, n);
@@ -231,7 +232,8 @@ static void scalaroror_tilde_dsp(t_scalaroror_tilde *x, t_signal **sp)
   if(
      Z_SIMD_CHKBLOCKSIZE(n)&&
      Z_SIMD_CHKALIGN(in)&&
-     Z_SIMD_CHKALIGN(out)
+     Z_SIMD_CHKALIGN(out)&&
+     ZEXY_TYPE_EQUAL(t_sample, float)
      )
     {
       dsp_add(scalaroror_tilde_performSSE, 4, in, &x->x_g, out, n);

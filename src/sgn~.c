@@ -39,7 +39,8 @@ static t_int *sgnTilde_perform(t_int *w)
   int n = (int)(w[3]);
   t_sample x;
   while (n--) {
-    if ((x=*in++)>0.) *out++=1.;
+    x=*in++;
+    if (x>0.) *out++=1.;
     else if	(x<0.) *out++=-1.;
     else *out++=0.;
   }

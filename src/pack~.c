@@ -43,8 +43,8 @@ static t_int *sigpack_perform(t_int *w)
     SETFLOAT(&buf[i], f);
     i++;
   }
-#ifndef __WIN32__
-#warning defer list-output to next block with a clock!
+#ifdef __GNUC__
+# warning defer list-output to next block with a clock!
 #endif
   outlet_list(x->x_obj.ob_outlet, &s_list, x->vector_length, x->buffer);
 

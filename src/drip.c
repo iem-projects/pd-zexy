@@ -37,7 +37,7 @@ typedef struct _drip
   int bufsize;
 
   t_clock *x_clock;
-  float  deltime;
+  t_float  deltime;
 
   int    flush;
 } t_drip;
