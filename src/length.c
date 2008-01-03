@@ -51,7 +51,6 @@ void length_setup(void)
 
   class_addlist(length_class, (t_method)length_list);
   class_addanything(length_class, (t_method)length_any);
-  //  class_addbang(length_class, (t_method)length_bang);
 
   zexy_register("length");
 }

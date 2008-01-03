@@ -104,9 +104,9 @@ static void index_symbol(t_index *x, t_symbol *s)
   int element;
   if ( (element = find_item(s, x->names, x->maxentries)+1) )
     outlet_float(x->x_obj.ob_outlet, (t_float)element);
-  else if (x->auto_mode) // not yet stored: add automatically
+  else if (x->auto_mode) /* not yet stored: add automatically */
     index_add(x, s, 0);
-  else outlet_float(x->x_obj.ob_outlet, 0.f); // not yet stored but do not add
+  else outlet_float(x->x_obj.ob_outlet, 0.f); /* not yet stored but do not add */
 }
 
 /* output the entry at a given index */
@@ -254,7 +254,6 @@ static void index_sort(t_index *x){
 
   while(step>1){
     int i = loops;
-    //step = (step % 2)?(step+1)/2:step/2;
     step+=step%2;
     step>>=1;
     loops+=2;
@@ -262,11 +261,11 @@ static void index_sort(t_index *x){
     while(i--) { /* there might be some optimization in here */
       for (n=0; n<(x->entries-step); n++) {
         int comp=strcmp(buf[n]->s_name,buf[n+step]->s_name);
-	if (comp>0) { // compare STRINGS not SYMBOLS
-	  t_symbol*s_tmp = buf[n];
-	  buf[n]        = buf[n+step];
-	  buf[n+step]   = s_tmp;
-	}
+        if (comp>0) { /* compare STRINGS not SYMBOLS */
+          t_symbol*s_tmp = buf[n];
+          buf[n]        = buf[n+step];
+          buf[n+step]   = s_tmp;
+        }
       }
     }
   }
@@ -325,25 +324,27 @@ static void index_free(t_index *x)
 
 static void index_helper(t_index *x)
 {
-  ZEXY_USEVAR(x);
-  post("\n%c index :: index symbols to indices", HEARTSYMBOL);
-  post("<symbol>             : look up the <symbol> in the index and return it's index\n"
-       "\n<int>                : look up the element at index <int> in the index"
-       "\n'add <symbol>'       : add a new symbol to the index-map"
-       "\n'add <symbol> <int>' : add a new symbol at the index <int>"
-       "\n'delete <symbol>'    : delete a symbol from the index-map"
-       "\n'delete <int>'       : delete the entry at index <int> from the index-map"
-       "\n'reset'              : delete the whole index-map"
-       "\n'bang'               : return the number of entries in the index-map"
-       "\n'dump'               : dump each entry in the format \"list <symbol> <index>\""
-       "\n'compact'            : remove holes in the index-map");
-  post("\n'sort'               : alphabetically sort the entries"
-       "\n'auto <1/0>          : if auto is 1 and a yet unknown symbol is looked up it is\n\t\t\t automatically added to the index-map"
-       "\n'resize <1/0>        : if resize is 1 (default), the index-map is resized\n\t\t\t automatically if needed"
-       "\n'help'               : view this"
-       "\noutlet : <n>         : index of the <symbol>"
-       "\n         <symbol>    : entry at <index>");
-  post("\ncreation:\"index [<maxelements> [<auto>]]\": creates a <maxelements> sized index");
+  endpost();
+  post("%c index :: index symbols to indices", HEARTSYMBOL);
+  post("<symbol>             : look up the <symbol> in the index and return it's index");
+  post("<int>                : look up the element at index <int> in the index");
+  post("'add <symbol>'       : add a new symbol to the index-map");
+  post("'add <symbol> <int>' : add a new symbol at the index <int>");
+  post("'delete <symbol>'    : delete a symbol from the index-map");
+  post("'delete <int>'       : delete the entry at index <int> from the index-map");
+  post("'reset'              : delete the whole index-map");
+  post("'bang'               : return the number of entries in the index-map");
+  post("'dump'               : dump each entry in the format \"list <symbol> <index>\"");
+  post("'compact'            : remove holes in the index-map");
+  endpost();
+  post("'sort'               : alphabetically sort the entries");
+  post("'auto <1/0>          : if auto is 1 and a yet unknown symbol is looked up it is\n\t\t\t automatically added to the index-map");
+  post("'resize <1/0>        : if resize is 1 (default), the index-map is resized\n\t\t\t automatically if needed");
+  post("'help'               : view this");
+  post("outlet : <n>         : index of the <symbol>");
+  post("         <symbol>    : entry at <index>");
+  endpost();
+  post("creation:\"index [<maxelements> [<auto>]]\": creates a <maxelements> sized index");
 }
 
 void index_setup(void)
@@ -356,7 +357,7 @@ void index_setup(void)
 
   class_addmethod(index_class, (t_method)index_reset,  gensym("reset"), 0);
   class_addmethod(index_class, (t_method)index_delete, gensym("delete"), A_GIMME, 0);
-  //  class_addmethod(index_class, (t_method)index_add,	 gensym("add"), A_SYMBOL, 0);
+  /*  class_addmethod(index_class, (t_method)index_add,	 gensym("add"), A_SYMBOL, 0); */
   class_addmethod(index_class, (t_method)index_add,	 gensym("add"), A_SYMBOL, A_DEFFLOAT, 0);
 
   class_addmethod(index_class, (t_method)index_auto,	 gensym("auto"), A_FLOAT, 0);

@@ -19,14 +19,13 @@ static BOOL bPrivException = FALSE;
 
 int read_parport(int port)
 {
-	// byte = _inp((unsigned short)port);
 	unsigned char value;
 #ifdef _MSC_VER
 	__asm mov edx,port
 	__asm in al,dx
 	__asm mov value,al
 #else
-    // hmm, i should read some documentation about inline assembler
+    /* hmm, i should read some documentation about inline assembler */
     post("lpt: cannot read from parport (recompile!)");
         return 0;
 #endif
@@ -35,15 +34,17 @@ int read_parport(int port)
 
 void write_parport(int port, int invalue)
 {
-  // _outp((unsigned short)port, value);
+  /* _outp((unsigned short)port, value); */
   BYTE value = (BYTE)invalue;
 #ifdef _MSC_VER
   __asm mov edx,port
   __asm mov al,value
   __asm out dx,al
 #else
-    // hmm, i should read some documentation about inline assembler
-    // and probably about assembler in general...
+    /*
+     * hmm, i should read some documentation about inline assembler
+     * and probably about assembler in general...
+     */
     post("lpt: cannot write to parport (recompile!)");
     /*
     asm(
@@ -62,7 +63,7 @@ static LONG WINAPI HandlerExceptionFilter ( EXCEPTION_POINTERS *pExPtrs )
 
 	if (pExPtrs->ExceptionRecord->ExceptionCode == EXCEPTION_PRIV_INSTRUCTION)
 	{
-		pExPtrs->ContextRecord->Eip ++; // Skip the OUT or IN instruction that caused the exception
+		pExPtrs->ContextRecord->Eip ++; /* Skip the OUT or IN instruction that caused the exception */
 		bPrivException = TRUE;
 		return EXCEPTION_CONTINUE_EXECUTION;
 	}
@@ -75,13 +76,13 @@ static BOOL StartUpIoPorts(UINT PortToAccess, BOOL bShowMessageBox, HWND hParent
 	HANDLE hUserPort;
 
 	hUserPort = CreateFile("\\\\.\\UserPort", GENERIC_READ, 0, NULL,OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	CloseHandle(hUserPort); // Activate the driver
-	Sleep(100); // We must make a process switch
+	CloseHandle(hUserPort); /* Activate the driver */
+	Sleep(100); /* We must make a process switch */
 
 	SetUnhandledExceptionFilter(HandlerExceptionFilter);
 	
 	bPrivException = FALSE;
-	read_parport(PortToAccess);  // Try to access the given port address
+	read_parport(PortToAccess);  /* Try to access the given port address */
 
 	if (bPrivException)
 	{
@@ -124,4 +125,6 @@ int open_port(int port)
 		return(0);
 	}
 }
+#else
+static int i=0;
 #endif /* __WIN32__ & Z_WANT_LPT */

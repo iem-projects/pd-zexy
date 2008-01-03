@@ -107,7 +107,7 @@ typedef struct _lpt
   unsigned long port;
   int device; /* file descriptor of device, in case we are using one ...*/
 
-  int mode; // MODE_IOPERM, MODE_IOPL
+  int mode; /* MODE_IOPERM, MODE_IOPL */
 } t_lpt;
 
 static void lpt_float(t_lpt *x, t_floatarg f)
@@ -237,7 +237,6 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
         x->mode=MODE_NONE;
       } else x->mode=MODE_IOPL;
       count_iopl++;
-      //    post("iopl.............................%d", count_iopl);
     }
     
     if(x->mode==MODE_NONE){

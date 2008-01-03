@@ -69,7 +69,6 @@ typedef char cstring[MAXSTRINGLENG];
 
 static t_symbol* list2symbol(char *masque, int argc, t_atom *argv)
 {
-  //	cstring buf[MAXSTRINGARGS];
   cstring*buf=(cstring*)getbytes(MAXSTRINGARGS*sizeof(cstring));
 	cstring buffer;
 	int i;

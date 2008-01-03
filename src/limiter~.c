@@ -56,21 +56,24 @@
 #define TABLESIZE 512 /* compressor table */
 
 /* ------------------------------------------------------------------------------------ */
-// first define the structs...
+/* first define the structs... */
 
 static t_class *limiter_class;
 
 typedef struct _limctl
-{		// variables changed by user
-  t_float limit, hold_samples, change_of_amplification;
+{		
+  /* variables changed by user */
+  t_float limit;
+  t_float hold_samples;
+  t_float change_of_amplification;
 } t_limctl;
 
 typedef struct _cmpctl
 {
-  t_float treshold, ratio;		// uclimit is the very same is the limiter1-limit (decalculated relative to our treshold)
-  t_float uclimit, climit_inverse;	// climit == compressed limit (uclimit == uncompressed limit)
+  t_float treshold, ratio;		/* uclimit is the very same is the limiter1-limit (decalculated relative to our treshold) */
+  t_float uclimit, climit_inverse;	/* climit == compressed limit (uclimit == uncompressed limit) */
 
-  t_float limiter_limit;		// start limiting (stop compressing); == tresh/limit;
+  t_float limiter_limit;		/* start limiting (stop compressing); == tresh/limit; */
 
   t_float treshdB, oneminusratio;
 } t_cmpctl;
@@ -87,8 +90,7 @@ typedef struct _limiter
 
   int		number_of_inlets, s_n;
 
-  // variables changed by process
-
+  /* variables changed by process */
   t_sample	amplification;
   t_float	samples_left, still_left;
 
@@ -97,9 +99,10 @@ typedef struct _limiter
   t_limctl	*val1, *val2;
   t_cmpctl	*cmp;
 
-  // note :	limit is not the same for val1 & val2 :
-  //			at val1 it is the limit of the INPUT_VALUE
-  //			at val2 it is the limit for the AMPLIFICATION (in fact it is abs_limit1/abs_limit2)
+  /* note :	limit is not the same for val1 & val2 :
+   *			at val1 it is the limit of the INPUT_VALUE
+   *			at val2 it is the limit for the AMPLIFICATION (in fact it is abs_limit1/abs_limit2)
+   */
 
   t_inbuf*	in;
   int		buf_size;
@@ -107,13 +110,14 @@ typedef struct _limiter
 } t_limiter;
 
 /* ------------------------------------------------------------------------------------ */
-// then do the message - thing
+/* then do the message - thing */
 
-// do the user settings
+/* do the user settings */
 
-// calcs
+/* calcs */
 static t_float calc_holdsamples(t_float htime, int buf)
-{	// hold_time must be greater than buffer_time to make sure that any peak_sample is amplified with its own factor
+{	
+  /* hold_time must be greater than buffer_time to make sure that any peak_sample is amplified with its own factor */
   t_float min_hold = buf / sys_getsr();
   return (0.001 * sys_getsr() * ((htime > min_hold)?htime:((min_hold > 50)?min_hold:50)));
 }
@@ -135,7 +139,7 @@ static void set_uclimit(t_limiter *x)
   c->oneminusratio = 1. - ratio;
 }
 
-// settings
+/* settings */
 
 static void set_treshold(t_limiter *x, t_float treshold)
 {
@@ -174,7 +178,6 @@ static void set_mode(t_limiter *x, t_float mode)
     x->mode = LIMIT0;
     break;
   }
-  //  post("mode set to %d", x->mode);
 }
 
 static void set_LIMIT(t_limiter *x)
@@ -193,7 +196,8 @@ static void set_COMPRESS(t_limiter *x)
 }
 
 static void set_bufsize(t_limiter *x, int size)
-{ // this is really unneeded...and for historical reasons only
+{ 
+  /* this is really unneeded...and for historical reasons only */
   if (size < BUFSIZE) size = BUFSIZE;
   x->buf_size = size + XTRASAMPS;
 }
@@ -218,8 +222,8 @@ static void set_limits(t_limiter *x, t_floatarg limit1, t_floatarg limit2)
 
   if (lim2 < lim1)
     {
-      lim2 = 2*lim1;	// this is to prevent lim2 (which should trigger the FAST regulation)
-      x->mode = 0;	// to underrun the SLOW regulation; this would cause distortion
+      lim2 = 2*lim1;	/* this is to prevent lim2 (which should trigger the FAST regulation) */
+      x->mode = 0;	/* to underrun the SLOW regulation; this would cause distortion */
     }
 
   x->val1->limit = lim1;
@@ -276,7 +280,7 @@ static void reset(t_limiter *x)
   x->amplification = 1.;
 }
 
-// verbose
+/* verbose */
 static void status(t_limiter *x)
 {
   t_limctl *v1 = x->val1;
@@ -351,7 +355,7 @@ static void limiter_tilde_helper(t_limiter *x)
 
 
 /* ------------------------------------------------------------------------------------ */
-// now do the dsp - thing							        //
+/* now do the dsp - thing							                                                  */
 /* ------------------------------------------------------------------------------------ */
 
 static t_int *oversampling_maxima(t_int *w)
@@ -443,9 +447,9 @@ static t_int *limiter_perform(t_int *w)
   t_limctl *v2	= (t_limctl *)(x->val2);
   t_cmpctl *c     = (t_cmpctl *)(x->cmp);
 
-  // now let's make things a little bit faster
+  /* now let's make things a little bit faster */
 
-  // these must not be changed by process
+  /* these MUST NOT be changed by process */
   const t_float limit		= v1->limit;
   const t_float holdlong	= v1->hold_samples;
   const t_float coa_long	= v1->change_of_amplification;
@@ -460,12 +464,12 @@ static t_int *limiter_perform(t_int *w)
 
   t_float oneminusratio = c->oneminusratio;
 
-  // these will be changed by process
+  /* these will be changed by process */
   t_float amp				= x->amplification;
   t_float samplesleft		= x->samples_left;
   t_float stillleft		= x->still_left;
 
-  // an intern variable...
+  /* an intern variable... */
   t_float max_val;
 	
   switch (x->mode) {
@@ -474,7 +478,7 @@ static t_int *limiter_perform(t_int *w)
       {
 	max_val = *in;
 
-	// the MAIN routine for the 1-treshold-limiter
+	/* the MAIN routine for the 1-treshold-limiter */
 
 	if ((max_val * amp) > limit)
 	  {
@@ -499,7 +503,7 @@ static t_int *limiter_perform(t_int *w)
     while (n--)
       {
 	max_val = *in;
-	// the main routine 2
+	/* the main routine 2 */
 
 	if ((max_val * amp) > limit)
 	  {
@@ -538,7 +542,7 @@ static t_int *limiter_perform(t_int *w)
       {
 	max_val = *in;
 
-	// the MAIN routine for the compressor (very similar to the 1-treshold-limiter)
+	/* the MAIN routine for the compressor (very similar to the 1-treshold-limiter) */
 
 	if (max_val * amp > tresh) {
 	  amp = tresh / max_val;
@@ -548,9 +552,9 @@ static t_int *limiter_perform(t_int *w)
 	  else if ((amp *= coa_long) > 1) amp = 1;
 
 	if (amp < 1.)
-	  if (amp > uclimit)  // amp is still UnCompressed  uclimit==limitIN/tresh;
+	  if (amp > uclimit)  /* amp is still UnCompressed  uclimit==limitIN/tresh; */
 	    *out++ = pow(amp, oneminusratio);
-	  else *out++ = amp * climit_inv; // amp must fit for limiting : amp(new) = limit/maxval; = amp(old)*limitOUT/tresh;
+	  else *out++ = amp * climit_inv; /* amp must fit for limiting : amp(new) = limit/maxval; = amp(old)*limitOUT/tresh; */
 	else *out++ = 1.;
 
 	*in++ = 0.;
@@ -561,7 +565,7 @@ static t_int *limiter_perform(t_int *w)
     break;
   }
 
-  // now return the goodies
+  /* now return the goodies */
   x->amplification	= amp;
   x->samples_left		= samplesleft;
 
@@ -592,7 +596,7 @@ static void limiter_dsp(t_limiter *x, t_signal **sp)
 
 
 /* ------------------------------------------------------------------------------------ */
-// finally do the creation - things
+/* finally do the creation - things */
 
 static void *limiter_new(t_symbol *s, int argc, t_atom *argv)
 {

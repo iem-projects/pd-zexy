@@ -19,7 +19,9 @@
 
 #include "zexy.h"
 
-//#define DEBUG
+#if 0
+# define DEBUG
+#endif
 
 #ifdef DEBUG
 # define DEBUGFUN(x) x

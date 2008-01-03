@@ -23,15 +23,12 @@
 
 #include <stdio.h>
 #include <string.h>
-//#include <stdarg.h>
-//#include <fcntl.h>
 
 #ifdef __WIN32__
 # include <io.h>
 # include <stdlib.h>
-//#else
-//# include <sys/types.h>
-//# include <unistd.h>
+#else
+# include <unistd.h>
 #endif
 
 #define MIN_FREADLN_LENGTH 10
@@ -85,17 +82,19 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
 
    freadln_close(x);
 
-/*   if(type!=gensym("cr")) {
+/*
+   if(type!=gensym("cr")) {
      pd_error(x, "currently only 'cr' type files are implemented!");
      return;
-   }*/
+   }
+*/
    if (type==gensym("cr"))
       strcpy(x->linebreak_chr,"\n");
    else
       strcpy(x->linebreak_chr,";\n");
       
 
-   // directory, filename, extension, dirresult, nameresult, unsigned int size, int bin
+   /* directory, filename, extension, dirresult, nameresult, unsigned int size, int bin */
    if ((fd=open_via_path(dirname,
 	       s->s_name,"", filenamebuf, &filenamebufptr, MAXPDSTRING,0)) < 0 ) {
       pd_error(x, "%s: failed to open %s", s->s_name, filenamebuf);
@@ -164,7 +163,7 @@ static void freadln_readline (t_freadln *x)
    t_symbol *s;
    int rewind_after;
 
-   if (x->x_file < 0) {
+   if (!x->x_file) {
       pd_error(x, "no file opened for reading");
       return;
    }
@@ -196,7 +195,6 @@ static void freadln_readline (t_freadln *x)
    if (linebreak_pos==-1) 
       linebreak_pos=items_read;
    x->x_textbuf[linebreak_pos-1]='\0';
-   //post("analyzing \"%s\"",x->x_textbuf);
    if (!(bbuf=binbuf_new())) {
       pd_error(x, "out of memory");
       freadln_close(x);
@@ -216,9 +214,10 @@ static void freadln_readline (t_freadln *x)
    else {
       outlet_list(x->x_message_outlet, atom_getsymbol(abuf), 0, abuf);
    }
-   // NOTE: the following line might be a problem in recursions
-   // and could be performed before to outlet_* as well,
-   // but(!) atom buffer abuf must be copied if doing so.
+   /* NOTE: the following line might be a problem in recursions
+    * and could be performed before to outlet_* as well,
+    * but(!) atom buffer abuf must be copied if doing so.
+    */
    binbuf_free(bbuf);
 
 }

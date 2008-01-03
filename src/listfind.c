@@ -19,7 +19,9 @@
 
 #include "zexy.h"
 
-//#define DEBUG
+#if 0
+# define DEBUG
+#endif
 
 #ifdef DEBUG
 # define DEBUGFUN(x) x
@@ -82,7 +84,7 @@ static int list_equals(int count, t_atom*a1, t_atom*a2) {
   for(i=0; i<count; i++, a1++, a2++) {
     if(a1->a_type!=a2->a_type) 
       return 0;
-    if(a1->a_w.w_symbol!=a2->a_w.w_symbol) // is it that simple?
+    if(a1->a_w.w_symbol!=a2->a_w.w_symbol) /* is it that simple? */
       return 0;
   }
   return 1;
@@ -124,7 +126,7 @@ static void listfind_doit(t_outlet*out, int longcount, t_atom*longlist, int patt
     count++;
 
     DEBUGFUN(post("new offset=%d", offset));
-    offset++; // proceed to the next element
+    offset++; /* proceed to the next element */
   }
 
   DEBUGFUN(post("got %d results", count));

@@ -21,6 +21,8 @@
 
 #include "zexy.h"
 #include "z_zexy.h"
+
+#include <stdio.h>
 #include <stdarg.h>
 
 
@@ -39,88 +41,90 @@ t_class *zexy_class;
 
 static void zexy_help(void)
 {
-  post("\n\n...this is the zexy %c external "VERSION"...", HEARTSYMBOL);
-  post("\n%c handling signals"
+  endpost(); endpost(); 
+  post("...this is the zexy %c external "VERSION"...", HEARTSYMBOL);
+  endpost();
+  post("%c handling signals", HEARTSYMBOL);
 #if 0
-       "\nstreamout~\t:: stream signals via a LAN : (%c) gige 1999"
-       "\nstreamin~\t:: catch signals from a LAN : based on gige"
+  post("streamout~\t:: stream signals via a LAN : (%c) gige 1999");
+  post("streamin~\t:: catch signals from a LAN : based on gige");
 #endif
-       "\nsfplay\t\t:: play back a (multichannel) soundfile : (c) ritsch 1999"
-       "\nsfrecord\t:: record a (multichannel) soundfile : based on ritsch", HEARTSYMBOL);
+  post("sfplay\t\t:: play back a (multichannel) soundfile : (c) ritsch 1999");
+  post("sfrecord\t:: record a (multichannel) soundfile : based on ritsch");
 
-  post("\n%c generating signals"
-       "\nnoish~\t\t:: generate bandlimited noise"
-       "\nnoisi~\t\t:: generate bandlimited noise"
-       "\ndirac~\t\t:: generate a dirac-pulse"
-       "\nstep~\t\t:: generate a unity-step"
-       "\ndfreq~\t\t:: detect frequency by counting zero-crossings : (c) ritsch 1998", HEARTSYMBOL);
+  endpost(); post("%c generating signals", HEARTSYMBOL);
+  post("noish~\t\t:: generate bandlimited noise");
+  post("noisi~\t\t:: generate bandlimited noise");
+  post("dirac~\t\t:: generate a dirac-pulse");
+  post("step~\t\t:: generate a unity-step");
+  post("dfreq~\t\t:: detect frequency by counting zero-crossings : (c) ritsch 1998");
 
-  post("\n%c manipulating signals"
-       "\nlimiter~\t:: limit/compress one or more signals"
-       "\nnop~\t\t:: pass through a signal (delay 1 block)"
-       "\nz~\t\t:: samplewise delay"
-       "\nswap~\t\t:: byte-swap a signal"
-       "\nquantize~\t:: quantize a signal", HEARTSYMBOL);
+  endpost(); post("%c manipulating signals", HEARTSYMBOL);
+  post("limiter~\t:: limit/compress one or more signals");
+  post("nop~\t\t:: pass through a signal (delay 1 block)");
+  post("z~\t\t:: samplewise delay");
+  post("swap~\t\t:: byte-swap a signal");
+  post("quantize~\t:: quantize a signal");
 
-  post("\n%c binary operations on signals"
-       "\nabs~, sgn~, >~, <~, ==~, &&~, ||~", HEARTSYMBOL);
+  endpost(); post("%c binary operations on signals", HEARTSYMBOL);
+  post("abs~, sgn~, >~, <~, ==~, &&~, ||~");
 
-  post("\n%c multary operations on signals"
+  endpost(); post("%c multary operations on signals", HEARTSYMBOL);
+  post("multiline~\t:: multiple line~ multiplication");
+  post("multiplex~\t:: multiplex 1 inlet~ to 1-of-various outlet~s");
+  post("demultiplex~\t:: demultiplex 1-of-various inlet~s to 1 outlet~");
 
-       "\nmultiline~\t:: multiple line~ multiplication"
-       "\nmultiplex~\t:: multiplex 1 inlet~ to 1-of-various outlet~s"
-       "\ndemultiplex~\t:: demultiplex 1-of-various inlet~s to 1 outlet~", HEARTSYMBOL);
+  endpost(); post("%c investigating signals in message-domain", HEARTSYMBOL);
+  post("pack~\t\t:: convert a signal into a list of floats");
+  post("unpack~\t\t:: convert packages of floats into a signal");
 
-  post("\n%c investigating signals in message-domain"
-       "\npack~\t\t:: convert a signal into a list of floats"
-       "\nunpack~\t\t:: convert packages of floats into a signal"
-
-       "\nsigzero~\t:: indicates whether a signal is zero throughout the block"
-       "\navg~\t\t:: outputs average of a signal as float"
-       "\ntavg~\t\t:: outputs average of a signal between two bangs"
-       "\nenvrms~\t\t:: an env~-object that ouputs rms instead of db"
-       "\npdf~\t\t:: power density function", HEARTSYMBOL);
+  post("sigzero~\t:: indicates whether a signal is zero throughout the block");
+  post("avg~\t\t:: outputs average of a signal as float");
+  post("tavg~\t\t:: outputs average of a signal between two bangs");
+  post("envrms~\t\t:: an env~-object that ouputs rms instead of db");
+  post("pdf~\t\t:: power density function");
        
-  post("\n%c basic message objects"
-       "\nnop\t\t:: a no-operation"
-       "\nlister\t\t:: stores lists"
-       "\nany2list\t\t:: converts \"anything\" to lists"
-       "\nlist2int\t:: cast each float of a list to integer"
-       "\natoi\t\t:: convert ascii to integer"
-       "\nlist2symbol\t:: convert a list into a single symbol"
-       "\nsymbol2list\t:: split a symbol into a list"
-       "\nstrcmp\t\t:: compare 2 lists as if they where strings"
-       "\nrepack\t\t:: (re)packs atoms to packages of a given size"
-       "\npackel\t\t:: element of a package"
-       "\nlength\t\t:: length of a package"
-       "\nniagara\t\t:: divide a package into 2 sub-packages"
-       "\nglue\t\t:: append a list to another"
-       "\nrepeat\t\t:: repeat a message"
-       "\nsegregate\t:: sort inputs by type"
-       "\n.\t\t:: scalar multiplication of vectors (lists of floats)", HEARTSYMBOL);
+  endpost(); post("%c basic message objects", HEARTSYMBOL);
+  post("nop\t\t:: a no-operation");
+  post("lister\t\t:: stores lists");
+  post("any2list\t\t:: converts \"anything\" to lists");
+  post("list2int\t:: cast each float of a list to integer");
+  post("atoi\t\t:: convert ascii to integer");
+  post("list2symbol\t:: convert a list into a single symbol");
+  post("symbol2list\t:: split a symbol into a list");
+  post("strcmp\t\t:: compare 2 lists as if they where strings");
+  post("repack\t\t:: (re)packs atoms to packages of a given size");
+  post("packel\t\t:: element of a package");
+  post("length\t\t:: length of a package");
+  post("niagara\t\t:: divide a package into 2 sub-packages");
+  post("glue\t\t:: append a list to another");
+  post("repeat\t\t:: repeat a message");
+  post("segregate\t:: sort inputs by type");
+  post(".\t\t:: scalar multiplication of vectors (lists of floats)");
 
-  post("\n%c advanced message objects"
-       "\ntabread4\t:: 4-point interpolating table-read object"
-       "\ntabdump\t\t:: dump the table as a list"
-       "\ntabset\t\t:: set a table with a list"
-       "\nmavg\t\t:: a variable moving average filter"
-       "\nmean\t\t:: get the arithmetic mean of a vector"
-       "\nminmax\t\t:: get the minimum and the maximum of a vector"
-       "\nmakesymbol\t:: creates (formatted) symbols"
-       "\ndate\t\t:: get the current system date"
-       "\ntime\t\t:: get the current system time"
-       "\nindex\t\t:: convert symbols to indices"
-       "\ndrip\t\t:: converts a package to a sequence of atoms"
-       "\nsort\t\t:: shell-sort a package of floats"
-       "\ndemux\t\t:: demultiplex the input to a specified output"
-       "\nmsgfile\t\t:: store and handles lists of lists"
-       "\nlp\t\t:: write to the (parallel) port"
-       "\nwrap\t\t:: wrap a floating number between 2 limits"
-       "\nurn\t\t:: unique random numbers"
-       "\noperating_system\t:: information on the OS", HEARTSYMBOL);
+  endpost(); post("%c advanced message objects", HEARTSYMBOL);
+  post("tabread4\t:: 4-point interpolating table-read object");
+  post("tabdump\t\t:: dump the table as a list");
+  post("tabset\t\t:: set a table with a list");
+  post("mavg\t\t:: a variable moving average filter");
+  post("mean\t\t:: get the arithmetic mean of a vector");
+  post("minmax\t\t:: get the minimum and the maximum of a vector");
+  post("makesymbol\t:: creates (formatted) symbols");
+  post("date\t\t:: get the current system date");
+  post("time\t\t:: get the current system time");
+  post("index\t\t:: convert symbols to indices");
+  post("drip\t\t:: converts a package to a sequence of atoms");
+  post("sort\t\t:: shell-sort a package of floats");
+  post("demux\t\t:: demultiplex the input to a specified output");
+  post("msgfile\t\t:: store and handles lists of lists");
+  post("lp\t\t:: write to the (parallel) port");
+  post("wrap\t\t:: wrap a floating number between 2 limits");
+  post("urn\t\t:: unique random numbers");
+  post("operating_system\t:: information on the OS");
 
-  post("\n\n(l) forum::für::umläute except where indicated\n"
-       "this software is under the GnuGPL that is provided with these files");
+  endpost(); post("\n(l) forum::für::umläute except where indicated");
+  post("this software is released under the GnuGPL that is provided with these files");
+  endpost();
 }
 
 static void *zexy_new(void)

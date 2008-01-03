@@ -232,7 +232,7 @@ static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
       if(match[i].rm_so!=-1){
         /* output the matches */
         if(i>0 && (match[i].rm_so==match[i-1].rm_so) && (match[i].rm_eo==match[i-1].rm_eo)){
-          // duplicate matches
+          /* duplicate matches */
         } else {
           SETFLOAT(ap2+0, (t_float)i);
           SETFLOAT(ap2+1, (t_float)match[i].rm_so);

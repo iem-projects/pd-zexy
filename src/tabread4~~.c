@@ -72,7 +72,6 @@ static t_int *tabread4_tilde_perform(t_int *w)
     while (n--) *out++ = 0;
     return (w+6);
   }
-  //  post("xxx");
   for (i = 0; i < n; i++)
     {
       t_sample in0_s=*in++;
@@ -86,9 +85,6 @@ static t_int *tabread4_tilde_perform(t_int *w)
       else if (index > maxindex)
         index = maxindex, frac = 1;
       else frac = findex - index;
-
-      //post("%f + %f = %f", in0_s, in1_s, findex);
-      //  post("%f - %f = %d", findex, frac, index);
 
       wp = buf + index;
 

@@ -95,7 +95,6 @@ static void time_bang(t_time *x)
   resolvetime = (x->GMT)?gmtime(&tv.tv_sec):localtime(&tv.tv_sec);
   ms = tv.tv_usec*0.001;
 #endif
-  //  outlet_float(x->x_outlet4, (t_float)(mytime.millitm));
   outlet_float(x->x_outlet4, (t_float)(ms));
   outlet_float(x->x_outlet3, (t_float)resolvetime->tm_sec);
   outlet_float(x->x_outlet2, (t_float)resolvetime->tm_min);  

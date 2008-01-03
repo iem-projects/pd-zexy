@@ -26,8 +26,7 @@ zmoelnig@iem.kug.ac.at
 
 /* TODO: deprecate this in favour of [sfplay~] */
 
-
-/* #define DEBUG_ME // for debugging messages */
+/* #define DEBUG_ME for debugging messages */
 
 #include "zexy.h"
 
@@ -128,15 +127,18 @@ static void sfrecord_open(t_sfrecord *x,t_symbol *filename,t_symbol *endian)
 		return;
 	}
  
-/* test if big endian else asume little endian 
-	should be 'l' but could be anything*/
-
+  /* test if big endian else asume little endian 
+   * should be 'l' but could be anything
+   */
 	if(sfrecord_am_i_big_endian())
 		x->swap = !(endian->s_name[0] == 'b');
 	else
 		x->swap = (endian->s_name[0] == 'b');
 
-//	x->skip = 1;	/* skip header after open;; sometimes we´ll have to write a header using the x->skip; so don´t delete it completely*/
+	/* 
+   * skip header after open;; sometimes we´ll have to write a header using the x->skip; so don´t delete it completely 
+   */
+  /* x->skip = 1; */
 
 	x->filename = filename;
 
@@ -414,7 +416,7 @@ static t_int *sfrecord_perform(t_int *w)
 #endif
 			break;
 		};
-#endif //0
+#endif /* 0 */
 		return (w+c+3); /* writing was fine */
 
 

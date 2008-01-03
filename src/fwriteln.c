@@ -239,7 +239,6 @@ static void *fwriteln_new(t_symbol *s, int argc, t_atom *argv)
    strncat(x->format_string_afloats,width_str,2);
    strncat(x->format_string_afloats,precision_str,3);
    strncat(x->format_string_afloats,float_format,2);
-   //post("format string: \"%s\"\n",x->format_string_afloats);
    return (void *)x;
 }
 

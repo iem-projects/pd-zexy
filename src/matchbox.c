@@ -14,12 +14,13 @@
  *
  ******************************************************/
 
-// LATER: add a creation argument to specify the initial search mode
-
-// LATER: bind a "name" to the [matchbox] so several objects can share the same entries
-// if no name is given at creation time, the entries are local only
-
-// even LATER: dynamically bind to several searchlists (via "set" message)
+/* LATER: add a creation argument to specify the initial search mode
+ *
+ * LATER: bind a "name" to the [matchbox] so several objects can share the same entries
+ * if no name is given at creation time, the entries are local only
+ *
+ * even LATER: dynamically bind to several searchlists (via "set" message)
+ */
 
 
 #include "zexy.h"
@@ -131,7 +132,7 @@ static int atommatch_exact(t_atom*pattern, t_atom*atom) {
       return pattern==atom;
     }
   } else {
-    //post("types don't match!");
+    /* post("types don't match!"); */
     return FALSE;
   }
 
@@ -318,8 +319,6 @@ static int atommatch_osc(t_atom*pattern, t_atom*test) {
 
   int result = FALSE;
 
-  //startpost("atommatch::OSC -> ");
-
   if(pattern->a_type==A_SYMBOL) {
     s_pattern=pattern->a_w.w_symbol->s_name;
   } else {
@@ -337,8 +336,6 @@ static int atommatch_osc(t_atom*pattern, t_atom*test) {
 
 
   result = OSC_PatternMatch(s_pattern, s_test, s_pattern);
-
-  //post("'%s' <-> '%s' = %d", s_pattern, s_test, result);
 
   if(pattern_size>0) {
     freebytes(s_pattern, pattern_size);
@@ -401,9 +398,9 @@ static t_listlist*matchlistlist_regex(unsigned int*numresults, t_listlist*search
   regex_t**regexpressions=0;
   t_listlist*matchinglist=0, *sl;
   int i=0;
-  flags|=REG_EXTENDED;
-
   int num=0;
+
+  flags|=REG_EXTENDED;
 
   /* 1st compile the patterns */
   regexpressions=(regex_t**)getbytes(sizeof(regex_t*)*p_argc);
@@ -539,32 +536,32 @@ static t_listlist*matchlistlist(unsigned int*numresults, t_listlist*searchlist, 
 
 
 static void matchbox_list(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
-  int results=0;
+  unsigned int results=0;
   int mode=x->x_mode;
   t_listlist*resultlist=matchlistlist(&results, x->x_lists, argc, argv, mode, FALSE);
   t_listlist*dummylist;
 
-  outlet_float(x->x_outNumResults, results);
+  outlet_float(x->x_outNumResults, (t_float)results);
   
   for(dummylist=resultlist; 0!=dummylist; dummylist=dummylist->next)
     outlet_list(x->x_outResult,  &s_list, dummylist->argc, dummylist->argv);
 }
 
 static void matchbox_add(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
-  // 1st match, whether we already have this entry
+  /* 1st match, whether we already have this entry */
   if(matchlistlist(0, x->x_lists, argc, argv, MATCHBOX_EXACT, FALSE)) {
-    // already there, skip the rest
+    /* already there, skip the rest */
     z_verbose(1, "this list is already in the buffer!, skipping...");
     return;
   }
 
-  // 2nd if this is a new entry, add it
+  /* 2nd if this is a new entry, add it */
   x->x_lists=addlistlist(x->x_lists, argc, argv);
   x->x_numlists++;
 }
 
 static void matchbox_delete(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
-  int results=0;
+  unsigned int results=0;
   int mode=x->x_mode;
   t_listlist*resultlist=matchlistlist(&results, x->x_lists, argc, argv, mode, TRUE);
   t_listlist*dummylist;
@@ -572,7 +569,7 @@ static void matchbox_delete(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
 
   x->x_numlists-=results;
 
-  outlet_float(x->x_outNumResults, results);
+  outlet_float(x->x_outNumResults, (t_float)results);
   
   for(dummylist=resultlist; 0!=dummylist; dummylist=dummylist->next)
     outlet_anything(x->x_outResult, delsym, dummylist->argc, dummylist->argv);

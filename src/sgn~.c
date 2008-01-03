@@ -73,14 +73,14 @@ static t_int *sgnTilde_perform8(t_int *w)
 }
 
 #ifdef __SSE__
-static long l_bitmask[]={0x80000000, 0x80000000, 0x80000000, 0x80000000}; // sign bitmask
+static long l_bitmask[]={0x80000000, 0x80000000, 0x80000000, 0x80000000}; /* sign bitmask */
 static t_int *sgnTilde_performSSE(t_int *w)
 {
   __m128 *in = (__m128 *)(w[1]);
   __m128 *out = (__m128 *)(w[2]);
 
   __m128 val;
-  int n = (int)(w[3])>>3; // we do 8x loop-unrolling
+  int n = (int)(w[3])>>3; /* we do 8x loop-unrolling */
 
   const __m128 sgnmask= _mm_loadu_ps((float*)l_bitmask);
   const __m128 zero   = _mm_setzero_ps();
@@ -91,10 +91,10 @@ static t_int *sgnTilde_performSSE(t_int *w)
   while (n--) {
 
     val=in[0];
-    xmm0  = _mm_cmpneq_ps(val , zero);// mask for non-zeros
-    xmm1  = _mm_and_ps   (val, sgnmask);// sign (without value)
-    xmm0  = _mm_and_ps   (xmm0, one); // (abs) value: (val==0.f)?0.f:1.f
-    out[0]= _mm_or_ps    (xmm1, xmm0);// merge sign and value
+    xmm0  = _mm_cmpneq_ps(val , zero);/* mask for non-zeros */
+    xmm1  = _mm_and_ps   (val, sgnmask);/* sign (without value) */
+    xmm0  = _mm_and_ps   (xmm0, one); /* (abs) value: (val==0.f)?0.f:1.f */
+    out[0]= _mm_or_ps    (xmm1, xmm0);/* merge sign and value */
 
     val=in[1];
     xmm0  = _mm_cmpneq_ps(val , zero);
@@ -117,7 +117,7 @@ static void sgnTilde_dsp(t_sgnTilde *x, t_signal **sp)
      Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&
      Z_SIMD_CHKALIGN(sp[0]->s_vec)&&
      Z_SIMD_CHKALIGN(sp[1]->s_vec)&&
-     ZEXY_TYPE_EQUAL(t_sample, float) // currently SSE2 code is only for float (not for double)
+     ZEXY_TYPE_EQUAL(t_sample, float) /*  currently SSE2 code is only for float (not for double) */
      )
     {
       dsp_add(sgnTilde_performSSE, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
