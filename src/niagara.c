@@ -17,15 +17,14 @@
 /* 3108:forum::für::umläute:2000 */
 
 #include "zexy.h"
-#include <string.h>
-#include <memory.h>
-
 
 /* ------------------------- niagara ------------------------------- */
 
 /*
-divides a package into 2 sub-packages at a specified point
-like the niagara-falls, some water goes down to the left side, the rest to the right side, devided by the rock
+  divides a package into 2 sub-packages at a specified point
+  like the niagara-falls, some water goes down to the left side, the rest to the right side, devided by the rock
+
+  nowadays you can do this with [list split] (though this cannot handle negative indices)
 */
 
 static t_class *niagara_class;

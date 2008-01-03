@@ -18,11 +18,10 @@
 /* 2305:forum::für::umläute:2001 */
 
 #include "zexy.h"
-#include <string.h>
 
 /* ------------------------- zunpack ------------------------------- */
 
-/* convert anythings to lists, pass through the rest */
+/* like pack, but does no type-checking */
 
 static t_class *zunpack_class;
 
@@ -40,7 +39,6 @@ static void zunpack_list(t_zunpack *x, t_symbol *s, int argc, t_atom *argv)
   while(count--) {
     outlet_list(x->x_out[count], gensym("list"), 1, argv+count);
   }
-
 }
 
 static void zunpack_bang(t_zunpack *x)

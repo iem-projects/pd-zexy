@@ -22,7 +22,9 @@
 
 /* ------------------------- a2l ------------------------------- */
 
-/* convert anythings to lists, pass through the rest */
+/* convert anythings to lists, pass through the rest 
+ * nowadays you can use [list] for this
+ */
 
 static t_class *a2l_class;
 

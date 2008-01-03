@@ -24,10 +24,6 @@
 */
 
 #include "zexy.h"
-#include <string.h>
-// do we need memory.h ?
-#include <memory.h>
-
 
 static t_class *packel_class;
 
@@ -107,8 +103,8 @@ static void packel_free(t_packel *x)
   }
 
   if(x->position)freebytes(x->position, x->count*sizeof(t_float));
-  if(x->x_inlet)   freebytes(x->x_inlet, x->count*sizeof(t_inlet*));
-  if(x->x_outlet)  freebytes(x->x_outlet, x->count*sizeof(t_outlet*));
+  if(x->x_inlet) freebytes(x->x_inlet, x->count*sizeof(t_inlet*));
+  if(x->x_outlet)freebytes(x->x_outlet, x->count*sizeof(t_outlet*));
 
 }
 

@@ -61,8 +61,6 @@ ritsch@iem.kug.ac.at */
 
 #include "zexy.h"
 
-/*#include "m_imp.h"*/
-
 #define DACBLKSIZE 64 /* in m_imp.h, but error if it is included it here*/
 
 #include <stdio.h>

@@ -18,7 +18,6 @@
 
 
 #include "zexy.h"
-#include <string.h>
 
 //#define DEBUG
 

@@ -17,11 +17,10 @@
 
 #include "zexy.h"
 #include <stdlib.h>
-#include <string.h>
 
 /*
  * atoi : ascii to integer
-*/
+ */
 
 /* atoi ::  ascii to integer */
 

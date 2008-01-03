@@ -15,7 +15,6 @@
  ******************************************************/
 
 #include "zexy.h"
-#include <stdlib.h>
 #include <string.h>
 
 /*
