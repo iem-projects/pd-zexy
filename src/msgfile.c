@@ -592,12 +592,18 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
     break;
   }
 
-  if ((length = lseek(fd, 0, SEEK_END)) < 0 || lseek(fd, 0,SEEK_SET) < 0
-      || !(readbuf = t_getbytes(length))) {
+  if ((length = lseek(fd, 0, SEEK_END)) < 0 || lseek(fd, 0,SEEK_SET) < 0) {
     pd_error(x, "msgfile_read: unable to lseek %s", filnam);
     close(fd);
     return;
   }
+
+  if (!(readbuf = t_getbytes(length))) {
+    pd_error(x, "msgfile_read: could not reserve %d bytes to read into", length);
+    close(fd);
+    return;
+  }
+
 
   /* read */
   if ((readlength = read(fd, readbuf, length)) < length) {
