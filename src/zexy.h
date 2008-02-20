@@ -15,6 +15,7 @@
  *
  * if you are looking for the latest release of the ZEXY-external you should have another look at
 
+ http://puredata.info/community/projects/software/zexy/
  ftp://iem.at/pd/Externals/ZEXY
 
  * 
@@ -59,7 +60,7 @@
 
 #include <math.h>
 
-#define VERSION "2.2.0"
+#define VERSION "2.2.1"
 
 /* these pragmas are only used for MSVC, not MinGW or Cygwin */
 #ifdef _MSC_VER
