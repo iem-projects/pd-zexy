@@ -1,4 +1,4 @@
-#N canvas 94 78 859 363 10;
+#N canvas 452 54 925 369 10;
 #X obj 443 239 print done;
 #X text 72 260 see also:;
 #X msg 443 39 bang;
@@ -14,7 +14,7 @@ and expands its features.;
 #X text 492 36 output one line as a list and move to the next;
 #X text 90 201 add2 : read "add too" \; append to an existing line
 ;
-#X text 508 222 This outlet gets a bang when you hit the end of the
+#X text 528 222 This outlet gets a bang when you hit the end of the
 sequence \; it will also get the current position when using "when"
 ;
 #X text 127 97 end \, goto \, skip;
@@ -22,7 +22,7 @@ sequence \; it will also get the current position when using "when"
 #X text 128 145 find;
 #X text 73 163 read/write can handle csv files too;
 #X text 618 7 part of zexy;
-#N canvas 347 164 646 300 navigation 0;
+#N canvas 585 487 646 300 navigation 0;
 #X obj 54 272 outlet;
 #X msg 91 140 rewind;
 #X text 140 139 go to beginning;
@@ -33,16 +33,16 @@ sequence \; it will also get the current position when using "when"
 #X text 145 237 where are we now ?;
 #X text 146 214 go to the <n>th line from here;
 #X text 142 188 go to line number <n>;
-#X msg 92 189 goto 8;
 #X text 44 38 navigating through the lines of a [msgfile];
 #X text 42 62 these messages will not output any data;
 #X text 41 80 'where' will output the position of the "cursor" at the
 2nd outlet of [msgfile];
+#X msg 92 189 goto 8;
 #X connect 1 0 0 0;
 #X connect 3 0 0 0;
 #X connect 5 0 0 0;
 #X connect 6 0 0 0;
-#X connect 10 0 0 0;
+#X connect 13 0 0 0;
 #X restore 443 84 pd navigation;
 #N canvas 0 0 458 426 data 0;
 #X obj 54 332 outlet;
@@ -65,7 +65,7 @@ the current "cursor" position.;
 #X connect 4 0 0 0;
 #X connect 9 0 0 0;
 #X restore 443 64 pd data retrieval;
-#N canvas 0 0 669 573 editing 0;
+#N canvas 489 234 669 573 editing 0;
 #X obj 54 512 outlet;
 #X msg 137 101 clear;
 #X msg 140 481 set 2 4 6 8;
@@ -112,7 +112,7 @@ if the [msgfile];
 #X connect 20 0 0 0;
 #X connect 22 0 0 0;
 #X restore 443 104 pd editing;
-#N canvas 0 21 576 302 searching 0;
+#N canvas 0 21 676 304 searching 0;
 #X obj 54 272 outlet;
 #X msg 70 180 find test 6;
 #X msg 70 239 find test * 7 *;
@@ -157,7 +157,7 @@ $. This way you can write pd-patches which can handle arguments.;
 #X connect 11 0 0 0;
 #X connect 12 0 0 0;
 #X restore 443 144 pd file-i/o;
-#N canvas 0 0 450 397 misc 0;
+#N canvas 56 448 450 397 misc 0;
 #X obj 84 282 outlet;
 #X msg 84 112 print;
 #X text 40 72 miscellaneous functionality of [msgfile];
