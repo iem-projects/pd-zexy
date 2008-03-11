@@ -2,9 +2,6 @@
 the zexy external
 ==============================================================================
 
-
-
-
 outline of this file::
 ==============================================================================
  +  general
@@ -38,7 +35,6 @@ installation::
 
 linux :
 ------------------------------------------------------------------------------
-
 
 short:
 #1> cd src/
@@ -128,7 +124,6 @@ authors::
 ==============================================================================
 this software is 
 copyleft 1999-2007 by IOhannes m zmoelnig <zmoelnig [at] iem [dot] at>
-with some contributions by winfried ritsch, guenter geiger, miller.s.puckette 
-and surely some others
-
+with some contributions by winfried ritsch, franz zotter, guenter geiger, 
+miller.s.puckette and surely some others
 

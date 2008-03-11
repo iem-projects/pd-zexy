@@ -604,7 +604,6 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
     return;
   }
 
-
   /* read */
   if ((readlength = read(fd, readbuf, length)) < length) {
     pd_error(x, "msgfile_read: unable to read %s", filnam);
