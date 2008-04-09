@@ -26,12 +26,6 @@
 #include <fcntl.h>
 #include <string.h>
 
-#ifdef __WIN32__
-# include <io.h>
-#else
-# include <unistd.h>
-#endif
-
 /* ****************************************************************************** */
 /* msgfile : save and load messages... */
 
@@ -542,7 +536,8 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
 {
   int rmode = 0;
 
-  int fd;
+  int fd=0;
+  FILE*fil=NULL;
   long readlength, length, pos;
   char filnam[MAXPDSTRING], namebuf[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
@@ -563,9 +558,29 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
 		  filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0)) < 0) {
 
     if((fd=open(filename->s_name, rmode)) < 0) {
-      pd_error(x, "%s: can't open in %s", filename->s_name, dirname);
+      pd_error(x, "can't open in %s/%s",  dirname, filename->s_name);
       return;
+    } else {
+      sprintf(filnam, "%s", filename->s_name);
     }
+  } else {
+    close(fd);
+    sprintf(filnam, "%s/%s", buf, bufptr);
+  }
+
+  fil=fopen(filnam, "r");
+  fseek(fil, 0, SEEK_END);
+  if(fil==NULL) {
+    pd_error(x, "could not open '%s'", filnam);
+    return;
+  }
+  length=ftell(fil);
+  fseek(fil, 0, SEEK_SET);
+
+  if (!(readbuf = t_getbytes(length))) {
+    pd_error(x, "msgfile_read: could not reserve %d bytes to read into", length);
+    close(fd);
+    return;
   }
 
   if (gensym("cr")==format) {
@@ -592,28 +607,17 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
     break;
   }
 
-  if ((length = lseek(fd, 0, SEEK_END)) < 0 || lseek(fd, 0,SEEK_SET) < 0) {
-    pd_error(x, "msgfile_read: unable to lseek %s", filnam);
-    close(fd);
-    return;
-  }
-
-  if (!(readbuf = t_getbytes(length))) {
-    pd_error(x, "msgfile_read: could not reserve %d bytes to read into", length);
-    close(fd);
-    return;
-  }
 
   /* read */
-  if ((readlength = read(fd, readbuf, length)) < length) {
-    pd_error(x, "msgfile_read: unable to read %s", filnam);
-    close(fd);
+  if ((readlength = fread(readbuf, sizeof(char), length, fil)) < length) {
+    pd_error(x, "msgfile_read: unable to read %s: %d of %d", filnam, readlength, length);
+    fclose(fil);
     t_freebytes(readbuf, length);
     return;
   }
 
   /* close */
-  close(fd);
+  fclose(fil);
 
   /* convert separators and eols to what pd expects in a binbuf*/
   bufptr=readbuf;
