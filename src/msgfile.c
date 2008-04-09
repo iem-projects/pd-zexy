@@ -568,7 +568,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
     sprintf(filnam, "%s/%s", buf, bufptr);
   }
 
-  fil=fopen(filnam, "r");
+  fil=fopen(filnam, "rb");
   fseek(fil, 0, SEEK_END);
   if(fil==NULL) {
     pd_error(x, "could not open '%s'", filnam);
