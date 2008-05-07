@@ -28,8 +28,14 @@ typedef struct _sigpack
 
   int vector_length;
   t_atom *buffer;
-
+  t_clock*x_clock;
+  int x_outputindsp;
 } t_sigpack;
+
+static void *sigpack_tick(t_sigpack*x)
+{
+  outlet_list(x->x_obj.ob_outlet, &s_list, x->vector_length, x->buffer);
+}
 
 static t_int *sigpack_perform(t_int *w)
 {
@@ -43,10 +49,11 @@ static t_int *sigpack_perform(t_int *w)
     SETFLOAT(&buf[i], f);
     i++;
   }
-#ifdef __GNUC__
-# warning defer list-output to next block with a clock!
-#endif
-  outlet_list(x->x_obj.ob_outlet, &s_list, x->vector_length, x->buffer);
+  if(x->x_outputindsp) {
+    sigpack_tick(x);
+  } else {
+    clock_delay(x->x_clock, 0);
+  }
 
   return (w+4);
 }
@@ -61,12 +68,20 @@ static void sigpack_dsp(t_sigpack *x, t_signal **sp)
   dsp_add(sigpack_perform, 3, sp[0]->s_vec, x, sp[0]->s_n);
 }
 
+static void *sigpack_free(t_sigpack*x)
+{
+  clock_free(x->x_clock);
+}
+
 static void *sigpack_new(void)
 {
   t_sigpack *x = (t_sigpack *)pd_new(sigpack_class);
   x->vector_length = 0;
   x->buffer = 0;
   outlet_new(&x->x_obj, gensym("list"));
+  x->x_clock=clock_new(x, (t_method)sigpack_tick);
+
+  x->x_outputindsp=0;
 
   return (x);
 }
@@ -78,7 +93,7 @@ static void sigpack_help(void)
 
 void pack_tilde_setup(void)
 {
-  sigpack_class = class_new(gensym("pack~"), (t_newmethod)sigpack_new, 0,
+  sigpack_class = class_new(gensym("pack~"), (t_newmethod)sigpack_new, (t_method)sigpack_free,
                             sizeof(t_sigpack), 0, A_DEFFLOAT, 0);
   class_addmethod(sigpack_class, nullfn, gensym("signal"), 0);
   class_addmethod(sigpack_class, (t_method)sigpack_dsp, gensym("dsp"), 0);
