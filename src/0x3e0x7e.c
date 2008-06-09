@@ -250,7 +250,7 @@ void setup_0x3e0x7e(void)
   CLASS_MAINSIGNALIN(scalargt_tilde_class, t_scalargt_tilde, x_f);
   class_addmethod(scalargt_tilde_class, (t_method)scalargt_tilde_dsp, gensym("dsp"),
 		  0);
-  class_addmethod  (gt_tilde_class, (t_method)gt_tilde_help, gensym("help"), A_NULL);
+  class_addmethod  (scalargt_tilde_class, (t_method)gt_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(scalargt_tilde_class, gensym("zigbinops"));
 
   zexy_register(">~");

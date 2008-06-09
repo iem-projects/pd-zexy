@@ -247,7 +247,7 @@ void setup_0x3d0x3d0x7e(void)
   CLASS_MAINSIGNALIN(scalareq_tilde_class, t_scalareq_tilde, x_f);
   class_addmethod(scalareq_tilde_class, (t_method)scalareq_tilde_dsp, gensym("dsp"),
 		  0);
-  class_addmethod  (eq_tilde_class, (t_method)eq_tilde_help, gensym("help"), A_NULL);
+  class_addmethod  (scalareq_tilde_class, (t_method)eq_tilde_help, gensym("help"), A_NULL);
   class_sethelpsymbol(scalareq_tilde_class, gensym("zigbinops"));
 
   zexy_register("==~");
