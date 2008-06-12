@@ -59,8 +59,9 @@ static void zpack_bang(t_zpack*x) {
 }
 
 static void zpack_list0(t_zpack*x, t_symbol *s, int argc, t_atom *argv) {
-  if(argc>0)
-    setatom(x, argv, 0);
+  int i=0;
+  for(i=0; i<argc && i<x->x_argc; i++)
+    setatom(x, argv+i, i);
   zpack_bang(x);
 }
 
