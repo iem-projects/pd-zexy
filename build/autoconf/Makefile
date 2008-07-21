@@ -69,10 +69,8 @@ realclean: clean alias-clean
 	-rm -f *.d *.d.*
 
 distclean: realclean
-	-rm -f Make.config zexyconf.h ../*.$(EXT)
-	-rm -f zexy.exp  zexy.lib  zexy.ncb  \
-		zexy.opt  zexy.plg
-	-rm -rf autom4te.cache/
+	-rm -f Make.config $(SOURCEDIR)zexyconf.h ../*.$(EXT)
+	-rm -rf autom4te.cache aclocal.m4
 
 tests:  all
 	make -C $(TESTDIR)
@@ -80,18 +78,18 @@ tests:  all
 alias: alias-bin alias-abs
 
 alias-bin: all
-	./makealias.sh ../src/alias ../src ../reference
+	$(SOURCEDIR)makealias.sh $(SOURCEDIR)alias $(SOURCEDIR) $(SOURCEDIR)reference
 
 alias-abs:
-	./makealias.sh ../abs/alias ../abs
+	$(SOURCEDIR)makealias.sh $(SOURCEDIR)alias $(SOURCEDIR)abs
 
 alias-clean:  alias-clean-bin alias-clean-abs
 
 alias-clean-bin:
-	./makealias.sh -clean ../src/alias ../src ../reference
+	$(SOURCEDIR)makealias.sh -clean $(SOURCEDIR)alias $(SOURCEDIR) $(SOURCEDIR)reference
 
 alias-clean-abs:
-	./makealias.sh -clean ../abs/alias ../abs
+	$(SOURCEDIR)makealias.sh -clean $(SOURCEDIR)alias $(SOURCEDIR)abs
 
 install: all alias install-abs install-bin install-doc
 
