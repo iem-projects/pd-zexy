@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([zexy.h])
-AC_CONFIG_HEADER([zexyconf.h])
+AC_INIT([../../src/zexy.h])
+AC_CONFIG_HEADER([../../src/zexyconf.h])
 
 LIBNAME=zexy
 
@@ -423,8 +423,5 @@ AC_CHECK_HEADERS(m_pd.h, ,
         "--includedir=</path/to/pd/src/>"]))
 
 LFLAGS=${LDFLAGS}
-AC_OUTPUT(Make.config)
+AC_OUTPUT(../../src/Make.config)
 
-touch zexyconf.h
-
-#rm -f conftest.*
