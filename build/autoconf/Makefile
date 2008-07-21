@@ -5,12 +5,14 @@ default: all
 	install install-bin install-doc install-abs \
 	tests
 
-TESTDIR=../../tests
-SOURCEDIR=../../src/
+LIBDIR=../..
 
-HELPERSOURCES=$(SOURCEDIR)z_zexy.c $(SOURCEDIR)zexy.c $(SOURCEDIR)winNT_portio.c
+TESTDIR=$(LIBDIR)/tests
+SOURCEDIR=$(LIBDIR)/src
 
-OBJECTSOURCES=$(sort $(filter-out $(HELPERSOURCES), $(filter %.c, $(wildcard $(SOURCEDIR)*.c))))
+HELPERSOURCES=$(SOURCEDIR)/z_zexy.c $(SOURCEDIR)/zexy.c $(SOURCEDIR)/winNT_portio.c
+
+OBJECTSOURCES=$(sort $(filter-out $(HELPERSOURCES), $(filter %.c, $(wildcard $(SOURCEDIR)/*.c))))
 
 SOURCES=$(OBJECTSOURCES) $(HELPERSOURCES)
 
@@ -43,7 +45,7 @@ OBJECTS = $(OBJECTSOURCES:.c=.$(EXT))
 ## else we build separate externals
 ifneq "$(BUILDLIBRARY)" ""
 all: $(LIBNAME)
-	cp $(LIBNAME).$(EXT) ..
+	cp $(LIBNAME).$(EXT) $(LIBDIR)
 else
 all: $(OBJECTS)
 endif
@@ -53,7 +55,7 @@ $(OBJECTS): %.$(EXT) : %.o
 	$(STRIP) $(STRIPFLAGS) $@
 
 $(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
-	$(LD) $(LFLAGS) -o $@.$(EXT) $(SOURCEDIR)*.o $(LIBS)
+	$(LD) $(LFLAGS) -o $@.$(EXT) $(SOURCEDIR)/*.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
 
 $(TARGETS): %.o : %.c
@@ -62,14 +64,14 @@ $(TARGETS): %.o : %.c
 externals: $(OBJECTS)
 
 clean:
-	-rm -f *.$(EXT) *.o 
+	-rm -f $(SOURCEDIR)/*.$(EXT) $(SOURCEDIR)/*.o 
 
 realclean: clean alias-clean
-	-rm -f *~ _* config.*
-	-rm -f *.d *.d.*
+	-rm -f *~ config.*
+	-rm -f $(SOURCEDIR)/*.d $(SOURCEDIR)/*.d.* $(SOURCEDIR)/*~
 
 distclean: realclean
-	-rm -f Make.config $(SOURCEDIR)zexyconf.h ../*.$(EXT)
+	-rm -f Make.config $(SOURCEDIR)/zexyconf.h $(LIBDIR)/*.$(EXT)
 	-rm -rf autom4te.cache aclocal.m4
 
 tests:  all
@@ -78,32 +80,32 @@ tests:  all
 alias: alias-bin alias-abs
 
 alias-bin: all
-	$(SOURCEDIR)makealias.sh $(SOURCEDIR)alias $(SOURCEDIR) $(SOURCEDIR)reference
+	$(SOURCEDIR)/makealias.sh $(SOURCEDIR)/alias $(SOURCEDIR) $(LIBDIR)/reference
 
 alias-abs:
-	$(SOURCEDIR)makealias.sh $(SOURCEDIR)alias $(SOURCEDIR)abs
+	$(SOURCEDIR)/makealias.sh $(SOURCEDIR)/alias $(LIBDIR)/abs
 
 alias-clean:  alias-clean-bin alias-clean-abs
 
 alias-clean-bin:
-	$(SOURCEDIR)makealias.sh -clean $(SOURCEDIR)alias $(SOURCEDIR) $(SOURCEDIR)reference
+	$(SOURCEDIR)/makealias.sh -clean $(SOURCEDIR)/alias $(SOURCEDIR) $(LIBDIR)/reference
 
 alias-clean-abs:
-	$(SOURCEDIR)makealias.sh -clean $(SOURCEDIR)alias $(SOURCEDIR)abs
+	$(SOURCEDIR)/makealias.sh -clean $(SOURCEDIR)/alias $(LIBDIR)/abs
 
 install: all alias install-abs install-bin install-doc
 
 install-bin:
 	-install -d $(INSTALL_BIN)
-	-install -m 644 $(LIBNAME).$(EXT) $(INSTALL_BIN)
+	-install -m 644 $(LIBDIR)$(LIBNAME).$(EXT) $(INSTALL_BIN)
 
 install-doc:
 	-install -d $(INSTALL_DOC)
-	-install -m 644 ../reference/*.pd $(INSTALL_DOC)
+	-install -m 644 $(LIBDIR)/reference/*.pd $(INSTALL_DOC)
 
 install-abs:
 	-install -d $(INSTALL_BIN)
-	-install -m 644 ../abs/*.pd $(INSTALL_BIN)
+	-install -m 644 $(LIBDIR)/abs/*.pd $(INSTALL_BIN)
 
 
 uninstall-bin:
@@ -112,15 +114,15 @@ uninstall-bin:
 
 uninstall-doc:
 	-install -d $(INSTALL_DOC)
-	-install -m 644 ../reference/*.pd $(INSTALL_DOC)
+	-install -m 644 $(LIBDIR)/reference/*.pd $(INSTALL_DOC)
 
 uninstall-abs:
 	-install -d $(INSTALL_BIN)
-	-install -m 644 ../abs/*.pd $(INSTALL_BIN)
+	-install -m 644 $(LIBDIR)/abs/*.pd $(INSTALL_BIN)
 
 
 dist: all realclean
-	(cd ../..;tar czvf $(TARNAME) $(LIBNAME))
+	(cd $(LIBDIR)/..;tar czvf $(TARNAME) $(LIBNAME))
 
 everything: clean all install distclean
 
