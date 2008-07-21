@@ -5,31 +5,19 @@ default: all
 	install install-bin install-doc install-abs \
 	tests
 
+TESTDIR=../../tests
+SOURCEDIR=../../src/
 
-TESTDIR=../tests
+HELPERSOURCES=$(SOURCEDIR)z_zexy.c $(SOURCEDIR)zexy.c $(SOURCEDIR)winNT_portio.c
 
-HELPERSOURCES=z_zexy.c zexy.c winNT_portio.c
-
-OBJECTSOURCES=$(sort $(filter-out $(HELPERSOURCES), $(filter %.c, $(wildcard *.c))))
+OBJECTSOURCES=$(sort $(filter-out $(HELPERSOURCES), $(filter %.c, $(wildcard $(SOURCEDIR)*.c))))
 
 SOURCES=$(OBJECTSOURCES) $(HELPERSOURCES)
 
-zexyconf.h: zexyconf.h.in configure
-	./configure $(CONFIGUREFLAGS)
 
-configure: configure.ac aclocal.m4
-	autoconf
-
-aclocal.m4: acinclude.m4
-	aclocal
+VPATH = $(SOURCEDIR)
 
 -include $(SOURCES:.c=.d)
-
-Make.config: Make.config.in configure
-	./configure $(CONFIGUREFLAGS)
-
-z_zexy.c z_zexy.h:
-	./makesource.sh
 
 -include Make.config
 
@@ -65,7 +53,7 @@ $(OBJECTS): %.$(EXT) : %.o
 	$(STRIP) $(STRIPFLAGS) $@
 
 $(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
-	$(LD) $(LFLAGS) -o $@.$(EXT) *.o $(LIBS)
+	$(LD) $(LFLAGS) -o $@.$(EXT) $(SOURCEDIR)*.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
 
 $(TARGETS): %.o : %.c

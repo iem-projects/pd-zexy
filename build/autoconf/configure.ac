@@ -423,5 +423,5 @@ AC_CHECK_HEADERS(m_pd.h, ,
         "--includedir=</path/to/pd/src/>"]))
 
 LFLAGS=${LDFLAGS}
-AC_OUTPUT(../../src/Make.config)
+AC_OUTPUT(Make.config)
 
