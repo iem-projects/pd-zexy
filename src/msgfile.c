@@ -60,6 +60,7 @@ typedef struct _msgfile
   t_msglist *start;
 
   t_msglist *current;         /* pointer to our list */
+  t_msglist *previous; /* just in case we lost "current" */
 
   t_symbol *x_dir;
   t_canvas *x_canvas;
@@ -88,21 +89,20 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
   /* append list to the current node list */
   
   t_msglist *cur=x->current;
-  if(ac&&av&&A_SYMBOL==av->a_type&&gensym("")==atom_getsymbol(av)){
+  if(!cur || (ac && av && A_SYMBOL==av->a_type && gensym("")==atom_getsymbol(av))){
     /* ignoring empty symbols! */
     return;
   }
-  if (cur) {
-    t_atom *ap;
-    int newsize = cur->n + ac; 
 
-    ap = (t_atom *)getbytes(newsize * sizeof(t_atom));
-    memcpy(ap, cur->thislist, cur->n * sizeof(t_atom));
-    cur->thislist = ap;
-    memcpy(cur->thislist + cur->n, av, ac * sizeof(t_atom));
+  t_atom *ap;
+  int newsize = cur->n + ac; 
 
-    cur->n = newsize;
-  }
+  ap = (t_atom *)getbytes(newsize * sizeof(t_atom));
+  memcpy(ap, cur->thislist, cur->n * sizeof(t_atom));
+  cur->thislist = ap;
+  memcpy(cur->thislist + cur->n, av, ac * sizeof(t_atom));
+
+  cur->n = newsize;
 }
 
 static void delete_currentnode(t_msgfile *x)
@@ -135,6 +135,10 @@ static void delete_currentnode(t_msgfile *x)
     if (prv) prv->next     = nxt;
     
     x->current = (nxt)?nxt:prv;
+    if(x->current)
+      x->previous=x->current->previous;
+    else
+      x->previous=prv;
 
   }
 }
@@ -142,11 +146,15 @@ static void delete_currentnode(t_msgfile *x)
 static void delete_emptynodes(t_msgfile *x)
 {
   x->current=x->start;
+  x->previous=0;
   if (!x->current) return;
 
   while (x->current && x->current->next) {
     if (!x->current->thislist) delete_currentnode(x);
-    else x->current = x->current->next;
+    else {
+      x->previous=x->current;
+      x->current = x->current->next;
+    }
   }
 }
 
@@ -169,6 +177,7 @@ static void add_currentnode(t_msgfile *x)
   if (nxt) nxt->previous = newnode;
 
   x->current = newnode;
+  x->previous=prv;
 
   if(!x->start) /* it's the first line in the buffer */
     x->start=x->current;
@@ -195,6 +204,7 @@ static void insert_currentnode(t_msgfile *x)
     if (prv) prv->next = newnode;
     if (nxt) nxt->previous = newnode;
 
+    x->previous=prv;
     x->current = newnode;
     if(0==prv) {
       /* oh, we have a new start! */
@@ -207,11 +217,15 @@ static void msgfile_rewind(t_msgfile *x)
 {
   //  while (x->current && x->current->previous) x->current = x->current->previous;    
   x->current = x->start;
+  x->previous=0;
 }
 static void msgfile_end(t_msgfile *x)
 {
   if (!x->current) return;
-  while (x->current->next) x->current = x->current->next;
+  while (x->current->next) {
+    x->previous= x->current;
+    x->current = x->current->next;
+  }
   
 }
 static void msgfile_goto(t_msgfile *x, t_float f)
@@ -223,6 +237,7 @@ static void msgfile_goto(t_msgfile *x, t_float f)
   msgfile_rewind(x);
 
   while (i-- && x->current->next) {
+    x->previous= x->current;
     x->current = x->current->next;
   }
 }
@@ -326,7 +341,10 @@ static void msgfile_add2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
   msgfile_end(x);
   if (x->current->previous) x->current = x->current->previous;
   write_currentnode(x, ac, av);
-  if (x->current->next) x->current = x->current->next;
+  if (x->current->next) {
+    x->previous= x->current;
+    x->current = x->current->next;
+  }
 }
 static void msgfile_append(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
@@ -400,11 +418,18 @@ static void msgfile_next(t_msgfile *x)
 }
 static void msgfile_prev(t_msgfile *x)
 {
+  t_msglist*prev=0;
+
   if ((x->current) && (x->current->previous)) {
-    t_msglist *prev = x->current->previous;
+    prev = x->current->previous;
+  } else if (x->previous) {
+    prev = x->previous;
+  }
+  if(prev) {
     if (prev->thislist)
       outlet_list(x->x_obj.ob_outlet, gensym("list"), prev->n, prev->thislist);
     else outlet_bang(x->x_secondout);
+
   } else outlet_bang(x->x_secondout);
 }
 
@@ -413,6 +438,7 @@ static void msgfile_bang(t_msgfile *x)
   if ((x->current) && (x->current->thislist)) {
     t_msglist*cur=x->current;
     x->current=cur->next;
+    x->previous=cur;
     outlet_list(x->x_obj.ob_outlet, gensym("list"), cur->n, cur->thislist);
   } else {
     outlet_bang(x->x_secondout);
@@ -482,6 +508,7 @@ static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 
   if(found){
     x->current = found;
+    x->previous= found->previous;
     outlet_float(x->x_secondout, node_wherearewe(x));
     if(found->n && found->thislist)
       outlet_list(x->x_obj.ob_outlet, gensym("list"), found->n, found->thislist);
@@ -791,6 +818,7 @@ static void *msgfile_new(t_symbol *s, int argc, t_atom *argv)
     /* an empty node indicates the end of our listbuffer */
     x->current = 0;
     x->start   = 0;
+    x->previous= 0;
 
     x->mode=PD_MODE; /* that's the default */
 
