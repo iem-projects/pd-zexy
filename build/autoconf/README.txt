@@ -1,2 +1,3 @@
 the build/autoconf system is currently under revision;
-please use the autoconf-system in <zexy>/src/ instead
+
+if it doesn't work, try the autoconf-system in <zexy>/src/ instead
