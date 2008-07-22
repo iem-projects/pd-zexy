@@ -49,7 +49,7 @@
 # providing a POSIX shell script (mostly complete) reimplementation of
 # autoreconf.
 #
-# The AUTORECONF, AUTOCONF, AUTOMAKE, LIBTOOLIZE, ACLOCAL, AUTOHEADER
+# The AUTORECONF, AUTOCONF, AUTOMAKE, LIBTOOLIZE, ACLOCAL
 # environment variables and corresponding _OPTIONS variables (e.g.
 # AUTORECONF_OPTIONS) may be used to override the default automatic
 # detection behaviors.  Similarly the _VERSION variables will override
@@ -125,7 +125,7 @@ usage ( ) {
     echo "Should autoreconf fail, manual preparation steps will be run"
     echo "potentially accounting for several common preparation issues.  The"
 
-    echo "AUTORECONF, AUTOCONF, AUTOMAKE, LIBTOOLIZE, ACLOCAL, AUTOHEADER,"
+    echo "AUTORECONF, AUTOCONF, AUTOMAKE, LIBTOOLIZE, ACLOCAL"
     echo "PROJECT, & CONFIGURE environment variables and corresponding _OPTIONS"
     echo "variables (e.g. AUTORECONF_OPTIONS) may be used to override the"
     echo "default automatic detection behavior."
@@ -274,19 +274,8 @@ fi
 if [ "x$AUTOCONF_OPTIONS" = "x" ] ; then
     AUTOCONF_OPTIONS="-f"
 fi
-if [ "x$AUTOMAKE_OPTIONS" = "x" ] ; then
-    AUTOMAKE_OPTIONS="-a -c -f"
-fi
-ALT_AUTOMAKE_OPTIONS="-a -c"
-if [ "x$LIBTOOLIZE_OPTIONS" = "x" ] ; then
-    LIBTOOLIZE_OPTIONS="--automake -c -f"
-fi
-ALT_LIBTOOLIZE_OPTIONS="--automake --copy --force"
 if [ "x$ACLOCAL_OPTIONS" = "x" ] ; then
     ACLOCAL_OPTIONS=""
-fi
-if [ "x$AUTOHEADER_OPTIONS" = "x" ] ; then
-    AUTOHEADER_OPTIONS=""
 fi
 for arg in $ARGS ; do
     case "x$arg" in
@@ -710,22 +699,6 @@ if [ "x$ACLOCAL" = "x" ] ; then
     done
 else
     $ECHO "Using ACLOCAL environment variable override: $ACLOCAL"
-fi
-
-
-########################
-# check for autoheader #
-########################
-if [ "x$AUTOHEADER" = "x" ] ; then
-    for AUTOHEADER in autoheader ; do
-	$VERBOSE_ECHO "Checking autoheader version: $AUTOHEADER --version"
-	$AUTOHEADER --version > /dev/null 2>&1
-	if [ $? = 0 ] ; then
-	    break
-	fi
-    done
-else
-    $ECHO "Using AUTOHEADER environment variable override: $AUTOHEADER"
 fi
 
 
@@ -1177,7 +1150,6 @@ manual_autogen ( ) {
     #   libtoolize --automake -c -f                  #
     #   aclocal [-I m4]                              #
     #   autoconf -f                                  #
-    #   autoheader                                   #
     #   automake -a -c -f                            #
     ##################################################
 
@@ -1343,26 +1315,6 @@ EOF
 	    $ECHO $ECHO_N "Continuing build preparation ... $ECHO_C"
 	fi # autoconf ret = 0
     fi # autoconf ret = 0
-
-    ##############
-    # autoheader #
-    ##############
-    need_autoheader=no
-    for feature in AM_CONFIG_HEADER AC_CONFIG_HEADER ; do
-	$VERBOSE_ECHO "Searching for $feature in $CONFIGURE"
-	found="`grep \"^$feature.*\" $CONFIGURE`"
-	if [ ! "x$found" = "x" ] ; then
-	    need_autoheader=yes
-	    break
-	fi
-    done
-    if [ "x$need_autoheader" = "xyes" ] ; then
-	$VERBOSE_ECHO "$AUTOHEADER $AUTOHEADER_OPTIONS"
-	autoheader_output="`$AUTOHEADER $AUTOHEADER_OPTIONS 2>&1`"
-	ret=$?
-	$VERBOSE_ECHO "$autoheader_output"
-	if [ ! $ret = 0 ] ; then $ECHO "ERROR: $AUTOHEADER failed" && exit 2 ; fi
-    fi # need_autoheader
 
     ############
     # automake #
