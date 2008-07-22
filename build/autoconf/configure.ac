@@ -12,7 +12,7 @@ AC_SUBST(STK)
 AC_SUBST(CFLAGS)
 AC_SUBST(DEFS)
 AC_SUBST(DFLAGS)
-AC_SUBST(LFLAGS)
+AC_SUBST(LDFLAGS)
 AC_SUBST(EXT)
 AC_SUBST(LD)
 AC_SUBST(STRIP)
@@ -38,7 +38,6 @@ AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for
 AC_ARG_WITH(pdpath,   [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
 AC_ARG_ENABLE(PIC,    [  --disable-PIC           disable compilation with PIC-flag])
 AC_ARG_ENABLE(PIC,    [  --disable-exportdynamic disable linkage with the export_dynamic-flag])
-AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
 AC_ARG_ENABLE(lpt,    [  --enable-lpt            enable parallelport-support])
 AC_ARG_ENABLE(library,[  --disable-library       split the library into single externals])
 
@@ -50,10 +49,6 @@ if test "x" = "x${enable_lpt}" ; then
  enable_lpt="${with_lpt}"
 fi
 
-if test "x" = "x${enable_icc}" ; then
- enable_icc="${with_icc}"
-fi
-
 if test "xno" != "x${enable_library}" ; then
 dnl LATER: find a more generic way to generate the .._LIBRARY define
  BUILDLIBRARY="-DZEXY_LIBRARY"
@@ -62,7 +57,6 @@ fi
 if test `uname | sed -e 's/^MINGW.*/NT/'` = NT ; 
 then
   LD=${CC}
-#  LDFLAGS="-shared pd.dll"
   EXT=dll
   if test "x" = "x${enable_exportdynamic}" ; then
     enable_exportdynamic="no"
@@ -120,17 +114,7 @@ dnl Replace `main' with a function in -lstk:
 dnl AC_CHECK_LIB(stk, main, STK=yes)
 
 
-dnl for now i can test ICC only on linux
 dnl LATER we might want to use it for other platforms (namely:windoze) too
-
-if test `uname -s` = Linux;
-then
- AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
- if test "$enable_icc" = "yes"; then
-  CC=icc
-  LD=icc
- fi
-fi
 
 AC_CHECK_LIB(pd, nullfn)
 
@@ -299,16 +283,6 @@ if test `uname -s` = Linux;
 then
   EXT=pd_linux	
   STRIPFLAGS="--strip-unneeded"
-  if test "$enable_icc" = "yes"; then
-    CC=icc
-  fi
-
-  if test $CC = "icc"
-  then
-    LD=$CC
-    AC_CHECK_LDFLAGS([-ip -ipo_obj])
-    AC_CHECK_CFLAGS([-ip -ipo_obj])
-  fi
 fi
 
 dnl This should use '-bundle_loader /path/to/pd/bin/pd' instead of'-undefined suppress'
@@ -338,9 +312,8 @@ AC_CHECK_LDFLAGS([-shared pd.dll])
 
 if test `uname -s` = IRIX64; 
 then
-  LDFLAGS="-n32 -DUNIX -DIRIX -DN32 -woff 1080,1064,1185 \
-	-OPT:roundoff=3 -OPT:IEEE_arithmetic=3 -OPT:cray_ivdep=true \
-        -shared -rdata_shared"
+  LDFLAGS="-shared,-rdata_shared"
+  CFLAGS="-DUNIX -DIRIX -DN32 -woff 1080,1064,1185 -n32 -OPT:roundoff=3 -OPT:IEEE_arithmetic=3 -OPT:cray_ivdep=true"
   EXT=pd_irix6
   dnl DFLAGS="-DUNIX -DIRIX6"
   STRIPFLAGS="--strip-unneeded"
@@ -355,8 +328,9 @@ fi
 
 if test `uname -s` = IRIX32; 
 then
-  LDFLAGS="-o32 -DUNIX -DIRIX -O2 
-         -shared -rdata_shared"
+  LDFLAGS="-o32,-shared,-rdata_shared"
+  CFLAGS="-o32 -DUNIX -DIRIX -O2"
+
   EXT=pd_irix5
   dnl DFLAGS="-DUNIX -DIRIX5"
   STRIPFLAGS="--strip-unneeded"
@@ -422,6 +396,5 @@ AC_CHECK_HEADERS(m_pd.h, ,
         "--with-pd=</path/to/pd/>"     or
         "--includedir=</path/to/pd/src/>"]))
 
-LFLAGS=${LDFLAGS}
 AC_OUTPUT(Make.config)
 

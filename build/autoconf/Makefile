@@ -51,11 +51,11 @@ all: $(OBJECTS)
 endif
 
 $(OBJECTS): %.$(EXT) : %.o
-	$(LD) $(LFLAGS) -o $@ $*.o $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $*.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $@
 
 $(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
-	$(LD) $(LFLAGS) -o $@.$(EXT) $(SOURCEDIR)/*.o $(LIBS)
+	$(CC) $(LDFLAGS) -o $@.$(EXT) $(SOURCEDIR)/*.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
 
 $(TARGETS): %.o : %.c
