@@ -81,24 +81,53 @@ static int atom_equals(t_atom*a1, t_atom*a2) {
 
 static int list_equals(int count, t_atom*a1, t_atom*a2) {
   int i=0;
+  DEBUGFUN(post("list(%d) equals?", count));
+  DEBUGFUN(postatom(count, a1));
+  DEBUGFUN(endpost());
+  DEBUGFUN(postatom(count, a2));
+  DEBUGFUN(endpost());
+  DEBUGFUN(endpost());
+
   for(i=0; i<count; i++, a1++, a2++) {
-    if(a1->a_type!=a2->a_type) 
+    if(a1->a_type!=a2->a_type) {
+      DEBUGFUN(post("atomtypes do not match!"));
       return 0;
-    if(a1->a_w.w_symbol!=a2->a_w.w_symbol) /* is it that simple? */
+    }
+    if(A_FLOAT==a1->a_type) {
+      if(atom_getfloat(a1)!=atom_getfloat(a2)) {
+	return 0;
+      }
+    } else 
+      if(a1->a_w.w_symbol!=a2->a_w.w_symbol) { /* is it that simple? */
+      DEBUGFUN(post("atom values do not match: %x != %x", 
+		    a1->a_w.w_symbol, 
+		    a2->a_w.w_symbol
+		    ));
       return 0;
+    }
   }
+  DEBUGFUN(post("lists match"));
   return 1;
 }
 
 static int listfind_find(int argc, t_atom*argv, int matchc, t_atom*matchv) {
   int i=0;
 
-  if(matchc>argc)
+  DEBUGFUN(post("match: %d vs %d elements", argc, matchc));
+
+  if(matchc>argc) {
+    DEBUGFUN(post("list find -1"));
+
      return -1;
-  if(matchc==0)
+  }
+  if(matchc==0) {
+  DEBUGFUN(post("list find 0"));
+
     return 0;
+  }
 
   for(i=0; i<=(argc-matchc); i++, argv++) {
+    DEBUGFUN(post("checking at %d", i));
     if(list_equals(matchc, argv, matchv))
       return i;
   }
