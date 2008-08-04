@@ -66,7 +66,12 @@ static void list2lists_list2(t_list2lists*x,t_symbol*s, int argc, t_atom*argv)
     x->x_lcount=argc;
     x->x_length=(t_int*)getbytes((x->x_lcount)*sizeof(t_int));
     for(i=0; i<argc; i++) {
-      x->x_length[i]=atom_getint(argv+i);
+      int index=atom_getint(argv+i);
+      if(index<0) {
+	pd_error(x, "[list2lists]: clamped negative index=%d to 0!", index);
+	index=0;
+      }
+      x->x_length[i]=index;
     }
   }
 
