@@ -60,7 +60,7 @@
 
 #include <math.h>
 
-#define VERSION "2.2.2"
+#define VERSION "2.2.3"
 
 /* these pragmas are only used for MSVC, not MinGW or Cygwin */
 #ifdef _MSC_VER
@@ -70,8 +70,12 @@
 # pragma warning( disable : 4996)  /* deprecated functions */
 #endif
 
+#ifndef HEARTSYMBOL
+# define HEARTSYMBOL 64
+#endif
+
+
 #ifdef __WIN32__
-# define HEARTSYMBOL 3
 # define STATIC_INLINE
 
 # ifndef sqrtf
@@ -82,7 +86,6 @@
 # endif /* fabsf */
 
 #else
-# define HEARTSYMBOL 169
 # define STATIC_INLINE static
 #endif
 
@@ -109,7 +112,7 @@ typedef struct _mypdlist
 static void zexy_register(char*object){
   if(object!=0){
     post("[%s] part of zexy-%s (compiled: "__DATE__")", object, VERSION);
-    post("\tCopyright (l) 1999-2007 IOhannes m zmölnig, forum::für::umläute & IEM");
+    post("\tCopyright (l) 1999-2008 IOhannes m zmölnig, forum::für::umläute & IEM");
   }
 }
 #else

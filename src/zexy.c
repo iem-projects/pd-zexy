@@ -142,6 +142,7 @@ void zexy_setup(void)
   endpost();
   post("\t%c the zexy external  "VERSION" %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c (l)  forum::für::umläute %c", HEARTSYMBOL, HEARTSYMBOL);
+  post("\t%c       iem   @  kug       %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c  compiled:  "__DATE__"  %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c send me a 'help' message %c", HEARTSYMBOL, HEARTSYMBOL);
   startpost("\t");
