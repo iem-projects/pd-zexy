@@ -132,9 +132,13 @@ static void zpack_free(t_zpack*x){
 
 void zpack_setup(void)
 {
-  zpack_class = class_new(gensym("pack"), (t_newmethod)zpack_new,
+  zpack_class = class_new(gensym("zexy/pack"), (t_newmethod)zpack_new,
 			(t_method)zpack_free, sizeof(t_zpack), 0, A_GIMME,  0);
-  class_addcreator((t_newmethod)zpack_new, gensym("zexy/pack"), A_GIMME, 0);
+#if 0
+  /* oops Pd-0.42 allows us to override built-ins
+   * this is bad as long as the 2 objects are not compatible */
+  class_addcreator((t_newmethod)zpack_new, gensym("pack"), A_GIMME, 0);
+#endif
   class_addbang(zpack_class, zpack_bang);
   class_addlist(zpack_class, zpack_list0);
 
