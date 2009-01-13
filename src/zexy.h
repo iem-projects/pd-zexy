@@ -140,5 +140,15 @@ static void zexy_register(char*object){object=0;}
 # define z_verbose
 #endif
 
+#if (defined __x86_64__) && (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION > 41)
+# define zarray_t t_word
+# define zarray_getarray garray_getfloatwords
+# define zarray_getfloat(pointer, index) (pointer[index].w_float)
+#else
+# define zarray_t t_float
+# define zarray_getarray garray_getfloatarray
+# define zarray_getfloat(pointer, index) (pointer[index])
+#endif
+
 
 #endif /* INCLUDE_ZEXY_H__ */

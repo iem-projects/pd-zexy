@@ -35,11 +35,11 @@ static void tabminmax_bang(t_tabminmax *x)
 {
   t_garray *A;
   int npoints;
-  t_float *vec;
+  zarray_t *vec;
 
   if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class)))
     error("%s: no such array", x->x_arrayname->s_name);
-  else if (!garray_getfloatarray(A, &npoints, &vec))
+  else if (!zarray_getarray(A, &npoints, &vec))
     error("%s: bad template for tabminmax", x->x_arrayname->s_name);
   else
     {

@@ -23,17 +23,6 @@
 
 static t_class *tabread4_tilde_class;
 
-#ifdef Z_USE_WORD_ARRAYS
-# define zarray_t t_word
-# define zarray_getarray garray_getfloatwords
-# define zarray_getfloat(pointer, index) (pointer[index].w_float)
-#else
-# define zarray_t t_float
-# define zarray_getarray garray_getfloatarray
-# define zarray_getfloat(pointer, index) (pointer[index])
-#endif
-
-
 typedef struct _tabread4_tilde
 {
   t_object x_obj;
