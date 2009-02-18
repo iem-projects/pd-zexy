@@ -24,9 +24,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stdlib.h>
+
 #ifdef __WIN32__
 # include <io.h>
-# include <stdlib.h>
 #else
 # include <unistd.h>
 #endif
