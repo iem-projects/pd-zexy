@@ -77,10 +77,10 @@ static void *zunpack_new(t_symbol*s, int argc, t_atom*argv)
 void zunpack_setup(void)
 {
   
-  zunpack_class = class_new(gensym("unpack"), 
+  zunpack_class = class_new(gensym("zexy/unpack"), 
                             (t_newmethod)zunpack_new, (t_method)zunpack_free, sizeof(t_zunpack), 
                             0,  A_GIMME, 0);
-  class_addcreator((t_newmethod)zunpack_new, gensym("zexy/unpack"), A_GIMME, 0);
+  class_addcreator((t_newmethod)zunpack_new, gensym("unpack"), A_GIMME, 0);
 
   class_addbang(zunpack_class, zunpack_bang);
   class_addlist(zunpack_class, zunpack_list);
