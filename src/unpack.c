@@ -80,7 +80,11 @@ void zunpack_setup(void)
   zunpack_class = class_new(gensym("zexy/unpack"), 
                             (t_newmethod)zunpack_new, (t_method)zunpack_free, sizeof(t_zunpack), 
                             0,  A_GIMME, 0);
+#if 0
+  /* oops Pd-0.42 allows us to override built-ins
+   * this is bad as long as the 2 objects are not compatible */
   class_addcreator((t_newmethod)zunpack_new, gensym("unpack"), A_GIMME, 0);
+#endif
 
   class_addbang(zunpack_class, zunpack_bang);
   class_addlist(zunpack_class, zunpack_list);
