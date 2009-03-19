@@ -63,7 +63,7 @@ macOS-X:
 see installation/linux
 the configure-script should work here too
 
-e.g.: use the "--with-pd =/Applications/Pd.app/Contents/Resources/" option
+e.g.: use the "--with-pd=/Applications/Pd.app/Contents/Resources/" option
 to tell ./configure where the pd sources are.
 
 note on generating dependencies:
