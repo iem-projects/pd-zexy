@@ -63,6 +63,9 @@ macOS-X:
 see installation/linux
 the configure-script should work here too
 
+e.g.: use the "--with-pd =/Applications/Pd.app/Contents/Resources/" option
+to tell ./configure where the pd sources are.
+
 note on generating dependencies:
  on older systems the automatic creation of build dependencies
  might fail with following error:
