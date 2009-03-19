@@ -161,7 +161,6 @@ static void freadln_readline (t_freadln *x)
    t_binbuf *bbuf;
    t_atom *abuf;
    int abuf_length;
-   t_symbol *s;
    int rewind_after;
 
    if (!x->x_file) {

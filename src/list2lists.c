@@ -90,7 +90,6 @@ static void list2lists_output(t_list2lists*x, int argc, t_atom*argv)
 static void list2lists_list(t_list2lists *x, t_symbol *s, int argc, t_atom *argv)
 {
   int i;
-  int offset=0;
   
   if(x->x_lcount<1) {
     outlet_anything(x->x_obj.ob_outlet, s, argc, argv);

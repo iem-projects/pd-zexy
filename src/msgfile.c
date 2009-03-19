@@ -26,6 +26,8 @@
 #include <fcntl.h>
 #include <string.h>
 
+#include <unistd.h>
+
 /* ****************************************************************************** */
 /* msgfile : save and load messages... */
 
@@ -89,13 +91,15 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
   /* append list to the current node list */
   
   t_msglist *cur=x->current;
+  t_atom *ap=NULL;
+  int newsize = 0; 
+
   if(!cur || (ac && av && A_SYMBOL==av->a_type && gensym("")==atom_getsymbol(av))){
     /* ignoring empty symbols! */
     return;
   }
 
-  t_atom *ap;
-  int newsize = cur->n + ac; 
+  newsize = cur->n + ac; 
 
   ap = (t_atom *)getbytes(newsize * sizeof(t_atom));
   memcpy(ap, cur->thislist, cur->n * sizeof(t_atom));
@@ -566,7 +570,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
   int fd=0;
   FILE*fil=NULL;
   long readlength, length, pos;
-  char filnam[MAXPDSTRING], namebuf[MAXPDSTRING];
+  char filnam[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
   char *charbinbuf=NULL, *cbb;
   int charbinbuflength=0;
@@ -633,7 +637,6 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
     eol = ';';
     break;
   }
-
 
   /* read */
   if ((readlength = fread(readbuf, sizeof(char), length, fil)) < length) {
@@ -708,7 +711,6 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   int mode = x->mode;
 
   FILE *f=0;
-
 
   while(cur) {
     binbuf_add(bbuf, cur->n, cur->thislist);

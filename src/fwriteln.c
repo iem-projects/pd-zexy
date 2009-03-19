@@ -63,7 +63,7 @@ static void fwriteln_close (t_fwriteln *x)
 
 static void string_copy(const char* const from, char** to)
 {
-   if (*to = malloc(strlen(from) + 1)) {
+  if ((*to = malloc(strlen(from) + 1))) {
       strcpy(*to, from);
    }
 }
@@ -118,48 +118,50 @@ static void fwriteln_write (t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
       {
          switch (argv->a_type) {
             case A_FLOAT:
-               snprintf(text,MAXPDSTRING,x->format_string_afloats,
-		     atom_getfloat(argv));
-               text[MAXPDSTRING-1]=0;
-               length=strlen(text);
-               if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
-                  pd_error(x, "failed to write %128s",x->x_filename);
-                  freebytes (text, MAXPDSTRING * sizeof(char));
-                  fwriteln_close(x);
-                  return;
-               }
-               break;
-            case A_SYMBOL:
-               snprintf(text,MAXPDSTRING,"%s ", atom_getsymbol(argv)->s_name);
-               text[MAXPDSTRING-1]=0;
-               length=strlen(text);
-               if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
-                  pd_error(x, "failed to write %128s",x->x_filename);
-                  freebytes (text, MAXPDSTRING * sizeof(char));
-                  fwriteln_close(x);
-                  return;
-               }
-               break;
-            case A_COMMA:
-               snprintf(text,MAXPDSTRING,", ");
-               length=strlen(text);
-               if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
-                  pd_error(x, "failed to write %128s",x->x_filename);
-                  freebytes (text, MAXPDSTRING * sizeof(char));
-                  fwriteln_close(x);
-                  return;
-               }
-               break;
-            case A_SEMI:
-               snprintf(text,MAXPDSTRING,"; ");
-               length=strlen(text);
-               if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
-                  pd_error(x, "failed to write %128s",x->x_filename);
-                  freebytes (text, MAXPDSTRING * sizeof(char));
-                  fwriteln_close(x);
-                  return;
-               }
-               break;
+              snprintf(text,MAXPDSTRING,x->format_string_afloats,
+                       atom_getfloat(argv));
+              text[MAXPDSTRING-1]=0;
+              length=strlen(text);
+              if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
+                pd_error(x, "failed to write %128s",x->x_filename);
+                freebytes (text, MAXPDSTRING * sizeof(char));
+                fwriteln_close(x);
+                return;
+              }
+              break;
+         case A_SYMBOL:
+           snprintf(text,MAXPDSTRING,"%s ", atom_getsymbol(argv)->s_name);
+           text[MAXPDSTRING-1]=0;
+           length=strlen(text);
+           if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
+             pd_error(x, "failed to write %128s",x->x_filename);
+             freebytes (text, MAXPDSTRING * sizeof(char));
+             fwriteln_close(x);
+             return;
+           }
+           break;
+         case A_COMMA:
+           snprintf(text,MAXPDSTRING,", ");
+           length=strlen(text);
+           if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
+             pd_error(x, "failed to write %128s",x->x_filename);
+             freebytes (text, MAXPDSTRING * sizeof(char));
+             fwriteln_close(x);
+             return;
+           }
+           break;
+         case A_SEMI:
+           snprintf(text,MAXPDSTRING,"; ");
+           length=strlen(text);
+           if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
+             pd_error(x, "failed to write %128s",x->x_filename);
+             freebytes (text, MAXPDSTRING * sizeof(char));
+             fwriteln_close(x);
+             return;
+           }
+           break;
+         default:
+           break;
          }
          argv++;
       }

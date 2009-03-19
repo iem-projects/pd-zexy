@@ -32,7 +32,7 @@ typedef struct _sigpack
   int x_outputindsp;
 } t_sigpack;
 
-static void *sigpack_tick(t_sigpack*x)
+static void sigpack_tick(t_sigpack*x)
 {
   outlet_list(x->x_obj.ob_outlet, &s_list, x->vector_length, x->buffer);
 }
@@ -68,7 +68,7 @@ static void sigpack_dsp(t_sigpack *x, t_signal **sp)
   dsp_add(sigpack_perform, 3, sp[0]->s_vec, x, sp[0]->s_n);
 }
 
-static void *sigpack_free(t_sigpack*x)
+static void sigpack_free(t_sigpack*x)
 {
   clock_free(x->x_clock);
 }

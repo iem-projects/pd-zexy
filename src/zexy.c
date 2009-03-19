@@ -162,8 +162,6 @@ void zexy_setup(void)
 void verbose(int level, const char *fmt, ...){
   char buf[MAXPDSTRING];
   va_list ap;
-  t_int arg[8];
-  int i;
  
   va_start(ap, fmt);
   vsnprintf(buf, MAXPDSTRING-1, fmt, ap);

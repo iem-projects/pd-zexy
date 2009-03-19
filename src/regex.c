@@ -195,7 +195,6 @@ static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
   int num_matches=x->x_matchnum;
   regmatch_t*match=(regmatch_t*)getbytes(sizeof(regmatch_t)*num_matches);
   t_atom*ap=(t_atom*)getbytes(sizeof(t_atom)*(3*num_matches));
-  int ap_length=0;
 
   int err=0;
 

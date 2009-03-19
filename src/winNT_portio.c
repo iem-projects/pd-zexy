@@ -125,6 +125,4 @@ int open_port(int port)
 		return(0);
 	}
 }
-#else
-static int i=0;
 #endif /* __WIN32__ & Z_WANT_LPT */
