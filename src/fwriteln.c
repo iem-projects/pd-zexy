@@ -166,7 +166,7 @@ static void fwriteln_write (t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
          argv++;
       }
 
-      snprintf(text,MAXPDSTRING,x->linebreak_chr);
+      snprintf(text,MAXPDSTRING,"%s", x->linebreak_chr);
       length=strlen(text);
       if (fwrite(text, length*sizeof(char),1,x->x_file) < 1) {
          pd_error(x, "failed to write %128s",x->x_filename);
