@@ -144,10 +144,12 @@ static void zexy_register(char*object){object=0;}
 # define zarray_t t_word
 # define zarray_getarray garray_getfloatwords
 # define zarray_getfloat(pointer, index) (pointer[index].w_float)
+# define zarray_setfloat(pointer, index, value) ((pointer[index].w_float)=value)
 #else
 # define zarray_t t_float
 # define zarray_getarray garray_getfloatarray
 # define zarray_getfloat(pointer, index) (pointer[index])
+# define zarray_setfloat(pointer, index, value) ((pointer[index])=value)
 #endif
 
 
