@@ -21,12 +21,12 @@ if [ -e "${ALIASFILE}" ]; then :; else
 fi
 
 
-function debug() {
+debug() {
  :
 # echo $@
 }
 
-function do_makealias() {
+do_makealias() {
  local source
  local dest
 
@@ -53,7 +53,7 @@ function do_makealias() {
  fi
 }
 
-function do_makealiases() {
+do_makealiases() {
   local dir
   local master
   local slave
