@@ -4,6 +4,9 @@ AC_CONFIG_HEADER([zexyconf.h])
 
 LIBNAME=zexy
 
+ARCH=$(uname -m)
+KERN=$(uname -s)
+
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -58,7 +61,7 @@ dnl LATER: find a more generic way to generate the .._LIBRARY define
  BUILDLIBRARY="-DZEXY_LIBRARY"
 fi
 
-if test `uname | sed -e 's/^MINGW.*/NT/'` = NT ; 
+if test $(uname | sed -e 's/^MINGW.*/NT/') = NT ; 
 then
   LD=${CC}
 #  LDFLAGS="-shared pd.dll"
@@ -119,7 +122,7 @@ dnl AC_CHECK_LIB(stk, main, STK=yes)
 dnl for now i can test ICC only on linux
 dnl LATER we might want to use it for other platforms (namely:windoze) too
 
-if test `uname -s` = Linux;
+if test x${KERN} = xLinux;
 then
  AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
  if test "$enable_icc" = "yes"; then
@@ -222,7 +225,7 @@ int main(){
 EOF
   if $CC $CFLAGS -o conftest.o conftest.c > /dev/null 2>&1
   then
-   PD_VERSION=`./conftest.o`
+   PD_VERSION=$(./conftest.o)
   else
    PD_VERSION=""
   fi
@@ -233,8 +236,8 @@ EOF
  fi
 fi
 
-let PD_MAJORVERSION=`echo $PD_VERSION | cut -d"." -f1`+0
-let PD_MINORVERSION=`echo $PD_VERSION | cut -d"." -f2`+0
+let PD_MAJORVERSION=$(echo $PD_VERSION | cut -d"." -f1)+0
+let PD_MINORVERSION=$(echo $PD_VERSION | cut -d"." -f2)+0
 
 if test "$PD_MAJORVERSION" -gt 0 || test "$PD_MINORVERSION" -ge 37
 then
@@ -285,7 +288,7 @@ dnl this needs some rethinking when cross-compiling (?)
 dnl
 AC_CHECK_LDFLAGS([-shared])
 
-if test `uname -s` = Linux; 
+if test x${KERN} = xLinux; 
 then
   EXT=pd_linux	
   STRIPFLAGS="--strip-unneeded"
@@ -303,7 +306,7 @@ fi
 
 dnl This should use '-bundle_loader /path/to/pd/bin/pd' instead of'-undefined suppress'
 dnl then strip might do something
-if test `uname -s` = Darwin; 
+if test x${KERN} = xDarwin; 
 then
   LD=${CC}
   EXT=pd_darwin
@@ -326,8 +329,7 @@ fi
 
 AC_CHECK_LDFLAGS([-shared pd.dll])
 
-if test `uname -s` = IRIX64; 
-then
+if test x${KERN} = xIRIX64; then
   LDFLAGS="-n32 -DUNIX -DIRIX -DN32 -woff 1080,1064,1185 \
 	-OPT:roundoff=3 -OPT:IEEE_arithmetic=3 -OPT:cray_ivdep=true \
         -shared -rdata_shared"
@@ -343,7 +345,7 @@ then
   fi
 fi
 
-if test `uname -s` = IRIX32; 
+if test x${KERN} = xIRIX32; 
 then
   LDFLAGS="-o32 -DUNIX -DIRIX -O2 
          -shared -rdata_shared"
