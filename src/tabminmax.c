@@ -54,28 +54,28 @@ static void tabminmax_bang(t_tabminmax *x)
       if(stop<start||stop>npoints)stop=npoints;
       npoints=stop-start;
 
-      min=vec[start];
-      max=vec[start];
+      min=zarray_getfloat(vec, start);
+      max=min;
 
       mindex=start;
       maxdex=start;
       
       for (n = 1; n < npoints; n++){
-	t_float val=vec[start+n];
-	if(val<min){
-	  mindex=start+n;
-	  min=val;
-	}
-	if(val>max){
-	  maxdex=start+n;
-	  max=val;
-	}
+        t_float val=zarray_getfloat(vec, start+n);
+        if(val<min){
+          mindex=start+n;
+          min=val;
+        }
+        if(val>max){
+          maxdex=start+n;
+          max=val;
+        }
       }
-
+      
       SETFLOAT(atombuf, max);
       SETFLOAT(atombuf+1, maxdex);
       outlet_list(x->max_out, &s_list, 2, atombuf);
-
+      
       SETFLOAT(atombuf, min);
       SETFLOAT(atombuf+1, mindex);
       outlet_list(x->min_out, &s_list, 2, atombuf);

@@ -40,7 +40,10 @@ static void tabset_float(t_tabset *x, t_floatarg f)
   else if (!zarray_getarray(A, &npoints, &vec))
     error("%s: bad template for tabset", x->x_arrayname->s_name);
   else {
-    while(npoints--)*vec++=f;
+    while(npoints--){
+      zarray_setfloat(vec, 0, f);
+      vec++;
+    }
     garray_redraw(A);
   }
 }
@@ -58,11 +61,22 @@ static void tabset_list(t_tabset *x, t_symbol *s, int argc, t_atom* argv)
     error("%s: bad template for tabset", x->x_arrayname->s_name);
   else {
     if (argc>=npoints)
-      while(npoints--)*vec++=atom_getfloat(argv++);
+      while(npoints--){
+        t_float f= atom_getfloat(argv++);
+        zarray_setfloat(vec, 0, f);
+        vec++;
+      }
     else {
       npoints-=argc;
-      while (argc--)*vec++=atom_getfloat(argv++);
-      while (npoints--)*vec++=0;
+      while (argc--){
+        t_float f= atom_getfloat(argv++);
+        zarray_setfloat(vec, 0, f);
+        vec++;
+      }
+      while (npoints--){
+        zarray_setfloat(vec, 0, 0);
+        vec++;
+      }
     }
     garray_redraw(A);
   }
