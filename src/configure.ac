@@ -37,7 +37,6 @@ AC_ARG_WITH(version,  [  --with-version=<ver>    enforce a certain zexy-version 
 AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
 AC_ARG_WITH(pdpath,   [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
 AC_ARG_ENABLE(PIC,    [  --disable-PIC           disable compilation with PIC-flag])
-AC_ARG_ENABLE(PIC,    [  --disable-exportdynamic disable linkage with the export_dynamic-flag])
 AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
 AC_ARG_ENABLE(lpt,    [  --enable-lpt            enable parallelport-support])
 AC_ARG_ENABLE(library,[  --disable-library       split the library into single externals])
@@ -64,9 +63,6 @@ then
   LD=${CC}
 #  LDFLAGS="-shared pd.dll"
   EXT=dll
-  if test "x" = "x${enable_exportdynamic}" ; then
-    enable_exportdynamic="no"
-  fi
 fi
 
 
@@ -287,12 +283,6 @@ dnl
 dnl  OK, checks which machines are here now
 dnl this needs some rethinking when cross-compiling (?)
 dnl
-dnl AC_CHECK_LDFLAGS([-export_dynamic -shared])
-
-if test "x$enable_exportdynamic" != "xno"; then
- AC_CHECK_LDFLAGS([-export_dynamic])
-fi
-
 AC_CHECK_LDFLAGS([-shared])
 
 if test `uname -s` = Linux; 
