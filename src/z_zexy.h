@@ -62,6 +62,7 @@ void regex_setup(void); /* regex */
 void relay_setup(void); /* relay */
 void repack_setup(void); /* repack */
 void repeat_setup(void); /* repeat */
+void route_tilde_setup(void); /* route~ */
 void sfplay_setup(void); /* sfplay */
 void sfrecord_setup(void); /* sfrecord */
 void sgn_tilde_setup(void); /* sgn~ */

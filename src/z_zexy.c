@@ -64,6 +64,7 @@ void z_zexy_setup(void)
 	relay_setup(); /* relay */
 	repack_setup(); /* repack */
 	repeat_setup(); /* repeat */
+	route_tilde_setup(); /* route~ */
 	sfplay_setup(); /* sfplay */
 	sfrecord_setup(); /* sfrecord */
 	sgn_tilde_setup(); /* sgn~ */
