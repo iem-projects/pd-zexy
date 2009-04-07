@@ -40,7 +40,6 @@ AC_ARG_WITH(version,  [  --with-version=<ver>    enforce a certain zexy-version 
 AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
 AC_ARG_WITH(pdpath,   [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
 AC_ARG_ENABLE(PIC,    [  --disable-PIC           disable compilation with PIC-flag])
-AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
 AC_ARG_ENABLE(lpt,    [  --enable-lpt            enable parallelport-support])
 AC_ARG_ENABLE(library,[  --disable-library       split the library into single externals])
 
@@ -50,10 +49,6 @@ fi
 
 if test "x" = "x${enable_lpt}" ; then
  enable_lpt="${with_lpt}"
-fi
-
-if test "x" = "x${enable_icc}" ; then
- enable_icc="${with_icc}"
 fi
 
 if test "xno" != "x${enable_library}" ; then
@@ -117,19 +112,6 @@ dnl Replace `main' with a function in -lpthread:
 dnl AC_CHECK_LIB(pthread, main)
 dnl Replace `main' with a function in -lstk:
 dnl AC_CHECK_LIB(stk, main, STK=yes)
-
-
-dnl for now i can test ICC only on linux
-dnl LATER we might want to use it for other platforms (namely:windoze) too
-
-if test x${KERN} = xLinux;
-then
- AC_ARG_ENABLE(icc,    [  --enable-icc            enable ICC-support])
- if test "$enable_icc" = "yes"; then
-  CC=icc
-  LD=icc
- fi
-fi
 
 AC_CHECK_LIB(pd, nullfn)
 
@@ -292,16 +274,6 @@ if test x${KERN} = xLinux;
 then
   EXT=pd_linux	
   STRIPFLAGS="--strip-unneeded"
-  if test "$enable_icc" = "yes"; then
-    CC=icc
-  fi
-
-  if test $CC = "icc"
-  then
-    LD=$CC
-    AC_CHECK_LDFLAGS([-ip -ipo_obj])
-    AC_CHECK_CFLAGS([-ip -ipo_obj])
-  fi
 fi
 
 dnl This should use '-bundle_loader /path/to/pd/bin/pd' instead of'-undefined suppress'
