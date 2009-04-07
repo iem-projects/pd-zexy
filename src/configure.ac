@@ -429,7 +429,6 @@ fi
 
 
 AC_CHECK_HEADERS(m_pd.h, , 
-	cat config.log
 	AC_ERROR([m_pd.h is desperately needed!
         install pd and/or use
         "--with-pd=</path/to/pd/>"     or
