@@ -137,6 +137,55 @@ dnl Checks for library functions.
 AC_FUNC_MMAP
 AC_CHECK_FUNCS(select socket strerror)
 
+
+dnl checks for fat-binary
+AC_ARG_ENABLE(fat-binary,
+       [  --enable-fat-binary=ARCHS
+                          build an Apple Multi Architecture Binary (MAB);
+                          ARCHS is a comma-delimited list of architectures for
+                          which to build; if ARCHS is omitted, then the package
+                          will be built for all architectures supported by the
+                          platform (e.g. "ppc,i386" for MacOS/X and Darwin; 
+                          if this option is disabled or omitted entirely, then
+                          the package will be built only for the target 
+                          platform],
+       [fat_binary=$enableval], [fat_binary=no])
+if test "$fat_binary" != no; then
+    AC_MSG_CHECKING([target architectures])
+
+    # Respect TARGET_ARCHS setting from environment if available.
+    if test -z "$TARGET_ARCHS"; then
+   	# Respect ARCH given to --enable-fat-binary if present.
+     if test "$fat_binary" != yes; then
+	    TARGET_ARCHS=`echo "$fat_binary" | tr ',' ' '`
+     else
+	    # Choose a default set of architectures based upon platform.
+      TARGET_ARCHS="ppc i386"
+     fi
+    fi
+    AC_MSG_RESULT([$TARGET_ARCHS])
+
+   # /usr/lib/arch_tool -archify_list $TARGET_ARCHS
+   ARCH_FLAG=
+   for archs in $TARGET_ARCHS 
+   do
+    ARCH_FLAG="$ARCH_FLAG -arch $archs"
+   done
+
+   if test "x$ARCH_FLAG" != "x"; then
+    tmp_arch_cflags="$CFLAGS"
+    AC_CHECK_CFLAGS([$ARCH_FLAG],,ARCH_FLAG="")
+    CFLAGS="$tmp_arch_cflags"
+   fi
+
+   if test "x$ARCH_FLAG" != "x"; then
+    tmp_arch_ldflags="$LDFLAGS"
+    AC_CHECK_LDFLAGS([$ARCH_FLAG],,ARCH_FLAG="")
+    LDFLAGS="$tmp_arch_ldflags"
+   fi
+fi
+AC_SUBST(ARCH_FLAG)
+
 dnl check for "-mms-bitfields" cflag
 dnl why is there no generic compiler-check for a given flag ?
 dnl it would make things so easy: AC_CHECK_FLAG([-mms-bitfields],,)

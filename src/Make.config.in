@@ -1,4 +1,5 @@
 LIBNAME    =@LIBNAME@
+TARNAME =  $(LIBNAME)-@LIBRARY_VERSION@.tgz
 
 # when build as a library this holds a pre-processor define
 # (e.g. "-DZEXY_LIBRARY")
@@ -23,12 +24,10 @@ AFLAGS =
 LFLAGS = @LFLAGS@
 WFLAGS =
 
-TARNAME =  $(LIBNAME)-@LIBRARY_VERSION@.tgz
-
-# ICCFLAGS=-march=pentiumiii -axK
 Z_CFLAGS = $(IFLAGS) $(DEFS) $(BUILDLIBRARY) -DPD $(WFLAGS) @CFLAGS@ $(CFLAGS)
-
+LIBS = @LIBS@
 MAKEDEP_FLAGS = @MAKEDEP_FLAGS@
+ARCH_FLAG = @ARCH_FLAG@
+
 CONFIGUREFLAGS = @CONFIGUREFLAGS@
 
-LIBS = @LIBS@

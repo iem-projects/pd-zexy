@@ -61,7 +61,7 @@ all: $(OBJECTS)
 endif
 
 $(OBJECTS): %.$(EXT) : %.o
-	$(LD) $(LFLAGS) -o $@ $*.o $(LIBS)
+	$(LD) $(LFLAGS) $(ARCH_FLAG) -o $@ $*.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $@
 
 $(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
@@ -69,7 +69,7 @@ $(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
 	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
 
 $(TARGETS): %.o : %.c
-	$(CC) $(Z_CFLAGS) -c -o $@ $*.c
+	$(CC) $(Z_CFLAGS) $(ARCH_FLAG) -c -o $@ $*.c
 
 externals: $(OBJECTS)
 
