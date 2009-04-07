@@ -65,7 +65,7 @@ $(OBJECTS): %.$(EXT) : %.o
 	$(STRIP) $(STRIPFLAGS) $@
 
 $(LIBNAME): $(TARGETS) z_zexy.c z_zexy.h
-	$(LD) $(LFLAGS) -o $@.$(EXT) *.o $(LIBS)
+	$(LD) $(LFLAGS) $(ARCH_FLAG) -o $@.$(EXT) *.o $(LIBS)
 	$(STRIP) $(STRIPFLAGS) $@.$(EXT)
 
 $(TARGETS): %.o : %.c
