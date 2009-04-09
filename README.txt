@@ -44,7 +44,7 @@ short:
 
 long:
 #1>  cd src/
-#2>  autoconf
+#2>  ./bootstrap.sh
 #3>  ./configure
 #4>  make
 #5>  make install
@@ -61,10 +61,17 @@ note: if you don't want the parallel-port object [lpt]
 macOS-X:
 ------------------------------------------------------------------------------
 see installation/linux
-the configure-script should work here too
 
-e.g.: use the "--with-pd=/Applications/Pd.app/Contents/Resources/" option
-to tell ./configure where the pd sources are.
+there is nothing special in the code, so it should compile out of the box:
+"cd" to zexy/src
+run "./bootstrap.sh; ./configure; make" (for further details please see "1) linux")
+
+building with a special version of Pd:
+        to build zexy with your special version of Pd, you should specify the path to your Pd ressources
+        (e.g. "./configure --with-pd=/Applications/Pd.app/Contents/Resources")
+fat-binaries
+        if you want to build a multi-arch binary you have to specify this as well
+        (e.g. "./configure --enable-fat-binary=i386,ppc --with-extension=d_fat")
 
 note on generating dependencies:
  on older systems the automatic creation of build dependencies
