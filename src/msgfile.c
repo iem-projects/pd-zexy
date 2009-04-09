@@ -36,11 +36,11 @@
 #define CSV_MODE 2
 /* modi
    PD : separate items by ' '; seperate lines by ";\n"
-        looks like a PD-file
+   looks like a PD-file
    CR : separate items by ' '; seperate lines by " \n"
-        how you would expect a file to look like
+   how you would expect a file to look like
    CSV: separate items by ','; seperate lines by " \n"
-        spreadsheet: each argument gets its own column
+   spreadsheet: each argument gets its own column
 */
 
 
@@ -413,7 +413,7 @@ static void msgfile_this(t_msgfile *x)
 }
 static void msgfile_next(t_msgfile *x)
 {
- if ((x->current) && (x->current->next)) {
+  if ((x->current) && (x->current->next)) {
     t_msglist *next = x->current->next;
     if (next->thislist)
       outlet_list(x->x_obj.ob_outlet, gensym("list"), next->n, next->thislist);
@@ -449,8 +449,8 @@ static void msgfile_bang(t_msgfile *x)
   }
 
   /*
-  msgfile_this(x);
-  msgfile_skip(x, 1);
+    msgfile_this(x);
+    msgfile_skip(x, 1);
   */
 }
 
@@ -586,7 +586,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
 #endif
 
   if ((fd = open_via_path(dirname,
-		  filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0)) < 0) {
+                          filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0)) < 0) {
 
     if((fd=open(filename->s_name, rmode)) < 0) {
       pd_error(x, "can't open in %s/%s",  dirname, filename->s_name);
@@ -719,7 +719,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   }
     
   canvas_makefilename(x->x_canvas, filename->s_name,
-		      buf, MAXPDSTRING);
+                      buf, MAXPDSTRING);
 
   if(format&&gensym("")!=format) {
     if(gensym("cr")==format) {
@@ -765,7 +765,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   if (!(f = fopen(filnam, "w"))) {
     pd_error(x, "msgfile : failed to open %s", filnam);
   } else {
-  /* write */
+    /* write */
     if (fwrite(mytext, textlen*sizeof(char), 1, f) < 1) {
       pd_error(x, "msgfile : failed to write %s", filnam);
     }
@@ -815,39 +815,39 @@ static void msgfile_free(t_msgfile *x)
 
 static void *msgfile_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_msgfile *x = (t_msgfile *)pd_new(msgfile_class);
+  t_msgfile *x = (t_msgfile *)pd_new(msgfile_class);
 
-    /* an empty node indicates the end of our listbuffer */
-    x->current = 0;
-    x->start   = 0;
-    x->previous= 0;
+  /* an empty node indicates the end of our listbuffer */
+  x->current = 0;
+  x->start   = 0;
+  x->previous= 0;
 
-    x->mode=PD_MODE; /* that's the default */
+  x->mode=PD_MODE; /* that's the default */
 
-    if ((argc==1) && (argv->a_type == A_SYMBOL)) {
-      t_symbol*mode=atom_getsymbol(argv);
-      if      (gensym("cr") == mode) x->mode = CR_MODE;
-      else if (gensym("csv")== mode) x->mode = CSV_MODE;
-      else if (gensym("pd") == mode) x->mode = PD_MODE;
-      else {
-        pd_error(x, "msgfile: unknown argument %s", argv->a_w.w_symbol->s_name);
-      }
+  if ((argc==1) && (argv->a_type == A_SYMBOL)) {
+    t_symbol*mode=atom_getsymbol(argv);
+    if      (gensym("cr") == mode) x->mode = CR_MODE;
+    else if (gensym("csv")== mode) x->mode = CSV_MODE;
+    else if (gensym("pd") == mode) x->mode = PD_MODE;
+    else {
+      pd_error(x, "msgfile: unknown argument %s", argv->a_w.w_symbol->s_name);
     }
+  }
 
-    outlet_new(&x->x_obj, &s_list);
-    x->x_secondout = outlet_new(&x->x_obj, &s_float);
-    x->x_canvas = canvas_getcurrent();
+  outlet_new(&x->x_obj, &s_list);
+  x->x_secondout = outlet_new(&x->x_obj, &s_float);
+  x->x_canvas = canvas_getcurrent();
 
-    x->eol=' ';
-    x->separator=',';
+  x->eol=' ';
+  x->separator=',';
 
-    return (x);
+  return (x);
 }
 
 void msgfile_setup(void)
 {
   msgfile_class = class_new(gensym("msgfile"), (t_newmethod)msgfile_new,
-			    (t_method)msgfile_free, sizeof(t_msgfile), 0, A_GIMME, 0);
+                            (t_method)msgfile_free, sizeof(t_msgfile), 0, A_GIMME, 0);
   class_addmethod(msgfile_class, (t_method)msgfile_goto, gensym("goto"), A_DEFFLOAT, 0);
   class_addmethod(msgfile_class, (t_method)msgfile_rewind, gensym("rewind"), 0);
   class_addmethod(msgfile_class, (t_method)msgfile_rewind, gensym("begin"), 0);

@@ -25,7 +25,7 @@
 /* ------------------------- sort ------------------------------- */
 
 /*
-SHELL SORT: simple and easy
+  SHELL SORT: simple and easy
 */
 
 static t_class *sort_class;
@@ -46,7 +46,7 @@ typedef struct _sort
 
 static void sort_dir(t_sort *x, t_float f)
 {
-    x->ascending = (f < 0.f)?0:1;
+  x->ascending = (f < 0.f)?0:1;
 }
 
 static void sort_buffer(t_sort *x, int argc, t_atom *argv)
@@ -92,14 +92,14 @@ static void sort_list(t_sort *x, t_symbol *s, int argc, t_atom *argv)
 
     while(i--) { /* there might be some optimization in here */
       for (n=0; n<(argc-step); n++) {
-	if (buf[n] > buf[n+step]) {
-	  t_int   i_tmp = idx[n];
-	  t_float f_tmp = buf[n];
-	  buf[n]        = buf[n+step];
-	  buf[n+step]   = f_tmp;
-	  idx[n]        = idx[n+step];
-	  idx[n+step]   = i_tmp;
-	}
+        if (buf[n] > buf[n+step]) {
+          t_int   i_tmp = idx[n];
+          t_float f_tmp = buf[n];
+          buf[n]        = buf[n+step];
+          buf[n+step]   = f_tmp;
+          idx[n]        = idx[n+step];
+          idx[n+step]   = i_tmp;
+        }
       }
     }
   }
@@ -144,7 +144,7 @@ static void sort_help(t_sort*x)
 void sort_setup(void)
 {
   sort_class = class_new(gensym("sort"), (t_newmethod)sort_new, 
-			      0, sizeof(t_sort), 0, A_DEFFLOAT,  0);
+                         0, sizeof(t_sort), 0, A_DEFFLOAT,  0);
   
   class_addlist    (sort_class, sort_list);
   class_addmethod   (sort_class, (t_method)sort_dir, gensym("direction"), A_DEFFLOAT, 0);
