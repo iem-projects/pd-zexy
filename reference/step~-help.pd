@@ -1,4 +1,4 @@
-#N canvas 496 479 634 373 10;
+#N canvas 0 0 634 373 10;
 #X obj 243 283 step~;
 #X obj 243 309 print~;
 #X msg 186 236 bang;
