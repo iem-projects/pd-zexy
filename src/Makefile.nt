@@ -14,7 +14,6 @@ LD=link
 
 DEFS=/D__WIN32__ /DPD /DZEXY_LIBRARY
 IFLAGS=/I. /I$(PREFIX)\src
-AFLAGS= 
 WFLAGS=/W3 /WX /nologo
 
 ## for LinePrinter-support: (if you don't want it, comment it out)

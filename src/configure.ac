@@ -14,7 +14,6 @@ AC_PROG_CC
 AC_SUBST(STK)
 AC_SUBST(CFLAGS)
 AC_SUBST(DEFS)
-AC_SUBST(DFLAGS)
 AC_SUBST(LFLAGS)
 AC_SUBST(EXT)
 AC_SUBST(LD)
@@ -137,53 +136,7 @@ dnl Checks for library functions.
 AC_FUNC_MMAP
 AC_CHECK_FUNCS(select socket strerror)
 
-
-dnl checks for fat-binary
-AC_ARG_ENABLE(fat-binary,
-       [  --enable-fat-binary=ARCHS
-                          build an Apple Multi Architecture Binary (MAB);
-                          ARCHS is a comma-delimited list of architectures for
-                          which to build; if ARCHS is omitted, then the package
-                          will be built for all architectures supported by the
-                          platform (e.g. "ppc,i386" for MacOS/X and Darwin; 
-                          if this option is disabled or omitted entirely, then
-                          the package will be built only for the target 
-                          platform],
-       [fat_binary=$enableval], [fat_binary=no])
-if test "$fat_binary" != no; then
-    AC_MSG_CHECKING([target architectures])
-
-    # Respect TARGET_ARCHS setting from environment if available.
-    if test -z "$TARGET_ARCHS"; then
-   	# Respect ARCH given to --enable-fat-binary if present.
-     if test "$fat_binary" != yes; then
-	    TARGET_ARCHS=`echo "$fat_binary" | tr ',' ' '`
-     else
-	    # Choose a default set of architectures based upon platform.
-      TARGET_ARCHS="ppc i386"
-     fi
-    fi
-    AC_MSG_RESULT([$TARGET_ARCHS])
-
-   # /usr/lib/arch_tool -archify_list $TARGET_ARCHS
-   ARCH_FLAG=
-   for archs in $TARGET_ARCHS 
-   do
-    ARCH_FLAG="$ARCH_FLAG -arch $archs"
-   done
-
-   if test "x$ARCH_FLAG" != "x"; then
-    tmp_arch_cflags="$CFLAGS"
-    AC_CHECK_CFLAGS([$ARCH_FLAG],,ARCH_FLAG="")
-    CFLAGS="$tmp_arch_cflags"
-   fi
-
-   if test "x$ARCH_FLAG" != "x"; then
-    tmp_arch_ldflags="$LDFLAGS"
-    AC_CHECK_LDFLAGS([$ARCH_FLAG],,ARCH_FLAG="")
-    LDFLAGS="$tmp_arch_ldflags"
-   fi
-fi
+AC_CHECK_FAT(ARCH_FLAG)
 AC_SUBST(ARCH_FLAG)
 
 dnl check for "-mms-bitfields" cflag
@@ -355,7 +308,7 @@ if test x${KERN} = xIRIX64; then
 	-OPT:roundoff=3 -OPT:IEEE_arithmetic=3 -OPT:cray_ivdep=true \
         -shared -rdata_shared"
   EXT=pd_irix6
-  dnl DFLAGS="-DUNIX -DIRIX6"
+  dnl DEFS+="-DUNIX -DIRIX6"
   STRIPFLAGS="--strip-unneeded"
   if test "$enable_lpt" = "yes"; then
     AC_MSG_ERROR("lpt not supported on this platform");
@@ -371,7 +324,7 @@ then
   LDFLAGS="-o32 -DUNIX -DIRIX -O2 
          -shared -rdata_shared"
   EXT=pd_irix5
-  dnl DFLAGS="-DUNIX -DIRIX5"
+  dnl DEFS+="-DUNIX -DIRIX5"
   STRIPFLAGS="--strip-unneeded"
   if test "$enable_lpt" = "yes"; then
     AC_MSG_ERROR("lpt not supported on this platform");
@@ -437,6 +390,7 @@ AC_CHECK_HEADERS(m_pd.h, ,
 LFLAGS=${LDFLAGS}
 AC_OUTPUT(Make.config)
 
+## hmm, some dependencies seem to be wrong, resulting in running configure everytime if we don't touch zexyconf.h here
 touch zexyconf.h
 
 #rm -f conftest.*
