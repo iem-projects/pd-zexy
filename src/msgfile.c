@@ -22,11 +22,18 @@
 */
 
 #include "zexy.h"
+
+#ifdef __WIN32__
+# include <io.h>
+#else
+# include <unistd.h>
+#endif
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <string.h>
 
-#include <unistd.h>
+
 
 /* ****************************************************************************** */
 /* msgfile : save and load messages... */
