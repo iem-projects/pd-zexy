@@ -254,6 +254,9 @@
 				RelativePath="..\..\src\repeat.c">
 			</File>
 			<File
+				RelativePath="..\..\src\route~.c">
+			</File>
+			<File
 				RelativePath="..\..\src\sfplay.c">
 			</File>
 			<File
