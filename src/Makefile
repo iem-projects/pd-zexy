@@ -40,7 +40,7 @@ ifdef MAKEDEP_FLAGS
 ## see http://www.gnu.org/software/make/manual/html_node/make_47.html#SEC51
 %.d: %.c
 	@set -e; rm -f $@; \
-	 $(CPP) $(MAKEDEP_FLAGS) $(Z_CFLAGS) $< > $@.$$$$; \
+	 $(CPP) $(MAKEDEP_FLAGS) $(Z_CPPFLAGS) $< > $@.$$$$; \
 	 sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	 rm -f $@.$$$$
 endif
