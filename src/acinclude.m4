@@ -35,8 +35,8 @@ EOF
 if $CC $CFLAGS [$1] -o conftest.o conftest.c > /dev/null 2>&1
 then
   AC_MSG_RESULT([yes])
-  AC_CHECK_CPPFLAGS([$1])
   CFLAGS="${CFLAGS} [$1]"
+  AC_CHECK_CPPFLAGS([$1])
   [$2]
 else
   AC_MSG_RESULT([no])
@@ -60,6 +60,7 @@ if $CXX $CPPFLAGS $CXXFLAGS -o conftest.o conftest.c++ [$1] > /dev/null 2>&1
 then
   AC_MSG_RESULT([yes])
   CXXFLAGS="${CXXFLAGS} [$1]"
+  AC_CHECK_CPPFLAGS([$1])
   [$2]
 else
   AC_MSG_RESULT([no])
