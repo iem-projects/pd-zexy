@@ -124,7 +124,9 @@ static void list2symbol_anything(t_list2symbol *x, t_symbol *s, int argc, t_atom
   x->s =s;
   x->ac=argc;
 
-  x->ap=(t_atom*)getbytes(x->ac*sizeof(t_atom));
+  if(x->ac){
+    x->ap=(t_atom*)getbytes(x->ac*sizeof(t_atom));
+  }
   if(x->ap){
     t_atom*ap=x->ap;
     while(argc--){
