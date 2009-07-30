@@ -133,7 +133,8 @@ static void *dirac_new(t_floatarg where)
 
   outlet_new(&x->x_obj, gensym("signal"));
 
-  x->do_it = where;
+  //  x->do_it = where;
+  x->do_it = -1;
 
   if (where > 0)
     x->position = where;
