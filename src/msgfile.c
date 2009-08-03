@@ -80,6 +80,19 @@ typedef struct _msgfile
 
 static t_class *msgfile_class;
 
+
+
+
+
+/* ************************************************************************ */
+/* forward declarations                                                     */
+
+static void msgfile_end(t_msgfile *x);
+static void msgfile_goto(t_msgfile *x, t_float f);
+
+/* ************************************************************************ */
+/* help functions                                                           */
+
 static int node_wherearewe(t_msgfile *x)
 {
   int counter = 0;
@@ -224,6 +237,86 @@ static void insert_currentnode(t_msgfile *x)
   }
 }
 
+/* delete from line "start" to line "stop"
+ * if "stop" is negative, delete from "start" to the end
+ */
+static void delete_region(t_msgfile *x, int start, int stop)
+{
+  int n;
+  int newwhere, oldwhere = node_wherearewe(x);
+
+  /* get the number of lists in the buffer */
+  t_msglist *dummy = x->start;
+  int counter = 0;
+
+  /* go to the end of the buffer */
+  while (dummy && dummy->next) {
+    counter++;
+    dummy = dummy->next;
+  }
+
+  if ((stop > counter) || (stop == -1)) stop = counter;
+  if ((stop+1) && (start > stop)) return;
+  if (stop == 0) return;
+
+  newwhere = (oldwhere < start)?oldwhere:( (oldwhere < stop)?start:start+(oldwhere-stop));
+  n = stop - start;
+
+  msgfile_goto(x, start);
+
+  while (n--) delete_currentnode(x);
+
+  if (newwhere+1) msgfile_goto(x, newwhere);
+  else msgfile_end(x);
+}
+
+
+static int atomcmp(t_atom *this, t_atom *that)
+{
+  if (this->a_type != that->a_type) return 1;
+
+  switch (this->a_type) {
+  case A_FLOAT:
+    return !(atom_getfloat(this) == atom_getfloat(that));
+    break;
+  case A_SYMBOL:
+    return strcmp(atom_getsymbol(this)->s_name, atom_getsymbol(that)->s_name);
+    break;
+  case A_POINTER:
+    return !(this->a_w.w_gpointer == that->a_w.w_gpointer);
+    break;
+  default:
+    return 0;
+  }
+
+  return 1;
+}
+
+
+static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
+{
+  int ac = binbuf_getnatom(bbuf);
+  t_atom *ap = binbuf_getvec(bbuf);
+
+  while (ac--) {
+    if (ap->a_type == A_SEMI) {
+      add_currentnode(x);
+    } else {
+      write_currentnode(x, 1, ap);
+    }
+    ap++;
+  }
+
+  delete_emptynodes(x);
+}
+
+
+
+
+
+/* ************************************************************************ */
+/* object methods                                                           */
+
 static void msgfile_rewind(t_msgfile *x)
 {
   //  while (x->current && x->current->previous) x->current = x->current->previous;    
@@ -281,39 +374,6 @@ static void msgfile_clear(t_msgfile *x)
   while (x->current) {
     delete_currentnode(x);
   }
-}
-
-/* delete from line "start" to line "stop"
- * if "stop" is negative, delete from "start" to the end
- */
-static void delete_region(t_msgfile *x, int start, int stop)
-{
-  int n;
-  int newwhere, oldwhere = node_wherearewe(x);
-
-  /* get the number of lists in the buffer */
-  t_msglist *dummy = x->start;
-  int counter = 0;
-
-  /* go to the end of the buffer */
-  while (dummy && dummy->next) {
-    counter++;
-    dummy = dummy->next;
-  }
-
-  if ((stop > counter) || (stop == -1)) stop = counter;
-  if ((stop+1) && (start > stop)) return;
-  if (stop == 0) return;
-
-  newwhere = (oldwhere < start)?oldwhere:( (oldwhere < stop)?start:start+(oldwhere-stop));
-  n = stop - start;
-
-  msgfile_goto(x, start);
-
-  while (n--) delete_currentnode(x);
-
-  if (newwhere+1) msgfile_goto(x, newwhere);
-  else msgfile_end(x);
 }
 
 static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
@@ -454,32 +514,6 @@ static void msgfile_bang(t_msgfile *x)
   } else {
     outlet_bang(x->x_secondout);
   }
-
-  /*
-    msgfile_this(x);
-    msgfile_skip(x, 1);
-  */
-}
-
-static int atomcmp(t_atom *this, t_atom *that)
-{
-  if (this->a_type != that->a_type) return 1;
-
-  switch (this->a_type) {
-  case A_FLOAT:
-    return !(atom_getfloat(this) == atom_getfloat(that));
-    break;
-  case A_SYMBOL:
-    return strcmp(atom_getsymbol(this)->s_name, atom_getsymbol(that)->s_name);
-    break;
-  case A_POINTER:
-    return !(this->a_w.w_gpointer == that->a_w.w_gpointer);
-    break;
-  default:
-    return 0;
-  }
-
-  return 1;
 }
 
 static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
@@ -533,42 +567,51 @@ static void msgfile_where(t_msgfile *x)
   if (x->current && x->current->thislist) outlet_float(x->x_secondout, node_wherearewe(x));
   else outlet_bang(x->x_secondout);
 }
-static void msgfile_print(t_msgfile *x)
-{
-  t_msglist *cur = x->start;
-  int j=0;
-  post("--------- msgfile contents: -----------");
 
-  while (cur) {
-    t_msglist *dum=cur;
-    int i;
-    j++;
-    startpost("line %d:", j);
-    for (i = 0; i < dum->n; i++) {
-      t_atom *a = dum->thislist + i;
-      postatom(1, a);
+
+static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol*s1, t_symbol*r)
+{
+  post("sorting not implemented yet: '%s', '%s' -> '%s'", s0->s_name, s1->s_name, r->s_name);
+
+
+#if 0
+  int step = argc, n;
+  t_atom *atombuf = (t_atom *)getbytes(sizeof(t_atom) * argc);
+  t_float *buf;
+  t_int   *idx;
+
+  int i, loops = 1;
+
+  sort_buffer(x, argc, argv);
+  buf = x->buffer;
+  idx = x->indices;
+
+  while (step > 1) {
+    step = (step % 2)?(step+1)/2:step/2;
+
+    i = loops;
+    loops += 2;
+
+    while(i--) { /* there might be some optimization in here */
+      for (n=0; n<(argc-step); n++) {
+        if (buf[n] > buf[n+step]) {
+          t_int   i_tmp = idx[n];
+          t_float f_tmp = buf[n];
+          buf[n]        = buf[n+step];
+          buf[n+step]   = f_tmp;
+          idx[n]        = idx[n+step];
+          idx[n+step]   = i_tmp;
+        }
+      }
     }
-    endpost();
-    cur = cur->next;
   }
+#endif
+
 }
 
-static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
-{
-  int ac = binbuf_getnatom(bbuf);
-  t_atom *ap = binbuf_getvec(bbuf);
 
-  while (ac--) {
-    if (ap->a_type == A_SEMI) {
-      add_currentnode(x);
-    } else {
-      write_currentnode(x, 1, ap);
-    }
-    ap++;
-  }
-
-  delete_emptynodes(x);
-}
+/* ********************************** */
+/* file I/O                           */
 
 static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
 {
@@ -783,6 +826,29 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *format)
   binbuf_free(bbuf);
 }
 
+/* ********************************** */
+/* misc                               */
+
+static void msgfile_print(t_msgfile *x)
+{
+  t_msglist *cur = x->start;
+  int j=0;
+  post("--------- msgfile contents: -----------");
+
+  while (cur) {
+    t_msglist *dum=cur;
+    int i;
+    j++;
+    startpost("line %d:", j);
+    for (i = 0; i < dum->n; i++) {
+      t_atom *a = dum->thislist + i;
+      postatom(1, a);
+    }
+    endpost();
+    cur = cur->next;
+  }
+}
+
 static void msgfile_help(t_msgfile *x)
 {
   post("\n%c msgfile\t:: handle and store files of lists", HEARTSYMBOL);
@@ -890,6 +956,9 @@ void msgfile_setup(void)
   class_addbang(msgfile_class, msgfile_bang);
   class_addmethod(msgfile_class, (t_method)msgfile_this, gensym("this"), 0);
   class_addmethod(msgfile_class, (t_method)msgfile_where, gensym("where"), 0);
+
+
+  class_addmethod(msgfile_class, (t_method)msgfile_sort, gensym("sort"), A_SYMBOL, A_SYMBOL, A_SYMBOL, 0);
 
   class_addmethod(msgfile_class, (t_method)msgfile_help, gensym("help"), 0);
 
