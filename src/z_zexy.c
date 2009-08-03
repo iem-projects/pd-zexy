@@ -41,6 +41,7 @@ void z_zexy_setup(void)
 	list2symbol_setup(); /* list2symbol */
 	lister_setup(); /* lister */
 	listfind_setup(); /* listfind */
+	liststorage_setup(); /* liststorage */
 	lpt_setup(); /* lpt */
 	makesymbol_setup(); /* makesymbol */
 	matchbox_setup(); /* matchbox */

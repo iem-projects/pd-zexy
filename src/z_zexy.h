@@ -39,6 +39,7 @@ void list2lists_setup(void); /* list2lists */
 void list2symbol_setup(void); /* list2symbol */
 void lister_setup(void); /* lister */
 void listfind_setup(void); /* listfind */
+void liststorage_setup(void); /* liststorage */
 void lpt_setup(void); /* lpt */
 void makesymbol_setup(void); /* makesymbol */
 void matchbox_setup(void); /* matchbox */
