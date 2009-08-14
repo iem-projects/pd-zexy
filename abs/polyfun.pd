@@ -1,4 +1,4 @@
-#N canvas 618 139 492 542 10;
+#N canvas 532 58 492 526 10;
 #X obj 97 112 inlet x;
 #X obj 97 437 outlet y=a0+a1*x+a2*x^2+a3*x^3+...;
 #X obj 97 415 f;
@@ -73,5 +73,5 @@ of coeff-list).;
 #X connect 14 0 4 1;
 #X connect 15 0 4 0;
 #X connect 15 1 14 0;
-#X connect 18 0 3 1;
-#X connect 18 1 2 1;
+#X connect 18 0 2 1;
+#X connect 18 1 3 1;
