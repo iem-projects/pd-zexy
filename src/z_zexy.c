@@ -51,6 +51,7 @@ void z_zexy_setup(void)
 	multiline_tilde_setup(); /* multiline~ */
 	multiplex_tilde_setup(); /* multiplex~ */
 	multiplex_setup(); /* multiplex */
+	multireceive_setup(); /* multireceive */
 	niagara_setup(); /* niagara */
 	noish_tilde_setup(); /* noish~ */
 	noisi_tilde_setup(); /* noisi~ */

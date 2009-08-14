@@ -49,6 +49,7 @@ void msgfile_setup(void); /* msgfile */
 void multiline_tilde_setup(void); /* multiline~ */
 void multiplex_tilde_setup(void); /* multiplex~ */
 void multiplex_setup(void); /* multiplex */
+void multireceive_setup(void); /* multireceive */
 void niagara_setup(void); /* niagara */
 void noish_tilde_setup(void); /* noish~ */
 void noisi_tilde_setup(void); /* noisi~ */
