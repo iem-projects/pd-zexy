@@ -59,7 +59,7 @@ fi
 if test $(uname | sed -e 's/^MINGW.*/NT/') = NT ; 
 then
   LD=${CC}
-#  LDFLAGS="-shared pd.dll"
+  LDFLAGS="-L${with_pd}/src -L${with_pd}/bin -lpd"
   EXT=dll
 fi
 
@@ -301,8 +301,6 @@ fi
 #                  ,
 	          AC_CHECK_LDFLAGS([-bundle -undefined suppress -flat_namespace])
 #                 )
-
-AC_CHECK_LDFLAGS([-shared pd.dll])
 
 if test x${KERN} = xIRIX64; then
   LDFLAGS="-n32 -DUNIX -DIRIX -DN32 -woff 1080,1064,1185 \
