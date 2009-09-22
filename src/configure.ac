@@ -59,7 +59,7 @@ fi
 if test $(uname | sed -e 's/^MINGW.*/NT/') = NT ; 
 then
   LD=${CC}
-  LDFLAGS="-L${with_pd}/src -L${with_pd}/bin -lpd"
+  LDFLAGS="-L${with_pd}/src -L${with_pd}/bin"
   EXT=dll
 fi
 
