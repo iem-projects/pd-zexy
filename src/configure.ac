@@ -59,20 +59,24 @@ fi
 if test $(uname | sed -e 's/^MINGW.*/NT/') = NT ; 
 then
   LD=${CC}
-  LDFLAGS="-L${with_pd}/src -L${with_pd}/bin"
   EXT=dll
 fi
 
-
-
 if test "x$with_pd" != "x"; then
- if test -d "${with_pd}/src"; then
-  AC_MSG_RESULT([adding ${with_pd}/src to INCLUDES])
-  INCLUDES="-I${with_pd}/src ${INCLUDES}"
+ if test -d "${with_pd}"; then
+   PDPATH=${with_pd}
  fi
- if test -d "${with_pd}/bin"; then
-  AC_MSG_RESULT([adding ${with_pd}/bin to LDFLAGS])
-  LDFLAGS="-L${with_pd}/bin ${LDFLAGS}"
+
+ if test -d "${PDPATH}/src"; then
+  AC_MSG_RESULT([adding ${PDPATH}/src to INCLUDES])
+  INCLUDES="-I${PDPATH}/src ${INCLUDES}"
+
+  AC_MSG_RESULT([adding ${PDPATH}/src to LDFLAGS])
+  LDFLAGS="-L${PDPATH}/src ${LDFLAGS}"
+ fi
+ if test -d "${PDPATH}/bin"; then
+  AC_MSG_RESULT([adding ${PDPATH}/bin to LDFLAGS])
+  LDFLAGS="-L${PDPATH}/bin ${LDFLAGS}"
  fi
 fi
 
