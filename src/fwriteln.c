@@ -192,7 +192,7 @@ static void *fwriteln_new(t_symbol *s, int argc, t_atom *argv)
    char float_format[3]="g ";
    char width_str[3]="";
    char precision_str[4]="";
-   char prefix[2]="%";
+   char prefix[3]="%";
    t_fwriteln *x = (t_fwriteln *)pd_new(fwriteln_class);
    x->x_filename=0;
    x->x_file=0;
