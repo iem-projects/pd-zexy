@@ -20,7 +20,7 @@
 	1302:forum::für::umläute:2000
 */
 
-#include "zexy.h"
+#include "zexySIMD.h"
 
 /* ----------------------------- oror_tilde ----------------------------- */
 static t_class *oror_tilde_class, *scalaroror_tilde_class;

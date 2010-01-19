@@ -20,7 +20,7 @@
   2112:forum::für::umläute:2005
 */
 
-#include "zexy.h"
+#include "zexySIMD.h"
 
 typedef struct _abs
 {
@@ -45,10 +45,10 @@ static t_int *sigABS_perform(t_int *w)
 }
 
 #ifdef __SSE__
-static long l_bitmask[]={0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
+static int l_bitmask[]={0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
 static t_int *sigABS_performSSE(t_int *w)
 {
-  __m128 *in = (__m128 *)(w[1]);
+  __m128 *in =  (__m128 *)(w[1]);
   __m128 *out = (__m128 *)(w[2]);
   int n = (int)(w[3])>>4;
 
@@ -121,10 +121,10 @@ static void sigABS_dsp(t_abs *x, t_signal **sp)
 {
 #ifdef __SSE__
   if(
-     Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&
-     Z_SIMD_CHKALIGN(sp[0]->s_vec)&&
-     Z_SIMD_CHKALIGN(sp[1]->s_vec)&&
-     ZEXY_TYPE_EQUAL(t_sample, float)
+     ZEXY_TYPE_EQUAL(t_sample, float) && 
+     zexy_testSSE(sigABS_perform,
+		  sigABS_performSSE, 
+		  1, 1)
      )
     {
       dsp_add(sigABS_performSSE, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);

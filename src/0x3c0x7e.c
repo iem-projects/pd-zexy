@@ -20,7 +20,7 @@
 	1302:forum::für::umläute:2000
 */
 
-#include "zexy.h"
+#include "zexySIMD.h"
 
 /* ------------------------ relational~ ----------------------------- */
 

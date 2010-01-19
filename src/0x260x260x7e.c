@@ -20,7 +20,7 @@
   1302:forum::für::umläute:2000
 */
 
-#include "zexy.h"
+#include "zexySIMD.h"
 
 /* ------------------------ logical~ ----------------------------- */
 
@@ -125,7 +125,7 @@ static t_int *scalarandand_tilde_perf8(t_int *w)
 }
 
 #ifdef __SSE__
-static long l_bitmask[]={0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
+static int l_bitmask[]={0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
 
 static t_int *andand_tilde_performSSE(t_int *w)
 {

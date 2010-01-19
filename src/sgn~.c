@@ -20,7 +20,7 @@
   2112:forum::für::umläute:2005
 */
 
-#include "zexy.h"
+#include "zexySIMD.h"
 
 typedef struct _sgnTilde
 {
@@ -73,7 +73,7 @@ static t_int *sgnTilde_perform8(t_int *w)
 }
 
 #ifdef __SSE__
-static long l_bitmask[]={0x80000000, 0x80000000, 0x80000000, 0x80000000}; /* sign bitmask */
+static int l_bitmask[]={0x80000000, 0x80000000, 0x80000000, 0x80000000}; /* sign bitmask */
 static t_int *sgnTilde_performSSE(t_int *w)
 {
   __m128 *in = (__m128 *)(w[1]);
@@ -114,10 +114,10 @@ static void sgnTilde_dsp(t_sgnTilde *x, t_signal **sp)
 {
 #ifdef __SSE__
   if(
-     Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&
-     Z_SIMD_CHKALIGN(sp[0]->s_vec)&&
-     Z_SIMD_CHKALIGN(sp[1]->s_vec)&&
-     ZEXY_TYPE_EQUAL(t_sample, float) /*  currently SSE2 code is only for float (not for double) */
+     ZEXY_TYPE_EQUAL(t_sample, float) && /*  currently SSE2 code is only for float (not for double) */
+     zexy_testSSE(sgnTilde_perform,
+		  sgnTilde_performSSE, 
+		  1,1)
      )
     {
       dsp_add(sgnTilde_performSSE, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);

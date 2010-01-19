@@ -20,7 +20,7 @@
 	1302:forum::für::umläute:2000
 */
 
-#include "zexy.h"
+#include "zexySIMD.h"
 
 /* ----------------------------- eq_tilde ----------------------------- */
 static t_class *eq_tilde_class, *scalareq_tilde_class;

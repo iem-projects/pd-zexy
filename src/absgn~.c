@@ -11,7 +11,7 @@
  *
  ******************************************************/
 
-#include "zexy.h"
+#include "zexySIMD.h"
 
 typedef struct _absgn
 {
@@ -46,8 +46,8 @@ static t_int *sigABSGN_perform(t_int *w)
 }
 
 #ifdef __SSE__
-static long l_bitmask[]   ={0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
-static long l_sgnbitmask[]={0x80000000, 0x80000000, 0x80000000, 0x80000000};
+static int l_bitmask[]   ={0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
+static int l_sgnbitmask[]={0x80000000, 0x80000000, 0x80000000, 0x80000000};
 static t_int *sigABSGN_performSSE(t_int *w)
 {
   __m128 *in = (__m128 *)(w[1]);
@@ -91,11 +91,12 @@ static void sigABSGN_dsp(t_absgn *x, t_signal **sp)
   ZEXY_USEVAR(x);
 #ifdef __SSE__
   if(
-     Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n)&&
-     Z_SIMD_CHKALIGN(sp[0]->s_vec)&&
-     Z_SIMD_CHKALIGN(sp[1]->s_vec)&&
-     Z_SIMD_CHKALIGN(sp[2]->s_vec)&&
-     ZEXY_TYPE_EQUAL(t_sample, float)
+     ZEXY_TYPE_EQUAL(t_sample, float) && /*  currently SSE2 code is only for float (not for double) */
+     Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n) &&
+     Z_SIMD_CHKALIGN(sp[0]->s_vec) &&
+     Z_SIMD_CHKALIGN(sp[1]->s_vec) &&
+     Z_SIMD_CHKALIGN(sp[2]->s_vec) &&
+     zexy_testSSE(sigABSGN_perform, sigABSGN_performSSE, 1, 2)
      )
     {
       dsp_add(sigABSGN_performSSE, 4, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[0]->s_n);
