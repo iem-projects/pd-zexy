@@ -3,7 +3,7 @@
 #X text 37 51 may people think that it is a bad idea to not create
 [repeat] if there is no argument. so this test fails when the object
 cannot instantiate;
-#N canvas 363 165 631 415 compare 1;
+#N canvas 363 165 631 415 compare 0;
 #X obj 261 65 inlet~ processed;
 #X obj 262 94 tabsend~ \$0-output;
 #X obj 417 92 table \$0-output 64;
@@ -51,7 +51,6 @@ cannot instantiate;
 #X connect 17 0 12 1;
 #X connect 18 0 3 0;
 #X connect 19 0 4 0;
-#X connect 20 0 21 0;
 #X restore 91 367 pd compare;
 #N canvas 1456 193 714 565 reference 0;
 #X obj 519 101 table \$0-reference 64;
@@ -141,6 +140,9 @@ cannot instantiate;
 #X connect 2 0 1 0;
 #X restore 158 243 pd input1;
 #X obj 158 274 ||~;
+#X text 278 194 the [||~] implementation currently behaves different
+from [||] when in SSE mode (the default): it uses !=0 for integer conversion
+rather than abs()>=1;
 #X connect 0 0 10 0;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
