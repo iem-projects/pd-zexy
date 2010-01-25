@@ -206,6 +206,7 @@ static void oror_tilde_dsp(t_oror_tilde *x, t_signal **sp)
 
 #ifdef __SSE__
   if(
+     0 && /* disabled for now since SSE2 code not compatible with [||] */
      Z_SIMD_CHKBLOCKSIZE(n)&&
      Z_SIMD_CHKALIGN(in1)&&
      Z_SIMD_CHKALIGN(in2)&&
