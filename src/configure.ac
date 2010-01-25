@@ -275,7 +275,6 @@ dnl
 dnl  OK, checks which machines are here now
 dnl this needs some rethinking when cross-compiling (?)
 dnl
-AC_CHECK_LDFLAGS([-shared])
 
 if test x${KERN} = xLinux; 
 then
@@ -301,12 +300,10 @@ then
   fi
 fi
 
-#AC_CHECK_LDFLAGS([-dynamiclib -mmacosx-version-min=10.3 -undefined dynamic_lookup],
-#                  ,
-#	          AC_CHECK_LDFLAGS([-bundle -undefined suppress -flat_namespace])
-#                 )
+# linux
+AC_CHECK_LDFLAGS([-shared -Wl,--export-dynamic])
 
-
+#osx
 AC_CHECK_LDFLAGS([-bundle -mmacosx-version-min=10.3 -undefined dynamic_lookup],
   ,
   AC_CHECK_LDFLAGS([-dynamiclib -mmacosx-version-min=10.3 -undefined dynamic_lookup],
@@ -314,6 +311,7 @@ AC_CHECK_LDFLAGS([-bundle -mmacosx-version-min=10.3 -undefined dynamic_lookup],
 	  AC_CHECK_LDFLAGS([-bundle -undefined suppress -flat_namespace])
     )
   )
+
 
 
 
