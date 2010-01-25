@@ -19,9 +19,9 @@
 
 #ifdef __WIN32__
 # define snprintf _snprintf
-# include <stdlib.h>
 #endif
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
