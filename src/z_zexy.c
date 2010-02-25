@@ -62,6 +62,7 @@ void z_zexy_setup(void)
 	pdf_tilde_setup(); /* pdf~ */
 	prime_setup(); /* prime */
 	quantize_tilde_setup(); /* quantize~ */
+	rawprint_setup(); /* rawprint */
 	regex_setup(); /* regex */
 	relay_setup(); /* relay */
 	repack_setup(); /* repack */

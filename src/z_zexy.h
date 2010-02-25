@@ -60,6 +60,7 @@ void packel_setup(void); /* packel */
 void pdf_tilde_setup(void); /* pdf~ */
 void prime_setup(void); /* prime */
 void quantize_tilde_setup(void); /* quantize~ */
+void rawprint_setup(void); /* rawprint */
 void regex_setup(void); /* regex */
 void relay_setup(void); /* relay */
 void repack_setup(void); /* repack */

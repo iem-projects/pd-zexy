@@ -1,0 +1,19 @@
+#N canvas 178 555 611 300 10;
+#X text 303 9 part of zexy;
+#X obj 34 32 rawprint;
+#X text 104 34 print a message as raw as possible;
+#X msg 51 61 1;
+#X msg 75 91 symbol bla;
+#X msg 86 128 list 4 2 crash;
+#X text 40 233 this is similar to the built-in [print] but without
+trying to hide things from you;
+#X obj 51 177 t a a;
+#X obj 51 199 rawprint raw;
+#X obj 175 200 print cooked;
+#X msg 116 151 gully;
+#X connect 3 0 7 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 7 0 8 0;
+#X connect 7 1 9 0;
+#X connect 10 0 7 0;
