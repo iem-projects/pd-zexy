@@ -65,7 +65,7 @@ static void rawprint_any(t_rawprint *x, t_symbol*s, int argc, t_atom*argv)
     case A_GIMME:
       snprintf(buf, MAXPDSTRING-1, "GIMME");
       break;
-    case A_CANT:
+    case A_CANT: // we _really_ cannot do CANT
       snprintf(buf, MAXPDSTRING-1, "CANT");
       break;
     default:
