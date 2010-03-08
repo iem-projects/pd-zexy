@@ -70,6 +70,7 @@ void sfplay_setup(void); /* sfplay */
 void sfrecord_setup(void); /* sfrecord */
 void sgn_tilde_setup(void); /* sgn~ */
 void sigzero_tilde_setup(void); /* sigzero~ */
+void sleepgrain_setup(void); /* sleepgrain */
 void sort_setup(void); /* sort */
 void step_tilde_setup(void); /* step~ */
 void strcmp_setup(void); /* strcmp */

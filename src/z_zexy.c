@@ -72,6 +72,7 @@ void z_zexy_setup(void)
 	sfrecord_setup(); /* sfrecord */
 	sgn_tilde_setup(); /* sgn~ */
 	sigzero_tilde_setup(); /* sigzero~ */
+	sleepgrain_setup(); /* sleepgrain */
 	sort_setup(); /* sort */
 	step_tilde_setup(); /* step~ */
 	strcmp_setup(); /* strcmp */
