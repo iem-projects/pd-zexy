@@ -153,6 +153,11 @@ static int cstr_char_pos(const char *c_str, const char c)
    return -1;
 }
 
+static void freadln_done(t_freadln*x)
+{
+  outlet_bang(x->x_readybang_outlet);
+}
+
 static void freadln_readline (t_freadln *x)
 {
    int min_length=(x->x_textbuf_length < 1)?1:x->x_textbuf_length;
@@ -164,62 +169,64 @@ static void freadln_readline (t_freadln *x)
    int rewind_after;
 
    if (!x->x_file) {
-      pd_error(x, "no file opened for reading");
-      return;
+     pd_error(x, "no file opened for reading");
+     freadln_done(x);
+     return;
    }
-
+   
    do {
-      if (linebreak_pos==-1) {
-	 min_length<<=1;
-	 fseek(x->x_file,-(long)(x->x_textbuf_length),SEEK_CUR);
-      }
-      if (!enlarge_cstr_if_required((const char**) &x->x_textbuf, &x->x_textbuf_length, min_length)) {
-         pd_error(x, "out of memory");
-         x->x_textbuf_length=0;
-         freadln_close(x);
-         return;
-      }
-      if (!(items_read=fread(x->x_textbuf,sizeof(char),x->x_textbuf_length,x->x_file))) {
-	 freadln_close(x);
-	 outlet_bang(x->x_readybang_outlet);
-	 return;
-      }
-      x->x_textbuf[x->x_textbuf_length-1]=0;
+     if (linebreak_pos==-1) {
+       min_length<<=1;
+       fseek(x->x_file,-(long)(x->x_textbuf_length),SEEK_CUR);
+     }
+     if (!enlarge_cstr_if_required((const char**) &x->x_textbuf, &x->x_textbuf_length, min_length)) {
+       pd_error(x, "out of memory");
+       x->x_textbuf_length=0;
+       freadln_close(x);
+       freadln_done(x);
+       return;
+     }
+     if (!(items_read=fread(x->x_textbuf,sizeof(char),x->x_textbuf_length,x->x_file))) {
+       freadln_close(x);
+       freadln_done(x);
+       return;
+     }
+     x->x_textbuf[x->x_textbuf_length-1]=0;
    } while (((linebreak_pos=cstr_char_pos(x->x_textbuf,x->linebreak_chr[0]))==-1) && 
-	 !(items_read < x->x_textbuf_length));
-
+            !(items_read < x->x_textbuf_length));
+   
    if (linebreak_pos-1  < items_read - strlen(x->linebreak_chr)) {
-      rewind_after=items_read-linebreak_pos;
-      fseek(x->x_file,-(long)(rewind_after),SEEK_CUR);
+     rewind_after=items_read-linebreak_pos;
+     fseek(x->x_file,-(long)(rewind_after),SEEK_CUR);
    }
    if (linebreak_pos==-1) 
-      linebreak_pos=items_read;
+     linebreak_pos=items_read;
    x->x_textbuf[linebreak_pos-1]='\0';
    if (!(bbuf=binbuf_new())) {
-      pd_error(x, "out of memory");
-      freadln_close(x);
-      return;
+     pd_error(x, "out of memory");
+     freadln_close(x);
+     freadln_done(x);
+     return;
    }
    binbuf_text(bbuf, x->x_textbuf, linebreak_pos-1);
    abuf = binbuf_getvec(bbuf);
    abuf_length = binbuf_getnatom(bbuf);
    if (abuf_length>0) {
-      if (abuf->a_type==A_SYMBOL) {
-         outlet_anything(x->x_message_outlet, atom_getsymbol(abuf), abuf_length-1, abuf+1);
-      }
-      else {
-         outlet_list(x->x_message_outlet, gensym("list"), abuf_length, abuf);
-      }
-   } 
+     if (abuf->a_type==A_SYMBOL) {
+       outlet_anything(x->x_message_outlet, atom_getsymbol(abuf), abuf_length-1, abuf+1);
+     }
+     else {
+       outlet_list(x->x_message_outlet, gensym("list"), abuf_length, abuf);
+     }
+   }
    else {
-      outlet_list(x->x_message_outlet, atom_getsymbol(abuf), 0, abuf);
+     outlet_list(x->x_message_outlet, atom_getsymbol(abuf), 0, abuf);
    }
    /* NOTE: the following line might be a problem in recursions
     * and could be performed before to outlet_* as well,
     * but(!) atom buffer abuf must be copied if doing so.
     */
    binbuf_free(bbuf);
-
 }
 static void freadln_free (t_freadln *x)
 {
