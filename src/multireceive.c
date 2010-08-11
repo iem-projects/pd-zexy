@@ -147,7 +147,7 @@ void multireceive_setup(void)
 		    gensym("add"), 
 		    A_SYMBOL, 0);
 
-    multireceive_proxy_class = class_new(gensym("multireceive proxy"), 
+    multireceive_proxy_class = class_new(gensym("multireceive proxy "__DATE__""__TIME__""), 
 				   0, 0,
 				   sizeof(t_multireceive_proxy),
 				   CLASS_PD | CLASS_NOINLET, 0);
