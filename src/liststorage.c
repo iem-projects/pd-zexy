@@ -17,7 +17,7 @@
 
 /*  
     this is heavily based on code from [textfile],
-    which is part of pd and written by Miller S. Pucket
+    which is part of pd and written by Miller S. Puckette
     pd (and thus [textfile]) come with their own license
 */
 
