@@ -2,9 +2,9 @@
  *
  * zexy - implementation file
  *
- * copyleft (c) IOhannes m zmölnig
+ * copyleft (c) IOhannes m zmÃ¶lnig
  *
- *   1999:forum::für::umläute:2004
+ *   1999:forum::fÃ¼r::umlÃ¤ute:2004
  *
  *   institute of electronic music and acoustics (iem)
  *
@@ -29,7 +29,7 @@
    the limiter is based on Falkner's thesis 
    "Entwicklung eines digitalen Stereo-limiters mit Hilfe des Signalprozessors DSP56001" pp.14
 
-   2108:forum::für::umläute:1999		all rights reserved and no warranties...
+   2108:forum::fÃ¼r::umlÃ¤ute:1999		all rights reserved and no warranties...
 
    see GNU-license for details
 */
@@ -40,20 +40,46 @@
 
 #include "zexy.h"
 
+/* log2 */
 #define LN2 .69314718056
-#define SINC1 .822462987
-#define SINC2 .404460777
-#define SINC3 -.188874003
-#define SINC4 -.143239449
-#define SINC5 .087796546
-#define SINC6 .06917082
-#define SINC7 -.041349667
-#define SINC8 -.030578954
-#define SINC9 .013226276
+
+
+/* hmm, where do these values come from exactly?
+   we are doing a 3* oversampling, so we need to calculate the samples that are +-1/3 off the current sample
+   sinc([13 10 7 4 1 -2 -5 -8 -11]/3) * window
+   window=cosine window
+
+*/
+
+/*
+#define SINC[4] .822462987
+#define SINC[3] .404460777
+#define SINC[5] -.188874003
+#define SINC[2] -.143239449
+#define SINC[6] .087796546
+#define SINC[1] .06917082
+#define SINC[7] -.041349667
+#define SINC[0] -.030578954
+#define SINC[8] .013226276
+*/
 
 #define BUFSIZE 128
 #define XTRASAMPS 9
 #define TABLESIZE 512 /* compressor table */
+
+static t_sample SINC[9];
+
+#define PI  3.1415926535897932384626433832795029L  /* pi */
+
+static void init_sinc(void) {
+  /*  calculate the sinc (windowed with a cosine) */
+  int i=0;
+  for(i=0; i<9; i++) {
+    long double t=(3.*i - 11.)/3.;
+    long double v=cos(t*PI/10.)*sin(PI*t)/(PI*t);
+    SINC[i]=v;
+  }
+}
 
 /* ------------------------------------------------------------------------------------ */
 /* first define the structs... */
@@ -338,7 +364,7 @@ static void limiter_tilde_helper(t_limiter *x)
 	       "\n'set2 <limit2><htime2><rtime2>'\t: set crack-limiter");
     break;
   case COMPRESS:
-    poststring("\n'ratio <compressratio>'\t\t: set compressratio (´0.5´ instead of ´1:2´)"
+    poststring("\n'ratio <compressratio>'\t\t: set compressratio (Å½0.5Å½ instead of Å½1:2Å½)"
 	       "\n'treshold <treshold>'\t\t: set treshold of the compressor"
 	       "\n'compress <limit><treshold><ratio>'\t: set compressor"
 	       "\n..........note that <limit> is the same for COMPRESSOR and LIMITER..........");
@@ -380,43 +406,70 @@ static t_int *oversampling_maxima(t_int *w)
       t_sample last4, last3, last2, last1, sinccurrent, current, next1, next2, next3, next4;
 
       if (bp == ep)
-	{
-	  vp[0] = bp[-9];
-	  vp[1] = bp[-8];
-	  vp[2] = bp[-7];
-	  vp[3] = bp[-6];
-	  vp[4] = bp[-5];
-	  vp[5] = bp[-4];
-	  vp[6] = bp[-3];
-	  vp[7] = bp[-2];
-	  vp[8] = bp[-1];
+        {
+          vp[0] = bp[-9];
+          vp[1] = bp[-8];
+          vp[2] = bp[-7];
+          vp[3] = bp[-6];
+          vp[4] = bp[-5];
+          vp[5] = bp[-4];
+          vp[6] = bp[-3];
+          vp[7] = bp[-2];
+          vp[8] = bp[-1];
+          
+          bp = vp + XTRASAMPS;
+          i -= bufsize - XTRASAMPS;
+        }
 
-	  bp = vp + XTRASAMPS;
-	  i -= bufsize - XTRASAMPS;
-	}
 
-      os1= fabsf(SINC8 * (last4 = bp[-8]) +
-		 SINC6 * (last3 = bp[-7]) +
-		 SINC4 * (last2 = bp[-6]) +
-		 SINC2 * (last1 = bp[-5]) +
-		 (sinccurrent = SINC1 * (current = bp[-4])) +
-		 SINC3 * (next1 = bp[-3]) +
-		 SINC5 * (next2 = bp[-2]) +
-		 SINC7 * (next3 = bp[-1]) +
-		 SINC9 * (next4 = bp[0]));
+      last4 = bp[-8];
+      last3 = bp[-7];
+      last2 = bp[-6];
+      last1 = bp[-5];
+      current = bp[-4];
+      next1 = bp[-3];
+      next2 = bp[-2];
+      next3 = bp[-1];
+      next4 = bp[0];
 
-      os2= fabsf(SINC8 * next4 +
-		 SINC4 * next3 +
-		 SINC6 * next2 +
-		 SINC2 * next1 +
-		 sinccurrent +
-		 SINC3 * last1 +
-		 SINC5 * last2 +
-		 SINC7 * last3 +
-		 SINC9 * last4);
+      sinccurrent = SINC[4] * current;
+
+      os1= fabsf(SINC[0] * last4 +
+                 SINC[1] * last3 +
+                 SINC[2] * last2 +
+                 SINC[3] * last1 +
+                 sinccurrent +
+                 SINC[5] * next1 +
+                 SINC[6] * next2 +
+                 SINC[7] * next3 +
+                 SINC[8] * next4);
+
+      os2= fabsf(SINC[0] * next4 +
+                 SINC[1] * next3 +
+                 SINC[2] * next2 +
+                 SINC[3] * next1 +
+                 sinccurrent +
+                 SINC[5] * last1 +
+                 SINC[6] * last2 +
+                 SINC[7] * last3 +
+                 SINC[8] * last4);
 
       max = fabsf(current);
 
+#if 0
+      if(max>1. || os1>1. || os2>1.)
+        post("%f %f %f\t%f %f %f %f %f %f %f %f %f", max, os1, os2,
+             last4,
+             last3,
+             last2,
+             last1,
+             current,
+             next1,
+             next2,
+             next3,
+             next4
+             );
+#endif
       if (max < os1) 
 	{
 	  max = os1;
@@ -671,6 +724,8 @@ static void limiter_free(t_limiter *x)
 
 void limiter_tilde_setup(void)
 {
+  init_sinc();
+
   limiter_class = class_new(gensym("limiter~"), (t_newmethod)limiter_new, (t_method)limiter_free,
 			    sizeof(t_limiter), 0, A_GIMME, 0);
 
