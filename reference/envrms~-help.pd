@@ -1,4 +1,4 @@
-#N canvas 366 497 580 361 10;
+#N canvas 0 31 580 361 10;
 #X obj 71 51 envrms~;
 #X text 174 51 an envelope follower that outputs rms instead of dB
 ;
@@ -20,6 +20,17 @@ the times \, and i wouldn't use snapshot~ instead);
 #X obj 354 296 tavg~;
 #X msg 484 217 \; pd dsp 1;
 #X text 479 17 part of zexy;
+#N canvas 593 163 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION an envelope follower that outputs rms instead
+of dB;
+#X text 12 5 KEYWORDS signal conversion;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 float;
+#X restore 525 333 pd META;
 #X connect 2 0 7 0;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;

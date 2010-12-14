@@ -1,4 +1,4 @@
-#N canvas 252 393 685 518 10;
+#N canvas 0 31 627 499 10;
 #X obj 110 16 lister;
 #X text 160 17 - store a list;
 #X msg 41 132 bang;
@@ -33,6 +33,19 @@ a symbol \, you need to cast it as a list:;
 #X obj 202 470 list;
 #X text 35 448 this object has been deprecated by the advent of [list]
 in Pd-0.40 \; use that one instead!;
+#N canvas 460 154 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 135 OUTLET_0 list;
+#X text 12 155 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 ALIAS l;
+#X text 12 25 KEYWORDS control storage list_op deprecated;
+#X text 12 65 DESCRIPTION store a list and/or append a list to another
+list;
+#X text 12 115 INLET_1 list;
+#X text 12 95 INLET_0 list;
+#X restore 571 470 pd META;
 #X connect 2 0 10 0;
 #X connect 9 0 10 1;
 #X connect 10 0 6 0;

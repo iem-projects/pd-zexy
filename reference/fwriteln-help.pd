@@ -1,4 +1,4 @@
-#N canvas 94 78 859 363 10;
+#N canvas 4 2 827 363 10;
 #X text 72 260 see also:;
 #X obj 130 281 textfile;
 #X text 482 150 output one line as a list and move to the next;
@@ -26,6 +26,15 @@ all);
 #X text 167 322 you can use the arguments "w" and "p" to set the width
 and precision of floating point numbers \, e.g.:;
 #X obj 602 331 fwriteln w 8 p 2;
+#N canvas 708 249 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control storage filesystem;
+#X text 12 45 DESCRIPTION write text files line by line;
+#X text 12 65 INLET_0 open close anything;
+#X restore 768 327 pd META;
 #X connect 7 0 14 0;
 #X connect 15 0 14 0;
 #X connect 16 0 14 0;

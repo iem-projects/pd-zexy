@@ -1,4 +1,4 @@
-#N canvas 1387 257 772 508 10;
+#N canvas 0 31 640 508 10;
 #X text 129 36 write data to the (parallel) port;
 #X obj 81 355 % 256;
 #X floatatom 81 304 4 0 0 0 - - -;
@@ -62,6 +62,17 @@ gain raw access to the port.;
 #X msg 337 363 bang;
 #X text 380 367 read the input bits;
 #X text 131 429 input bits;
+#N canvas 460 154 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION write data to the (parallel) port;
+#X text 12 65 INLET_0 float bang control;
+#X text 12 85 INLET_1;
+#X text 12 5 KEYWORDS control filesystem needs_work (inlet_1?);
+#X text 12 105 OUTLET_0 float;
+#X restore 571 477 pd META;
 #X connect 1 0 9 0;
 #X connect 2 0 1 0;
 #X connect 9 0 22 0;

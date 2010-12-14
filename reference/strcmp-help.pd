@@ -1,4 +1,4 @@
-#N canvas 459 236 628 611 10;
+#N canvas 0 31 628 559 10;
 #X obj 90 54 strcmp;
 #X text 147 54 -- compare 2 lists as if they were strings;
 #X obj 71 398 strcmp this is list # 3;
@@ -18,6 +18,18 @@ they go to the 2nd inlet as lists;
 language;
 #X text 426 24 part of zexy;
 #X text 68 525 probably not very efficient!!;
+#N canvas 460 154 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 45 DESCRIPTION compare two lists as if they were strings
+;
+#X text 12 65 INLET_0 list float;
+#X text 12 85 INLET_1 list;
+#X text 12 105 OUTLET_0 float;
+#X restore 573 531 pd META;
 #X connect 2 0 4 0;
 #X connect 2 0 3 0;
 #X connect 5 0 2 0;

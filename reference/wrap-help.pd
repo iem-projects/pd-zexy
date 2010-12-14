@@ -1,4 +1,4 @@
-#N canvas 477 186 738 641 10;
+#N canvas 0 31 540 641 10;
 #X text 118 18 wrap a float between to limits;
 #X obj 71 18 wrap;
 #X obj 42 150 wrap;
@@ -20,22 +20,32 @@ the input between [f1 \, f2);
 #X floatatom 244 342 5 0 0 0 - - -;
 #X floatatom 244 383 5 0 0 0 - - -;
 #X text 127 361 is the same as;
-#X obj 31 497 wrap;
-#X floatatom 31 471 5 0 0 0 - - -;
-#X floatatom 31 520 5 0 0 0 - - -;
+#X obj 31 467 wrap;
+#X floatatom 31 441 5 0 0 0 - - -;
+#X floatatom 31 490 5 0 0 0 - - -;
 #X obj 32 360 wrap 1 9.2;
 #X obj 244 360 wrap 9.2 1;
-#X msg 94 455 2 4;
-#X msg 94 478 -8;
-#X text 129 463 you can dynamically set the limits via the second inlet
+#X msg 94 425 2 4;
+#X msg 94 448 -8;
+#X text 129 433 you can dynamically set the limits via the second inlet
 ;
-#X text 143 502 if only one argument is given \, the second is assumed
+#X text 143 472 if only one argument is given \, the second is assumed
 as zero (0).;
-#X text 137 543 wrapping is always done between [f1 \, f2) \, where
+#X text 137 513 wrapping is always done between [f1 \, f2) \, where
 f1 is ALWAYS less than f2.;
-#X text 130 593 if you need wrapping between (f1 \, f2] you have to
+#X text 130 563 if you need wrapping between (f1 \, f2] you have to
 multiply the numbers with -1 before and after wrapping.;
 #X text 458 20 part of zexy;
+#N canvas 498 241 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION wrap a float between to limits;
+#X text 12 65 INLET_0 float;
+#X restore 483 617 pd META;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
 #X connect 5 0 13 0;
@@ -46,5 +56,3 @@ multiply the numbers with -1 before and after wrapping.;
 #X connect 18 0 17 0;
 #X connect 20 0 11 0;
 #X connect 21 0 15 0;
-#X connect 22 0 17 1;
-#X connect 23 0 17 1;

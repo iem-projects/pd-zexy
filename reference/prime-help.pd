@@ -1,4 +1,4 @@
-#N canvas 525 238 450 300 10;
+#N canvas 0 31 428 257 10;
 #X obj 34 32 prime;
 #X text 82 34 a prime number detector;
 #X floatatom 51 116 8 0 0 0 - - -;
@@ -12,6 +12,16 @@
 #X msg 227 74 1.23457e+06;
 #X text 114 193 1 if input is prime \, 0 otherwise;
 #X text 303 9 part of zexy;
+#N canvas 460 154 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION a prime number detector;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X restore 371 226 pd META;
 #X connect 2 0 3 0;
 #X connect 3 0 8 0;
 #X connect 4 0 2 0;

@@ -1,4 +1,4 @@
-#N canvas 2 165 568 508 10;
+#N canvas 0 31 568 508 10;
 #X text 471 31 part of;
 #X obj 533 30 zexy;
 #X obj 58 192 lifop;
@@ -28,6 +28,18 @@ eat your memory.;
 #X msg 200 167 info;
 #X obj 112 203 print info;
 #X text 247 168 query the number of arguments in the LIFO;
+#N canvas 515 193 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION last in first out stack with priorities;
+#X text 12 5 KEYWORDS control storage list_op;
+#X text 12 65 INLET_0 list float bang info;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 OUTLET_1 float;
+#X restore 513 481 pd META;
 #X connect 2 0 10 0;
 #X connect 2 1 18 0;
 #X connect 3 0 2 0;

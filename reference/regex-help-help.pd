@@ -1,4 +1,4 @@
-#N canvas 693 231 454 304 10;
+#N canvas 0 31 427 323 10;
 #X msg 91 86 symbol a;
 #X obj 157 245 print DETAILS;
 #X obj 263 243 print NUMBER_OF_DETAILS;
@@ -18,6 +18,20 @@
 #X obj 47 245 print RESULT;
 #X floatatom 140 207 5 0 0 0 - - -;
 #X floatatom 261 206 5 0 0 0 - - -;
+#N canvas 717 266 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 175 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION check whether a symbol matches a regular
+expression;
+#X text 12 5 KEYWORDS control;
+#X text 12 75 INLET_0 case list regex;
+#X text 12 95 INLET_1 symbol;
+#X text 12 115 OUTLET_0 float;
+#X text 12 135 OUTLET_1 list;
+#X text 12 155 OUTLET_2 float;
+#X restore 371 292 pd META;
 #X connect 0 0 4 0;
 #X connect 3 0 4 0;
 #X connect 4 0 15 0;

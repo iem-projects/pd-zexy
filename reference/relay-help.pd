@@ -1,4 +1,4 @@
-#N canvas 167 7 778 771 12;
+#N canvas 0 31 778 668 10;
 #X text 625 11 part of;
 #X obj 700 10 zexy;
 #X obj 183 223 print x1;
@@ -49,16 +49,28 @@ are all considered special cases of lists.;
 on the corresponding outlet. If no match \, the message is repeated
 to the last "rejection" outlet. The number of outlets is the number
 of arguments plus one.;
-#X obj 624 581 route;
-#X text 72 616 the only difference is \, that a matching first element
+#X obj 624 541 route;
+#X text 72 576 the only difference is \, that a matching first element
 is NOT stripped from the message.;
-#X text 76 674 (btw \, this help patch has been taken from [route])
+#X text 76 619 (btw \, this help patch has been taken from [route])
 ;
-#X text 72 583 [relay] is very similar to pd's built-in object [route]
+#X text 72 543 [relay] is very similar to pd's built-in object [route]
 ;
-#X text 612 564 see also;
-#X text 72 720 NOTE: "relay" as in "mail relay" \, not as in "reed
+#X text 612 520 see also;
+#X text 72 644 NOTE: "relay" as in "mail relay" \, not as in "reed
 relay";
+#N canvas 509 158 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 INLET_N anything;
+#X text 12 105 INLET_R anything;
+#X text 12 45 DESCRIPTION relay messages according to their first element
+;
+#X restore 715 637 pd META;
 #X connect 6 0 2 0;
 #X connect 6 1 3 0;
 #X connect 6 2 4 0;

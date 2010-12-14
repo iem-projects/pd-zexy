@@ -1,4 +1,4 @@
-#N canvas 413 385 754 537 10;
+#N canvas 0 31 715 510 10;
 #X text 122 40 convert between SPHeric \, POLar and CARTesian coordinates
 ;
 #X obj 99 305 cart2sph;
@@ -46,6 +46,23 @@
 #X text 112 450 angles are given in RADian \, if you want DEGree you
 might want to use [deg2rad] and [rad2deg];
 #X text 599 17 part of zexy;
+#N canvas 473 173 494 344 META 0;
+#X text 12 235 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 25 KEYWORDS control abstraction conversion;
+#X text 12 215 AUTHOR IOhannes m zmoelnig;
+#X text 12 65 DESCRIPTION convert between spheric \, polar and cartesian
+coordinates;
+#X text 12 95 INLET_0 float;
+#X text 12 115 INLET_1 float;
+#X text 12 135 INLET_2 float;
+#X text 12 155 OUTLET_0 float;
+#X text 12 175 OUTLET_1 float;
+#X text 12 196 OUTLET_2 float;
+#X text 12 5 NAME cart2pol pol2sph sph2cart cart2sph pol2cart sph2pol
+;
+#X restore 664 487 pd META;
 #X connect 1 0 7 0;
 #X connect 1 1 6 0;
 #X connect 1 2 5 0;

@@ -1,4 +1,4 @@
-#N canvas 441 541 598 301 10;
+#N canvas 0 0 598 301 10;
 #X obj 61 163 dfreq~;
 #X obj 61 133 osc~ 440;
 #X obj 61 231 print~;
@@ -14,6 +14,17 @@
 or fiddle...;
 #X text 503 7 part of zexy;
 #X text 183 265 thanks to w.ritsch for this one;
+#N canvas 515 193 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS signal analysis;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION a frequency detector that counts zero-crossings
+;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X restore 540 272 pd META;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 3 0 2 0;

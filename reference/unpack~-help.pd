@@ -1,4 +1,4 @@
-#N canvas 321 479 736 292 10;
+#N canvas 0 31 675 292 10;
 #X text 460 14 see also;
 #X obj 461 33 pack~;
 #X text 147 40 unpack~;
@@ -7,7 +7,7 @@
 #X text 234 156 creation: "unpack~ [<bufsize>]";
 #X text 255 181 <bufsize>: in samples (defaults to 64) \; could be
 fine if you don't have a constant stream of floats;
-#N canvas 94 221 845 529 example 1;
+#N canvas 0 31 845 529 example 0;
 #X obj 69 75 osc~ 689.062;
 #X obj 69 123 pack~;
 #X obj 69 94 *~ 0.2;
@@ -158,3 +158,13 @@ fine if you don't have a constant stream of floats;
 #X connect 22 0 3 0;
 #X restore 85 249 pd example;
 #X text 530 34 part of zexy;
+#N canvas 533 307 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS signal conversion list_op;
+#X text 12 45 DESCRIPTION convert a list of floats to a signal;
+#X text 12 65 INLET_0 list;
+#X text 12 85 OUTLET_0 signal;
+#X restore 614 264 pd META;

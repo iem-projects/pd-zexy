@@ -1,4 +1,4 @@
-#N canvas 231 116 894 384 10;
+#N canvas 0 31 618 378 10;
 #X text 511 26 part of zexy;
 #X text 68 98 an atom can be intialized as a number \, then become
 a symbol \, later become a number again \, ....;
@@ -21,6 +21,16 @@ a symbol \, later become a number again \, ....;
 #X obj 409 268 print upack1;
 #X obj 506 268 print upack3;
 #X obj 457 289 print upack2;
+#N canvas 460 154 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION split a message to atoms;
+#X text 12 65 INLET_0 list bang float symbol pointer;
+#X text 12 85 OUTLET_N bang float symbol pointer;
+#X text 12 5 KEYWORDS control conversion list_op;
+#X restore 564 347 pd META;
 #X connect 2 0 15 0;
 #X connect 2 1 14 0;
 #X connect 3 0 2 0;

@@ -1,4 +1,4 @@
-#N canvas 425 439 709 294 10;
+#N canvas 0 31 709 294 10;
 #X obj 51 171 demux 1 2 3 4;
 #X obj 51 91 metro 320;
 #X obj 51 111 t b b;
@@ -27,6 +27,17 @@ patches more readable (as the object becomes wider if it has more outlets)
 ;
 #X text 268 140 creation: "demultiplex [<out1?> [<out2?> [<out3?> ...
 ]]]";
+#N canvas 460 154 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 65 INLET_0 anything;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION demultiplex the inlet to the specified output
+;
+#X text 12 85 OUTLET_N anything;
+#X text 12 5 KEYWORDS control anything_op;
+#X restore 650 261 pd META;
 #X connect 0 0 7 0;
 #X connect 0 1 9 0;
 #X connect 0 2 10 0;

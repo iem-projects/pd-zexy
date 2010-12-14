@@ -1,4 +1,4 @@
-#N canvas 429 454 599 332 10;
+#N canvas 0 31 578 332 10;
 #X msg 41 151 bang;
 #X msg 62 177 1 1 2 3 5 8 13 21 44 fibonacchi;
 #X obj 160 14 repeat;
@@ -16,6 +16,17 @@ comes in;
 #X text 143 236 reset the number of repetitions;
 #X obj 41 303 print repetitio;
 #X text 471 32 part of zexy;
+#N canvas 509 158 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 anything;
+#X text 12 5 KEYWORDS control anything_op;
+#X text 12 45 DESCRIPTION repeat a message several times.;
+#X restore 524 305 pd META;
 #X connect 0 0 11 0;
 #X connect 1 0 11 0;
 #X connect 5 0 11 1;

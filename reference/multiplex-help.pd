@@ -1,4 +1,4 @@
-#N canvas 170 131 827 407 10;
+#N canvas 7 5 666 402 10;
 #X obj 51 91 metro 320;
 #X msg 51 69 1;
 #X msg 76 69 0;
@@ -17,12 +17,24 @@ to the outlet;
 #X obj 315 236 mux;
 #X obj 51 369 print output;
 #X obj 123 240 vradio 15 1 0 4 empty empty select 20 7 0 8 -262144
--1 -1 3;
+-1 -1 0;
 #X obj 51 111 t b b b b;
 #X msg 69 161 bang;
 #X floatatom 51 143 5 0 0 0 - - -;
 #X msg 87 183 list 4 2;
 #X msg 105 211 symbol coppenrath;
+#N canvas 460 154 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION multiplex the selected inlet to the outlet
+;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_N anything;
+#X text 12 85 INLET_R float;
+#X text 12 105 OUTLET_0 anything;
+#X restore 608 373 pd META;
 #X connect 0 0 15 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
