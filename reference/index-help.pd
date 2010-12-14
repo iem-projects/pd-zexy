@@ -1,4 +1,4 @@
-#N canvas 0 1 929 598 10;
+#N canvas 4 50 929 598 10;
 #X msg 33 364 help;
 #X floatatom 682 190 0 0 128 0 - - -;
 #X msg 58 185 add alias;
@@ -16,10 +16,10 @@
 #X msg 533 229 break;
 #X msg 533 211 bind;
 #X msg 533 193 alias;
-#X obj 514 305 send 2index;
-#X obj 61 421 receive 2index;
-#X obj 570 501 send 2index;
-#X obj 44 297 send 2index;
+#X obj 514 305 send \$0-2index;
+#X obj 61 421 receive \$0-2index;
+#X obj 570 501 send \$0-2index;
+#X obj 44 297 send \$0-2index;
 #X text 522 156 get item index;
 #X text 516 170 (evt. add new item);
 #X text 33 154 add new item to map;
@@ -33,7 +33,7 @@
 #X symbolatom 121 562 0 0 0 0 - - -;
 #X obj 61 542 route float symbol;
 #X obj 196 542 print INDEX;
-#X obj 682 294 send 2index;
+#X obj 682 294 send \$0-2index;
 #X text 673 168 query an item at index #;
 #X text 61 9 index:: create a symbol->int map;
 #X text 164 59 n :: initial max. number of elements in list (default:
@@ -88,12 +88,12 @@ map;
 #X text 300 440 open subpatch for administrative messages;
 #X text 300 470 open subpatch for advanced messages;
 #X obj 61 497 index 10 1;
-#X obj 210 299 send 2index;
+#X obj 210 299 send \$0-2index;
 #X text 199 156 add new item to map at index#;
 #X msg 224 187 add foo 7;
 #X msg 231 221 add bar 2;
 #X text 205 168 (if that slot is still free);
-#X obj 724 504 send 2index;
+#X obj 724 504 send \$0-2index;
 #X text 734 353 delete item at index# from map;
 #X msg 724 392 delete 6;
 #X text 88 123 "0" indicates success \; "-1" indicates an error;
