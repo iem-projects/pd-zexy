@@ -19,6 +19,10 @@
 #include "zexy.h"
 #include <stdio.h>
 
+#ifdef _MSC_VER 
+# define snprintf _snprintf
+#endif
+
 static t_class *rawprint_class;
 
 typedef struct _rawprint {
