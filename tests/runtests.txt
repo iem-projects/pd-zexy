@@ -84,6 +84,7 @@ lister/inline2;
 lister/inline;
 lt~/dualnoise;
 lt~/singlenoise;
+msgfile/add2;
 msgfile/empty_at_end;
 msgfile/emptyreplace;
 msgfile/loadingCR;
