@@ -46,7 +46,7 @@ static void rawprint_any(t_rawprint *x, t_symbol*s, int argc, t_atom*argv)
       snprintf(buf, MAXPDSTRING-1, "'%s'", atom_getsymbol(argv)->s_name);
       break;
     case A_POINTER:
-      snprintf(buf, MAXPDSTRING-1, "pointer[0x%X]", argv->a_w.w_gpointer);
+      snprintf(buf, MAXPDSTRING-1, "pointer[%p]", argv->a_w.w_gpointer);
       break;
     case A_SEMI:
       snprintf(buf, MAXPDSTRING-1, "SEMI");
