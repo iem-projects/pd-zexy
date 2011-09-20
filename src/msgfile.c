@@ -410,9 +410,13 @@ static void msgfile_add(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 static void msgfile_add2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   msgfile_end(x);
-  if (x->current->previous) x->current = x->current->previous;
+  if (x->current) {
+    if(x->current->previous) x->current = x->current->previous;
+  } else {
+    add_currentnode(x);
+  }
   write_currentnode(x, ac, av);
-  if (x->current->next) {
+  if (x->current && x->current->next) {
     x->previous= x->current;
     x->current = x->current->next;
   }
@@ -424,6 +428,9 @@ static void msgfile_append(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 }
 static void msgfile_append2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
+  if(!x->current)
+    add_currentnode(x);
+
   if (x->current->thislist) write_currentnode(x, ac, av);
   else msgfile_append(x, s, ac, av);
 }
