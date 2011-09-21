@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *mux_class;
+static t_class *mux_tilde_class;
 
 typedef struct _mux {
   t_object x_obj;
