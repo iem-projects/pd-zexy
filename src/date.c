@@ -1,10 +1,29 @@
+/* 
+ * date: gets the current date from the system
+ *
+ * (c) 1999-2011 IOhannes m zm√∂lnig, forum::f√ºr::uml√§ute, institute of electronic music and acoustics (iem)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /******************************************************
  *
  * zexy - implementation file
  *
- * copyleft (c) IOhannes m zmˆlnig
+ * copyleft (c) IOhannes m zm√∂lnig
  *
- *   1999:forum::f¸r::uml‰ute:2004
+ *   1999:forum::f√ºr::uml√§ute:2004
  *
  *   institute of electronic music and acoustics (iem)
  *
@@ -15,12 +34,8 @@
  ******************************************************/
 
 /* 
-   (c) 1202:forum::f¸r::uml‰ute:2000
-   1506:forum::f¸r::uml‰ute:2003: use timeb only if needed (like on windoze)
-   
-   "time" gets the current time from the system
-   "date" gets the current date from the system
-   
+   (c) 1202:forum::f√ºr::uml√§ute:2000
+   1506:forum::f√ºr::uml√§ute:2003: use timeb only if needed (like on windoze)   
 */
 
 #include "zexy.h"

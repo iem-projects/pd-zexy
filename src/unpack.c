@@ -1,7 +1,7 @@
 /* 
  * unpack: a type-agnostic version of [unpack]
  *
- * (c) 2007-2011 IOhannes m zmölnig, forum::für::umläute, institute of electronic music and acoustics (iem)
+ * (c) 2007-2011 IOhannes m zmÃ¶lnig, forum::fÃ¼r::umlÃ¤ute, institute of electronic music and acoustics (iem)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

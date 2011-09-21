@@ -1,18 +1,22 @@
-/******************************************************
+/* 
+ * multiline~: interpolating signal multiplier
  *
- * zexy - implementation file
+ * (c) 1999-2011 IOhannes m zmÃ¶lnig, forum::fÃ¼r::umlÃ¤ute, institute of electronic music and acoustics (iem)
  *
- * copyleft (c) IOhannes m zmölnig
- *
- *   1999:forum::für::umläute:2004
- *
- *   institute of electronic music and acoustics (iem)
- *
- ******************************************************
- *
- * license: GNU General Public License v.2
- *
- ******************************************************/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 
 /*
   a multiline that MULTIplicates MULTIple signals with "ramped floats" (--> like "line~")
@@ -20,7 +24,7 @@
   this is kind of multiplying some streams with the square diagonal matrix : diag*~
   for smooth-results we do this line~ thing
 
-  1403:forum::für::umläute:2001
+  1403:forum::fÃ¼r::umlÃ¤ute:2001
 */
 
 

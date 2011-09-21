@@ -1,19 +1,21 @@
-/******************************************************
+/* 
+ * zexy: the swiss army knife for Pure Data
  *
- * zexy - implementation file
+ * (c) 1999-2011 IOhannes m zmÃ¶lnig, forum::fÃŒr::umlÃ€ute, institute of electronic music and acoustics (iem)
  *
- * copyleft (c) IOhannes m zmölnig
- *
- *   1999:forum::für::umläute:2005
- *
- *   institute of electronic music and acoustics (iem)
- *
- ******************************************************
- *
- * license: GNU General Public License v.2
- *
- ******************************************************/
-
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
 
 /* ...this is a very ZEXY external ...
    so have fun
@@ -122,7 +124,7 @@ static void zexy_help(void)
   post("urn\t\t:: unique random numbers");
   post("operating_system\t:: information on the OS");
 
-  endpost(); post("\n(l) forum::für::umläute except where indicated");
+  endpost(); post("\n(l) forum::fÃŒr::umlÃ€ute except where indicated");
   post("this software is released under the GnuGPL that is provided with these files");
   endpost();
 }
@@ -141,7 +143,7 @@ void zexy_setup(void)
   for (i=0; i<28; i++) startpost("%c", HEARTSYMBOL);
   endpost();
   post("\t%c the zexy external  "VERSION" %c", HEARTSYMBOL, HEARTSYMBOL);
-  post("\t%c (l)  forum::für::umläute %c", HEARTSYMBOL, HEARTSYMBOL);
+  post("\t%c (l)  forum::fÃŒr::umlÃ€ute %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c       iem   @  kug       %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c  compiled:  "__DATE__"  %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c send me a 'help' message %c", HEARTSYMBOL, HEARTSYMBOL);

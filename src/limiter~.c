@@ -1,18 +1,22 @@
-/******************************************************
+/* 
+ * limiter~: limit/compress signals
  *
- * zexy - implementation file
+ * (c) 1999-2011 IOhannes m zmÃ¶lnig, forum::fÃŒr::umlÃ€ute, institute of electronic music and acoustics (iem)
  *
- * copyleft (c) IOhannes m zmölnig
- *
- *   1999:forum::für::umläute:2004
- *
- *   institute of electronic music and acoustics (iem)
- *
- ******************************************************
- *
- * license: GNU General Public License v.2
- *
- ******************************************************/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 
 
 /*
@@ -29,7 +33,7 @@
    the limiter is based on Falkner's thesis 
    "Entwicklung eines digitalen Stereo-limiters mit Hilfe des Signalprozessors DSP56001" pp.14
 
-   2108:forum::für::umläute:1999		all rights reserved and no warranties...
+   2108:forum::fÃŒr::umlÃ€ute:1999		all rights reserved and no warranties...
 
    see GNU-license for details
 */
@@ -364,7 +368,7 @@ static void limiter_tilde_helper(t_limiter *x)
 	       "\n'set2 <limit2><htime2><rtime2>'\t: set crack-limiter");
     break;
   case COMPRESS:
-    poststring("\n'ratio <compressratio>'\t\t: set compressratio (Ž0.5Ž instead of Ž1:2Ž)"
+    poststring("\n'ratio <compressratio>'\t\t: set compressratio (Åœ0.5Åœ instead of Åœ1:2Åœ)"
 	       "\n'treshold <treshold>'\t\t: set treshold of the compressor"
 	       "\n'compress <limit><treshold><ratio>'\t: set compressor"
 	       "\n..........note that <limit> is the same for COMPRESSOR and LIMITER..........");
