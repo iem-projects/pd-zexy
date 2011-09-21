@@ -50,7 +50,7 @@
 
 #include "m_pd.h"
 
-#define VERSION "2.2.3"
+#define VERSION "2.2.4"
 
 /* these pragmas are only used for MSVC, not MinGW or Cygwin */
 #ifdef _MSC_VER
