@@ -1,7 +1,7 @@
 /* 
  * zexy: the swiss army knife for Pure Data
  *
- * (c) 1999-2011 IOhannes m zmÃ¶lnig, forum::fÃŒr::umlÃ€ute, institute of electronic music and acoustics (iem)
+ * (c) 1999-2011 IOhannes m zmölnig, forum::für::umläute, institute of electronic music and acoustics (iem)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -124,7 +124,7 @@ static void zexy_help(void)
   post("urn\t\t:: unique random numbers");
   post("operating_system\t:: information on the OS");
 
-  endpost(); post("\n(l) forum::fÃŒr::umlÃ€ute except where indicated");
+  endpost(); post("\n(l) forum::für::umläute except where indicated");
   post("this software is released under the GnuGPL that is provided with these files");
   endpost();
 }
@@ -143,7 +143,7 @@ void zexy_setup(void)
   for (i=0; i<28; i++) startpost("%c", HEARTSYMBOL);
   endpost();
   post("\t%c the zexy external  "VERSION" %c", HEARTSYMBOL, HEARTSYMBOL);
-  post("\t%c (l)  forum::fÃŒr::umlÃ€ute %c", HEARTSYMBOL, HEARTSYMBOL);
+  post("\t%c (l)  forum::für::umläute %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c       iem   @  kug       %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c  compiled:  "__DATE__"  %c", HEARTSYMBOL, HEARTSYMBOL);
   post("\t%c send me a 'help' message %c", HEARTSYMBOL, HEARTSYMBOL);

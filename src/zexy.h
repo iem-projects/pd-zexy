@@ -1,7 +1,7 @@
 /* ********************************************** */
 /* the ZEXY external                              */
 /* ********************************************** */
-/*                            forum::fÃ?Å?r::umlÃ?â?¬ute */
+/*                            forum::für::umläute */
 /* ********************************************** */
 
 /* the ZEXY external is a runtime-library for miller s. puckette's realtime-computermusic-software "pure data"
@@ -103,7 +103,7 @@ typedef struct _mypdlist
 static void zexy_register(char*object){
   if(object!=0){
     post("[%s] part of zexy-%s (compiled: "__DATE__")", object, VERSION);
-    post("\tCopyright (l) 1999-2011 IOhannes m zmÃ?Â¶lnig, forum::fÃ?Å?r::umlÃ?â?¬ute & IEM");
+    post("\tCopyright (l) 1999-2011 IOhannes m zmölnig, forum::für::umläute & IEM");
   }
 }
 #else
