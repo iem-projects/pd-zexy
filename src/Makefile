@@ -109,7 +109,7 @@ install: all alias install-abs install-bin install-doc
 
 install-bin:
 	-install -d $(INSTALL_BIN)
-	-install -m 644 $(LIBNAME).$(EXT) $(INSTALL_BIN)
+	-install -m 644 *.$(EXT) $(INSTALL_BIN)
 
 install-doc:
 	-install -d $(INSTALL_DOC)
