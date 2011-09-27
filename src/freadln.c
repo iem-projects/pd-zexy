@@ -111,7 +111,7 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
    strcpy(x->x_filename+len,"/");
    strcpy(x->x_filename+len+1,s->s_name);
    if (!(x->x_file=fopen(x->x_filename, "r"))) {
-      pd_error("freadln: failed to open %128s",filenamebuf);
+      pd_error(x, "freadln: failed to open %128s",filenamebuf);
       return;
    }
    if (!(x->x_textbuf = (char *) getbytes (MIN_FREADLN_LENGTH * sizeof(char)))) {
