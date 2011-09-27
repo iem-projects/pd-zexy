@@ -96,11 +96,9 @@ static void *pdf_new(t_floatarg f)
 {
   int i = f;
   t_pdf *x = (t_pdf *)pd_new(pdf_class);
-  t_float *buf;
 
   x->size = (i)?i:64;
   x->buf = (t_float *)getbytes(x->size * sizeof(*x->buf));
-  buf = x->buf;
   clear_pdfbuf(x);
 
   outlet_new(&x->x_obj, &s_list);

@@ -15,7 +15,7 @@
  * 
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
-/*
+ */
 
 /*
  * this version of [pack] does not care about types, so you can send a symbol to a float inlet and vice versa

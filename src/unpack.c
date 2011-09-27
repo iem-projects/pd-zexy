@@ -15,7 +15,7 @@
  * 
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
-/*
+ */
 
 /*
  * this version of [unpack] does not care about types, so the arguments are merely there for documentation reasons

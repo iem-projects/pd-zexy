@@ -15,7 +15,7 @@
  * 
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
-/*
+ */
 
 /*
   here we do some sample-wise delay, so you can do your own FIR-filter-designs
