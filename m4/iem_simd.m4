@@ -3,7 +3,7 @@ dnl This file is free software; IOhannes m zmölnig
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
 
-AC_DEFUN([AC_CHECK_SIMD],
+AC_DEFUN([IEM_CHECK_SIMD],
 [
 AC_ARG_ENABLE(simd,
        [  --enable-simd=ARCHS
@@ -35,4 +35,4 @@ if test "$simd" != no; then
     esac
    done
 fi
-])# AC_CHECK_SIMD
+])# IEM_CHECK_SIMD

@@ -3,7 +3,7 @@ dnl This file is free software; IOhannes m zmölnig
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
 
-AC_DEFUN([AC_CHECK_FAT],
+AC_DEFUN([IEM_CHECK_FAT],
 [
 AC_ARG_ENABLE(fat-binary,
        [  --enable-fat-binary=ARCHS
@@ -49,4 +49,4 @@ if test "$fat_binary" != no; then
 
    undefine([Name])
 fi
-])# AC_CHECK_FAT
+])# IEM_CHECK_FAT
