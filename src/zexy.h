@@ -45,12 +45,12 @@
  * usually this is done in Make.config by configure
  */
 #ifdef HAVE_CONFIG_H
+# include "config.h"
+#else
 # include "zexyconf.h"
 #endif /* HAVE_CONFIG_H */
 
-#include "m_pd.h"
 
-#define VERSION "2.2.4"
 
 /* these pragmas are only used for MSVC, not MinGW or Cygwin */
 #ifdef _MSC_VER
@@ -58,6 +58,15 @@
 # pragma warning( disable : 4244 )
 # pragma warning( disable : 4305 )
 # pragma warning( disable : 4996)  /* deprecated functions */
+#endif
+
+#include "m_pd.h"
+
+
+
+
+#ifndef VERSION
+# define VERSION "(unknown version)"
 #endif
 
 #ifndef HEARTSYMBOL
