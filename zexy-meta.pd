@@ -1,4 +1,4 @@
-#N canvas 116 59 745 601 10;
+#N canvas 116 44 745 553 10;
 #X obj 101 83 zexy;
 #X msg 101 59 help;
 #N canvas 259 142 708 221 io~ 0;
@@ -223,7 +223,7 @@ the type;
 #X text 282 446 some useful control objects (nop...);
 #X text 288 567 objects to work with matrices (moved to IEMMATRIX)
 ;
-#N canvas 221 231 583 258 matrix 0;
+#N canvas 221 222 583 258 matrix 0;
 #X obj 224 173 iemmatrix;
 #X text 109 52 zexy>=2.0 no longer has any matrix-objects.;
 #X text 109 72 instead \, these objects are now in a separate library
@@ -294,7 +294,14 @@ the type;
 #X text 146 350 convert between degree and radiant;
 #X restore 72 402 pd conversions;
 #X text 279 406 numeric conversion (coordinates \, angles \, ...);
-#X text 228 7 the zexy external v2.1;
-#X text 429 66 (c) forum::für::umlute 1999-2005;
 #X text 430 82 bug-reports: zmoelnig-AT-iem.at;
+#N canvas 498 232 309 146 META 0;
+#X text 14 14 VERSION 2.2.4;
+#X text 13 41 AUTHOR IOhannes m zmÃ¶lnig;
+#X text 14 27 NAME zexy;
+#X text 15 58 LICENSE GPL-2;
+#X text 14 75 DESCRIPTION the swiss army knife for Pd;
+#X restore 23 27 pd META;
+#X text 228 7 the zexy external;
+#X text 429 66 (c) forum::für::umlute 1999-2011;
 #X connect 1 0 0 0;

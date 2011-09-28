@@ -9,4 +9,5 @@ dist_zexy_DATA = \
 	README.txt \
 	INSTALL \
 	LICENSE.txt \
-	ChangeLog
+	ChangeLog \
+	zexy-meta.pd
