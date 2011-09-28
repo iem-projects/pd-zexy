@@ -33,10 +33,8 @@ AC_SUBST(REFERENCEPATH)
 AC_SUBST(PDLIBDIR)
 AC_SUBST(INCLUDES)
 
-AC_ARG_WITH(pdversion,[  --with-pdversion=<ver>  enforce a certain pd-version (e.g. 0.37)])
-AC_ARG_WITH(version,  [  --with-version=<ver>    enforce a certain zexy-version (e.g. 2.0)])
-AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
 AC_ARG_WITH(pd,       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
+AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
 AC_ARG_ENABLE(library,[  --disable-library       split the library into single externals])
 AM_CONDITIONAL([LIBRARY], [test "x${enable_library}" != "xno"])
 

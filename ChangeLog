@@ -1,0 +1,15 @@
+zexy (2.2.5) UNRELEASED; urgency=low
+
+  * switched to autotools
+
+ -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Wed, 28 Sep 2011 21:21:41 +0200
+
+zexy (2.2.4) RELEASED; urgency=low
+
+  * disable SIMD code by default (prevent crashes)
+  * [msgfile] does not crash with [add2( on an emtpy buffer
+  * [pack]/[unpack] now accept all messages (like their vanilla counterparts)
+  * [limiter~] on-the-fly oversampling parameters (higher precision)
+  * all code is now UTF-8
+
+ -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Wed, 26 Sep 2011 21:20:20 +0200
