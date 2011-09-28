@@ -13,7 +13,6 @@ dist_zexy_DATA= \
 	0x3e0x7e.pd \
 	0x7c0x7c0x7e-help.pd \
 	0x7c0x7c0x7e.pd \
-	a2l-help.pd \
 	a2l.pd \
 	absgn~-help.pd \
 	absgn~.pd \
@@ -27,15 +26,11 @@ dist_zexy_DATA= \
 	deg2rad.pd \
 	==~-help.pd \
 	&&~-help.pd \
-	length-help.pd \
 	length.pd \
-	list2int-help.pd \
 	list2int.pd \
-	mavg-help.pd \
 	mavg.pd \
 	mean-help.pd \
 	mean.pd \
-	minmax-help.pd \
 	minmax.pd \
 	nop~-help.pd \
 	nop-help.pd \
@@ -49,7 +44,6 @@ dist_zexy_DATA= \
 	polyfun.pd \
 	rad2deg-help.pd \
 	rad2deg.pd \
-	repack-help.pd \
 	repack.pd \
 	segregate-help.pd \
 	segregate.pd \
@@ -59,7 +53,6 @@ dist_zexy_DATA= \
 	sph2cart.pd \
 	sph2pol-help.pd \
 	sph2pol.pd \
-	sum-help.pd \
 	sum.pd \
 	tabset.pd \
 	uniqsym-help.pd \
