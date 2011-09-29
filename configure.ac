@@ -52,14 +52,14 @@ if test "x$with_pd" != "x"; then
  fi
  if test -d "${PDPATH}/src"; then
   AC_MSG_RESULT([adding ${PDPATH}/src to INCLUDES])
-  INCLUDES="-I${PDPATH}/src ${INCLUDES}"
+  CPPFLAGS="-I${PDPATH}/src ${CPPFLAGS}"
 
   AC_MSG_RESULT([adding ${PDPATH}/src to LDFLAGS])
   LDFLAGS="-L${PDPATH}/src ${LDFLAGS}"
  else
   if test -d "${PDPATH}"; then
    AC_MSG_RESULT([adding ${PDPATH} to INCLUDES])
-   INCLUDES="-I${PDPATH} ${INCLUDES}"
+   CPPFLAGS="-I${PDPATH} ${CPPFLAGS}"
   fi
  fi
  if test -d "${PDPATH}/bin"; then
