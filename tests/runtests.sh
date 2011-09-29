@@ -16,7 +16,7 @@ SUFFIX=$(date +%y%m%d-%H%M%S)
 RUNTESTS_TXT=runtests.txt
 RUNTESTS_LOG=log-runtests.${SUFFIX}
 
-LIBFLAGS="-path ../src:../ -lib zexy -path ../abs/"
+LIBFLAGS="-path ../src/.libs/:../src/:../ -lib zexy -path ../abs/"
 
 list_tests() {
 #  find . -mindepth 2  -name "*.pd" | sed 's|\.pd$|;|' 
