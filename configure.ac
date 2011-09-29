@@ -50,7 +50,6 @@ if test "x$with_pd" != "x"; then
  if test -d "${with_pd}"; then
    PDPATH=${with_pd}
  fi
-
  if test -d "${PDPATH}/src"; then
   AC_MSG_RESULT([adding ${PDPATH}/src to INCLUDES])
   INCLUDES="-I${PDPATH}/src ${INCLUDES}"
@@ -72,24 +71,7 @@ if test "x$with_pd" != "x"; then
    LDFLAGS="-L${PDPATH} ${LDFLAGS}"
   fi
  fi
-
 fi
-
-if test $includedir
-then
- for id in $includedir
- do
-  if test -d $id; then INCLUDES="-I$id $INCLUDES"; fi
- done
-fi
-if test $libdir
-then
- for id in $libdir
- do
-  if test -d $id; then LDFLAGS="-L$id $LDFLAGS"; fi
- done
-fi
-
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lc:
@@ -109,9 +91,7 @@ dnl Replace `main' with a function in -lstk:
 dnl AC_CHECK_LIB(stk, main, STK=yes)
 
 AC_CHECK_LIB(pd, nullfn)
-
 AC_CHECK_LIB(regex, regcomp)
-
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -127,11 +107,7 @@ AC_CHECK_FUNCS(select socket strerror)
 IEM_CHECK_FAT(ARCH_FLAG)
 AC_SUBST(ARCH_FLAG)
 
-dnl check for "-mms-bitfields" cflag
-dnl why is there no generic compiler-check for a given flag ?
-dnl it would make things so easy: AC_CHECK_FLAG([-mms-bitfields],,)
 IEM_CHECK_CFLAGS([-mms-bitfields])
-
 IEM_CHECK_SIMD
 IEM_CHECK_LPT
 
@@ -173,7 +149,6 @@ AC_MSG_RESULT([$EXTENSION])
 AC_CHECK_HEADERS([pd/m_pd.h m_pd.h], , 
 	AC_ERROR([m_pd.h is desperately needed!
         install pd and/or use
-        "--with-pd=</path/to/pd/>"     or
-        "--includedir=</path/to/pd/src/>"]))
+        "--with-pd=</path/to/pd/>"]))
 
 AC_OUTPUT()
