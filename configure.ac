@@ -21,20 +21,12 @@ dnl Checks for programs.
 AC_PROG_CC
 
 AC_LIBTOOL_WIN32_DLL
-AC_SUBST(STK)
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(DEFS)
-AC_SUBST(LFLAGS)
-AC_SUBST(EXTENSION)
-AC_SUBST(LD)
-AC_SUBST(STRIP)
-AC_SUBST(STRIPFLAGS)
-AC_SUBST(LIBRARY_VERSION)
-AC_SUBST(BUILDLIBRARY)
-AC_SUBST(REFERENCEPATH)
-AC_SUBST(PDLIBDIR)
 AC_SUBST(INCLUDES)
+
+AC_SUBST(EXTENSION)
 
 AC_ARG_WITH(pd,       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
 AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
