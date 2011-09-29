@@ -1,14 +1,18 @@
 AUTOMAKE_OPTIONS = foreign
 
-TESTS_ENVIRONMENT = RUNTESTS_NOLOG=yes
+TESTS_ENVIRONMENT = RUNTESTS_NOLOG=yes TESTDIR=$(srcdir)
 
 TESTS=runtests.sh
+
+clean-local:
+	-rm -f runtests.txt
 
 EXTRA_DIST = \
 	README.txt \
 	runtests.sh \
 	runtests.bat \
-	runtests.txt \
+	runtests_nogui.pd \
+	runtests.pd \
 	testunit.pd
 
 EXTRA_DIST += \
@@ -111,8 +115,6 @@ EXTRA_DIST += \
 	or~/dualnoise.pd \
 	or~/singlenoise.pd \
 	repeat/noargs.pd \
-	runtests_nogui.pd \
-	runtests.pd \
 	s2l/numsymbols.pd \
 	sgn~/simple.pd \
 	testtests/fail_noresult.pd \

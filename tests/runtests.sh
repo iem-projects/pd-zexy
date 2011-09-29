@@ -18,7 +18,12 @@ else
  exit 77
 fi
 
+echo running tests in ${TESTDIR:=.}
+
+
 SUFFIX=$(date +%y%m%d-%H%M%S)
+RUNTESTS_FINAL_LOG=runtest-${SUFFIX}.log
+
 
 RUNTESTS_TXT=runtests.txt
 if which tempfile > /dev/null
@@ -28,11 +33,11 @@ else
   RUNTESTS_LOG=tmp$$.log
 fi
 
-LIBFLAGS="-path ../src/.libs/:../src/:../ -lib zexy -path ../abs/"
+LIBFLAGS="-path ../src/.libs/:../src/:../ -lib zexy -path ../abs/:${TESTDIR}:."
 
 list_tests() {
 #  find . -mindepth 2  -name "*.pd" | sed 's|\.pd$|;|' 
- ls -1 */*.pd | sed 's|\.pd$|;|'
+ ls -1 ${TESTDIR}/*/*.pd | sed 's|\.pd$|;|'
 }
 
 debug() {
@@ -119,7 +124,7 @@ else
  run_nogui
 fi
 
-if [ "x${RUNTESTS_NOLOG}" = "x" ]; then
+if [ "x${RUNTESTS_NOLOG}" != "x" ]; then
   RUNTESTS_FINAL_LOG=
 fi
 if [ "x${RUNTESTS_FINAL_LOG}" = "x" ]; then
