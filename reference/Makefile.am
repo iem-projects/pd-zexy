@@ -4,7 +4,7 @@ SUFFIXES = .pd
 
 zexydir=$(pkglibdir)
 
-dist_zexy_DATA= \
+dist_zexy_DATA = \
 	a2l-help.pd \
 	atoi-help.pd \
 	avg~-help.pd \
@@ -79,15 +79,15 @@ dist_zexy_DATA= \
 	z~-help.pd \
 	zigbinops-help.pd
 
-dist_zexy_DATA+= \
-	unfold-help.pd \
-	mux-help.pd \
-	demux~-help.pd \
-	l2i-help.pd \
-	l2s-help.pd \
-	any2list-help.pd \
-	lp-help.pd \
-	demux-help.pd \
-	l-help.pd \
-	mux~-help.pd \
-	s2l-help.pd
+# dist_zexy_DATA += \
+# 	unfold-help.pd \
+# 	mux-help.pd \
+# 	demux~-help.pd \
+# 	l2i-help.pd \
+# 	l2s-help.pd \
+# 	any2list-help.pd \
+# 	lp-help.pd \
+# 	demux-help.pd \
+# 	l-help.pd \
+# 	mux~-help.pd \
+# 	s2l-help.pd
