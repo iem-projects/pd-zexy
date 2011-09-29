@@ -20,6 +20,7 @@ KERN=$(uname -s)
 dnl Checks for programs.
 AC_PROG_CC
 
+AC_LIBTOOL_WIN32_DLL
 AC_SUBST(STK)
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
