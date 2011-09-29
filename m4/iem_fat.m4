@@ -40,12 +40,11 @@ if test "$fat_binary" != no; then
    done
 
    if test "x$[]Name" != "x"; then
-    AC_CHECK_CFLAGS($[]Name,,[]Name="")
+    IEM_CHECK_CFLAGS($[]Name,,[]Name="")
+    IEM_CHECK_CXXFLAGS($[]Name,,[]Name="")
+    IEM_CHECK_LDFLAGS($[]Name,,[]Name="")
    fi
 
-   if test "x$[]Name" != "x"; then
-    AC_CHECK_LDFLAGS($[]Name,,[]Name="")
-   fi
 
    undefine([Name])
 fi

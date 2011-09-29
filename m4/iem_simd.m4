@@ -21,13 +21,14 @@ if test "$simd" != no; then
 	    # Choose a default set of architectures based upon platform.
       SIMD="SSE2"
    fi
-   AC_MSG_RESULT([$SIMD])
 
    for smd in $SIMD 
    do
     case "${smd}" in
     SSE2|sse2)
-      AC_CHECK_CFLAGS([-mfpmath=sse -msse])
+      AC_MSG_RESULT([SSE2])
+      IEM_CHECK_CFLAGS([-mfpmath=sse -msse])
+      IEM_CHECK_CXXFLAGS([-mfpmath=sse -msse])
     ;;
     *)
       AC_MSG_RESULT([unknown SIMD instructions: ${smd}])

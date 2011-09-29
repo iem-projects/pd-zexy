@@ -130,7 +130,7 @@ AC_SUBST(ARCH_FLAG)
 dnl check for "-mms-bitfields" cflag
 dnl why is there no generic compiler-check for a given flag ?
 dnl it would make things so easy: AC_CHECK_FLAG([-mms-bitfields],,)
-AC_CHECK_CFLAGS([-mms-bitfields])
+IEM_CHECK_CFLAGS([-mms-bitfields])
 
 IEM_CHECK_SIMD
 IEM_CHECK_LPT
