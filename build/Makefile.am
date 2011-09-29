@@ -1,11 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = \
-	autoconf/acinclude.m4 \
-	autoconf/autogen.sh \
-	autoconf/configure.ac \
-	autoconf/Make.config.in \
-	autoconf/Makefile \
 	autoconf/README.txt \
 	README.txt \
 	win-vs2003/zexy.sln \
