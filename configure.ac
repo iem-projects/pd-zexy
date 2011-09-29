@@ -146,9 +146,13 @@ fi
 AC_MSG_RESULT([$EXTENSION])
 
 
-AC_CHECK_HEADERS([pd/m_pd.h m_pd.h], , 
-	AC_ERROR([m_pd.h is desperately needed!
+have_pd="no"
+AC_CHECK_HEADERS([pd/m_pd.h m_pd.h], [have_pd="yes"])
+if test "x${have_pd}" = "xno"
+then
+AC_ERROR([m_pd.h is desperately needed!
         install pd and/or use
-        "--with-pd=</path/to/pd/>"]))
+        "--with-pd=</path/to/pd/>"])
+fi
 
 AC_OUTPUT()
