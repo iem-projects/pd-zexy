@@ -1,12 +1,14 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([zexy], [2.2.4], [zmoelnig@iem.at], [zexy], [http://get.puredata.info/zexy])
+AC_INIT([zexy], [2.2.5], [zmoelnig@iem.at], [zexy], [http://get.puredata.info/zexy])
 AM_INIT_AUTOMAKE([1.10 foreign])
+
+AC_PROG_LIBTOOL()
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile src/Makefile abs/Makefile reference/Makefile])
-AC_PROG_LIBTOOL()
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_FILES([tests/Makefile build/Makefile])
 
 AC_CONFIG_SRCDIR([src/zexy.c])
 
