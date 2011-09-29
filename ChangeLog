@@ -1,9 +1,9 @@
-zexy (2.2.5) UNRELEASED; urgency=low
+zexy (2.2.5) RELEASED; urgency=low
 
   * switched to autotools
   * generate ChangeLog with "dch -c ChangeLog"
 
- -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Wed, 28 Sep 2011 21:55:26 +0200
+ -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Thu, 29 Sep 2011 14:19:18 +0200
 
 zexy (2.2.4) RELEASED; urgency=low
 
