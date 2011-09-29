@@ -18,8 +18,6 @@ else
  exit 77
 fi
 
-
-#SUFFIX="$$"
 SUFFIX=$(date +%y%m%d-%H%M%S)
 
 RUNTESTS_TXT=runtests.txt
@@ -121,10 +119,12 @@ else
  run_nogui
 fi
 
+if [ "x${RUNTESTS_NOLOG}" = "x" ]; then
+  RUNTESTS_FINAL_LOG=
+fi
 if [ "x${RUNTESTS_FINAL_LOG}" = "x" ]; then
  :
 else
- echo  ${RUNTESTS_LOG} ... ${RUNTESTS_FINAL_LOG}
  cat ${RUNTESTS_LOG} >> ${RUNTESTS_FINAL_LOG}
 fi
 

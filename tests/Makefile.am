@@ -1,5 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 
+TESTS_ENVIRONMENT = RUNTESTS_NOLOG=yes
+
 TESTS=runtests.sh
 
 EXTRA_DIST = \
