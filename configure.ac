@@ -118,7 +118,7 @@ then
 else
  case "$KERN" in
  Darwin)
-   EXTENSION=pd_drawin
+   EXTENSION=pd_darwin
    ;;
  Linux)
    EXTENSION=pd_linux
