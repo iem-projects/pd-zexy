@@ -57,3 +57,23 @@ dist_zexy_DATA= \
 	tabset.pd \
 	uniqsym-help.pd \
 	uniqsym.pd
+#############
+# symlinks for aliases
+zexyaliasdir=$(pkglibdir)
+
+clean-local: clean_zexyalias
+.PHONY: clean_zexyalias
+
+dist_zexyalias_DATA = any2list.pd l2i.pd
+
+# create aliases
+$(dist_zexyalias_DATA):
+	test -e $< && $(LN_S) $< $@
+
+# delete aliases
+clean_zexyalias:
+	-rm -f $(dist_zexyalias_DATA)
+
+# define aliases
+any2list.pd: a2l.pd
+l2i.pd: list2int.pd
