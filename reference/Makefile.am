@@ -4,7 +4,7 @@ SUFFIXES = .pd
 
 zexydir=$(pkglibdir)
 
-dist_zexy_DATA = \
+dist_zexy_DATA= \
 	a2l-help.pd \
 	atoi-help.pd \
 	avg~-help.pd \
@@ -79,15 +79,43 @@ dist_zexy_DATA = \
 	z~-help.pd \
 	zigbinops-help.pd
 
-# dist_zexy_DATA += \
-# 	unfold-help.pd \
-# 	mux-help.pd \
-# 	demux~-help.pd \
-# 	l2i-help.pd \
-# 	l2s-help.pd \
-# 	any2list-help.pd \
-# 	lp-help.pd \
-# 	demux-help.pd \
-# 	l-help.pd \
-# 	mux~-help.pd \
-# 	s2l-help.pd
+#############
+# symlinks for aliases
+zexyaliasdir=$(pkglibdir)
+
+clean-local: clean_zexyalias
+.PHONY: clean_zexyalias
+
+dist_zexyalias_DATA= \
+	unfold-help.pd \
+	mux-help.pd \
+	demux~-help.pd \
+	l2i-help.pd \
+	l2s-help.pd \
+	any2list-help.pd \
+	lp-help.pd \
+	demux-help.pd \
+	l-help.pd \
+	mux~-help.pd \
+	s2l-help.pd
+
+# create aliases
+$(dist_zexyalias_DATA):
+	test -e $< && $(LN_S) $< $@
+
+# delete aliases
+clean_zexyalias:
+	-rm -f $(dist_zexyalias_DATA)
+
+# define aliases
+any2list-help.pd: a2l-help.pd
+demux~-help.pd: demultiplex~-help.pd
+demux-help.pd: demultiplex-help.pd
+l2i-help.pd: list2int-help.pd
+l2s-help.pd: list2symbol-help.pd
+l-help.pd: lister-help.pd
+lp-help.pd: lpt-help.pd
+mux~-help.pd: multiplex~-help.pd
+mux-help.pd: multiplex-help.pd
+s2l-help.pd: symbol2list-help.pd
+unfold-help.pd: drip-help.pd
