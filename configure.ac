@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT([zexy], [2.2.5], [zmoelnig@iem.at], [zexy], [http://get.puredata.info/zexy])
 AM_INIT_AUTOMAKE([1.10 foreign])
 
-AC_PROG_LIBTOOL()
+AC_PROG_LIBTOOL
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_HEADERS([config.h])
@@ -19,6 +19,7 @@ KERN=$(uname -s)
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_LN_S
 
 AC_LIBTOOL_WIN32_DLL
 AC_SUBST(CFLAGS)
