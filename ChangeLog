@@ -1,3 +1,9 @@
+zexy (2.2.6) UNRELEASED; urgency=low
+
+  * Fixes for autotools
+
+ -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Fri, 30 Sep 2011 09:38:30 +0200
+
 zexy (2.2.5) RELEASED; urgency=low
 
   * switched to autotools
