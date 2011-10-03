@@ -6,6 +6,10 @@ pkglib_LTLIBRARIES=
 AM_CFLAGS =
 AM_LDFLAGS= -module -avoid-version -shared -shrext .@EXTENSION@
 
+if WINDOWS
+AM_LDFLAGS+= -no-undefined
+endif
+
 # RTE
 AM_CFLAGS += 
 AM_LDFLAGS+= 
