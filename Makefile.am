@@ -12,3 +12,7 @@ dist_zexy_DATA = \
 	LICENSE.txt \
 	ChangeLog \
 	zexy-meta.pd
+
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status libtool
