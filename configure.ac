@@ -5,7 +5,7 @@ LT_PREREQ([2.2.4])
 AC_INIT([zexy], [2.2.5], [zmoelnig@iem.at], [zexy], [http://get.puredata.info/zexy])
 AM_INIT_AUTOMAKE([1.10 foreign])
 m4_ifdef([LT_INIT], 
-	[LT_INIT([enable-shared disable-static win32-dll])],
+	[LT_INIT([disable-static win32-dll])],
 	[AC_ENABLE_SHARED
 	 AC_DISABLE_STATIC
 	 AC_LIBTOOL_WIN32_DLL])
@@ -22,7 +22,7 @@ IEM_OPERATING_SYSTEM
 ARCH=$(uname -m)
 KERN=$(uname -s)
 
-m4_ifdef([AC_LIB_RPATH], [AC_LIB_RPATH])
+dnl m4_ifdef([AC_LIB_RPATH], [AC_LIB_RPATH])
 
 dnl Checks for programs.
 AC_PROG_CC
