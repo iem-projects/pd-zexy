@@ -20,8 +20,8 @@ KERN=$(uname -s)
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_LN_S
-
 AC_LIBTOOL_WIN32_DLL
+AC_PROG_LIBTOOL
 
 AC_ARG_WITH(pd,       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
 AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
