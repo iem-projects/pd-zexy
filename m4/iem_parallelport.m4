@@ -16,7 +16,7 @@ AC_CHECK_HEADERS(linux/ppdev.h, [ have_ppdev=" (with device-support)" ], [ have_
 
 if test x"$enable_lpt" != "xno"
 then
-  AC_MSG_CHECKING("parallel-port")
+  AC_MSG_CHECKING([parallel-port])
   if test "x$enable_lpt" = "xyes"
   then
 # forced
