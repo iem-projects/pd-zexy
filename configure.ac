@@ -1,4 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
+AC_PREREQ([2.60])
 
 AC_INIT([zexy], [2.2.5], [zmoelnig@iem.at], [zexy], [http://get.puredata.info/zexy])
 AM_INIT_AUTOMAKE([1.10 foreign])
