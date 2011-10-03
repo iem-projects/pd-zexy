@@ -96,7 +96,7 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
         {
           for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++)
             {
-              if (e->e_w.w_symbol == &s_bang)
+              if (e->e_w.w_symbol == gensym("bang"))
                 {
                   outlet_bang(e->e_outlet);
                   return;
@@ -107,7 +107,7 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
         {
           for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++)
             { 
-              if (e->e_w.w_symbol == &s_list)
+              if (e->e_w.w_symbol == gensym("list"))
                 {
                   outlet_anything(e->e_outlet, sel, argc, argv);
                   return;
@@ -118,7 +118,7 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
         {
             for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++)
             {
-                if (e->e_w.w_symbol == &s_float)
+                if (e->e_w.w_symbol == gensym("float"))
                 {
                     outlet_float(e->e_outlet, argv[0].a_w.w_float);
                     return;
@@ -129,7 +129,7 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
         {
             for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++)
             {
-                if (e->e_w.w_symbol == &s_symbol)
+                if (e->e_w.w_symbol == gensym("symbol"))
                 {
                     outlet_symbol(e->e_outlet, argv[0].a_w.w_symbol);
                     return;
@@ -137,7 +137,7 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
             }
         }
     }
-  outlet_list(x->x_rejectout, &s_list, argc, argv);
+  outlet_list(x->x_rejectout, gensym("list"), argc, argv);
 }
 
 
@@ -164,12 +164,12 @@ static void *relay_new(t_symbol *s, int argc, t_atom *argv)
     x->x_vec = (t_relayelement *)getbytes(argc * sizeof(*x->x_vec));
     for (n = 0, e = x->x_vec; n < argc; n++, e++)
     {
-        e->e_outlet = outlet_new(&x->x_obj, &s_list);
+        e->e_outlet = outlet_new(&x->x_obj, gensym("list"));
         if (x->x_type == A_FLOAT)
             e->e_w.w_float = atom_getfloatarg(n, argc, argv);
         else e->e_w.w_symbol = atom_getsymbolarg(n, argc, argv);
     }
-    x->x_rejectout = outlet_new(&x->x_obj, &s_list);
+    x->x_rejectout = outlet_new(&x->x_obj, gensym("list"));
     return (x);
 }
 

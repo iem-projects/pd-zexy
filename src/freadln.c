@@ -237,8 +237,8 @@ static void freadln_free (t_freadln *x)
 static void *freadln_new(void)
 {
    t_freadln *x = (t_freadln *)pd_new(freadln_class);
-   x->x_message_outlet = outlet_new(&x->x_ob, &s_list);
-   x->x_readybang_outlet = outlet_new(&x->x_ob, &s_bang);
+   x->x_message_outlet = outlet_new(&x->x_ob, gensym("list"));
+   x->x_readybang_outlet = outlet_new(&x->x_ob, gensym("bang"));
    x->x_filename=0;
    x->x_file=0;
    x->x_textbuf=0;

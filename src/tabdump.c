@@ -53,7 +53,7 @@ static void tabdump_bang(t_tabdump *x)
 
       atombuf = (t_atom *)getbytes(sizeof(t_atom)*npoints);
       for (n = 0; n < npoints; n++) SETFLOAT(&atombuf[n], zarray_getfloat(vec, start+n));
-      outlet_list(x->x_obj.ob_outlet, &s_list, npoints, atombuf);
+      outlet_list(x->x_obj.ob_outlet, gensym("list"), npoints, atombuf);
       freebytes(atombuf,sizeof(t_atom)*npoints);
     }
 }
@@ -86,7 +86,7 @@ static void *tabdump_new(t_symbol *s)
   x->x_arrayname = s;
   x->startindex=0;
   x->stopindex=-1;
-  outlet_new(&x->x_obj, &s_list);
+  outlet_new(&x->x_obj, gensym("list"));
 
   return (x);
 }

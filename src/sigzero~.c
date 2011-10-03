@@ -93,7 +93,7 @@ static void sigzero_tilde_helper(void)
 static void *sigzero_new(void)
 {
   t_sigzero *x = (t_sigzero *)pd_new(sigzero_class);
-  outlet_new(&x->x_obj, &s_float);
+  outlet_new(&x->x_obj, gensym("float"));
   return (x);
 }
 

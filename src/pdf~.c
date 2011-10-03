@@ -58,7 +58,7 @@ static void pdf_bang(t_pdf *x)
     {
       SETFLOAT(a, *buf++*max);
       SETFLOAT(a+1,x->size-n-1);
-      outlet_list(x->x_obj.ob_outlet, &s_list, 2, (t_atom*)&a);
+      outlet_list(x->x_obj.ob_outlet, gensym("list"), 2, (t_atom*)&a);
     }
 }
 
@@ -101,7 +101,7 @@ static void *pdf_new(t_floatarg f)
   x->buf = (t_float *)getbytes(x->size * sizeof(*x->buf));
   clear_pdfbuf(x);
 
-  outlet_new(&x->x_obj, &s_list);
+  outlet_new(&x->x_obj, gensym("list"));
     
   return (x);
 }

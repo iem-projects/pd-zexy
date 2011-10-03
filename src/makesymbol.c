@@ -121,7 +121,7 @@ static void *makesymbol_new(t_symbol *s, int argc, t_atom *argv)
 		x->x_sym = gensym("");
 	}
 
-	outlet_new(&x->x_obj, &s_symbol);
+	outlet_new(&x->x_obj, gensym("symbol"));
 	inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("sym1"));
 
 	return (x);

@@ -177,7 +177,7 @@ static void lifop_bang(t_lifop *x)
   freebytes(lifo, sizeof(t_lifop_list));
 
   /* output the list */
-  outlet_list(x->x_out, &s_list, argc, argv);
+  outlet_list(x->x_out, gensym("list"), argc, argv);
 
   /* free the list */
   freebytes(argv, argc*sizeof(t_atom));
@@ -233,7 +233,7 @@ static void lifop_dump(t_lifop*x)
       int argc=lifo->argc;
 
       /* output the list */
-      outlet_list(x->x_out, &s_list, argc, argv);
+      outlet_list(x->x_out, gensym("list"), argc, argv);
 
       lifo=lifo->next;
     }
@@ -255,7 +255,7 @@ static void *lifop_new(void)
 
   floatinlet_new(&x->x_obj, &x->priority);
   x->x_out=outlet_new(&x->x_obj, gensym("list"));
-  x->x_infout=outlet_new(&x->x_obj, &s_float);
+  x->x_infout=outlet_new(&x->x_obj, gensym("float"));
 
   x->lifo_list = 0;
   x->priority=0;

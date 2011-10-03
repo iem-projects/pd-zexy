@@ -87,7 +87,7 @@ static void *mux_tilde_new(t_symbol *s, int argc, t_atom *argv)
   x->input=0;
 
   argc--;
-  while(argc--)inlet_new(&x->x_obj,&x->x_obj.ob_pd,&s_signal,&s_signal);
+  while(argc--)inlet_new(&x->x_obj,&x->x_obj.ob_pd,gensym("signal"),gensym("signal"));
 
   x->in = (t_sample **)getbytes(x->n_in * sizeof(t_sample *));
   i=x->n_in;

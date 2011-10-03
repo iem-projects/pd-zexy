@@ -83,8 +83,8 @@ static void *mavg_new(t_floatarg f)
   int i = (f<1)?2:f;
   t_float *dumbuf;
 
-  outlet_new(&x->x_obj, &s_float);
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym(""));
+  outlet_new(&x->x_obj, gensym("float"));
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
 
   x->buf = x->wp = (t_float *)getbytes(sizeof(t_float) * i);
   x->size = i;

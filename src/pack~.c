@@ -33,7 +33,7 @@ typedef struct _sigpack
 
 static void sigpack_tick(t_sigpack*x)
 {
-  outlet_list(x->x_obj.ob_outlet, &s_list, x->vector_length, x->buffer);
+  outlet_list(x->x_obj.ob_outlet, gensym("list"), x->vector_length, x->buffer);
 }
 
 static t_int *sigpack_perform(t_int *w)

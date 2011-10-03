@@ -63,7 +63,7 @@ static void avg_dsp(t_avg *x, t_signal **sp)
 static void *avg_new(void)
 {
   t_avg *x = (t_avg *)pd_new(avg_class);
-  outlet_new(&x->x_obj, &s_float);
+  outlet_new(&x->x_obj, gensym("float"));
   return (x);
 }
 

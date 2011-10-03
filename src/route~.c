@@ -58,7 +58,7 @@ static void route_tilde_free(t_route_tilde *x)
 static void *route_tilde_new(void)
 {
   t_route_tilde *x = (t_route_tilde *)pd_new(route_tilde_class);
-  x->x_sigout=outlet_new(&x->x_obj, &s_signal);
+  x->x_sigout=outlet_new(&x->x_obj, gensym("signal"));
   x->x_msgout=outlet_new(&x->x_obj, 0);
   return (x);
 }

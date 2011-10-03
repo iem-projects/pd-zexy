@@ -220,14 +220,14 @@ static void *mline_new(t_symbol *s, int argc, t_atom *argv)
 
   i = argc-1;
 
-  outlet_new(&x->x_obj, &s_signal);
+  outlet_new(&x->x_obj, gensym("signal"));
 
   while (i--) {
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    outlet_new(&x->x_obj, &s_signal);
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
+    outlet_new(&x->x_obj, gensym("signal"));
   }
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym(""));
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
   floatinlet_new(&x->x_obj, &x->time);
     
   x->sigIN  = (t_sample **)getbytes(x->sigNUM * sizeof(t_sample **));

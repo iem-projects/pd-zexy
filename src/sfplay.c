@@ -625,7 +625,7 @@ static void *sfplay_new(t_floatarg chan,t_floatarg skip)
    while (c--) {
       outlet_new(&x->x_obj, gensym("signal")); /* channels outlet */
    }
-   x->bangout = outlet_new(&x->x_obj,  &s_bang);
+   x->bangout = outlet_new(&x->x_obj,  gensym("bang"));
     
    x->filep = t_getbytes(DACBLKSIZE*sizeof(short)*x->x_channels);
    

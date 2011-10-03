@@ -152,7 +152,7 @@ static void *repack_new(t_floatarg f)
 
   x->buffer = (t_atom *)getbytes(x->bufsize * sizeof(t_atom));
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym(""));
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
   outlet_new(&x->x_obj, 0);
 
   return (x);

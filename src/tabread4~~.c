@@ -41,8 +41,8 @@ static void *tabread4_tilde_new(t_symbol *s)
   x->x_vec = 0;
   x->x_npoints=0;
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-  outlet_new(&x->x_obj, &s_signal);
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
+  outlet_new(&x->x_obj, gensym("signal"));
   x->x_f = 0;
   return (x);
 }

@@ -73,7 +73,7 @@ static void symbol2list_process(t_symbol2list *x)
   cc=x->s->s_name;
   cp=cc;
   
-  if (x->delimiter==NULL || x->delimiter==&s_){
+  if (x->delimiter==NULL || x->delimiter==gensym("")){
     i=strlen(cc);
     if(x->argnum<i){
       freebytes(x->argv, x->argnum*sizeof(t_atom));
@@ -121,7 +121,7 @@ static void symbol2list_process(t_symbol2list *x)
     if(cp)string2atom(x->argv+i, cp, strlen(cp));
 }
 static void symbol2list_bang(t_symbol2list *x){
-  if(!(x->s) || x->s==&s_){
+  if(!(x->s) || x->s==gensym("")){
     outlet_bang(x->x_obj.ob_outlet);
     return;
   }

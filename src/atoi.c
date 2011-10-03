@@ -74,7 +74,7 @@ static void atoi_list(t_atoi *x, t_symbol *s, int argc, t_atom *argv)
 static void *atoi_new(void)
 {
   t_atoi *x = (t_atoi *)pd_new(atoi_class);
-  outlet_new(&x->x_obj, &s_float);
+  outlet_new(&x->x_obj, gensym("float"));
   return (x);
 }
 

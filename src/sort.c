@@ -106,13 +106,13 @@ static void sort_list(t_sort *x, t_symbol *s, int argc, t_atom *argv)
   else
     for (n = 0, i=argc-1; n < argc; n++, i--) SETFLOAT(&atombuf[n], idx[i]);
 
-  outlet_list(x->indexOut , &s_list, n, atombuf);
+  outlet_list(x->indexOut , gensym("list"), n, atombuf);
 
   if (x->ascending) 
     for (n = 0; n < argc; n++) SETFLOAT(&atombuf[n], buf[n]);
   else
     for (n = 0, i=argc-1; n < argc; n++, i--) SETFLOAT(&atombuf[n], buf[i]);
-  outlet_list(x->sortedOut, &s_list, n, atombuf);
+  outlet_list(x->sortedOut, gensym("list"), n, atombuf);
 
 
   freebytes(atombuf, argc*sizeof(t_atom));
@@ -123,13 +123,13 @@ static void *sort_new(t_floatarg f)
   t_sort *x = (t_sort *)pd_new(sort_class);
   x->ascending = (f < 0.f)?0:1;
 
-  x->sortedOut=outlet_new(&x->x_obj, &s_list);
-  x->indexOut=outlet_new(&x->x_obj, &s_list);
+  x->sortedOut=outlet_new(&x->x_obj, gensym("list"));
+  x->indexOut=outlet_new(&x->x_obj, gensym("list"));
 
   x->bufsize = 0;
   x->buffer = NULL;
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym("direction"));
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("direction"));
 
   return (x);
 }

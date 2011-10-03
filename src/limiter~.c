@@ -674,10 +674,10 @@ static void *limiter_new(t_symbol *s, int argc, t_atom *argv)
 
   while (argc--)
     {
-      inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+      inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
     }
 
-  outlet_new(&x->x_obj, &s_signal);
+  outlet_new(&x->x_obj, gensym("signal"));
 
   x->in = (t_inbuf*)getbytes(sizeof(t_inbuf) * x->number_of_inlets);
   while (i < x->number_of_inlets)

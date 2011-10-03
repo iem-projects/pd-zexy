@@ -62,7 +62,7 @@ static void tavg_dsp(t_tavgtilde *x, t_signal **sp)
 static void *tavg_new(void)
 {
   t_tavgtilde *x = (t_tavgtilde *)pd_new(tavg_class);
-  outlet_new(&x->x_obj, &s_float);
+  outlet_new(&x->x_obj, gensym("float"));
   return (x);
 }
 

@@ -75,11 +75,11 @@ static void tabminmax_bang(t_tabminmax *x)
       
       SETFLOAT(atombuf, max);
       SETFLOAT(atombuf+1, maxdex);
-      outlet_list(x->max_out, &s_list, 2, atombuf);
+      outlet_list(x->max_out, gensym("list"), 2, atombuf);
       
       SETFLOAT(atombuf, min);
       SETFLOAT(atombuf+1, mindex);
-      outlet_list(x->min_out, &s_list, 2, atombuf);
+      outlet_list(x->min_out, gensym("list"), 2, atombuf);
     }
 }
 
@@ -111,8 +111,8 @@ static void *tabminmax_new(t_symbol *s)
   x->x_arrayname = s;
   x->startindex=0;
   x->stopindex=-1;
-  x->min_out=outlet_new(&x->x_obj, &s_list);
-  x->max_out=outlet_new(&x->x_obj, &s_list);
+  x->min_out=outlet_new(&x->x_obj, gensym("list"));
+  x->max_out=outlet_new(&x->x_obj, gensym("list"));
 
   return (x);
 }

@@ -89,8 +89,8 @@ static void *niagara_new(t_floatarg f)
 
   x->rock = f;
 
-  x->left =  outlet_new(&x->x_obj, &s_list);
-  x->right = outlet_new(&x->x_obj, &s_list);
+  x->left =  outlet_new(&x->x_obj, gensym("list"));
+  x->right = outlet_new(&x->x_obj, gensym("list"));
 
   floatinlet_new(&x->x_obj, &x->rock);
 

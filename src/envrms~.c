@@ -71,7 +71,7 @@ static void *sigenvrms_new(t_floatarg fnpoints, t_floatarg fperiod)
     buf[i] = (1. - cos((2 * 3.141592654 * i) / npoints))/npoints;
   for (; i < npoints+MAXVSTAKEN; i++) buf[i] = 0;
   x->x_clock = clock_new(x, (t_method)sigenvrms_tick);
-  x->x_outlet = outlet_new(&x->x_obj, &s_float);
+  x->x_outlet = outlet_new(&x->x_obj, gensym("float"));
   return (x);
 }
 

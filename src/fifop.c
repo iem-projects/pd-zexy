@@ -193,7 +193,7 @@ static void fifop_bang(t_fifop *x)
   freebytes(fifo, sizeof(t_fifop_list));
 
   /* output the list */
-  outlet_list(x->x_out, &s_list, argc, argv);
+  outlet_list(x->x_out, gensym("list"), argc, argv);
 
   /* free the list */
   freebytes(argv, argc*sizeof(t_atom));
@@ -250,7 +250,7 @@ static void fifop_dump(t_fifop*x)
       int argc=fifo->argc;
 
       /* output the list */
-      outlet_list(x->x_out, &s_list, argc, argv);
+      outlet_list(x->x_out, gensym("list"), argc, argv);
 
       fifo=fifo->next;
     }
@@ -278,7 +278,7 @@ static void *fifop_new(void)
 
   floatinlet_new(&x->x_obj, &x->priority);
   x->x_out   =outlet_new(&x->x_obj, gensym("list" ));
-  x->x_infout=outlet_new(&x->x_obj, &s_float);
+  x->x_infout=outlet_new(&x->x_obj, gensym("float"));
 
   x->fifo_list = 0;
   x->priority=0;

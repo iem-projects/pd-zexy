@@ -70,10 +70,10 @@ static void *time_new(t_symbol *s, int argc, t_atom *argv)
       x->GMT = 1;
   }
   
-  x->x_outlet1 = outlet_new(&x->x_obj, &s_float);
-  x->x_outlet2 = outlet_new(&x->x_obj, &s_float);
-  x->x_outlet3 = outlet_new(&x->x_obj, &s_float);
-  x->x_outlet4 = outlet_new(&x->x_obj, &s_float);
+  x->x_outlet1 = outlet_new(&x->x_obj, gensym("float"));
+  x->x_outlet2 = outlet_new(&x->x_obj, gensym("float"));
+  x->x_outlet3 = outlet_new(&x->x_obj, gensym("float"));
+  x->x_outlet4 = outlet_new(&x->x_obj, gensym("float"));
   
   return (x);
 }

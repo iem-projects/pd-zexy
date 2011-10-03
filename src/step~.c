@@ -116,8 +116,8 @@ static void *step_new(t_floatarg farg)
 {
   t_step *x = (t_step *)pd_new(step_class);
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym("ft1"));
-  outlet_new(&x->x_obj, &s_signal);
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("ft1"));
+  outlet_new(&x->x_obj, gensym("signal"));
 
   x->position = 0;
   x->wait4start = x->wait4stop = 0;

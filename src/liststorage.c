@@ -345,8 +345,8 @@ static void *liststorage_new(t_floatarg f)
   t_liststorage *x = (t_liststorage *)pd_new(liststorage_class);
   int slots=f;
 
-  x->x_slotin=inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym("slot"));
-  x->x_dataout=outlet_new(&x->x_obj, &s_list);
+  x->x_slotin=inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("slot"));
+  x->x_dataout=outlet_new(&x->x_obj, gensym("list"));
   x->x_infoout=outlet_new(&x->x_obj, 0);
 
 

@@ -44,15 +44,15 @@ static void *eq_tilde_new(t_symbol *s, int argc, t_atom *argv)
       t_scalareq_tilde *x = (t_scalareq_tilde *)pd_new(scalareq_tilde_class);
       floatinlet_new(&x->x_obj, &x->x_g);
       x->x_g = atom_getfloatarg(0, argc, argv);
-      outlet_new(&x->x_obj, &s_signal);
+      outlet_new(&x->x_obj, gensym("signal"));
       x->x_f = 0;
       return (x);
     }
   else
     {
       t_eq_tilde *x = (t_eq_tilde *)pd_new(eq_tilde_class);
-      inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-      outlet_new(&x->x_obj, &s_signal);
+      inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
+      outlet_new(&x->x_obj, gensym("signal"));
       x->x_f = 0;
       return (x);
     }

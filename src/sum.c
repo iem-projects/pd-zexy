@@ -40,7 +40,7 @@ static void *sum_new(void)
 {
   t_sum *x = (t_sum *)pd_new(sum_class);
 
-  outlet_new(&x->x_obj, &s_float);
+  outlet_new(&x->x_obj, gensym("float"));
 
   return (x);
 }

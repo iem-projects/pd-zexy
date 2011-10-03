@@ -917,8 +917,8 @@ static void *msgfile_new(t_symbol *s, int argc, t_atom *argv)
     }
   }
 
-  outlet_new(&x->x_obj, &s_list);
-  x->x_secondout = outlet_new(&x->x_obj, &s_float);
+  outlet_new(&x->x_obj, gensym("list"));
+  x->x_secondout = outlet_new(&x->x_obj, gensym("float"));
   x->x_canvas = canvas_getcurrent();
 
   x->eol=' ';

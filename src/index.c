@@ -315,7 +315,7 @@ static void *index_new(t_symbol *s, int argc, t_atom *argv)
 
   while (maxentries--) buf[maxentries]=0;
 
-  outlet_new(&x->x_obj, &s_float);
+  outlet_new(&x->x_obj, gensym("float"));
 
   return (x);
 }

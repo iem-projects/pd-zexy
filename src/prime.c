@@ -59,7 +59,7 @@ static void *prime_new(void)
 {
   t_prime *x = (t_prime *)pd_new(prime_class);
 
-  outlet_new(&x->x_obj, &s_float);
+  outlet_new(&x->x_obj, gensym("float"));
 
   return (x);
 }

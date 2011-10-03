@@ -78,7 +78,7 @@ static void list2lists_output(t_list2lists*x, int argc, t_atom*argv)
   if(argc<=0)
     outlet_bang(out);
   else
-    outlet_list(out, &s_list, argc, argv);
+    outlet_list(out, gensym("list"), argc, argv);
 }
 
 static void list2lists_list(t_list2lists *x, t_symbol *s, int argc, t_atom *argv)

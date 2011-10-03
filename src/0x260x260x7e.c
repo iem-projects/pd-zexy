@@ -47,15 +47,15 @@ static void *andand_tilde_new(t_symbol *s, int argc, t_atom *argv)
       t_scalarandand_tilde *x = (t_scalarandand_tilde *)pd_new(scalarandand_tilde_class);
       floatinlet_new(&x->x_obj, &x->x_g);
       x->x_g = atom_getfloatarg(0, argc, argv);
-      outlet_new(&x->x_obj, &s_signal);
+      outlet_new(&x->x_obj, gensym("signal"));
       x->x_f = 0;
       return (x);
     }
   else
     {
       t_andand_tilde *x = (t_andand_tilde *)pd_new(andand_tilde_class);
-      inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-      outlet_new(&x->x_obj, &s_signal);
+      inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
+      outlet_new(&x->x_obj, gensym("signal"));
       x->x_f = 0;
       return (x);
     }

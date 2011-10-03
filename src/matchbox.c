@@ -544,7 +544,7 @@ static void matchbox_list(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
   outlet_float(x->x_outNumResults, (t_float)results);
   
   for(dummylist=resultlist; 0!=dummylist; dummylist=dummylist->next)
-    outlet_list(x->x_outResult,  &s_list, dummylist->argc, dummylist->argv);
+    outlet_list(x->x_outResult,  gensym("list"), dummylist->argc, dummylist->argv);
 }
 
 static void matchbox_add(t_matchbox*x, t_symbol*s, int argc, t_atom*argv) {
@@ -587,7 +587,7 @@ static void matchbox_dump(t_matchbox*x) {
 
   for(lp=x->x_lists->next; 0!=lp; lp=lp->next)
   {
-    outlet_list(x->x_outResult,  &s_list, lp->argc, lp->argv);
+    outlet_list(x->x_outResult,  gensym("list"), lp->argc, lp->argv);
   }
 }
 
@@ -626,7 +626,7 @@ static void *matchbox_new(t_symbol *s, int argc, t_atom*argv)
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("add"));
 
   x->x_outResult    =outlet_new(&x->x_obj, gensym("list"));
-  x->x_outNumResults=outlet_new(&x->x_obj, &s_float);
+  x->x_outNumResults=outlet_new(&x->x_obj, gensym("float"));
 
 
   x->x_lists=(t_listlist*)getbytes(sizeof(t_listlist));

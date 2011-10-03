@@ -44,15 +44,15 @@ static void *oror_tilde_new(t_symbol *s, int argc, t_atom *argv)
       t_scalaroror_tilde *x = (t_scalaroror_tilde *)pd_new(scalaroror_tilde_class);
       floatinlet_new(&x->x_obj, &x->x_g);
       x->x_g = atom_getfloatarg(0, argc, argv);
-      outlet_new(&x->x_obj, &s_signal);
+      outlet_new(&x->x_obj, gensym("signal"));
       x->x_f = 0;
       return (x);
     }
   else
     {
       t_oror_tilde *x = (t_oror_tilde *)pd_new(oror_tilde_class);
-      inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-      outlet_new(&x->x_obj, &s_signal);
+      inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
+      outlet_new(&x->x_obj, gensym("signal"));
       x->x_f = 0;
       return (x);
     }

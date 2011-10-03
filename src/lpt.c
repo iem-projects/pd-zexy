@@ -169,8 +169,8 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     error("lpt: the use of 'lp' has been deprecated; use 'lpt' instead");
 
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym("control"));
-  outlet_new(&x->x_obj, &s_float);
+  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("control"));
+  outlet_new(&x->x_obj, gensym("float"));
   x->mode = MODE_NONE;
   x->port = 0;
   x->device = -1;

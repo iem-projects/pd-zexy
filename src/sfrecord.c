@@ -526,7 +526,7 @@ static void *sfrecord_new(t_floatarg chan)
 	default: c=1; break;
 	}
 
-	outlet_new(&x->x_obj, &s_float);
+	outlet_new(&x->x_obj, gensym("float"));
 
 	x->x_channels = c;
 	x->x_skip = x->x_offset = 0;
@@ -548,7 +548,7 @@ static void *sfrecord_new(t_floatarg chan)
 #ifdef DEBUG_ME
 		post("create extra channel #%d", c);
 #endif
-		inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal); /* channels inlet */
+		inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal")); /* channels inlet */
 	}
 
 	x->filep = t_getbytes(DACBLKSIZE*sizeof(short)*x->x_channels);
