@@ -2,8 +2,8 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT([zexy], [2.2.5], [zmoelnig@iem.at], [zexy], [http://get.puredata.info/zexy])
 AM_INIT_AUTOMAKE([1.10 foreign])
+LT_INIT([win32-dll shared disable-static])
 
-AC_PROG_LIBTOOL
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_HEADERS([config.h])
@@ -22,12 +22,6 @@ AC_PROG_CC
 AC_PROG_LN_S
 
 AC_LIBTOOL_WIN32_DLL
-AC_SUBST(CFLAGS)
-AC_SUBST(CPPFLAGS)
-AC_SUBST(DEFS)
-AC_SUBST(INCLUDES)
-
-AC_SUBST(EXTENSION)
 
 AC_ARG_WITH(pd,       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
 AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
@@ -99,7 +93,6 @@ AC_FUNC_MMAP
 AC_CHECK_FUNCS(select socket strerror)
 
 IEM_CHECK_FAT(ARCH_FLAG)
-AC_SUBST(ARCH_FLAG)
 
 IEM_CHECK_CFLAGS([-mms-bitfields])
 IEM_CHECK_SIMD
@@ -148,5 +141,14 @@ AC_ERROR([m_pd.h is desperately needed!
         install pd and/or use
         "--with-pd=</path/to/pd/>"])
 fi
+
+AC_SUBST(CFLAGS)
+AC_SUBST(CPPFLAGS)
+AC_SUBST(DEFS)
+AC_SUBST(INCLUDES)
+AC_SUBST(ARCH_FLAG)
+AC_SUBST([LIBTOOL_DEPS])
+
+AC_SUBST(EXTENSION)
 
 AC_OUTPUT()
