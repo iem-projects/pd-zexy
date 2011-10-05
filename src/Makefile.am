@@ -10,6 +10,8 @@ if WINDOWS
 AM_LDFLAGS+= -no-undefined
 endif
 
+AM_LDFLAGS+= @EXTRA_LTFLAGS@
+
 # RTE
 AM_CFLAGS += 
 AM_LDFLAGS+= 

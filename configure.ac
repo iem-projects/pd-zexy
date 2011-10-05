@@ -21,7 +21,7 @@ IEM_OPERATING_SYSTEM
 ARCH=$(uname -m)
 KERN=$(uname -s)
 
-dnl m4_ifdef([AC_LIB_RPATH], [AC_LIB_RPATH])
+m4_ifdef([AC_LIB_RPATH], [AC_LIB_RPATH])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -29,9 +29,9 @@ AC_PROG_LN_S
 AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
 
-AC_ARG_WITH(pd,       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
-AC_ARG_WITH(extension,[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
-AC_ARG_ENABLE(library,[  --disable-library       split the library into single externals])
+AC_ARG_WITH([pd],       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
+AC_ARG_WITH([extension],[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
+AC_ARG_ENABLE([library],[  --disable-library       split the library into single externals])
 AM_CONDITIONAL([LIBRARY], [test "x${enable_library}" != "xno"])
 
 
@@ -69,34 +69,44 @@ fi
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lc:
-AC_CHECK_LIB(c, main)
-AC_CHECK_LIB(crtdll, fclose)
+AC_CHECK_LIB([c], [main])
+AC_CHECK_LIB([crtdll], [fclose])
 
-AC_CHECK_LIB(coldname, lseek)
-AC_CHECK_LIB(kernel32, main)
-AC_CHECK_LIB(user32, main)
-AC_CHECK_LIB(gdi32, main)
+AC_CHECK_LIB([coldname], [lseek])
+AC_CHECK_LIB([kernel32], [main])
+AC_CHECK_LIB([user32], [main])
+AC_CHECK_LIB([gdi32], [main])
 
 dnl Replace `main' with a function in -lm:
-AC_CHECK_LIB(m, main)
+AC_CHECK_LIB([m], [main])
 dnl Replace `main' with a function in -lpthread:
-dnl AC_CHECK_LIB(pthread, main)
+dnl AC_CHECK_LIB([pthread], [main])
 dnl Replace `main' with a function in -lstk:
-dnl AC_CHECK_LIB(stk, main, STK=yes)
+dnl AC_CHECK_LIB([stk], [main], [STK=yes])
 
-AC_CHECK_LIB(pd, nullfn)
-AC_CHECK_LIB(regex, regcomp)
+tmp_pddll_LIBS=$LIBS
+AC_CHECK_LIB([:pd.dll], [nullfn], have_pddll="yes", have_pddll="no")
+LIBS=$tmp_pddll_LIBS
+
+if test "x$have_pddll" = "xyes"
+then
+  EXTRA_LTFLAGS="$EXTRA_LTFLAGS -Xlinker -l:pd.dll"
+else
+  AC_CHECK_LIB([pd], [nullfn])
+fi
+
+AC_CHECK_LIB([regex], [regcomp])
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(stdlib.h stdio.h string.h math.h time.h sys/time.h regex.h alloca.h)
+AC_CHECK_HEADERS([stdlib.h stdio.h string.h math.h time.h sys/time.h regex.h alloca.h])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_TIME
 
 dnl Checks for library functions.
 AC_FUNC_MMAP
-AC_CHECK_FUNCS(select socket strerror)
+AC_CHECK_FUNCS([select socket strerror])
 
 IEM_CHECK_FAT(ARCH_FLAG)
 
@@ -154,6 +164,7 @@ AC_SUBST(DEFS)
 AC_SUBST(INCLUDES)
 AC_SUBST(ARCH_FLAG)
 AC_SUBST([LIBTOOL_DEPS])
+AC_SUBST([EXTRA_LTFLAGS])
 
 AC_SUBST(EXTENSION)
 
