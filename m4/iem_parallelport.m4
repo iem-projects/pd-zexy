@@ -34,6 +34,6 @@ if test "x$have_lpt" != "xno"; then
 else
  AC_MSG_RESULT([no])
 fi
-AM_CONDITIONAL([LPT], [test "x${enable_lpt}" == "xyes"])
+AM_CONDITIONAL([LPT], [test "x${have_lpt}" != "xno"])
 
 ]) dnl IEM_CHECK_LPT
