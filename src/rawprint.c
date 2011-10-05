@@ -24,6 +24,10 @@
 # define snprintf _snprintf
 #endif
 
+#if !defined( _MSC_VER ) && defined (_WIN32)
+int _get_output_format( void ){ return 0; }
+#endif
+
 static t_class *rawprint_class;
 
 typedef struct _rawprint {
