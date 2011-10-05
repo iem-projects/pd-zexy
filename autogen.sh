@@ -8,11 +8,7 @@ case "${KERN}" in
  Darwin)
    PATH=/sw/bin:${PATH}
    ;;
- MINGW*)
-   AUTORECONF=""
-   ;;
  *)
-  echo "kernel $KERN"
   ;;
 esac
 
@@ -27,6 +23,14 @@ ACLOCAL=$(which aclocal)
 LIBTOOL=$(which libtool)
 LIBTOOLIZE=$(which libtoolize)
 AUTOCONF=$(which autoconf)
+
+case "${KERN}" in
+ MINGW*)
+   AUTORECONF=""
+   ;;
+ *)
+  ;;
+esac
 
 
 #check whether the system supports pushd/popd
