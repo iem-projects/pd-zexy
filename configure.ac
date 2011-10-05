@@ -21,7 +21,7 @@ IEM_OPERATING_SYSTEM
 ARCH=$(uname -m)
 KERN=$(uname -s)
 
-m4_ifdef([AC_LIB_RPATH], [AC_LIB_RPATH])
+dnl m4_ifdef([AC_LIB_RPATH], [AC_LIB_RPATH])
 
 dnl Checks for programs.
 AC_PROG_CC
