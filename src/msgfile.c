@@ -106,7 +106,9 @@ static int node_wherearewe(t_msgfile *x)
     cur = cur->next;
   }
 
-  return (cur->thislist)?counter:-1;
+  if(cur&&cur->thislist)
+    return counter;
+  return -1;
 }
 
 static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
@@ -660,16 +662,17 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
   }
 
   fil=fopen(filnam, "rb");
-  fseek(fil, 0, SEEK_END);
   if(fil==NULL) {
     pd_error(x, "could not open '%s'", filnam);
     return;
   }
+  fseek(fil, 0, SEEK_END);
   length=ftell(fil);
   fseek(fil, 0, SEEK_SET);
 
   if (!(readbuf = t_getbytes(length))) {
     pd_error(x, "msgfile_read: could not reserve %ld bytes to read into", length);
+    flose(fil);
     close(fd);
     return;
   }
