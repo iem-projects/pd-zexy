@@ -672,7 +672,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
 
   if (!(readbuf = t_getbytes(length))) {
     pd_error(x, "msgfile_read: could not reserve %ld bytes to read into", length);
-    flose(fil);
+    fclose(fil);
     close(fd);
     return;
   }
