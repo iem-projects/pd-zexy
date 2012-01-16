@@ -296,7 +296,7 @@ the type;
 #X text 279 406 numeric conversion (coordinates \, angles \, ...);
 #X text 430 82 bug-reports: zmoelnig-AT-iem.at;
 #N canvas 498 232 309 146 META 0;
-#X text 14 14 VERSION 2.2.4;
+#X text 14 14 VERSION 2.2.6;
 #X text 13 41 AUTHOR IOhannes m zmölnig;
 #X text 14 27 NAME zexy;
 #X text 15 58 LICENSE GPL-2;
