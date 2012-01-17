@@ -32,8 +32,9 @@ AC_PROG_LIBTOOL
 
 AC_ARG_WITH([pd],       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
 AC_ARG_WITH([extension],[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
-AC_ARG_ENABLE([library],[  --disable-library       split the library into single externals])
+AC_ARG_ENABLE([library],[  --enable-library        build zexy as multi-object library (default, "yes"), as single-object externals ("no") or as both ("both")])
 AM_CONDITIONAL([LIBRARY], [test "x${enable_library}" != "xno"])
+AM_CONDITIONAL([SINGLEOBJECTS], [test "x${enable_library}" = "xno" || test "x${enable_library}" = "xboth"])
 
 
 if test "x${libdir}" = "x\${exec_prefix}/lib"; then

@@ -19,7 +19,8 @@ AM_LDFLAGS+=
 
 if LIBRARY
 pkglib_LTLIBRARIES+=zexy.la
-else
+endif LIBRARY
+if SINGLEOBJECTS
 pkglib_LTLIBRARIES+= \
 	0x260x260x7e.la \
 	0x2e.la \
@@ -115,7 +116,7 @@ pkglib_LTLIBRARIES+= \
 	urn.la \
 	wrap.la \
 	z~.la
-endif
+endif SINGLEOBJECTS
 
 zexy_la_CPPFLAGS=-DZEXY_LIBRARY
 
