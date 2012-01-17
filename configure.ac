@@ -14,6 +14,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile src/Makefile abs/Makefile reference/Makefile])
 AC_CONFIG_FILES([tests/Makefile build/Makefile])
+AC_CONFIG_FILES([zexy-meta.pd])
 
 AC_CONFIG_SRCDIR([src/zexy.c])
 
