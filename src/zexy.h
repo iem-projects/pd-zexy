@@ -112,7 +112,7 @@ typedef struct _mypdlist
 static void zexy_register(char*object){
   if(object!=0){
     post("[%s] part of zexy-%s (compiled: "__DATE__")", object, VERSION);
-    post("\tCopyright (l) 1999-2011 IOhannes m zmölnig, forum::für::umläute & IEM");
+    post("\tCopyright (c) 1999-2012 IOhannes m zmölnig, forum::für::umläute & IEM");
   }
 }
 #else
