@@ -73,12 +73,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/export:zexy_setup"
-				AdditionalDependencies="wsock32.lib libcmt.lib oldnames.lib pd.lib"
-				OutputFile="..\zexy.dll"
+				AdditionalDependencies="pd.lib wsock32.lib"
+				OutputFile="..\..\zexy.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\..\..\pd\bin;&quot;$(ProgramFiles)\pd\bin&quot;;&quot;$(ProgramFiles)\pd-0.43.0\bin&quot;"
-				IgnoreAllDefaultLibraries="true"
 				ProgramDatabaseFile="./zexy.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -480,6 +479,10 @@
 				RelativePath="..\..\src\winNT_portio.c"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="tmp"
+			>
 		</Filter>
 	</Files>
 	<Globals>
