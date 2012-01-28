@@ -1,8 +1,11 @@
 zexy (2.2.6) UNRELEASED; urgency=low
 
+  * Fixes NULL-pointer access and file handle leaks
   * Fixes for autotools
+  * Allow to build both single-object and multiobject binaries in one go
+	(just use "--enable-library=both")
 
- -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Fri, 30 Sep 2011 09:38:30 +0200
+ -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Tue, 17 Jan 2012 10:12:13 +0100
 
 zexy (2.2.5) RELEASED; urgency=low
 
