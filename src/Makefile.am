@@ -33,6 +33,7 @@ pkglib_LTLIBRARIES+= \
 	abs~.la \
 	absgn~.la \
 	atoi.la \
+	atof.la \
 	avg~.la \
 	blockmirror~.la \
 	blockshuffle~.la \
@@ -132,6 +133,7 @@ any2list_la_SOURCES	= a2l.c
 abs__la_SOURCES		= abs~.c
 absgn__la_SOURCES	= absgn~.c
 atoi_la_SOURCES		= atoi.c
+atof_la_SOURCES		= atof.c
 avg__la_SOURCES		= avg~.c
 blockmirror__la_SOURCES	= blockmirror~.c
 blockshuffle__la_SOURCES= blockshuffle~.c
@@ -225,7 +227,7 @@ z__la_SOURCES		= z~.c
 zexy_la_SOURCES	= zexy.c z_zexy.c \
 	zexy.h zexySIMD.h z_zexy.h zexyconf.h \
 	0x260x260x7e.c 0x2e.c 0x3c0x7e.c 0x3d0x3d0x7e.c 0x3e0x7e.c 0x7c0x7c0x7e.c \
-	a2l.c abs~.c absgn~.c atoi.c avg~.c  \
+	a2l.c abs~.c absgn~.c atoi.c atof.c avg~.c  \
 	blockmirror~.c blockshuffle~.c blockswap~.c \
 	date.c demultiplex~.c demultiplex.c dfreq~.c dirac~.c drip.c envrms~.c \
 	fifop.c freadln.c fwriteln.c glue.c index.c length.c lifop.c limiter~.c \

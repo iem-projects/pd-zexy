@@ -14,16 +14,17 @@ void z_zexy_setup(void)
 	setup_0x3e0x7e(); /* 0x3e0x7e */
 	setup_0x7c0x7c0x7e(); /* 0x7c0x7c0x7e */
 	a2l_setup(); /* a2l */
-	abs_tilde_setup(); /* abs~ */
 	absgn_tilde_setup(); /* absgn~ */
+	abs_tilde_setup(); /* abs~ */
+	atof_setup(); /* atof */
 	atoi_setup(); /* atoi */
 	avg_tilde_setup(); /* avg~ */
 	blockmirror_tilde_setup(); /* blockmirror~ */
 	blockshuffle_tilde_setup(); /* blockshuffle~ */
 	blockswap_tilde_setup(); /* blockswap~ */
 	date_setup(); /* date */
-	demultiplex_tilde_setup(); /* demultiplex~ */
 	demultiplex_setup(); /* demultiplex */
+	demultiplex_tilde_setup(); /* demultiplex~ */
 	dfreq_tilde_setup(); /* dfreq~ */
 	dirac_tilde_setup(); /* dirac~ */
 	drip_setup(); /* drip */
@@ -49,16 +50,16 @@ void z_zexy_setup(void)
 	minmax_setup(); /* minmax */
 	msgfile_setup(); /* msgfile */
 	multiline_tilde_setup(); /* multiline~ */
-	multiplex_tilde_setup(); /* multiplex~ */
 	multiplex_setup(); /* multiplex */
+	multiplex_tilde_setup(); /* multiplex~ */
 	multireceive_setup(); /* multireceive */
 	niagara_setup(); /* niagara */
 	noish_tilde_setup(); /* noish~ */
 	noisi_tilde_setup(); /* noisi~ */
 	operating_system_setup(); /* operating_system */
-	pack_tilde_setup(); /* pack~ */
 	pack_setup(); /* pack */
 	packel_setup(); /* packel */
+	pack_tilde_setup(); /* pack~ */
 	pdf_tilde_setup(); /* pdf~ */
 	prime_setup(); /* prime */
 	quantize_tilde_setup(); /* quantize~ */
@@ -85,8 +86,8 @@ void z_zexy_setup(void)
 	tabset_setup(); /* tabset */
 	tavg_tilde_setup(); /* tavg~ */
 	time_setup(); /* time */
-	unpack_tilde_setup(); /* unpack~ */
 	unpack_setup(); /* unpack */
+	unpack_tilde_setup(); /* unpack~ */
 	urn_setup(); /* urn */
 	wrap_setup(); /* wrap */
 	z_tilde_setup(); /* z~ */
