@@ -1,4 +1,4 @@
-#N canvas 0 31 615 317 10;
+#N canvas 4 49 615 317 10;
 #X obj 95 21 atoi;
 #X text 144 19 convert ascii to integer;
 #X obj 42 178 atoi;
@@ -26,20 +26,24 @@
 ;
 #X text 211 223 symbols starting with numbers but "0" are converted
 as decimal numbers;
-#X text 330 285 updated for zexy-2.0;
-#X text 330 285 updated for zexy-2.0;
 #X text 509 17 part of zexy;
-#N canvas 515 193 494 344 META 0;
-#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#N canvas 517 185 494 344 META 0;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 5 KEYWORDS control conversion;
 #X text 12 45 DESCRIPTION convert ascii to integer;
-#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 135 AUTHOR IOhannes m zmoelnig;
 #X text 12 65 INLET_0 symbol;
 #X text 12 85 OUTLET_0 float;
+#X text 12 102 OUTLET_1 symbol;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes and updated by IOhannes m zmölnig (for zexy-2.2.7);
 #X restore 565 297 pd META;
+#X symbolatom 63 228 10 0 0 3 reject - -;
+#X text 330 285 updated for zexy-2.2.7;
+#X text 213 254 if the symbol cannot be converted into a number \,
+it will be sent to the 2nd ("reject") outlet.;
 #X connect 2 0 3 0;
+#X connect 2 1 26 0;
 #X connect 4 0 5 0;
 #X connect 5 0 2 0;
 #X connect 6 0 4 0;
