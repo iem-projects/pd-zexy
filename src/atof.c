@@ -19,56 +19,69 @@
 
 #include "zexy.h"
 #include <stdlib.h>
+#include <string.h>
 
 static t_class *atof_class;
 
 typedef struct _atof
 {
   t_object x_obj;
-  t_float f;
+  t_float x_f;
+  t_outlet*x_reject;
 } t_atof;
 static void atof_bang(t_atof *x)
 {
-  outlet_float(x->x_obj.ob_outlet, (t_float)x->f);
+  outlet_float(x->x_obj.ob_outlet, (t_float)x->x_f);
 }
 static void atof_float(t_atof *x, t_floatarg f)
 {
-  x->f = f;
-  outlet_float(x->x_obj.ob_outlet, (t_float)x->f);
+  x->x_f = f;
+  atof_bang(x);
 }
-static void atof_symbol(t_atof *x, t_symbol *s)
+static void atof_symbol(t_atof *x, t_symbol *sym)
 {
-  const char* c = s->s_name;
-  x->f=strtod(c, 0);
-  outlet_float(x->x_obj.ob_outlet, (t_float)x->f);
+  const char* s = sym->s_name;
+  char*endptr=NULL;
+  double d=strtod(s, &endptr);
+  size_t len=strlen(s);
+  if(endptr && ((s+len)==endptr)) {
+    atof_float(x, d);
+  } else {
+    outlet_symbol(x->x_reject, sym);
+  }
 }
 static void atof_list(t_atof *x, t_symbol *s, int argc, t_atom *argv)
 {
   const char* c;
   ZEXY_USEVAR(s);
 
-  if (argv->a_type==A_FLOAT){
-    x->f=atom_getfloat(argv);
-    outlet_float(x->x_obj.ob_outlet, (t_float)x->f);
+  if(!argc){
+    atof_bang(x);
     return;
   }
 
-  c=atom_getsymbol(argv)->s_name;
-  x->f=strtod(c, 0);
-  outlet_float(x->x_obj.ob_outlet, (t_float)x->f);
+  if (argv->a_type==A_FLOAT){
+    atof_float(x, atom_getfloat(argv));
+    return;
+  }
+  atof_symbol(x, atom_getsymbol(argv));
 }
-
+static void *atof_free(t_atof*x) {
+  outlet_free(x->x_reject);
+  x->x_reject=NULL;
+}
 static void *atof_new(void)
 {
   t_atof *x = (t_atof *)pd_new(atof_class);
-  x->f = 0.;
   outlet_new(&x->x_obj, gensym("float"));
+  x->x_reject=outlet_new(&x->x_obj, gensym("symbol"));
+  x->x_f = 0.;
   return (x);
 }
 
 void atof_setup(void)
 {
-  atof_class = class_new(gensym("atof"), (t_newmethod)atof_new, 0,
+  atof_class = class_new(gensym("atof"), (t_newmethod)atof_new, (t_method)atof_free,
 			 sizeof(t_atof), 0, A_DEFFLOAT, 0);
 
   class_addbang(atof_class, (t_method)atof_bang);
