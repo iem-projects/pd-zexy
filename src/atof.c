@@ -66,7 +66,7 @@ static void atof_list(t_atof *x, t_symbol *s, int argc, t_atom *argv)
   }
   atof_symbol(x, atom_getsymbol(argv));
 }
-static void *atof_free(t_atof*x) {
+static void atof_free(t_atof*x) {
   outlet_free(x->x_reject);
   x->x_reject=NULL;
 }
