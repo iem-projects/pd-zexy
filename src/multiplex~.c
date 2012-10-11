@@ -110,7 +110,7 @@ void multiplex_tilde_setup(void)
   class_addmethod(mux_tilde_class, (t_method)mux_tilde_helper, gensym("help"), 0);
   zexy_register("multiplex~");
 }
-void mux_tilde_tilde_setup(void)
+void mux_tilde_setup(void)
 {
   multiplex_tilde_setup();
 }
