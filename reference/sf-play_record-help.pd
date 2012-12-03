@@ -1,4 +1,4 @@
-#N canvas 0 31 588 448 10;
+#N canvas 1 88 588 448 10;
 #X obj 436 312 sfplay 2;
 #X obj 38 315 sfrecord 2;
 #X msg 436 130 help;
@@ -94,7 +94,7 @@ just call "sfplay <num.of.chan> <skip.bytes>;
 #X msg 500 346 MUTE;
 #X text 111 353 output amplitude;
 #X text 435 9 part of zexy;
-#N canvas 588 167 494 344 META 0;
+#N canvas 529 175 494 344 META 0;
 #X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
 Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
@@ -103,9 +103,9 @@ Wilkes for Pd version 0.42.;
 #X text 12 65 INLET_0 float bang help open start stop rewind goto close
 ;
 #X text 12 85 INLET_1;
-#X text 12 5 KEYWORDS signal soundfile needs_work (inlet_1?);
 #X text 12 105 OUTLET_N signal;
 #X text 12 125 OUTLET_R bang;
+#X text 12 5 KEYWORDS signal soundfile;
 #X restore 528 417 pd META;
 #X connect 0 0 33 0;
 #X connect 0 1 33 1;
