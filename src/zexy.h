@@ -70,7 +70,11 @@
 #endif
 
 #ifndef HEARTSYMBOL
-# define HEARTSYMBOL 64
+# if (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION >= 43)
+#  define HEARTSYMBOL "♡"
+# else
+#  define HEARTSYMBOL "@"
+# endif
 #endif
 
 #include <math.h>

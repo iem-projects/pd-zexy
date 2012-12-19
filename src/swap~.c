@@ -73,7 +73,7 @@ static void swap_dsp(t_swap *x, t_signal **sp)
 
 static void swap_helper(void)
 {
-  post("\n%c swap~-object for byteswapping a signal", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" swap~-object for byteswapping a signal");
   post("<1/0>  : turn the swapper on/off\n"
        "'bang' : toggle the swapper on/off\n"
        "'help' : view this\n"

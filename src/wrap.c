@@ -70,7 +70,7 @@ static void *wrap_new(t_symbol *s, int argc, t_atom*argv)
 
 static void wrap_help(t_wrap*x)
 {
-  post("\n%c wrap\t\t:: wrap a float between to boundaries", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" wrap\t\t:: wrap a float between to boundaries");
 }
 
 void wrap_setup(void) {

@@ -864,7 +864,7 @@ static void msgfile_print(t_msgfile *x)
 
 static void msgfile_help(t_msgfile *x)
 {
-  post("\n%c msgfile\t:: handle and store files of lists", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" msgfile\t:: handle and store files of lists");
   post("goto <n>\t: goto line <n>"
        "\nrewind\t\t: goto the beginning of the file"
        "\nend\t\t: goto the end of the file"

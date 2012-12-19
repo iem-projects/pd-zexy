@@ -286,7 +286,7 @@ static void lpt_free(t_lpt *x)
 static void lpt_helper(t_lpt *x)
 {
   ZEXY_USEVAR(x);
-  post("\n%c lpt :: direct access to the parallel port", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" lpt :: direct access to the parallel port");
   post("<byte>\t: write byte to the parallel-port");
   post("\ncreation:\t\"lpt [<port>]\": connect to parallel port <port> (0..2)");
   post("\t\t\"lpt <portaddr>\": connect to port @ <portaddr> (hex)");

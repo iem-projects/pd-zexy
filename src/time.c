@@ -102,7 +102,7 @@ static void time_bang(t_time *x)
 static void help_time(t_time *x)
 {
   ZEXY_USEVAR(x);
-  post("\n%c time\t\t:: get the current system time", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" time\t\t:: get the current system time");
   post("\noutputs are\t:  hour / minute / sec / msec");
   post("\ncreation\t:: 'time [GMT]': show local time or GMT");
 }

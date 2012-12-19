@@ -123,7 +123,7 @@ static void date_bang(t_date *x)
 static void help_date(t_date *x)
 {
   ZEXY_USEVAR(x);
-  post("\n%c date\t\t:: get the current system date", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" date\t\t:: get the current system date");
   post("\noutputs are\t: year / month / day / day of week /day of year / daylightsaving (1/0)");
   post("\ncreation\t::'date [GMT]': show local date or GMT");
 }

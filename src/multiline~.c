@@ -254,7 +254,7 @@ static void *mline_new(t_symbol *s, int argc, t_atom *argv)
 
 static void mline_help(t_mline*x)
 {
-  post("\n%c multiline~\t:: ramped multiplication of multiple signals", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" multiline~\t:: ramped multiplication of multiple signals");
 }
 
 void multiline_tilde_setup(void)

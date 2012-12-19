@@ -210,7 +210,7 @@ static void *listfind_new(t_symbol *s, int argc, t_atom *argv)
 
 static void listfind_help(t_listfind*x)
 {
-  post("\n%c listfind\t\t:: split lists into multiple sublists based on matches", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" listfind\t\t:: split lists into multiple sublists based on matches");
 }
 
 void listfind_setup(void)

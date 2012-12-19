@@ -572,7 +572,7 @@ static void sfrecord_helper(void)
 		"\nstop\t\t\t:: stop playing"
 		"\nbang\t\t\t:: outputs the current state (1_recording, 0_not-recording)");
 		
-	post("\n\nyou can also start recording with a Ž1Ž, and stop with a Ž0Ž");
+	post("\n\nyou can also start recording with a '1', and stop with a '0'");
 }
 
 

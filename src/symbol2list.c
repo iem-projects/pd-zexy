@@ -153,7 +153,7 @@ static void symbol2list_free(t_symbol2list *x)
 
 static void symbol2list_help(t_symbol2list*x)
 {
-  post("\n%c symbol2list\t:: split a symbol into a list of atoms", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" symbol2list\t:: split a symbol into a list of atoms");
 }
 
 void symbol2list_setup(void)

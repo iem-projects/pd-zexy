@@ -99,7 +99,7 @@ static void *mypdlist_new(t_symbol *s, int argc, t_atom *argv)
 
 static void mypdlist_help(t_mypdlist*x)
 {
-  post("\n%c lister\t\t:: basic list storage (use pd>=0.39 for real [list] objects)", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" lister\t\t:: basic list storage (use pd>=0.39 for real [list] objects)");
 }
 
 void lister_setup(void)

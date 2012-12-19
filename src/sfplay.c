@@ -147,7 +147,7 @@ static void sfplay_helper(t_sfplay *x)
 		"\nstop\t\t\t::stop playing"
 		"\nrewind\t\t\t::rewind tape"
 		"\ngoto <n>\t\t::play from byte n");
-	post("\n\nyou can also start playing with a ŽbangŽ or a Ž1Ž, and stop with a Ž0Ž"
+	post("\n\nyou can also start playing with a 'bang' or a '1', and stop with a '0'"
 		"\nthe last outlet will do a bang after the last sample has been played");
 
 }

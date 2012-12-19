@@ -115,7 +115,7 @@ static void sigABSGN_dsp(t_absgn *x, t_signal **sp)
 
 static void sigABSGN_helper(void)
 {
-  post("\n%c absgn~ \t\t:: absolute value and sign of a signal", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" absgn~ \t\t:: absolute value and sign of a signal");
   post("         \t\t   copyright (c) Tim Blechmann 2006");
 }
 

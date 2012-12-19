@@ -153,7 +153,7 @@ static void strcmp_free(t_strcmp *x)
 
 static void strcmp_help(t_strcmp*x)
 {
-  post("\n%c strcmp\t\t:: compare to lists as strings", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" strcmp\t\t:: compare to lists as strings");
 }
 
 

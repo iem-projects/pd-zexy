@@ -93,7 +93,7 @@ static void *tabdump_new(t_symbol *s)
 
 static void tabdump_helper(void)
 {
-  post("\n%c tabdump - object : dumps a table as a package of floats", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" tabdump - object : dumps a table as a package of floats");
   post("'set <table>'\t: read out another table\n"
        "'bang'\t\t: dump the table\n"
        "outlet\t\t: table-data as package of floats");

@@ -156,7 +156,7 @@ static void noish_dsp(t_nois *x, t_signal **sp)
 
 static void noish_helper(void)
 {
-  post("\n%c noish~\t:: a bandlimited pseudo-noise generator", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" noish~\t:: a bandlimited pseudo-noise generator");
   post("<freq>\t : sampling-frequency (in Hz)\n"
        "'help'\t : view this");
   post("creation : \"noish~ [<freq>]\"\t: ('0'(default) will produce 'white' noise)\n");

@@ -46,7 +46,7 @@ static void zexy_help(void)
   endpost(); endpost(); 
   post("...this is the zexy external "VERSION"...");
   endpost();
-  post("%c handling signals", HEARTSYMBOL);
+  post(""HEARTSYMBOL" handling signals");
 #if 0
   post("streamout~\t:: stream signals via a LAN : (%c) gige 1999");
   post("streamin~\t:: catch signals from a LAN : based on gige");
@@ -54,29 +54,29 @@ static void zexy_help(void)
   post("sfplay\t\t:: play back a (multichannel) soundfile : (c) ritsch 1999");
   post("sfrecord\t:: record a (multichannel) soundfile : based on ritsch");
 
-  endpost(); post("%c generating signals", HEARTSYMBOL);
+  endpost(); post(""HEARTSYMBOL" generating signals");
   post("noish~\t\t:: generate bandlimited noise");
   post("noisi~\t\t:: generate bandlimited noise");
   post("dirac~\t\t:: generate a dirac-pulse");
   post("step~\t\t:: generate a unity-step");
   post("dfreq~\t\t:: detect frequency by counting zero-crossings : (c) ritsch 1998");
 
-  endpost(); post("%c manipulating signals", HEARTSYMBOL);
+  endpost(); post(""HEARTSYMBOL" manipulating signals");
   post("limiter~\t:: limit/compress one or more signals");
   post("nop~\t\t:: pass through a signal (delay 1 block)");
   post("z~\t\t:: samplewise delay");
   post("swap~\t\t:: byte-swap a signal");
   post("quantize~\t:: quantize a signal");
 
-  endpost(); post("%c binary operations on signals", HEARTSYMBOL);
+  endpost(); post(""HEARTSYMBOL" binary operations on signals");
   post("abs~, sgn~, >~, <~, ==~, &&~, ||~");
 
-  endpost(); post("%c multary operations on signals", HEARTSYMBOL);
+  endpost(); post(""HEARTSYMBOL" multary operations on signals");
   post("multiline~\t:: multiple line~ multiplication");
   post("multiplex~\t:: multiplex 1 inlet~ to 1-of-various outlet~s");
   post("demultiplex~\t:: demultiplex 1-of-various inlet~s to 1 outlet~");
 
-  endpost(); post("%c investigating signals in message-domain", HEARTSYMBOL);
+  endpost(); post(""HEARTSYMBOL" investigating signals in message-domain");
   post("pack~\t\t:: convert a signal into a list of floats");
   post("unpack~\t\t:: convert packages of floats into a signal");
 
@@ -86,7 +86,7 @@ static void zexy_help(void)
   post("envrms~\t\t:: an env~-object that ouputs rms instead of db");
   post("pdf~\t\t:: power density function");
        
-  endpost(); post("%c basic message objects", HEARTSYMBOL);
+  endpost(); post(""HEARTSYMBOL" basic message objects");
   post("nop\t\t:: a no-operation");
   post("lister\t\t:: stores lists");
   post("any2list\t\t:: converts \"anything\" to lists");
@@ -104,7 +104,7 @@ static void zexy_help(void)
   post("segregate\t:: sort inputs by type");
   post(".\t\t:: scalar multiplication of vectors (lists of floats)");
 
-  endpost(); post("%c advanced message objects", HEARTSYMBOL);
+  endpost(); post(""HEARTSYMBOL" advanced message objects");
   post("tabread4\t:: 4-point interpolating table-read object");
   post("tabdump\t\t:: dump the table as a list");
   post("tabset\t\t:: set a table with a list");
@@ -140,16 +140,16 @@ void zexy_setup(void)
   int i;
 
   startpost("\n\t");
-  for (i=0; i<3; i++) startpost("%c", HEARTSYMBOL);
+  for (i=0; i<3; i++) startpost(""HEARTSYMBOL"");
   endpost();
-  post("\t%c the zexy external  "VERSION, HEARTSYMBOL);
-  post("\t%c (c) 1999-2012 IOhannes m zmölnig", HEARTSYMBOL);
-  post("\t%c       forum::für::umläute", HEARTSYMBOL);
-  post("\t%c       iem   @  kug", HEARTSYMBOL);
-  post("\t%c  compiled:  "__DATE__, HEARTSYMBOL);
-  post("\t%c send me a 'help' message", HEARTSYMBOL);
+  post("\t"HEARTSYMBOL" the zexy external  "VERSION);
+  post("\t"HEARTSYMBOL" (c) 1999-2012 IOhannes m zmölnig");
+  post("\t"HEARTSYMBOL"       forum::für::umläute");
+  post("\t"HEARTSYMBOL"       iem   @  kug");
+  post("\t"HEARTSYMBOL"  compiled:  "__DATE__);
+  post("\t"HEARTSYMBOL" send me a 'help' message");
   startpost("\t");
-  for (i=0; i<3; i++) startpost("%c", HEARTSYMBOL);
+  for (i=0; i<3; i++) startpost(""HEARTSYMBOL"");
   endpost(); endpost();
   
   zexy_class = class_new(gensym("zexy"), zexy_new, 0, sizeof(t_zexy), 0, 0);

@@ -130,7 +130,7 @@ static void sgnTilde_dsp(t_sgnTilde *x, t_signal **sp)
 
 static void sgnTilde_helper(void)
 {
-  post("\n%c sgn~ \t\t:: sign of a signal", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" sgn~ \t\t:: sign of a signal");
 }
 
 static void *sgnTilde_new(void)

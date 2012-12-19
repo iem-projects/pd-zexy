@@ -132,7 +132,7 @@ static void *list2lists_new(t_symbol *s, int argc, t_atom *argv)
 
 static void list2lists_help(t_list2lists*x)
 {
-  post("\n%c list2lists\t\t:: split lists into multiple sublists based on matches", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" list2lists\t\t:: split lists into multiple sublists based on matches");
 }
 
 void list2lists_setup(void)

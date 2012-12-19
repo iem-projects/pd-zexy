@@ -314,7 +314,7 @@ static void regex_free(t_regex *x)
 
 static void regex_help(t_regex*x)
 {
-  post("\n%c regex\t\t:: test the input whether it matches a regular expression", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" regex\t\t:: test the input whether it matches a regular expression");
 }
 
 void regex_setup(void)

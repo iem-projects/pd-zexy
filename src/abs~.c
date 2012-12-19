@@ -135,7 +135,7 @@ static void sigABS_dsp(t_abs *x, t_signal **sp)
 
 static void sigABS_helper(void)
 {
-  post("\n%c abs~ \t\t:: absolute value of a signal", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" abs~ \t\t:: absolute value of a signal");
 }
 
 static void *sigABS_new(void)

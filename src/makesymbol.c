@@ -136,7 +136,7 @@ static void makesymbol_free(t_makesymbol *x)
 static void makesymbol_helper(t_makesymbol *x)
 {
   ZEXY_USEVAR(x);
-	post("\n%c makesymbol :: create a formatted symbol", HEARTSYMBOL);
+	post("\n"HEARTSYMBOL" makesymbol :: create a formatted symbol");
 	post("<list of anything>\t: glue up to 10 list-elements to 1 formatted symbol\n"
 		"'bang'\t\t\t: re-output\n"
 		"'help'\t\t\t: view this"

@@ -143,7 +143,7 @@ static void noisi_dsp(t_nois *x, t_signal **sp){
 
 
 static void noisi_helper(void){
-  post("\n%c noisi~\t:: a bandlimited interpolating pseudo-noise generator", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" noisi~\t:: a bandlimited interpolating pseudo-noise generator");
   post("<freq>\t : sampling-frequency (in Hz)\n"
        "'help'\t : view this");
   post("creation : \"noisi~ [<freq>]\"\t: ('0'(default) will produce 'white' noise)\n");

@@ -74,7 +74,7 @@ static void blockmirror_dsp(t_blockmirror *x, t_signal **sp)
 
 static void blockmirror_helper(t_blockmirror*x)
 {
-  post("\n%c blockmirror~-object for reverting a signal", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" blockmirror~-object for reverting a signal");
   post("'help' : view this\n"
        "signal~");
   post("outlet : signal~");

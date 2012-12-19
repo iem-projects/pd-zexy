@@ -114,7 +114,7 @@ static void pdf_free(t_pdf *x)
 
 static void pdf_tilde_helper(void)
 {
-  post("\n%c pdf~\t:: get the probability density function of a signal (-1.0 to +1.0)", HEARTSYMBOL);
+  post("\n"HEARTSYMBOL" pdf~\t:: get the probability density function of a signal (-1.0 to +1.0)");
   post("'bang'\t  : output a list of the probabilities of 'n' function values"
        "\n'clear'\t  : clear the buffer (set all probabilities to zero)"
        "\n<1/0>\t  : short for 'bang' and 'clear'"
