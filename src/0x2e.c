@@ -169,3 +169,10 @@ void setup_0x2e(void)
   class_sethelpsymbol(scalmul_scal_class, gensym("scalarmult"));
   zexy_register(".");
 }
+
+#ifndef ZEXY_LIBRARY
+void setup(void)
+{
+    setup_0x2e();
+}
+#endif

@@ -253,3 +253,10 @@ void setup_0x3e0x7e(void)
 
   zexy_register(">~");
 }
+
+#ifndef ZEXY_LIBRARY
+void setup(void)
+{
+    setup_0x3e0x7e();
+}
+#endif

@@ -292,3 +292,10 @@ void setup_0x260x260x7e(void)
 
   zexy_register("&&~");
 }
+
+#ifndef ZEXY_LIBRARY
+void setup(void)
+{
+    setup_0x260x260x7e();
+}
+#endif

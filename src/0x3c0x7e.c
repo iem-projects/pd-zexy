@@ -248,3 +248,10 @@ void setup_0x3c0x7e(void)
   class_sethelpsymbol(scalarlt_tilde_class, gensym("zigbinops"));
   zexy_register("<~");
 }
+
+#ifndef ZEXY_LIBRARY
+void setup(void)
+{
+    setup_0x3c0x7e();
+}
+#endif
