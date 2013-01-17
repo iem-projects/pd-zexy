@@ -65,6 +65,7 @@ pkglib_LTLIBRARIES+= \
 	lister.la \
 	listfind.la \
 	liststorage.la \
+	longload.la \
 	lpt.la \
 	lp.la \
 	makesymbol.la \
@@ -165,6 +166,7 @@ lister_la_SOURCES	= lister.c
 l_la_SOURCES		= lister.c
 listfind_la_SOURCES	= listfind.c
 liststorage_la_SOURCES	= liststorage.c
+longload_la_SOURCES	= longload.c
 if LPT
 lpt_la_SOURCES		= lpt.c
 lp_la_SOURCES		= lpt.c
@@ -231,7 +233,7 @@ zexy_la_SOURCES	= zexy.c z_zexy.c \
 	blockmirror~.c blockshuffle~.c blockswap~.c \
 	date.c demultiplex~.c demultiplex.c dfreq~.c dirac~.c drip.c envrms~.c \
 	fifop.c freadln.c fwriteln.c glue.c index.c length.c lifop.c limiter~.c \
-	list2int.c list2lists.c list2symbol.c lister.c listfind.c liststorage.c lpt.c \
+	list2int.c list2lists.c list2symbol.c lister.c listfind.c liststorage.c longload.c lpt.c \
 	makesymbol.c matchbox.c mavg.c minmax.c msgfile.c multiline~.c multiplex~.c \
 	multiplex.c multireceive.c niagara.c noish~.c noisi~.c operating_system.c pack~.c \
 	pack.c packel.c pdf~.c prime.c quantize~.c rawprint.c regex.c relay.c repack.c \
