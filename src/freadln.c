@@ -79,6 +79,7 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
    char filenamebuf[MAXPDSTRING], *filenamebufptr;
    char*dirname=canvas_getdir(x->x_canvas)->s_name;
    int fd, len;
+   post("open: %s", s->s_name);
 
    freadln_close(x);
 
@@ -95,8 +96,13 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
       
 
    /* directory, filename, extension, dirresult, nameresult, unsigned int size, int bin */
-   if ((fd=open_via_path(dirname,
-	       s->s_name,"", filenamebuf, &filenamebufptr, MAXPDSTRING,0)) < 0 ) {
+   if ((fd=open_via_path(
+                         dirname,
+                         s->s_name, "", 
+                         filenamebuf, 
+                         &filenamebufptr, 
+                         MAXPDSTRING,
+                         0)) < 0 ) {
       pd_error(x, "%s: failed to open %s", s->s_name, filenamebuf);
       return;
    }
@@ -109,13 +115,13 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
    }
    strcpy(x->x_filename,filenamebuf);
    strcpy(x->x_filename+len,"/");
-   strcpy(x->x_filename+len+1,s->s_name);
+   strcpy(x->x_filename+len+1,filenamebufptr);
    if (!(x->x_file=fopen(x->x_filename, "r"))) {
-      pd_error(x, "freadln: failed to open %128s",filenamebuf);
+      pd_error(x, "freadln: failed to fopen %s",x->x_filename);
       return;
    }
    if (!(x->x_textbuf = (char *) getbytes (MIN_FREADLN_LENGTH * sizeof(char)))) {
-      pd_error(x, "out of memory");
+      pd_error(x, "out of memory!");
       freadln_close(x);
       return;
    }
