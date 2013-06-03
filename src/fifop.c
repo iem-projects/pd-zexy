@@ -146,10 +146,9 @@ static t_fifop_prioritylist*getFifo(t_fifop_prioritylist*pfifo)
   return pfifo;
 }
 
-static void fifop_list(t_fifop *x, t_symbol *s, int argc, t_atom *argv)
+static void fifop_list(t_fifop *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_fifop_prioritylist*pfifo=0;
-  ZEXY_USEVAR(s);
   if(!(pfifo=fifop_genprioritylist(x, x->priority))) {
     error("[fifop]: couldn't get priority fifo");
     return;

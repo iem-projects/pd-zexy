@@ -63,9 +63,8 @@ typedef struct _mline {
 
 /* the message thing */
 
-static void mline_list(t_mline *x, t_symbol *s, int argc, t_atom *argv)
+static void mline_list(t_mline *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
   if (argc>x->sigNUM)x->time=atom_getfloat(argv+argc-1);
 
   if (x->time <= 0) {
@@ -199,11 +198,10 @@ static void mline_free(t_mline *x)
 }
 
 
-static void *mline_new(t_symbol *s, int argc, t_atom *argv)
+static void *mline_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_mline *x = (t_mline *)pd_new(mline_class);
   int i;
-  ZEXY_USEVAR(s);
 
   if (!argc) {
     argc = 1;

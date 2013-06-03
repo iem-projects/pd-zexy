@@ -52,7 +52,6 @@ static void atoi_atoi(t_atoi *x, t_symbol*s, int base) {
 
 static void atoi_symbol(t_atoi *x, t_symbol *sym)
 {
-  long l=0;
   int base=10;
   const char* s = sym->s_name;
   if(s[0]=='0'){
@@ -61,12 +60,9 @@ static void atoi_symbol(t_atoi *x, t_symbol *sym)
   }
   atoi_atoi(x, sym, base);
 }
-static void atoi_list(t_atoi *x, t_symbol *sym, int argc, t_atom *argv)
+static void atoi_list(t_atoi *x, t_symbol* s, int argc, t_atom *argv)
 {
   int base=10;
-  const char* s;
-  ZEXY_USEVAR(sym);
-
   if (argv->a_type==A_FLOAT){
     atoi_float(x, atom_getfloat(argv));
     return;
@@ -79,7 +75,7 @@ static void atoi_list(t_atoi *x, t_symbol *sym, int argc, t_atom *argv)
       base=10;
     }
   }
-  atoi_atoi(x, sym, base);
+  atoi_atoi(x, s, base);
 }
 
 static void atoi_free(t_atoi *x){

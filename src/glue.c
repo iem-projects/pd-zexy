@@ -32,9 +32,8 @@ typedef struct _zglue
   t_int changed;
 } t_glue;
 
-static void glue_lst2(t_glue *x, t_symbol *s, int argc, t_atom *argv)
+static void glue_lst2(t_glue *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
   x->changed = 1;
   if (x->n2 != argc) {
     freebytes(x->ap2, x->n2 * sizeof(t_atom));
@@ -43,9 +42,8 @@ static void glue_lst2(t_glue *x, t_symbol *s, int argc, t_atom *argv)
   } else memcpy(x->ap2, argv, argc * sizeof(t_atom));
 }
 
-static void glue_lst(t_glue *x, t_symbol *s, int argc, t_atom *argv)
+static void glue_lst(t_glue *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
   if (x->n != x->n2+argc) {
     freebytes(x->ap, x->n * sizeof(t_atom));
     x->n1 = argc;
@@ -85,10 +83,9 @@ static void glue_free(t_glue *x)
   freebytes(x->ap2, sizeof(t_atom)*x->n2);
 }
 
-static void *glue_new(t_symbol *s, int argc, t_atom *argv)
+static void *glue_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_glue *x = (t_glue *)pd_new(glue_class);
-  ZEXY_USEVAR(s);
 
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym(""));
   outlet_new(&x->x_obj, 0);

@@ -77,11 +77,10 @@ typedef struct _date
   t_outlet *x_outlet6;
 } t_date;
 
-static void *date_new(t_symbol *s, int argc, t_atom *argv)
+static void *date_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_date *x = (t_date *)pd_new(date_class);
   char buf[5];
-  ZEXY_USEVAR(s);
  
   x->GMT=0;
   if (argc) {
@@ -120,9 +119,8 @@ static void date_bang(t_date *x)
   outlet_float(x->x_outlet1, (t_float)resolvetime->tm_year + 1900);
 }
 
-static void help_date(t_date *x)
+static void help_date(t_date* UNUSED(x))
 {
-  ZEXY_USEVAR(x);
   post("\n"HEARTSYMBOL" date\t\t:: get the current system date");
   post("\noutputs are\t: year / month / day / day of week /day of year / daylightsaving (1/0)");
   post("\ncreation\t::'date [GMT]': show local date or GMT");

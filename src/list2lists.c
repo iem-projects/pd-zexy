@@ -113,10 +113,9 @@ static void list2lists_free(t_list2lists *x)
 
 }
 
-static void *list2lists_new(t_symbol *s, int argc, t_atom *argv)
+static void *list2lists_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_list2lists *x = (t_list2lists *)pd_new(list2lists_class);
-  ZEXY_USEVAR(s);
 
   outlet_new(&x->x_obj, 0);
   x->x_lengin=inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym("lst2"));

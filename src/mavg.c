@@ -49,12 +49,11 @@ static void mavg_resize(t_mavg *x, t_float f)
   while(i--) *dumbuf++ = x->avg;
 }
 
-static void mavg_set(t_mavg *x, t_symbol *s, int argc, t_atom *argv)
+static void mavg_set(t_mavg *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   int i = x->size;
   t_float *dummy = x->buf;
   t_float f=(argc)?atom_getfloat(argv):x->avg;
-  ZEXY_USEVAR(s);
 
   while (i--) *dummy++=f;
 

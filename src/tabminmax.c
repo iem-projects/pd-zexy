@@ -83,10 +83,9 @@ static void tabminmax_bang(t_tabminmax *x)
     }
 }
 
-static void tabminmax_list(t_tabminmax *x, t_symbol*s,int argc, t_atom*argv)
+static void tabminmax_list(t_tabminmax *x, t_symbol* UNUSED(s),int argc, t_atom*argv)
 {
   int a,b;
-  ZEXY_USEVAR(s);
   switch(argc){
   case 2:
     a=atom_getint(argv);

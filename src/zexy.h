@@ -100,7 +100,14 @@
 # endif /* OSX-10.3 */
 #endif /* APPLE */
 
-#define ZEXY_USEVAR(x) x=x
+
+#ifdef __GNUC__
+#  define UNUSED(x) ZUNUSED_ ## x __attribute__((__unused__))
+#  define UNUSED_FUNCTION(x) __attribute__((__unused__)) ZUNUSEDFUN_ ## x
+#else
+#  define UNUSED(x) ZUNUSED_ ## x
+#  define UNUSED_FUNCTION(x) ZUNUSEDFUN_ ## x
+#endif
 
 #define ZEXY_TYPE_EQUAL(type1, type2) (sizeof(type1) == sizeof(type2))
 

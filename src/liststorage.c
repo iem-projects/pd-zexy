@@ -79,7 +79,6 @@ static void _liststorage_deletemsglist(t_msglist*list) {
   t_msglist*x=list;
   while(x) {
     t_msglist*y=x;
-    int i=0;
     x=x->next;
 
     freebytes(y->argv, y->argc*sizeof(t_atom));

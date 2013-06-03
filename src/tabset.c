@@ -51,12 +51,11 @@ static void tabset_float(t_tabset *x, t_floatarg f)
   }
 }
 
-static void tabset_list(t_tabset *x, t_symbol *s, int argc, t_atom* argv)
+static void tabset_list(t_tabset *x, t_symbol* UNUSED(s), int argc, t_atom* argv)
 {
   t_garray *A;
   int npoints;
   zarray_t *vec;
-  ZEXY_USEVAR(s);
 
   if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class)))
     error("%s: no such array", x->x_arrayname->s_name);

@@ -191,10 +191,9 @@ static void listfind_free(t_listfind *x)
 
 }
 
-static void *listfind_new(t_symbol *s, int argc, t_atom *argv)
+static void *listfind_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_listfind *x = (t_listfind *)pd_new(listfind_class);
-  ZEXY_USEVAR(s);
 
   outlet_new(&x->x_obj, 0);
   x->x_listin=inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym("lst2"));

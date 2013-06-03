@@ -146,13 +146,12 @@ static void relay_free(t_relay *x)
     freebytes(x->x_vec, x->x_nelement * sizeof(*x->x_vec));
 }
 
-static void *relay_new(t_symbol *s, int argc, t_atom *argv)
+static void *relay_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
     int n;
     t_relayelement *e;
     t_relay *x = (t_relay *)pd_new(relay_class);
     t_atom a;
-    ZEXY_USEVAR(s);
     if (argc == 0)
     {
         argc = 1;

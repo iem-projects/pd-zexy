@@ -75,13 +75,10 @@ static void mux_tilde_free(t_mux *x)
   freebytes(x->in, x->n_in * sizeof(t_sample *));
 }
 
-static void *mux_tilde_new(t_symbol *s, int argc, t_atom *argv)
+static void *mux_tilde_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 {
   t_mux *x = (t_mux *)pd_new(mux_tilde_class);
   int i;
-  ZEXY_USEVAR(s);
-  ZEXY_USEVAR(argv);
-
   if (!argc)argc=2;
   x->n_in=argc;
   x->input=0;

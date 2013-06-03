@@ -50,11 +50,8 @@ static void atof_symbol(t_atof *x, t_symbol *sym)
     outlet_symbol(x->x_reject, sym);
   }
 }
-static void atof_list(t_atof *x, t_symbol *s, int argc, t_atom *argv)
+static void atof_list(t_atof *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
-  const char* c;
-  ZEXY_USEVAR(s);
-
   if(!argc){
     atof_bang(x);
     return;

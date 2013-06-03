@@ -92,9 +92,8 @@ static t_int *sigABSGN_performSSE(t_int *w)
 }
 #endif /* __SSE__ */
 
-static void sigABSGN_dsp(t_absgn *x, t_signal **sp)
+static void sigABSGN_dsp(t_absgn* UNUSED(x), t_signal **sp)
 {
-  ZEXY_USEVAR(x);
 #ifdef __SSE__
   if(
      ZEXY_TYPE_EQUAL(t_sample, float) && /*  currently SSE2 code is only for float (not for double) */

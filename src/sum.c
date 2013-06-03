@@ -26,10 +26,9 @@ typedef struct _sum
   t_object x_obj;
 } t_sum;
 
-static void sum_list(t_sum *x, t_symbol *s, int argc, t_atom *argv)
+static void sum_list(t_sum *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_float sum = 0.f;
-  ZEXY_USEVAR(s);
 
   while(argc--)sum+=atom_getfloat(argv++);
 

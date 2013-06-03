@@ -41,6 +41,7 @@ int millisleep(unsigned int milli) {
 #else
   usleep(milli*1000);
 #endif
+  return 0;
 }
 
 static void *longload_new(t_float f)

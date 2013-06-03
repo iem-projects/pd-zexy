@@ -79,9 +79,8 @@ static void list2binbuf(t_binbuf**bbuf, int *n, char**str, int argc, t_atom*argv
   if(' '==s[i])s[i]=0;
 }
 
-static void strcmp_list(t_strcmp *x, t_symbol *s, int argc, t_atom *argv)
+static void strcmp_list(t_strcmp *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
   list2binbuf(&x->bbuf1, &x->n1, &x->str1, argc, argv);
   strcmp_bang(x);
 }
@@ -93,9 +92,8 @@ static void strcmp_symbol(t_strcmp *x, t_symbol *s)
   strcmp_bang(x);
 }
 
-static void strcmp_secondlist(t_strcmp *x, t_symbol *s, int argc, t_atom *argv)
+static void strcmp_secondlist(t_strcmp *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
   list2binbuf(&x->bbuf2, &x->n2, &x->str2, argc, argv);
 }
 static void strcmp_secondsymbol(t_strcmp *x, t_symbol *s)
@@ -114,10 +112,9 @@ static void strcmp_proxy_symbol(t_strcmp_proxy *y, t_symbol *s)
   if(s)strcmp_secondsymbol(y->p_master, s);
 }
 
-static void *strcmp_new(t_symbol *s, int argc, t_atom *argv)
+static void *strcmp_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_strcmp *x = (t_strcmp *)pd_new(strcmp_class);
-  ZEXY_USEVAR(s);
 
   x->x_proxy=(t_strcmp_proxy*)pd_new(strcmp_proxy_class);
   x->x_proxy->p_master = x;

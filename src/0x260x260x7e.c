@@ -38,9 +38,8 @@ typedef struct _scalarandand_tilde
   t_float x_g;    	    /* inlet value */
 } t_scalarandand_tilde;
 
-static void *andand_tilde_new(t_symbol *s, int argc, t_atom *argv)
+static void *andand_tilde_new(t_symbol * UNUSED(s), int argc, t_atom *argv)
 {
-  ZEXY_USEVAR(s);
   if (argc > 1) post("&&~: extra arguments ignored");
   if (argc) 
     {
@@ -216,7 +215,7 @@ static t_int *scalarandand_tilde_performSSE(t_int *w)
 }
 #endif /* __SSE__ */
 
-static void andand_tilde_dsp(t_andand_tilde *x, t_signal **sp)
+static void andand_tilde_dsp(t_andand_tilde *UNUSED(x), t_signal **sp)
 {
   t_sample*in1=sp[0]->s_vec;
   t_sample*in2=sp[1]->s_vec;
@@ -240,8 +239,6 @@ static void andand_tilde_dsp(t_andand_tilde *x, t_signal **sp)
     dsp_add(andand_tilde_perform, 4, in1, in2, out, n);
   else	
     dsp_add(andand_tilde_perf8, 4, in1, in2, out, n);
-
-  ZEXY_USEVAR(x);
 }
 
 static void scalarandand_tilde_dsp(t_scalarandand_tilde *x, t_signal **sp)

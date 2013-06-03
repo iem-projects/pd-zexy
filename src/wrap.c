@@ -37,9 +37,8 @@ static void wrap_float(t_wrap *x, t_float f)
     outlet_float(x->x_obj.ob_outlet, x->f_lower+modulo);
   }
 }
-static void wrap_set(t_wrap *x, t_symbol *s, int argc, t_atom *argv){
+static void wrap_set(t_wrap *x, t_symbol* UNUSED(s), int argc, t_atom *argv){
   t_float f1, f2;
-  ZEXY_USEVAR(s);
   switch (argc){
   case 0:
     f1=0.0;

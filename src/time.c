@@ -57,11 +57,10 @@ typedef struct _time
   t_outlet *x_outlet4;
 } t_time;
 
-static void *time_new(t_symbol *s, int argc, t_atom *argv)
+static void *time_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_time *x = (t_time *)pd_new(time_class);
   char buf[5];
-  ZEXY_USEVAR(s);
  
   x->GMT=0;
   if (argc) {
@@ -99,9 +98,8 @@ static void time_bang(t_time *x)
   outlet_float(x->x_outlet1, (t_float)resolvetime->tm_hour);
 }
 
-static void help_time(t_time *x)
+static void help_time(t_time* UNUSED(x))
 {
-  ZEXY_USEVAR(x);
   post("\n"HEARTSYMBOL" time\t\t:: get the current system time");
   post("\noutputs are\t:  hour / minute / sec / msec");
   post("\ncreation\t:: 'time [GMT]': show local time or GMT");

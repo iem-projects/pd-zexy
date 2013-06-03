@@ -131,10 +131,9 @@ static t_lifop_prioritylist*getLifo(t_lifop_prioritylist*plifo)
   return plifo;
 }
 
-static void lifop_list(t_lifop *x, t_symbol *s, int argc, t_atom *argv)
+static void lifop_list(t_lifop *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_lifop_prioritylist*plifo=0;
-  ZEXY_USEVAR(s);
   if(!(plifo=lifop_genprioritylist(x, x->priority))) {
     error("[lifop]: couldn't get priority lifo");
     return;
