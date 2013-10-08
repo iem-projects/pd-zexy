@@ -27,6 +27,7 @@ void z_zexy_setup(void)
 	demultiplex_setup(); /* demultiplex */
 	dfreq_tilde_setup(); /* dfreq~ */
 	dirac_tilde_setup(); /* dirac~ */
+	doublepole_tilde_setup(); /* doublepole~ */
 	drip_setup(); /* drip */
 	envrms_tilde_setup(); /* envrms~ */
 	fifop_setup(); /* fifop */
