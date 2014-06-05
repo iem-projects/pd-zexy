@@ -45,7 +45,7 @@ pkglib_LTLIBRARIES+= \
 	demux.la \
 	dfreq~.la \
 	dirac~.la \
-	doublepole~.la
+	doublepole~.la \
 	drip.la \
 	unfold.la \
 	envrms~.la \
