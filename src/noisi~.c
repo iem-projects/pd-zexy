@@ -73,6 +73,15 @@ static void set_noisseed(t_nois *x, t_floatarg seed)
 
 static t_class *noisi_class;
 
+static inline t_sample int2sample(int i) {
+  return ((t_sample)(i & 0x7fffffff) - 0x40000000) * (t_sample)(1.0 / 0x40000000);
+}
+static inline int update_intNoise(int i) {
+  i *= 435898247;
+  i += 382842987;
+  return i;
+}
+
 static t_int *noisi_perform(t_int *w){
   t_nois *x = (t_nois *)(w[1]);
   t_sample *out = (t_sample *)(w[2]);
@@ -87,9 +96,7 @@ static t_int *noisi_perform(t_int *w){
   if (all_to_go == 1)	{
     /* this is "pure white" noise, so we have to calculate each sample */ 
     while (n--) {
-      i_value *= 435898247;
-      i_value += 382842987;
-      *out++ = ((t_sample)((i_value & 0x7fffffff) - 0x40000000)) * (t_sample)(1.0 / 0x40000000);
+      *out++ = int2sample(i_value=update_intNoise(i_value));
     }
   }  else if (n < still_to_go)   {
     /* signal won't change for the next 64 samples */ 
@@ -103,13 +110,10 @@ static t_int *noisi_perform(t_int *w){
       n--;
       *out++ = (f_value -= decrement);
     }
+    f_value = int2sample(i_value);
+    i_value = update_intNoise(i_value);
     still_to_go += all_to_go + 1;
-    decrement = (
-		 (f_value = 
-		  ((t_sample)((i_value & 0x7fffffff)-0x40000000))*(t_sample)(1.0 / 0x40000000)) -
-		 ((t_sample)(((i_value = i_value * 435898247 + 382842987) & 0x7fffffff)
-                             - 0x40000000)) * (t_sample)(1.0 / 0x40000000)
-		 )  / all_to_go;
+    decrement = (f_value - int2sample(i_value))  / all_to_go;
 
     while (n--)	{
       still_to_go--;
@@ -120,10 +124,9 @@ static t_int *noisi_perform(t_int *w){
     while (n--)	{
       if (still_to_go-- <= 0) {		/* update only if all time has elapsed */ 
 	still_to_go += all_to_go;
-	decrement = (
-		     (f_value = ((t_sample)((i_value & 0x7fffffff) - 0x40000000)) * (t_sample)(1.0 / 0x40000000)) -
-		     ((t_sample)(((i_value = i_value * 435898247 + 382842987) & 0x7fffffff) - 0x40000000)) * (t_sample)(1.0 / 0x40000000)
-		     ) / all_to_go;
+	f_value=int2sample(i_value);
+	i_value=update_intNoise(i_value);
+	decrement = (f_value - int2sample(i_value)) / all_to_go;
       }
       *out++ = (f_value -= decrement);
     }
