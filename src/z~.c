@@ -87,13 +87,29 @@ static void zNdelay_dsp(t_zNdelay *x, t_signal **sp)
   dsp_add(zN_perform, 4, sp[0]->s_vec, sp[1]->s_vec, x, sp[0]->s_n);
 }
 
-static void *zNdelay_new(t_floatarg f)
+static void *zNdelay_new(t_symbol*s, int argc, t_atom*argv)
 {
-  t_zNdelay *x = (t_zNdelay *)pd_new(zNdelay_class);
-  int i = f;
+  t_zNdelay *x = 0;
+  int i = 0;
   t_sample *b;
 
-  if (i<=0) i=1;
+  switch (argc) {
+  case 0:
+    i=1;
+    break;
+  case 1:
+    if (argv->a_type == A_FLOAT) {
+      i=atom_getint(argv);
+      break;
+    }
+  default:
+    error("Bad arguments for [z~]: must be nought or initial delay [in samples]");
+    return 0;
+  }
+  
+  x=(t_zNdelay *)pd_new(zNdelay_class);
+
+  if (i<=0) i=0;
   i++;
 
   x->bufsize = i;
@@ -125,7 +141,7 @@ static void zdel_helper(void)
 void z_tilde_setup(void)
 {
   zNdelay_class = class_new(gensym("z~"), (t_newmethod)zNdelay_new, (t_method)zNdelay_free,
-			    sizeof(t_zNdelay), 0, A_DEFFLOAT, 0);
+			    sizeof(t_zNdelay), 0, A_GIMME, 0);
   class_addmethod(zNdelay_class, nullfn, gensym("signal"), 0);
   class_addmethod(zNdelay_class, (t_method)zNdelay_dsp, gensym("dsp"), 0);
 
