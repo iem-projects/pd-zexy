@@ -38,6 +38,7 @@
 
 
 
+
 /* ****************************************************************************** */
 /* msgfile : save and load messages... */
 
@@ -647,17 +648,21 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
   rmode |= O_BINARY;
 #endif
 
-  if ((fd = open_via_path(dirname,
-                          filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0)) < 0) {
-
-    if((fd=open(filename->s_name, rmode)) < 0) {
+  fd = open_via_path(dirname,
+		     filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0);
+  
+  if (fd < 0) {
+    /* open via path failed, fall back */
+    fd=open(filename->s_name, rmode);
+    if(fd < 0) {
       pd_error(x, "can't open in %s/%s",  dirname, filename->s_name);
       return;
     } else {
+      close(fd);
       sprintf(filnam, "%s", filename->s_name);
     }
   } else {
-    close(fd);
+    z_close(fd);
     sprintf(filnam, "%s/%s", buf, bufptr);
   }
 
@@ -673,7 +678,6 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *format)
   if (!(readbuf = t_getbytes(length))) {
     pd_error(x, "msgfile_read: could not reserve %ld bytes to read into", length);
     fclose(fil);
-    close(fd);
     return;
   }
 

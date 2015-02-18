@@ -106,7 +106,7 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
       pd_error(x, "%s: failed to open %s", s->s_name, filenamebuf);
       return;
    }
-   close(fd);
+   z_close(fd);
    len=strlen(filenamebuf);
    if (!(x->x_filename=(char*)getbytes(sizeof(char)*(len+strlen(s->s_name)+2)))) {
       pd_error(x, "out of memory");
