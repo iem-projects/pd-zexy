@@ -115,6 +115,7 @@ static void sgnTilde_dsp(t_sgnTilde *x, t_signal **sp)
      zexy_testSSE(sgnTilde_perform,
 		  sgnTilde_performSSE, 
 		  1,1)
+     && !(sp[0]->s_n & 7)
      )
     {
       dsp_add(sgnTilde_performSSE, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);

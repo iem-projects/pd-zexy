@@ -119,6 +119,7 @@ static void sigABS_dsp(t_abs *x, t_signal **sp)
 {
 #ifdef __SSE__
   if(
+     (!(sp[0]->s_n & 15)) &&
      ZEXY_TYPE_EQUAL(t_sample, float) && 
      zexy_testSSE(sigABS_perform,
 		  sigABS_performSSE, 
