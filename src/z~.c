@@ -1,5 +1,5 @@
-/* 
- * z~: samplewise delay (z^-N) 
+/*
+ * z~: samplewise delay (z^-N)
  *
  * (c) 1999-2011 IOhannes m zmölnig, forum::für::umläute, institute of electronic music and acoustics (iem)
  *
@@ -7,12 +7,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,8 +31,7 @@
 
 static t_class *zNdelay_class;
 
-typedef struct _zNdelay
-{
+typedef struct _zNdelay {
   t_object x_obj;
 
   t_sample *buf;
@@ -43,8 +42,12 @@ typedef struct _zNdelay
 static void zdel_float(t_zNdelay *x, t_floatarg f)
 {
   int i = f+1;
-  if (i<1)i=1;
-  if (i==x->bufsize)return;
+  if (i<1) {
+    i=1;
+  }
+  if (i==x->bufsize) {
+    return;
+  }
   freebytes(x->buf, x->bufsize*sizeof(t_sample));
   x->bufsize=i;
   x->buf=(t_sample *)getbytes(x->bufsize*sizeof(t_sample));
@@ -62,10 +65,12 @@ static t_int *zN_perform(t_int *w)
   int bufsize=x->bufsize, ph=x->phase;
 
   if (bufsize==1) {
-    if (in!=out)while(n--)*out++=*in++;
+    if (in!=out)while(n--) {
+        *out++=*in++;
+      }
   } else if (bufsize==2) {
     register t_sample f, last=*buf;
-    while(n--){
+    while(n--) {
       f=*in++;
       *out++=last;
       last=f;
@@ -106,10 +111,12 @@ static void *zNdelay_new(t_symbol*s, int argc, t_atom*argv)
     error("Bad arguments for [z~]: must be nought or initial delay [in samples]");
     return 0;
   }
-  
+
   x=(t_zNdelay *)pd_new(zNdelay_class);
 
-  if (i<=0) i=0;
+  if (i<=0) {
+    i=0;
+  }
   i++;
 
   x->bufsize = i;
@@ -121,7 +128,7 @@ static void *zNdelay_new(t_symbol*s, int argc, t_atom*argv)
   x->phase = 0;
 
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("ft1"));
-  outlet_new(&x->x_obj, gensym("signal")); 
+  outlet_new(&x->x_obj, gensym("signal"));
   return (x);
 }
 
@@ -140,13 +147,15 @@ static void zdel_helper(void)
 
 void z_tilde_setup(void)
 {
-  zNdelay_class = class_new(gensym("z~"), (t_newmethod)zNdelay_new, (t_method)zNdelay_free,
-			    sizeof(t_zNdelay), 0, A_GIMME, 0);
+  zNdelay_class = class_new(gensym("z~"), (t_newmethod)zNdelay_new,
+                            (t_method)zNdelay_free,
+                            sizeof(t_zNdelay), 0, A_GIMME, 0);
   class_addmethod(zNdelay_class, nullfn, gensym("signal"), 0);
   class_addmethod(zNdelay_class, (t_method)zNdelay_dsp, gensym("dsp"), 0);
 
   class_addfloat(zNdelay_class, zdel_float);
-  class_addmethod(zNdelay_class, (t_method)zdel_float, gensym("ft1"), A_FLOAT, 0);
+  class_addmethod(zNdelay_class, (t_method)zdel_float, gensym("ft1"),
+                  A_FLOAT, 0);
   class_addmethod(zNdelay_class, (t_method)zdel_helper, gensym("help"), 0);
   zexy_register("z~");
 }

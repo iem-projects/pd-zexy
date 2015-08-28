@@ -1,4 +1,4 @@
-/* 
+/*
  * dfreq~: cound zero-crossings as a simple fequency estimation
  *
  * (c) 1999-2011 IOhannes m zmölnig, forum::für::umläute, institute of electronic music and acoustics (iem)
@@ -7,12 +7,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,8 +28,7 @@
 
 static t_class *dfreq_class;
 
-typedef struct _dfreq
-{
+typedef struct _dfreq {
   t_object x_obj;
 
   t_sample freq;  /*frequenz variable */
@@ -55,14 +54,15 @@ static t_int *dfreq_perform(t_int *w)
 
   while (n--) {
 
-    if( (a * *in) < 0 && (a < *in)){
+    if( (a **in) < 0 && (a < *in)) {
 
       /* interpolate for real zerocross */
       delta_inv = 1./(*in-a);
-      if(c > 0.0)
+      if(c > 0.0) {
         freq = sr / ((t_sample) c + a*delta_inv);
-      else
+      } else {
         freq = sr;
+      }
 
       c = *in*delta_inv; /*rest of time */
     };
@@ -73,7 +73,7 @@ static t_int *dfreq_perform(t_int *w)
     *out++ = freq;
   }
 
-  x->alt = a;  
+  x->alt = a;
   x->sampcount = c;
   x->freq=freq;
 
@@ -112,6 +112,7 @@ void dfreq_tilde_setup(void)
   class_addmethod(dfreq_class, nullfn, gensym("signal"), 0);
   class_addmethod(dfreq_class, (t_method)dfreq_dsp, gensym("dsp"), 0);
 
-  class_addmethod(dfreq_class, (t_method)dfreq_tilde_helper, gensym("help"), 0);
+  class_addmethod(dfreq_class, (t_method)dfreq_tilde_helper, gensym("help"),
+                  0);
   zexy_register("dfreq~");
 }
