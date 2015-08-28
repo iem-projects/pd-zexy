@@ -43,7 +43,12 @@ static void rawprint_any(t_rawprint *x, t_symbol*s, int argc, t_atom*argv)
   if(x->label) {
     startpost("%s: ", x->label->s_name);
   }
-  startpost("\"%s\"", s->s_name);
+  
+  if(s)
+    startpost("\"%s\"", s->s_name);
+  else // this shouldn't happen, but sometimes does...
+    startpost("NULL");
+
   while(argc--) {
     switch(argv->a_type) {
     case A_FLOAT:
