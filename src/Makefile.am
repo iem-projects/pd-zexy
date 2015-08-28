@@ -16,6 +16,8 @@ AM_LDFLAGS+= @EXTRA_LTFLAGS@
 AM_CFLAGS += 
 AM_LDFLAGS+= 
 
+EXTRA_DIST = \
+	astyle.rc
 
 if LIBRARY
 pkglib_LTLIBRARIES+=zexy.la
