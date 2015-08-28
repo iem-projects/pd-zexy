@@ -82,6 +82,9 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
     f = atom_getfloat(argv);
     for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++) {
       if (e->e_w.w_float == f) {
+	if (!sel) {
+	  sel=(argc==1)?gensym("float"):gensym("list");
+	}
         outlet_anything(e->e_outlet, sel, argc, argv);
         return;
       }
