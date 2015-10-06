@@ -875,9 +875,6 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
     cur = cur->next;
   }
 
-  canvas_makefilename(x->x_canvas, filename->s_name,
-                      buf, MAXPDSTRING);
-
   if(format&&gensym("")!=format) {
     if(gensym("cr")==format) {
       mode = CR_MODE;
@@ -919,7 +916,9 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   }
 
   /* open */
-  sys_bashfilename(filename->s_name, filnam);
+  canvas_makefilename(x->x_canvas, filename->s_name,
+                      buf, MAXPDSTRING);
+  sys_bashfilename(buf, filnam);
   if (!(f = z_fopen(filnam, "w"))) {
     pd_error(x, "msgfile : failed to open %s", filnam);
   } else {
