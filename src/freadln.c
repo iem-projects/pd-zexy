@@ -62,7 +62,7 @@ typedef struct freadln {
 static void freadln_close (t_freadln *x)
 {
   if(x->x_file) {
-    fclose(x->x_file);
+    z_fclose(x->x_file);
   }
   x->x_file=0;
   if(x->x_filename) {
@@ -120,7 +120,7 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
   strcpy(x->x_filename,filenamebuf);
   strcpy(x->x_filename+len,"/");
   strcpy(x->x_filename+len+1,filenamebufptr);
-  if (!(x->x_file=fopen(x->x_filename, "r"))) {
+  if (!(x->x_file=z_fopen(x->x_filename, "r"))) {
     pd_error(x, "freadln: failed to fopen %s",x->x_filename);
     return;
   }

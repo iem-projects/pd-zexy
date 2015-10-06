@@ -152,10 +152,10 @@ static void sfrecord_open(t_sfrecord *x,t_symbol *filename,
 #endif
 
   if (x->fp != NULL) {
-    fclose(x->fp);  /* should not happen */
+    z_fclose(x->fp);  /* should not happen */
   }
 
-  if (!(x->fp = fopen(x->filename->s_name,BINWRITEMODE))) {
+  if (!(x->fp = z_fopen(x->filename->s_name,BINWRITEMODE))) {
     error("sfrecord: can't open %s", x->filename->s_name);
   }
 }
@@ -171,7 +171,7 @@ static void sfrecord_close(t_sfrecord *x)
   /* now in state machine
   if(x->fp != NULL)
   {
-  	fclose(x->fp);
+  	z_fclose(x->fp);
   	x->fp = NULL;
   }
   */
@@ -456,7 +456,7 @@ case SFRECORD_CLOSE:
 
     /* avoid openfiles */
     if(x->fp) {
-      fclose(x->fp);
+      z_fclose(x->fp);
       x->fp = NULL;
     };
 

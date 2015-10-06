@@ -53,7 +53,7 @@ typedef struct fwriteln {
 static void fwriteln_close (t_fwriteln *x)
 {
   if(x->x_file) {
-    fclose(x->x_file);
+    z_fclose(x->x_file);
   }
   x->x_file=0;
   if(x->x_filename) {
@@ -94,7 +94,7 @@ static void fwriteln_open (t_fwriteln *x, t_symbol *s, t_symbol*type)
     strcpy(x->linebreak_chr,";\n");
   }
 
-  if (!(x->x_file=fopen(filename, "w"))) {
+  if (!(x->x_file=z_fopen(filename, "w"))) {
     pd_error(x, "failed to open %128s",filename);
     free(filename);
     return;
