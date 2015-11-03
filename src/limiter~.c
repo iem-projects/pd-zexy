@@ -381,7 +381,7 @@ static void status(t_limiter *x)
 
 static void limiter_tilde_helper(t_limiter *x)
 {
-  post("\n\n"HEARTSYMBOL" %d-channel limiter-object: mode %d",
+  post("\n\n"HEARTSYMBOL " %d-channel limiter-object: mode %d",
        x->number_of_inlets, x->mode);
   poststring("\n'mode <mode>'\t\t\t: (0_limiter, 1_crack-limiter, 2_compressor)");
   poststring("\n'LIMIT'\t\t\t\t: set to LIMITer");

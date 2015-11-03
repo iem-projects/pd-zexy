@@ -98,7 +98,7 @@ static void *tabset_new(t_symbol *s)
 
 static void tabset_helper(void)
 {
-  post("\n"HEARTSYMBOL" tabset - object : set a table with a package of floats");
+  post("\n"HEARTSYMBOL " tabset - object : set a table with a package of floats");
   post("'set <table>'\t: set another table\n"
        "<list>\t\t: set the table"
        "<float>\t\t: set the table to constant float\n");

@@ -121,7 +121,7 @@ static void blockshuffle_dsp(t_blockshuffle *x, t_signal **sp)
 
 static void blockshuffle_helper(void)
 {
-  post("\n"HEARTSYMBOL" blockshuffle~-object for shuffling the samples within a signal-block");
+  post("\n"HEARTSYMBOL " blockshuffle~-object for shuffling the samples within a signal-block");
   post("'help' : view this\n"
        "signal~");
   post("outlet : signal~");

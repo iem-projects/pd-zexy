@@ -272,7 +272,7 @@ static void *lifop_new(void)
 }
 static void lifop_help(t_lifop*x)
 {
-  post("\n"HEARTSYMBOL" lifop\t\t:: a Last-In-First-Out queue with priorities");
+  post("\n"HEARTSYMBOL " lifop\t\t:: a Last-In-First-Out queue with priorities");
 }
 void lifop_setup(void)
 {

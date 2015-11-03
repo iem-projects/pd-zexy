@@ -57,7 +57,7 @@ static void *operating_system_new(void)
 
 static void operating_system_help(t_operating_system*x)
 {
-  post("\n"HEARTSYMBOL" operating_system\t:: get the current operating system");
+  post("\n"HEARTSYMBOL " operating_system\t:: get the current operating system");
 }
 
 void operating_system_setup(void)

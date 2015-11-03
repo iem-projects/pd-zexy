@@ -79,7 +79,7 @@ static void sigzero_dsp(t_sigzero *x, t_signal **sp)
 
 static void sigzero_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL" sigzero~-object :: for detecting whether a signal is currently zero or not");
+  post("\n"HEARTSYMBOL " sigzero~-object :: for detecting whether a signal is currently zero or not");
   post("'bang'\t: turn the detector on\n"
        "'off'\t: turn it off\n"
        "<1/0>\t: turn it on/off\n"

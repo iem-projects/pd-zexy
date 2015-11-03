@@ -158,7 +158,7 @@ static void *scalmul_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 static void scalmul_help(t_scalmul*x)
 {
-  post("\n"HEARTSYMBOL" .\t\t:: scalar multiplication (in-product)");
+  post("\n"HEARTSYMBOL " .\t\t:: scalar multiplication (in-product)");
 }
 
 void setup_0x2e(void)

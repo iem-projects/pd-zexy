@@ -99,7 +99,7 @@ static void *dfreq_new(void)
 
 static void dfreq_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL" dfreq~\t :: pitch-detector that counts zero-crossings");
+  post("\n"HEARTSYMBOL " dfreq~\t :: pitch-detector that counts zero-crossings");
   post("\noutputs a frequency estimate as a stream~ that will be updated every zero-X");
   post("\ncreation::\t'dfreq~': that's all");
 }

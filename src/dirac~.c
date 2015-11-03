@@ -118,7 +118,7 @@ static void dirac_dsp(t_dirac *x, t_signal **sp)
 
 static void dirac_helper(void)
 {
-  post(""HEARTSYMBOL" dirac~-object :: generates a dirac (unity-pulse)");
+  post(""HEARTSYMBOL " dirac~-object :: generates a dirac (unity-pulse)");
   post("creation : \"dirac~ [<position>]\" : create a dirac at specified position (in samples)\n"
        "inlet\t: <position>\t: create a dirac at new position\n"
        "\t  'bang'\t: create a dirac at specified position\n"

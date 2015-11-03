@@ -140,7 +140,7 @@ static void zNdelay_free(t_zNdelay *x)
 
 static void zdel_helper(void)
 {
-  post("\n"HEARTSYMBOL" z~\t:: samplewise delay");
+  post("\n"HEARTSYMBOL " z~\t:: samplewise delay");
   post("creation :: 'z~ [<n>]' : creates a <n>-sample delay; default is 1");
 }
 

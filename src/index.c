@@ -355,7 +355,7 @@ static void index_free(t_index *x)
 static void index_helper(t_index *x)
 {
   endpost();
-  post(""HEARTSYMBOL" index :: index symbols to indices");
+  post(""HEARTSYMBOL " index :: index symbols to indices");
   post("<symbol>             : look up the <symbol> in the index and return it's index");
   post("<int>                : look up the element at index <int> in the index");
   post("'add <symbol>'       : add a new symbol to the index-map");

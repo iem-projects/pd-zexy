@@ -121,7 +121,7 @@ static void *tabminmax_new(t_symbol *s)
 
 static void tabminmax_helper(void)
 {
-  post("\n"HEARTSYMBOL" tabminmax - object : dumps a table as a package of floats");
+  post("\n"HEARTSYMBOL " tabminmax - object : dumps a table as a package of floats");
   post("'set <table>'\t: read out another table\n"
        "'bang'\t\t: get min and max of the table\n"
        "outlet\t\t: table-data as package of floats");

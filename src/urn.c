@@ -149,7 +149,7 @@ static void *urn_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 static void urn_help(t_urn*x)
 {
-  post("\n"HEARTSYMBOL" urn\t\t:: generate randum numbers without repetition");
+  post("\n"HEARTSYMBOL " urn\t\t:: generate randum numbers without repetition");
 }
 
 void urn_setup(void)

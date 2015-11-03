@@ -66,7 +66,7 @@ static void *prime_new(void)
 
 static void prime_help(t_prime*x)
 {
-  post("\n"HEARTSYMBOL" prime\t\t:: test whether a given number is prime");
+  post("\n"HEARTSYMBOL " prime\t\t:: test whether a given number is prime");
 }
 
 

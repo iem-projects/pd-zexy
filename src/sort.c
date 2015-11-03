@@ -148,7 +148,7 @@ static void *sort_new(t_floatarg f)
 
 static void sort_help(t_sort*x)
 {
-  post("\n"HEARTSYMBOL" sort\t\t:: sort a list of numbers");
+  post("\n"HEARTSYMBOL " sort\t\t:: sort a list of numbers");
 }
 void sort_setup(void)
 {

@@ -81,7 +81,7 @@ static void blockswap_dsp(t_blockswap *x, t_signal **sp)
 
 static void blockswap_helper(t_blockswap *x)
 {
-  post("\n"HEARTSYMBOL" blockswap~-object for blockwise-swapping of a signal ");
+  post("\n"HEARTSYMBOL " blockswap~-object for blockwise-swapping of a signal ");
   post("'help' : view this\n"
        "signal~");
   post("outlet : signal~");

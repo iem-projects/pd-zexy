@@ -79,7 +79,7 @@ static void demux_dsp(t_demux *x, t_signal **sp)
 
 static void demux_helper(void)
 {
-  post("\n"HEARTSYMBOL" demux~\t:: demultiplex a signal to one of various outlets");
+  post("\n"HEARTSYMBOL " demux~\t:: demultiplex a signal to one of various outlets");
   post("<#out>\t : the outlet-number (counting from 0) to witch the inlet is routed"
        "'help'\t : view this");
   post("creation : \"demux~ [arg1 [arg2...]]\"\t: the number of arguments equals the number of outlets\n");

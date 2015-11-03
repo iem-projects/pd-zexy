@@ -69,7 +69,7 @@ static void mux_tilde_dsp(t_mux *x, t_signal **sp)
 
 static void mux_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL" multiplex~\t:: multiplex a one of various signals to one outlet");
+  post("\n"HEARTSYMBOL " multiplex~\t:: multiplex a one of various signals to one outlet");
   post("<#out>\t : the inlet-number (counting from 0) witch is routed to the outlet"
        "'help'\t : view this");
   post("creation : \"mux~ [arg1 [arg2...]]\"\t: the number of arguments equals the number of inlets\n");

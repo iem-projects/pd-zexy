@@ -100,7 +100,7 @@ static void time_bang(t_time *x)
 
 static void help_time(t_time* UNUSED(x))
 {
-  post("\n"HEARTSYMBOL" time\t\t:: get the current system time");
+  post("\n"HEARTSYMBOL " time\t\t:: get the current system time");
   post("\noutputs are\t:  hour / minute / sec / msec");
   post("\ncreation\t:: 'time [GMT]': show local time or GMT");
 }

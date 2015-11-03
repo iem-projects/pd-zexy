@@ -102,7 +102,7 @@ static void step_dsp(t_step *x, t_signal **sp)
 
 static void step_helper(void)
 {
-  post(""HEARTSYMBOL" step~-object :: generates a unity-step");
+  post(""HEARTSYMBOL " step~-object :: generates a unity-step");
   post("creation : \"dirac~ [<position> [<length>]]\" : create a rectangular window\n"
        "\t\t\tat specified position and with specified length (in samples)\n"
        "inlet1\t: <position>\t: create a rectangular window at new position\n"

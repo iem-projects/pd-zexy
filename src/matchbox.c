@@ -726,7 +726,7 @@ static void matchbox_free(t_matchbox *x)
 
 static void matchbox_help(t_matchbox*x)
 {
-  post("\n"HEARTSYMBOL" matchbox\t\t:: find a list in a pool of lists");
+  post("\n"HEARTSYMBOL " matchbox\t\t:: find a list in a pool of lists");
 }
 
 void matchbox_setup(void)

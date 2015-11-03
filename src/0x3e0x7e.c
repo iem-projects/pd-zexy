@@ -239,7 +239,7 @@ static void scalargt_tilde_dsp(t_scalargt_tilde *x, t_signal **sp)
 
 static void gt_tilde_help(t_object*x)
 {
-  post("\n"HEARTSYMBOL" >~\t\t:: compare 2 signals");
+  post("\n"HEARTSYMBOL " >~\t\t:: compare 2 signals");
 }
 
 void setup_0x3e0x7e(void)
