@@ -118,11 +118,16 @@ typedef struct _mypdlist {
   t_atom *x_list;
 } t_mypdlist;
 
+#ifndef BUILD_DATE
+# define BUILD_DATE  __DATE__
+#endif
+
+
 #ifndef ZEXY_LIBRARY
 static void zexy_register(char*object)
 {
   if(object!=0) {
-    post("[%s] part of zexy-%s (compiled: "__DATE__")", object, VERSION);
+    post("[%s] part of zexy-%s (compiled "BUILD_DATE")", object, VERSION);
     post("\tCopyright (c) 1999-2012 IOhannes m zmölnig, forum::für::umläute & IEM");
   }
 }

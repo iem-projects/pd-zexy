@@ -156,8 +156,8 @@ void zexy_setup(void)
   post("\t"HEARTSYMBOL" (c) 1999-2012 IOhannes m zmölnig");
   post("\t"HEARTSYMBOL"       forum::für::umläute");
   post("\t"HEARTSYMBOL"       iem   @  kug");
-  post("\t"HEARTSYMBOL"  compiled:  "__DATE__);
   post("\t"HEARTSYMBOL" send me a 'help' message");
+  post("\t"HEARTSYMBOL "  compiled  "BUILD_DATE);
   startpost("\t");
   for (i=0; i<3; i++) {
     startpost(""HEARTSYMBOL"");
