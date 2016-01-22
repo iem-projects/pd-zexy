@@ -36,6 +36,17 @@ AC_ARG_ENABLE([library],[  --enable-library        build zexy as multi-object li
 AM_CONDITIONAL([LIBRARY], [test "x${enable_library}" != "xno"])
 AM_CONDITIONAL([SINGLEOBJECTS], [test "x${enable_library}" = "xno" || test "x${enable_library}" = "xboth"])
 
+## override build-date
+AC_ARG_WITH([build-date], AC_HELP_STRING([--with-build-date=<str>], [alternative date string]))
+AC_MSG_CHECKING([build-date])
+AS_IF([test "x$with_build_date" = "xyes" ],[with_build_date=""])
+AS_IF([test "x$with_build_date" = "xno"  ],[with_build_date=""])
+AS_IF([test "x$with_build_date" != "x"  ],[ AC_DEFINE_UNQUOTED([BUILD_DATE],
+["$with_build_date"], [user-defined build-date string])])
+## urgh, brackets need to be escaped with @<:@ and @:>@...
+AS_IF([test "x$with_build_date" != "x"  ],[ with_build_date="@<:@default@:>@" ])
+AC_MSG_RESULT([$with_build_date])
+
 
 if test "x${libdir}" = "x\${exec_prefix}/lib"; then
  libdir='${exec_prefix}/lib/pd/extra'
