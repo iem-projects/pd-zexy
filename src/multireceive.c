@@ -21,6 +21,12 @@
 
 #include "zexy.h"
 
+#ifdef _WIN32
+# include <sys/timeb.h>
+#else
+# include <sys/time.h>
+#endif
+
 /* -------------------------- multireceive ------------------------------ */
 
 static t_class *multireceive_class=NULL;
@@ -42,6 +48,26 @@ typedef struct _multireceive {
   t_symlist*x_symlist;
   t_outlet *x_out;
 } t_multireceive;
+
+
+static unsigned long long unique(void) {
+  unsigned long long uid = 0;
+#ifdef _WIN32
+  struct _timeb tb;
+  _ftime(&tb);
+  uid=(((unsigned long long)tb.time)<<(4*sizeof(uid))) | (unsigned long long)(tb.millitm);
+#else
+  struct timeval tv;
+  struct timezone tz;
+
+  gettimeofday(&tv, 0);
+
+  /* First get the seconds right */
+  uid=((unsigned long)tv.tv_sec)<<(4*sizeof(uid)) | tv.tv_usec;
+#endif
+  return uid;
+}
+
 
 static void multireceive_any(t_multireceive_proxy *x, t_symbol*s, int argc,
                              t_atom*argv)
@@ -133,6 +159,9 @@ static void *multireceive_new(t_symbol *s, int argc, t_atom *argv)
 
 void multireceive_setup(void)
 {
+  char uniqsym[MAXPDSTRING];
+  unsigned long long uid=unique();
+
   multireceive_class = class_new(gensym("multireceive"),
                                  (t_newmethod)multireceive_new,
                                  (t_method)multireceive_free,
@@ -148,9 +177,10 @@ void multireceive_setup(void)
                   (t_method)multireceive_add,
                   gensym("add"),
                   A_SYMBOL, 0);
-
+  snprintf(uniqsym, MAXPDSTRING-2, "multireceive proxy %0llx", uid);
+  uniqsym[MAXPDSTRING-1]=0;
   multireceive_proxy_class = class_new(
-                               gensym("multireceive proxy "__DATE__""__TIME__""),
+                               gensym(uniqsym),
                                0, 0,
                                sizeof(t_multireceive_proxy),
                                CLASS_PD | CLASS_NOINLET, 0);
