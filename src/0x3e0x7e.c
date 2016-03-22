@@ -1,5 +1,5 @@
 /*
- * >~: signal comparision
+ * >~: signal comparison
  *
  * (c) 1999-2011 IOhannes m zmölnig, forum::für::umläute, institute of electronic music and acoustics (iem)
  *
