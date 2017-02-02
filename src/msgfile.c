@@ -448,6 +448,8 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   int count = node_count(x);
   int pos = atom2rangeint(av+0, count);
+  if (count<1)
+    return;
   if (ac==1) {
     int oldwhere = node_wherearewe(x);
 
