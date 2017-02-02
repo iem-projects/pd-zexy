@@ -17,7 +17,7 @@ EXTRA_DIST = \
 
 .PHONY: update
 update: Makefile.am
-	sed '/@EXTRA_DIST@/{N;N;q}' -i $<
+	sed -e '0,/@EXTRA_DIST@/!{/@EXTRA_DIST@/{N;N;q}}' -i $<
 	find */ -type f | sort | sed -e 's|^|	|' -e 's|$$| \\|' >> $<
 
 # everything below the line with @EXTRA_DIST@ is autoegenerated
