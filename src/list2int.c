@@ -75,22 +75,30 @@ static void mypdlist_free(t_mypdlist *x)
 {
   freebytes(x->x_list, x->x_n * sizeof(t_atom));
 }
-
+static void zclass_setup(t_class*c)
+{
+  class_addanything(c, list2int_any);
+  class_addlist(c, list2int_any);
+  class_addbang(c, list2int_bang);
+  class_addfloat(c, list2int_float);
+  class_addsymbol(c, list2int_symbol);
+  class_addpointer(c, list2int_pointer);
+}
 void list2int_setup(void)
 {
-  list2int_class = class_new(gensym("list2int"), (t_newmethod)list2int_new,
-                             (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
-  class_addcreator((t_newmethod)list2int_new, gensym("l2i"), A_GIMME, 0);
-  class_addanything(list2int_class, list2int_any);
-  class_addlist(list2int_class, list2int_any);
-  class_addbang(list2int_class, list2int_bang);
-  class_addfloat(list2int_class, list2int_float);
-  class_addsymbol(list2int_class, list2int_symbol);
-  class_addpointer(list2int_class, list2int_pointer);
-  zexy_register("list2int");
+  if(!list2int_class)
+    zexy_register("list2int");
+  list2int_class = class_new(gensym("list2int"),
+                             (t_newmethod)list2int_new, (t_method)mypdlist_free,
+                             sizeof(t_mypdlist), 0, A_GIMME, 0);
+  zclass_setup(list2int_class);
 }
 
 void l2i_setup(void)
 {
+  t_class *c = class_new(gensym("l2i"),
+                         (t_newmethod)list2int_new, (t_method)mypdlist_free,
+                         sizeof(t_mypdlist), 0, A_GIMME, 0);
+  zclass_setup(c);
   list2int_setup();
 }

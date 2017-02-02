@@ -113,24 +113,29 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 
   return (x);
 }
+static void zclass_setup(t_class*c)
+{
+  class_addfloat(c, demux_output);
+  class_addmethod(c, (t_method)demux_dsp, gensym("dsp"),
+                  A_CANT, 0);
+  class_addmethod(c, nullfn, gensym("signal"), 0);
 
+  class_addmethod(c, (t_method)demux_helper, gensym("help"), 0);
+}
 void demultiplex_tilde_setup(void)
 {
+  if(!demux_class)
+    zexy_register("demultiplex~");
+
   demux_class = class_new(gensym("demultiplex~"), (t_newmethod)demux_new,
                           (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
-  class_addcreator((t_newmethod)demux_new, gensym("demux~"), A_GIMME, 0);
-
-  class_addfloat(demux_class, demux_output);
-  class_addmethod(demux_class, (t_method)demux_dsp, gensym("dsp"),
-                  A_CANT, 0);
-  class_addmethod(demux_class, nullfn, gensym("signal"), 0);
-
-  class_addmethod(demux_class, (t_method)demux_helper, gensym("help"), 0);
-
-  zexy_register("demultiplex~");
+  zclass_setup(demux_class);
 }
 void demux_tilde_setup(void)
 {
+  t_class *c = class_new(gensym("demux~"), (t_newmethod)demux_new,
+                         (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
+  zclass_setup(c);
   demultiplex_tilde_setup();
 }
 

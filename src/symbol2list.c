@@ -166,24 +166,33 @@ static void symbol2list_help(t_symbol2list*x)
 {
   post("\n"HEARTSYMBOL " symbol2list\t:: split a symbol into a list of atoms");
 }
-
+static void zclass_setup(t_class*c)
+{
+  class_addsymbol (c, symbol2list_symbol);
+  class_addbang   (c, symbol2list_bang);
+  class_addmethod  (c, (t_method)symbol2list_delimiter,
+                    gensym(""), A_SYMBOL, 0);
+  class_addmethod(c, (t_method)symbol2list_help,
+                  gensym("help"), A_NULL);
+}
 void symbol2list_setup(void)
 {
+  if(!symbol2list_class)
+    zexy_register("symbol2list");
   symbol2list_class = class_new(gensym("symbol2list"),
                                 (t_newmethod)symbol2list_new,
-                                (t_method)symbol2list_free, sizeof(t_symbol2list), 0, A_GIMME, 0);
+                                (t_method)symbol2list_free,
+                                sizeof(t_symbol2list), 0, A_GIMME, 0);
 
   class_addcreator((t_newmethod)symbol2list_new, gensym("s2l"), A_GIMME, 0);
-  class_addsymbol (symbol2list_class, symbol2list_symbol);
-  class_addbang   (symbol2list_class, symbol2list_bang);
-  class_addmethod  (symbol2list_class, (t_method)symbol2list_delimiter,
-                    gensym(""), A_SYMBOL, 0);
-  class_addmethod(symbol2list_class, (t_method)symbol2list_help,
-                  gensym("help"), A_NULL);
-
-  zexy_register("symbol2list");
+  zclass_setup(symbol2list_class);
 }
 void s2l_setup(void)
 {
+  t_class*c = class_new(gensym("s2l"),
+                        (t_newmethod)symbol2list_new,
+                        (t_method)symbol2list_free,
+                        sizeof(t_symbol2list), 0, A_GIMME, 0);
+  zclass_setup(c);
   symbol2list_setup();
 }

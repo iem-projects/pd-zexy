@@ -106,25 +106,33 @@ static void *mux_tilde_new(t_symbol* UNUSED(s), int argc,
 
   return (x);
 }
+static void zclass_setup(t_class*c)
+{
+  /* ouch, that hurts... */
+  class_addfloat(c, mux_tilde_input);
 
+  class_addmethod(c, (t_method)mux_tilde_dsp, gensym("dsp"),
+                  A_CANT, 0);
+  class_addmethod(c, nullfn, gensym("signal"), 0);
+
+  class_addmethod(c, (t_method)mux_tilde_helper,
+                  gensym("help"), 0);
+}
 void multiplex_tilde_setup(void)
 {
+  if(mux_tilde_class)
+    zexy_register("multiplex~");
   mux_tilde_class = class_new(gensym("multiplex~"),
-                              (t_newmethod)mux_tilde_new, (t_method)mux_tilde_free, sizeof(t_mux), 0,
-                              A_GIMME, 0);
-  class_addcreator((t_newmethod)mux_tilde_new, gensym("mux~"), A_GIMME, 0);
-
-  class_addfloat(mux_tilde_class, mux_tilde_input);
-  class_addmethod(mux_tilde_class, (t_method)mux_tilde_dsp, gensym("dsp"),
-                  A_CANT, 0);
-  class_addmethod(mux_tilde_class, nullfn, gensym("signal"), 0);
-
-  class_addmethod(mux_tilde_class, (t_method)mux_tilde_helper,
-                  gensym("help"), 0);
-  zexy_register("multiplex~");
+                              (t_newmethod)mux_tilde_new, (t_method)mux_tilde_free,
+                              sizeof(t_mux), 0, A_GIMME, 0);
+  zclass_setup(mux_tilde_class);
 }
 void mux_tilde_setup(void)
 {
+  t_class*c =  class_new(gensym("mux~"),
+                         (t_newmethod)mux_tilde_new, (t_method)mux_tilde_free,
+                         sizeof(t_mux), 0, A_GIMME, 0);
+  zclass_setup(c);
   multiplex_tilde_setup();
 }
 

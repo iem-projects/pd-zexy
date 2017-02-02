@@ -74,26 +74,28 @@ static void *a2l_new(void)
   outlet_new(&x->x_obj, 0);
   return (x);
 }
+static void zclass_setup(t_class*c)
+{
+  class_addbang    (c, a2l_bang);
+  class_addfloat   (c, a2l_float);
+  class_addsymbol  (c, a2l_symbol);
+  class_addpointer (c, a2l_pointer);
+  class_addlist    (c, a2l_list);
+  class_addanything(c, a2l_anything);
+}
+void any2list_setup(void)
+{
+  if(!a2l_class)
+    zexy_register("any2list");
+  a2l_class = class_new(gensym("any2list"), (t_newmethod)a2l_new,
+                        0, sizeof(t_a2l), 0, 0);
+  zclass_setup(a2l_class);
+}
 
 void a2l_setup(void)
 {
-
-  a2l_class = class_new(gensym("a2l"), (t_newmethod)a2l_new,
+  t_class *c = class_new(gensym("a2l"), (t_newmethod)a2l_new,
                         0, sizeof(t_a2l), 0, 0);
-  class_addcreator((t_newmethod)a2l_new, gensym("any2list"), 0);
-
-
-  class_addbang    (a2l_class, a2l_bang);
-  class_addfloat   (a2l_class, a2l_float);
-  class_addsymbol  (a2l_class, a2l_symbol);
-  class_addpointer (a2l_class, a2l_pointer);
-  class_addlist    (a2l_class, a2l_list);
-  class_addanything(a2l_class, a2l_anything);
-
-  zexy_register("any2list");
-}
-
-void any2list_setup(void)
-{
+  zclass_setup(c);
   a2l_setup();
 }

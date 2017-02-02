@@ -124,27 +124,31 @@ static void mux_free(t_mux*x)
 
   /* pd_free(&y->p_pd); */
 }
-
+static void zclass_setup(t_class*c)
+{
+    class_addmethod (c, (t_method)mux_select, gensym(""), A_DEFFLOAT, 0);
+}
 void multiplex_setup(void)
 {
+  if(!mux_class)
+    zexy_register("multiplex");
   mux_class = class_new(gensym("multiplex"), (t_newmethod)mux_new,
                         (t_method)mux_free, sizeof(t_mux), CLASS_NOINLET, A_GIMME,  0);
-  class_addcreator((t_newmethod)mux_new, gensym("mux"), A_GIMME, 0);
-
-  class_addmethod   (mux_class, (t_method)mux_select, gensym(""), A_DEFFLOAT,
-                     0);
+  zclass_setup(mux_class);
 
   muxproxy_class = class_new(0, 0, 0,
                              sizeof(t_muxproxy),
                              CLASS_PD | CLASS_NOINLET, 0);
   class_addanything(muxproxy_class, mux_anything);
-
-
-  zexy_register("multiplex");
 }
 
 void mux_setup(void)
 {
+  t_class *c = class_new(gensym("mux"), (t_newmethod)mux_new,
+                         (t_method)mux_free, sizeof(t_mux),
+                         CLASS_NOINLET,
+                         A_GIMME,  0);
+  zclass_setup(c);
   multiplex_setup();
 }
 

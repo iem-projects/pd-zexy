@@ -110,24 +110,27 @@ static void mypdlist_help(t_mypdlist*x)
   post("\n"HEARTSYMBOL " lister\t\t:: basic list storage (use pd>=0.39 for real [list] objects)");
 }
 
+static void lister_class_setup(t_class*c) {
+  class_addbang    (c, mypdlist_bang);
+  class_addlist    (c, mypdlist_list);
+  class_addmethod  (c, (t_method)mypdlist_secondlist,
+                    gensym("lst2"), A_GIMME, 0);
+  class_addmethod(c, (t_method)mypdlist_help, gensym("help"),
+                  A_NULL);
+}
 void lister_setup(void)
 {
+  if(!mypdlist_class)
+    zexy_register("lister");
   mypdlist_class = class_new(gensym("lister"), (t_newmethod)mypdlist_new,
                              (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
-  /* i don't know how to get this work with name=="list" !!! */
-
-  class_addcreator((t_newmethod)mypdlist_new, gensym("l"), A_GIMME, 0);
-
-  class_addbang    (mypdlist_class, mypdlist_bang);
-  class_addlist    (mypdlist_class, mypdlist_list);
-  class_addmethod  (mypdlist_class, (t_method)mypdlist_secondlist,
-                    gensym("lst2"), A_GIMME, 0);
-
-  class_addmethod(mypdlist_class, (t_method)mypdlist_help, gensym("help"),
-                  A_NULL);
-  zexy_register("lister");
+  lister_class_setup(mypdlist_class);
 }
 void l_setup(void)
 {
+  t_class *c = class_new(gensym("l"), (t_newmethod)mypdlist_new,
+                         (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
+
+  lister_class_setup(c);
   lister_setup();
 }
