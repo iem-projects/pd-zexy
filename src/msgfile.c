@@ -436,10 +436,19 @@ static void msgfile_clear(t_msgfile *x)
   }
 }
 
+static int atom2rangeint(t_atom*a, int range) {
+  t_float f = atom_getfloat(a);
+  if (f>range)
+    return range;
+  if (f<-range)
+    return -range;
+  return (unsigned int)f;
+}
 static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
+  int count = node_count(x);
+  int pos = atom2rangeint(av+0, count);
   if (ac==1) {
-    int pos = atom_getfloat(av);
     int oldwhere = node_wherearewe(x);
 
     if (pos<0) {
@@ -452,8 +461,8 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
     delete_currentnode(x);
     msgfile_goto(x, oldwhere);
   } else if (ac==2) {
-    int pos1 = atom_getfloat(av++);
-    int pos2 = atom_getfloat(av);
+    int pos1 = pos;
+    int pos2 = atom2rangeint(av+1, count);
 
     if ((pos1 < pos2) || (pos2 == -1)) {
       if (pos2+1) {
