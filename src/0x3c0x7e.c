@@ -23,7 +23,7 @@
 
 
 /* ----------------------------- lt_tilde ----------------------------- */
-static t_class *lt_tilde_class, *scalarlt_tilde_class;
+static t_class *lt_tilde_class=NULL, *scalarlt_tilde_class=NULL;
 
 typedef struct _lt_tilde {
   t_object x_obj;

@@ -81,7 +81,7 @@ ritsch@iem.kug.ac.at */
 # define BINREADMODE "r"
 #endif
 
-static t_class *sfplay_class;
+static t_class *sfplay_class=NULL;
 
 typedef struct _sfplay {
   t_object x_obj;

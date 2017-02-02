@@ -20,8 +20,8 @@
 
 #include "zexy.h"
 
-static t_class *scalmul_class;
-static t_class *scalmul_scal_class;
+static t_class *scalmul_class=NULL;
+static t_class *scalmul_scal_class=NULL;
 
 typedef struct _scalmul {
   t_object x_obj;

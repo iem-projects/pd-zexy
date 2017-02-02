@@ -23,7 +23,7 @@
 
 /* ------------------------- list2symbol ------------------------------- */
 
-static t_class *list2symbol_class;
+static t_class *list2symbol_class=NULL;
 
 typedef struct _list2symbol {
   t_object x_obj;

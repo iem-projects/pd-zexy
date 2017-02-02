@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *tavg_class;
+static t_class *tavg_class=NULL;
 
 typedef struct _tavg {
   t_object x_obj;

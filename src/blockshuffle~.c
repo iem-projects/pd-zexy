@@ -26,7 +26,7 @@
    {x[0], x[1], ... x[n-1]} --> {x[n-1], x[n-2], ... x[0]}
 */
 
-static t_class *blockshuffle_class;
+static t_class *blockshuffle_class=NULL;
 
 typedef struct _blockshuffle {
   t_object x_obj;

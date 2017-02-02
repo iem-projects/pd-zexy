@@ -28,7 +28,7 @@
 #endif
 
 
-static t_class *longload_class;
+static t_class *longload_class=NULL;
 
 typedef struct _longload {
   t_object x_obj;

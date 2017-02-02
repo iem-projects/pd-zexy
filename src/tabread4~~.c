@@ -23,7 +23,7 @@
 /******************** tabread4~~ ***********************/
 
 
-static t_class *tabread4_tilde_class;
+static t_class *tabread4_tilde_class=NULL;
 
 typedef struct _tabread4_tilde {
   t_object x_obj;

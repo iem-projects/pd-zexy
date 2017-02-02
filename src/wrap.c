@@ -18,7 +18,7 @@
  */
 #include "zexy.h"
 
-static t_class *wrap_class;
+static t_class *wrap_class=NULL;
 
 typedef struct _wrap {
   t_object  x_obj;

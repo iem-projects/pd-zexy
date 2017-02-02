@@ -42,7 +42,7 @@
  * into the RAM of your system
  */
 
-static t_class *freadln_class;
+static t_class *freadln_class=NULL;
 
 typedef struct freadln {
   t_object x_ob;

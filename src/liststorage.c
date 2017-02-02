@@ -62,7 +62,7 @@ typedef struct _liststorage {
   t_msglist**x_slots;
 } t_liststorage;
 
-static t_class *liststorage_class;
+static t_class *liststorage_class=NULL;
 
 
 /* ************************************************************************ */

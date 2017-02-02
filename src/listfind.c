@@ -29,7 +29,7 @@
 # define DEBUGFUN(x)
 #endif
 
-static t_class *listfind_class;
+static t_class *listfind_class=NULL;
 
 
 typedef struct _listfind {

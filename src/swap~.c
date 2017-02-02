@@ -30,7 +30,7 @@
 #define FLOAT2SHORT 32768.
 #define SHORT2FLOAT 1./32768.
 
-static t_class *swap_class;
+static t_class *swap_class=NULL;
 
 typedef struct _swap {
   t_object x_obj;

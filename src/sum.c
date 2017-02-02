@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *sum_class;
+static t_class *sum_class=NULL;
 
 typedef struct _sum {
   t_object x_obj;

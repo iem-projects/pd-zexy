@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *packel_class;
+static t_class *packel_class=NULL;
 
 typedef struct _packel {
   t_object x_obj;

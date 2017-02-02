@@ -20,7 +20,7 @@
 #include "zexy.h"
 #include <string.h>
 
-static t_class *a2l_class;
+static t_class *a2l_class=NULL;
 
 typedef struct _a2l {
   t_object x_obj;

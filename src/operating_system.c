@@ -25,7 +25,7 @@
 MESSAGE OPERATING_SYSTEM: simple and easy
 */
 
-static t_class *operating_system_class;
+static t_class *operating_system_class=NULL;
 
 typedef struct _operating_system {
   t_object x_obj;

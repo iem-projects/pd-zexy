@@ -21,7 +21,7 @@
 
 /* ------------------------- repeat ------------------------------- */
 
-static t_class *repeat_class;
+static t_class *repeat_class=NULL;
 
 typedef struct _repeat {
   t_object x_obj;

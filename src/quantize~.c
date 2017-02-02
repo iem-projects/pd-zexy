@@ -28,7 +28,7 @@
 
 /* ------------------------ quantize~ ----------------------------- */
 
-static t_class *quantize_class;
+static t_class *quantize_class=NULL;
 
 typedef struct _quantize {
   t_object x_obj;

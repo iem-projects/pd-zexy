@@ -47,7 +47,7 @@
 
 /* match the atoms of 2 lists */
 
-static t_class *matchbox_class;
+static t_class *matchbox_class=NULL;
 
 
 typedef struct _listlist {

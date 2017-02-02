@@ -38,7 +38,7 @@ typedef struct zexy {
   t_object t_ob;
 } t_zexy;
 
-t_class *zexy_class;
+t_class *zexy_class=NULL;
 
 static void zexy_help(void)
 {

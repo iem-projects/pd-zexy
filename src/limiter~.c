@@ -89,7 +89,7 @@ static void init_sinc(void)
 /* ------------------------------------------------------------------------------------ */
 /* first define the structs... */
 
-static t_class *limiter_class;
+static t_class *limiter_class=NULL;
 
 typedef struct _limctl {
   /* variables changed by user */

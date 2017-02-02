@@ -43,7 +43,7 @@
 
 /* ----------------------- time --------------------- */
 
-static t_class *time_class;
+static t_class *time_class=NULL;
 
 typedef struct _time {
   t_object x_obj;

@@ -21,7 +21,7 @@
 
 /* ------------------------- urn ------------------------------- */
 
-static t_class *urn_class;
+static t_class *urn_class=NULL;
 
 typedef struct _urn {
   t_object x_obj;

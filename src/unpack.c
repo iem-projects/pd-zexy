@@ -32,7 +32,7 @@
 
 /* like pack, but does no type-checking */
 
-static t_class *zunpack_class;
+static t_class *zunpack_class=NULL;
 
 typedef struct _zunpack {
   t_object x_obj;

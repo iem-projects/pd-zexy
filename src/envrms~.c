@@ -26,7 +26,7 @@
 #define MAXOVERLAP 10
 #define MAXVSTAKEN 64
 
-t_class *sigenvrms_class;
+t_class *sigenvrms_class=NULL;
 
 typedef struct sigenvrms {
   t_object x_obj; 	    	    /* header */

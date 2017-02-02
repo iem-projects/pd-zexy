@@ -29,7 +29,7 @@
 the second inlet lets you change the default package size
 */
 
-static t_class *repack_class;
+static t_class *repack_class=NULL;
 
 typedef struct _repack {
   t_object x_obj;

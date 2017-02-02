@@ -68,7 +68,7 @@ static void set_noisseed(t_nois *x, t_floatarg seed)
 
 /* ------------------------ noish~ ----------------------------- */
 
-static t_class *noish_class;
+static t_class *noish_class=NULL;
 
 static t_int *noish_perform(t_int *w)
 {

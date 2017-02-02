@@ -42,7 +42,7 @@
 
 /* ----------------------- index --------------------- */
 
-static t_class *index_class;
+static t_class *index_class=NULL;
 
 typedef struct _index {
   t_object x_obj;

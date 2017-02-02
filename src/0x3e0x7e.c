@@ -23,7 +23,7 @@
 /* ------------------------ relational~ ----------------------------- */
 
 /* ----------------------------- gt_tilde ----------------------------- */
-static t_class *gt_tilde_class, *scalargt_tilde_class;
+static t_class *gt_tilde_class=NULL, *scalargt_tilde_class=NULL;
 
 typedef struct _gt_tilde {
   t_object x_obj;

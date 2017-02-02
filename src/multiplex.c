@@ -43,8 +43,8 @@
   a multiplexer
 */
 
-static t_class *mux_class;
-static t_class *muxproxy_class;
+static t_class *mux_class=NULL;
+static t_class *muxproxy_class=NULL;
 
 typedef struct _mux {
   t_object x_obj;

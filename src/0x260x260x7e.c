@@ -23,7 +23,7 @@
 /* ------------------------ logical~ ----------------------------- */
 
 /* ----------------------------- andand_tilde ----------------------------- */
-static t_class *andand_tilde_class, *scalarandand_tilde_class;
+static t_class *andand_tilde_class=NULL, *scalarandand_tilde_class=NULL;
 
 typedef struct _andand_tilde {
   t_object x_obj;

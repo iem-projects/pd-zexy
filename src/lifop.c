@@ -32,7 +32,7 @@
  * high priority means low numeric value
  */
 
-static t_class *lifop_class;
+static t_class *lifop_class=NULL;
 
 typedef struct _lifop_list {
   int                 argc;

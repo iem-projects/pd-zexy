@@ -26,7 +26,7 @@
 
 /* datendefinition */
 
-static t_class *dfreq_class;
+static t_class *dfreq_class=NULL;
 
 typedef struct _dfreq {
   t_object x_obj;

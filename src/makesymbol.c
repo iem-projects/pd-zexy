@@ -47,7 +47,7 @@
 
 /* ----------------------- makesymbol --------------------- */
 
-static t_class *makesymbol_class;
+static t_class *makesymbol_class=NULL;
 
 typedef struct _makesymbol {
   t_object x_obj;

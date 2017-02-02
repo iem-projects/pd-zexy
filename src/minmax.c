@@ -20,7 +20,7 @@
 
 #include "zexy.h"
 
-static t_class *minmax_class;
+static t_class *minmax_class=NULL;
 
 typedef struct _minmax {
   t_object x_obj;

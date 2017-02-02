@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *sigunpack_class;
+static t_class *sigunpack_class=NULL;
 
 typedef struct _sigunpack {
   t_object x_obj;

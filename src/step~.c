@@ -33,7 +33,7 @@
 
 /* ------------------------ step~ ----------------------------- */
 
-static t_class *step_class;
+static t_class *step_class=NULL;
 
 typedef struct _step {
   t_object x_obj;

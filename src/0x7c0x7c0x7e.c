@@ -20,7 +20,7 @@
 #include "zexySIMD.h"
 
 /* ----------------------------- oror_tilde ----------------------------- */
-static t_class *oror_tilde_class, *scalaroror_tilde_class;
+static t_class *oror_tilde_class=NULL, *scalaroror_tilde_class=NULL;
 
 typedef struct _oror_tilde {
   t_object x_obj;

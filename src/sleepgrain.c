@@ -24,7 +24,7 @@ EXTERN int* get_sys_sleepgrain(void ) ;
 /* ------------------------- sleepgrain ------------------------------- */
 
 
-static t_class *sleepgrain_class;
+static t_class *sleepgrain_class=NULL;
 
 typedef struct _sleepgrain {
   t_object x_obj;

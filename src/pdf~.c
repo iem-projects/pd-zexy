@@ -21,7 +21,7 @@
 
 /* ------------------------ pdf~ ----------------------------- */
 
-static t_class *pdf_class;
+static t_class *pdf_class=NULL;
 
 typedef struct _pdf {
   t_object x_obj;

@@ -29,7 +29,7 @@
 # define DEBUGFUN(x)
 #endif
 
-static t_class *list2lists_class;
+static t_class *list2lists_class=NULL;
 
 typedef struct _list2lists {
   t_object       x_obj;

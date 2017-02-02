@@ -20,7 +20,7 @@
 #include "zexySIMD.h"
 
 /* ----------------------------- eq_tilde ----------------------------- */
-static t_class *eq_tilde_class, *scalareq_tilde_class;
+static t_class *eq_tilde_class=NULL, *scalareq_tilde_class=NULL;
 
 typedef struct _eq_tilde {
   t_object x_obj;

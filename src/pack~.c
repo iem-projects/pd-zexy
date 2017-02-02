@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *sigpack_class;
+static t_class *sigpack_class=NULL;
 
 typedef struct _sigpack {
   t_object x_obj;

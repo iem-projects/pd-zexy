@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *length_class;
+static t_class *length_class=NULL;
 typedef struct _length {
   t_object x_obj;
 } t_length;

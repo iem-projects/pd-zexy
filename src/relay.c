@@ -38,7 +38,7 @@
 
 /* -------------------------- relay ------------------------------ */
 
-static t_class *relay_class;
+static t_class *relay_class=NULL;
 
 typedef struct _relayelement {
   t_word e_w;

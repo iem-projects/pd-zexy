@@ -28,7 +28,7 @@ you can adjust the drop-speed in [ms]
 
 #include "zexy.h"
 
-static t_class *drip_class;
+static t_class *drip_class=NULL;
 
 typedef struct _drip {
   t_object x_obj;

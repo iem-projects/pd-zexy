@@ -25,7 +25,7 @@
   SHELL SORT: simple and easy
 */
 
-static t_class *sort_class;
+static t_class *sort_class=NULL;
 
 typedef struct _sort {
   t_object x_obj;

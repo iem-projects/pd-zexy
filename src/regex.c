@@ -34,7 +34,7 @@
 
 /* match a regular expression against a string */
 
-static t_class *regex_class;
+static t_class *regex_class=NULL;
 
 typedef struct _regex {
   t_object x_obj;

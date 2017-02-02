@@ -38,7 +38,7 @@
  * iemmatrix
  */
 
-static t_class *fwriteln_class;
+static t_class *fwriteln_class=NULL;
 
 typedef struct fwriteln {
   t_object x_ob;

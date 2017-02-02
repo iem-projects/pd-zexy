@@ -20,7 +20,7 @@
 #include "zexy.h"
 #include <string.h>
 
-static t_class *glue_class;
+static t_class *glue_class=NULL;
 
 typedef struct _zglue {
   t_object x_obj;

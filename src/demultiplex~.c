@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *demux_class;
+static t_class *demux_class=NULL;
 
 typedef struct _demux {
   t_object x_obj;

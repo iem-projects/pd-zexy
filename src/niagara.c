@@ -28,7 +28,7 @@
   nowadays you can do this with [list split] (though this cannot handle negative indices)
 */
 
-static t_class *niagara_class;
+static t_class *niagara_class=NULL;
 
 typedef struct _niagara {
   t_object x_obj;

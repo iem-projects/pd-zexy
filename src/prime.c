@@ -20,7 +20,7 @@
 #include "zexy.h"
 
 
-static t_class *prime_class;
+static t_class *prime_class=NULL;
 
 typedef struct _prime {
   t_object  x_obj;

@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static t_class *atof_class;
+static t_class *atof_class=NULL;
 
 typedef struct _atof {
   t_object x_obj;

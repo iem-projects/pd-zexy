@@ -20,7 +20,7 @@
 #include "zexy.h"
 #include <string.h>
 
-static t_class *list2int_class;
+static t_class *list2int_class=NULL;
 
 static void list2int_any(t_mypdlist *x, t_symbol *s, int argc,
                          t_atom *argv)

@@ -30,8 +30,8 @@
 
 /* ------------------------- zexy/pack ------------------------------- */
 
-static t_class *zpack_class;
-static t_class *zpackproxy_class;
+static t_class *zpack_class=NULL;
+static t_class *zpackproxy_class=NULL;
 
 typedef struct _zpack {
   t_object x_obj;

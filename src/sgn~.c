@@ -26,7 +26,7 @@ typedef struct _sgnTilde {
 
 /* ------------------------ sgn~ ----------------------------- */
 
-static t_class *sgnTilde_class;
+static t_class *sgnTilde_class=NULL;
 
 static t_int *sgnTilde_perform(t_int *w)
 {

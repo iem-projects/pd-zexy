@@ -25,8 +25,8 @@
 
 /* compare 2 lists ( == for lists) */
 
-static t_class *strcmp_class;
-static t_class *strcmp_proxy_class;
+static t_class *strcmp_class=NULL;
+static t_class *strcmp_proxy_class=NULL;
 
 
 typedef struct _strcmp {

@@ -29,7 +29,7 @@
 
 /* ----------------------------------------------------- */
 
-static t_class *zNdelay_class;
+static t_class *zNdelay_class=NULL;
 
 typedef struct _zNdelay {
   t_object x_obj;

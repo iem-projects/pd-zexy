@@ -30,7 +30,7 @@
 # endif
 #endif
 
-static t_class *rawprint_class;
+static t_class *rawprint_class=NULL;
 
 typedef struct _rawprint {
   t_object  x_obj;

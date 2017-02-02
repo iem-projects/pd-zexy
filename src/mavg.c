@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *mavg_class;
+static t_class *mavg_class=NULL;
 
 typedef struct _mavg {
   t_object x_obj;

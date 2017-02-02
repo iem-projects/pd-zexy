@@ -21,7 +21,7 @@
 
 /* =================== tabdump ====================== */
 
-static t_class *tabdump_class;
+static t_class *tabdump_class=NULL;
 
 typedef struct _tabdump {
   t_object x_obj;

@@ -38,7 +38,7 @@
 
 /* --------------------------- multiline~ ---------------------------------- */
 
-static t_class *mline_class;
+static t_class *mline_class=NULL;
 
 typedef struct _mline {
   t_object x_obj;

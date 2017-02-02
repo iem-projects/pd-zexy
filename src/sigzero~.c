@@ -26,7 +26,7 @@
 #include "zexy.h"
 
 
-static t_class *sigzero_class;
+static t_class *sigzero_class=NULL;
 
 typedef struct _sigzero {
   t_object x_obj;

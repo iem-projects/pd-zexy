@@ -69,7 +69,7 @@ static void set_noisseed(t_nois *x, t_floatarg seed)
 
 /* ------------------------ noisi~ ----------------------------- */
 
-static t_class *noisi_class;
+static t_class *noisi_class=NULL;
 
 static inline t_sample int2sample(int i)
 {

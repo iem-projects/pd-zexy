@@ -27,7 +27,7 @@ typedef struct _absgn {
 
 /* ------------------------ sigABSGN~ ----------------------------- */
 
-static t_class *sigABSGN_class;
+static t_class *sigABSGN_class=NULL;
 
 static t_int *sigABSGN_perform(t_int *w)
 {

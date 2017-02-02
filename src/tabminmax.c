@@ -22,7 +22,7 @@
 
 /* =================== tabminmax ====================== */
 
-static t_class *tabminmax_class;
+static t_class *tabminmax_class=NULL;
 
 typedef struct _tabminmax {
   t_object x_obj;

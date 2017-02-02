@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static t_class *atoi_class;
+static t_class *atoi_class=NULL;
 
 typedef struct _atoi {
   t_object x_obj;

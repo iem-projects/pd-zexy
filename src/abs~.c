@@ -28,7 +28,7 @@ typedef struct _abs {
 
 /* ------------------------ sigABS~ ----------------------------- */
 
-static t_class *sigABS_class;
+static t_class *sigABS_class=NULL;
 
 static t_int *sigABS_perform(t_int *w)
 {

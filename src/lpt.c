@@ -104,7 +104,7 @@ static int sys_inb(int port)
 
 
 static int count_iopl = 0;
-static t_class *lpt_class;
+static t_class *lpt_class=NULL;
 
 typedef struct _lpt {
   t_object x_obj;

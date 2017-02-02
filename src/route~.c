@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *route_tilde_class;
+static t_class *route_tilde_class=NULL;
 typedef struct _route_tilde {
   t_object x_obj;
 

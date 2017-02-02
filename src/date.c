@@ -61,7 +61,7 @@
 
 /* ----------------------- date --------------------- */
 
-static t_class *date_class;
+static t_class *date_class=NULL;
 
 typedef struct _date {
   t_object x_obj;

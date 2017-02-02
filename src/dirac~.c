@@ -37,7 +37,7 @@
 /* ------------------------ dirac~ ----------------------------- */
 
 
-static t_class *dirac_class;
+static t_class *dirac_class=NULL;
 
 typedef struct _dirac {
   t_object x_obj;

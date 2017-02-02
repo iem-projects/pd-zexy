@@ -23,7 +23,7 @@
 
 /* tilde object to take absolute value. */
 
-static t_class *avg_class;
+static t_class *avg_class=NULL;
 
 typedef struct _avg {
   t_object x_obj;

@@ -24,7 +24,7 @@
 
 /* =================== tabset ====================== */
 
-static t_class *tabset_class;
+static t_class *tabset_class=NULL;
 
 typedef struct _tabset {
   t_object x_obj;

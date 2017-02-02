@@ -81,7 +81,7 @@ typedef struct _msgfile {
 
 } t_msgfile;
 
-static t_class *msgfile_class;
+static t_class *msgfile_class=NULL;
 
 
 

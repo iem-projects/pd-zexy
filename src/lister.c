@@ -26,7 +26,7 @@
 #define LIST_NGETBYTE 100 /* bigger that this we use alloc, not alloca */
 
 
-static t_class *mypdlist_class;
+static t_class *mypdlist_class = NULL;
 
 #ifdef HAVE_ALLOCA_H
 # define ATOMS_ALLOCA(x, n) ((x) = (t_atom *)((n) < LIST_NGETBYTE ?  \

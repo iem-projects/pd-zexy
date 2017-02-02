@@ -31,7 +31,7 @@
  * high priority means low numeric value
  */
 
-static t_class *fifop_class;
+static t_class *fifop_class=NULL;
 
 typedef struct _fifop_list {
   int                 argc;

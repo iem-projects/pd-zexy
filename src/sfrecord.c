@@ -53,7 +53,7 @@ zmoelnig@iem.kug.ac.at
 # define BINWRITEMODE "w"
 #endif
 
-static t_class *sfrecord_class;
+static t_class *sfrecord_class=NULL;
 
 typedef struct _sfrecord {
   t_object x_obj;
