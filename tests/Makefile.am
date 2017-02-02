@@ -19,6 +19,7 @@ EXTRA_DIST = \
 update: Makefile.am
 	sed -e '0,/@EXTRA_DIST@/!{0,/@EXTRA_DIST@/!{/@EXTRA_DIST@/{N;q}}}' -i $<
 	find */ -type f | sort | sed -e 's|^|	|' -e 's|$$| \\|' >> $<
+	echo '	$$(nada)' >> $<
 
 # everything below the line with @EXTRA_DIST@ is autoegenerated
 # DO NOT EDIT!!! instead run 'make Makefile.am'
