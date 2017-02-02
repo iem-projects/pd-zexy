@@ -287,14 +287,7 @@ static void delete_region(t_msgfile *x, int start, int stop)
   int newwhere, oldwhere = node_wherearewe(x);
 
   /* get the number of lists in the buffer */
-  t_msglist *dummy = x->start;
-  int counter = 0;
-
-  /* go to the end of the buffer */
-  while (dummy && dummy->next) {
-    counter++;
-    dummy = dummy->next;
-  }
+  int counter = node_count(x);
 
   if ((stop > counter) || (stop == -1)) {
     stop = counter;
