@@ -34,17 +34,19 @@ typedef struct _demux {
   int n_out;
   t_outlet **out, *selected;
 
-
+  t_float findex;
 } t_demux;
 
-static void demux_select(t_demux *x, t_float f)
+static void demux_select(t_demux *x)
 {
+  t_float f = x->findex;
   int n = ( (f<0) || (f>x->n_out) ) ? 0 : f;
   x->selected = x->out[n];
 }
 
 static void demux_list(t_demux *x, t_symbol *s, int argc, t_atom *argv)
 {
+  demux_select(x);
   switch (argc) {
   case 0:
     outlet_bang(x->selected);
@@ -70,6 +72,7 @@ static void demux_list(t_demux *x, t_symbol *s, int argc, t_atom *argv)
 }
 static void demux_any(t_demux *x, t_symbol *s, int argc, t_atom *argv)
 {
+  demux_select(x);
   outlet_anything(x->selected, s, argc, argv);
 }
 
@@ -80,7 +83,8 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 
   x->n_out = n - 1;
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("select"));
+  x->findex = 0;
+  floatinlet_new(&x->x_obj, &x->findex);
   x->out = (t_outlet **)getbytes(n * sizeof(t_outlet *));
 
   for (n=0; n<=x->n_out; n++) {
@@ -91,23 +95,24 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 
   return (x);
 }
-
+static void zclass_setup(t_class*c)
+{
+  class_addanything (c, demux_any);
+  class_addlist     (c, demux_list);
+}
 void demultiplex_setup(void)
 {
+  if(!demux_class)
+    zexy_register("demultiplex");
   demux_class = class_new(gensym("demultiplex"), (t_newmethod)demux_new,
                           0, sizeof(t_demux), 0, A_GIMME,  0);
-  class_addcreator((t_newmethod)demux_new, gensym("demux"), A_GIMME, 0);
-
-  class_addanything (demux_class, demux_any);
-  class_addlist     (demux_class, demux_list);
-
-  class_addmethod   (demux_class, (t_method)demux_select, gensym("select"),
-                     A_DEFFLOAT, 0);
-
-  zexy_register("demultiplex");
+  zclass_setup(demux_class);
 }
 void demux_setup(void)
 {
+  t_class*c = class_new(gensym("demux"), (t_newmethod)demux_new,
+                          0, sizeof(t_demux), 0, A_GIMME,  0);
+  zclass_setup(c);
   demultiplex_setup();
 }
 
