@@ -691,8 +691,8 @@ static void msgfile_where(t_msgfile *x)
 static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol*s1,
                          t_symbol*r)
 {
-  post("sorting not implemented yet: '%s', '%s' -> '%s'", s0->s_name,
-       s1->s_name, r->s_name);
+  pd_error(x, "sorting not implemented yet: '%s', '%s' -> '%s'", s0->s_name,
+           s1->s_name, r->s_name);
 
 
 #if 0
