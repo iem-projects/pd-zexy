@@ -94,7 +94,23 @@ static void msgfile_end(t_msgfile *x);
 static void msgfile_goto(t_msgfile *x, t_float f);
 
 /* ************************************************************************ */
-/* help functions                                                           */
+/* helper functions                                                           */
+
+static int is_float(t_atom*a)
+{
+  return (a && A_FLOAT == a->a_type);
+}
+
+static int node_count(t_msgfile *x)
+{
+  t_msglist *dummy = x->start;
+  unsigned int counter = 0;
+  while (dummy && dummy->next) {
+    counter++;
+    dummy = dummy->next;
+  }
+  return counter;
+}
 
 static int node_wherearewe(t_msgfile *x)
 {
