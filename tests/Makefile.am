@@ -15,6 +15,14 @@ EXTRA_DIST = \
 	runtests.pd \
 	testunit.pd
 
+.PHONY: update
+update: Makefile.am
+	sed '/@EXTRA_DIST@/{N;N;q}' -i $<
+	find */ -type f | sort | sed -e 's|^|	|' -e 's|$$| \\|' >> $<
+
+# everything below the line with @EXTRA_DIST@ is autoegenerated
+# DO NOT EDIT!!! instead run 'make Makefile.am'
+#### @EXTRA_DIST@ ####
 EXTRA_DIST += \
 	msgfile/CR.txt \
 	msgfile/msgfile.txt \
