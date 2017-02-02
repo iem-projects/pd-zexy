@@ -200,10 +200,8 @@ static void *drip_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 void drip_setup(void)
 {
   drip_class = class_new(gensym("drip"), (t_newmethod)drip_new,
-                         (t_method)drip_free, sizeof(t_drip), 0 ,A_GIMME, 0);
-
-  class_addcreator((t_newmethod)drip_new, gensym("unfold"), A_GIMME, 0);
-  /* for historical reasons */
+                         (t_method)drip_free,
+                         sizeof(t_drip), 0, A_GIMME, 0);
 
   class_addbang    (drip_class, drip_bang);
   class_addlist    (drip_class, drip_list);

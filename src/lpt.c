@@ -308,7 +308,7 @@ void lpt_setup(void)
   lpt_class = class_new(gensym("lpt"),
                         (t_newmethod)lpt_new, (t_method)lpt_free,
                         sizeof(t_lpt), 0, A_GIMME, 0);
-  class_addcreator((t_newmethod)lpt_new, gensym("lp"), A_GIMME, 0);
+  //class_addcreator((t_newmethod)lpt_new, gensym("lp"), A_GIMME, 0);
 
   class_addfloat(lpt_class, (t_method)lpt_float);
   class_addmethod(lpt_class, (t_method)lpt_control, gensym("control"),
