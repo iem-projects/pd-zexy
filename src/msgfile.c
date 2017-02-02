@@ -448,6 +448,10 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
   int count = node_count(x);
   int pos = atom2rangeint(av+0, count);
+  if (!is_float(av)) {
+    pd_error(x, "[msgfile] illegal deletion index %s", atom_getsymbol(av)->s_name);
+    return;
+  }
   if (count<1)
     return;
   if (ac==1) {
@@ -465,6 +469,10 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
   } else if (ac==2) {
     int pos1 = pos;
     int pos2 = atom2rangeint(av+1, count);
+    if (!is_float(av+1)) {
+      pd_error(x, "[msgfile] illegal deletion range %s", atom_getsymbol(av+1)->s_name);
+      return;
+    }
 
     if ((pos1 < pos2) || (pos2 == -1)) {
       if (pos2+1) {
