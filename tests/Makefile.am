@@ -25,9 +25,6 @@ update: Makefile.am
 # DO NOT EDIT!!! instead run 'make Makefile.am'
 #### @EXTRA_DIST@ ####
 EXTRA_DIST += \
-	msgfile/CR.txt \
-	msgfile/msgfile.txt \
-	testtests/README.txt \
 	absgn~/abs.pd \
 	absgn~/sgn.pd \
 	abs~/simple.pd \
@@ -115,14 +112,17 @@ EXTRA_DIST += \
 	lt~/dualnoise.pd \
 	lt~/singlenoise.pd \
 	msgfile/add2.pd \
+	msgfile/CR.txt \
 	msgfile/empty_at_end.pd \
 	msgfile/emptyreplace.pd \
 	msgfile/loadingCR.pd \
 	msgfile/loading.pd \
+	msgfile/msgfile.txt \
 	msgfile/prev_from_end.pd \
 	msgfile/reentrant.pd \
 	or~/dualnoise.pd \
 	or~/singlenoise.pd \
+	relay/floatfloat.pd \
 	repeat/noargs.pd \
 	s2l/numsymbols.pd \
 	sgn~/simple.pd \
@@ -132,4 +132,6 @@ EXTRA_DIST += \
 	testtests/fail_wait10.pd \
 	testtests/pass.pd \
 	testtests/pass_wait0.pd \
-	testtests/pass_wait10.pd
+	testtests/pass_wait10.pd \
+	testtests/README.txt \
+	$(nada)
