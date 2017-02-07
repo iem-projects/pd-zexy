@@ -12,12 +12,13 @@ if [ "x${PD}" = "x" ]; then
  exit 77
 fi
 
-LIBFLAGS="-path ${LIBDIR} -lib zexy -path ${SRCDIR}/abs:."
+LIBFLAGS="-path ${LIBDIR}:${SRCDIR}/abs:. -lib ${LIBDIR}/zexy"
 TMPFILE=$(mktemp)
 
 ${VALGRIND} ${PD} \
-	-noprefs -oss -nosound -nrt \
-	-nogui -batch \
+	-noprefs -nostdpath \
+	-oss -nosound -nrt \
+	-nogui -batch -verbose \
 	${LIBFLAGS} \
 	-open ${TESTDIR}/run1.pd \
 	-send "test ${TEST%.pd}" 2>&1 \
