@@ -1,0 +1,19 @@
+image: gcc
+
+build:
+  stage: build
+  before_script:
+    - apt update && apt upgrade
+    - apt -y install automake autoconf make
+    - apt -y install puredata-dev puredata-core
+  script:
+    - autoreconf -fiv
+    - ./configure
+    - make
+    - make install DESTDIR=$(pwd)/ pkglibdir=zexy
+  dependencies: []
+  artifacts:
+    name: ${CI_PROJECT_NAME}-snapshot
+    paths:
+      - zexy
+    expire_in: 1 week
