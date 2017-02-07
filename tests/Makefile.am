@@ -15,7 +15,7 @@ EXTRA_DIST = \
 	testunit.pd \
 	$(nada)
 
-EXTRA_DIST = \
+EXTRA_DIST += \
 	msgfile/msgfile.txt \
 	msgfile/CR.txt \
 	testtests/README.txt \
