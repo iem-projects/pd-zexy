@@ -51,7 +51,7 @@ typedef struct _mux {
   struct _muxproxy  **x_proxy;
 
   int i_count;
-  int i_selected;
+  float f_selected;
   t_inlet **in;
 } t_mux;
 
@@ -62,16 +62,11 @@ typedef struct _muxproxy {
   int id;
 } t_muxproxy;
 
-static void mux_select(t_mux *x, t_float f)
-{
-  x->i_selected=f;
-}
-
 static void mux_anything(t_muxproxy *y, t_symbol *s, int argc,
                          t_atom *argv)
 {
   t_mux*x=y->p_master;
-  if(y->id==x->i_selected) {
+  if(y->id==(int)x->f_selected) {
     outlet_anything(x->x_obj.ob_outlet, s, argc, argv);
   }
 }
@@ -81,7 +76,7 @@ static void *mux_new(t_symbol *s, int argc, t_atom *argv)
   int n = (argc < 2)?2:argc;
   t_mux *x = (t_mux *)pd_new(mux_class);
 
-  x->i_selected=0;
+  x->f_selected=0;
   x->i_count = n;
   x->in = (t_inlet **)getbytes(x->i_count * sizeof(t_inlet *));
   x->x_proxy = (t_muxproxy**)getbytes(x->i_count * sizeof(t_muxproxy*));
@@ -93,7 +88,7 @@ static void *mux_new(t_symbol *s, int argc, t_atom *argv)
     x->in[n] = inlet_new ((t_object*)x, (t_pd*)x->x_proxy[n], 0,0);
   }
 
-  inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
+  floatinlet_new(&x->x_obj, &x->f_selected);
 
   outlet_new(&x->x_obj, 0);
   return (x);
