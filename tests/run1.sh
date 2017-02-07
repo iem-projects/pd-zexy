@@ -16,7 +16,7 @@ LIBFLAGS="-path ${LIBDIR} -lib zexy -path ${SRCDIR}/abs:."
 TMPFILE=$(mktemp)
 
 ${PD} \
-	-noprefs -oss -nosound \
+	-noprefs -oss -nosound -nrt \
 	-nogui -batch \
 	${LIBFLAGS} \
 	-open ${TESTDIR}/run1.pd \
