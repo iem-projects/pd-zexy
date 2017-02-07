@@ -10,7 +10,7 @@ build:
   script:
     # build multi-object-binary
     - ./configure
-    - make check
+    - make check VERBOSE=1
     - make install DESTDIR=${CI_PROJECT_DIR}/ pkglibdir=zexy
 #  artifacts:
 #    name: ${CI_PROJECT_NAME}-snapshot
@@ -28,7 +28,7 @@ build-obj:
   script:
     # build multi-object-binary
     - ./configure --disable-library
-    - make check
+    - make check VERBOSE=1
     - make install DESTDIR=${CI_PROJECT_DIR}/ pkglibdir=zexy
 
 build-distcheck:
