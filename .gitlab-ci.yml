@@ -9,15 +9,27 @@ build:
     - autoreconf -fiv
   script:
     # build multi-object-binary
-    - mkdir -p ${CI_PROJECT_DIR}/build-lib && cd ${CI_PROJECT_DIR}/build-lib
-    - ../configure
+    - ./configure
     - make check
     - make install DESTDIR=${CI_PROJECT_DIR}/ pkglibdir=zexy
+#  artifacts:
+#    name: ${CI_PROJECT_NAME}-snapshot
+#    paths:
+#      - zexy
+#    expire_in: 1 week
 
+build-obj:
+  stage: build
+  before_script:
+    - apt update && apt -y upgrade
+    - apt -y install automake autoconf make
+    - apt -y install puredata-dev puredata-core
+    - autoreconf -fiv
+  script:
     # build multi-object-binary
-    - mkdir -p ${CI_PROJECT_DIR}/build-obj && cd ${CI_PROJECT_DIR}/build-obj
-    - ../configure --disable-library
+    - ./configure --disable-library
     - make check
+    - make install DESTDIR=${CI_PROJECT_DIR}/ pkglibdir=zexy
 
 build-distcheck:
   stage: build
@@ -30,8 +42,3 @@ build-distcheck:
     # finally make distcheck
     - ./configure
     - make distcheck
-#  artifacts:
-#    name: ${CI_PROJECT_NAME}-snapshot
-#    paths:
-#      - zexy
-#    expire_in: 1 week
