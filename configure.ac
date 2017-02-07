@@ -171,6 +171,9 @@ AC_ERROR([m_pd.h is desperately needed!
         "--with-pd=</path/to/pd/>"])
 fi
 
+AC_SUBST([VALGRIND_CHECK_RULES])
+m4_ifdef([AX_VALGRIND_CHECK], [AX_VALGRIND_CHECK])
+
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(DEFS)

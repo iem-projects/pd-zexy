@@ -1,5 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 
+@VALGRIND_CHECK_RULES@
 
 EXTRA_DIST = \
 	README.txt \
@@ -21,7 +22,12 @@ EXTRA_DIST += \
 TEST_EXTENSIONS = .pd
 PD_LOG_COMPILER = $(srcdir)/run1.sh
 #AM_PD_LOG_FLAGS = -v
-AM_TESTS_ENVIRONMENT = SRCDIR=$(top_srcdir) BUILDDIR=$(top_builddir) LIBDIR=$(top_builddir)/src/.libs TESTDIR=$(srcdir)
+
+AM_TESTS_ENVIRONMENT = SRCDIR=$(top_srcdir)
+AM_TESTS_ENVIRONMENT+= BUILDDIR=$(top_builddir)
+AM_TESTS_ENVIRONMENT+= LIBDIR=$(top_builddir)/src/.libs
+AM_TESTS_ENVIRONMENT+= TESTDIR=$(srcdir)
+AM_TESTS_ENVIRONMENT+= VALGRIND='$(VALGRIND)'
 
 
 

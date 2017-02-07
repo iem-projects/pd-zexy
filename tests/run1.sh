@@ -15,7 +15,7 @@ fi
 LIBFLAGS="-path ${LIBDIR} -lib zexy -path ${SRCDIR}/abs:."
 TMPFILE=$(mktemp)
 
-${PD} \
+${VALGRIND} ${PD} \
 	-noprefs -oss -nosound -nrt \
 	-nogui -batch \
 	${LIBFLAGS} \
