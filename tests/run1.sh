@@ -3,7 +3,7 @@
 PD=${PD:=pd}
 LIBDIR=${LIBDIR:=../src/.libs/}
 SRCDIR=${SRCDIR:=../}
-
+TESTDIR=${TESTDIR:=.}
 
 PD=$(which ${PD})
 TEST=$1
@@ -19,7 +19,7 @@ ${PD} \
 	-noprefs -oss -nosound \
 	-nogui -batch \
 	${LIBFLAGS} \
-	-open run1.pd \
+	-open ${TESTDIR}/run1.pd \
 	-send "test ${TEST%.pd}" 2>&1 \
 	| tee "${TMPFILE}"
 
