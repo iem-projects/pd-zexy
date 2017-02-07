@@ -31,7 +31,7 @@ build_library:
 build_objects:
   stage: build
   script:
-    - mkdir build-lib && cd build-lib
+    - mkdir build-obj && cd build-obj
     - pwd
     - ../configure --disable-library
     - make
