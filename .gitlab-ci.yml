@@ -1,43 +1,26 @@
 image: gcc
 
-stages:
- - depends
- - build
- - test
-
-depends:
-  stage: depends
-  script:
+build:
+  stage: build
+  before_script:
     - apt update && apt -y upgrade
     - apt -y install automake autoconf make
     - apt -y install puredata-dev puredata-core
     - autoreconf -fiv
-    - pwd
-    - ls -l
-
-build_library:
-  stage: build
   script:
-    - mkdir build-lib && cd build-lib
-    - pwd
-    - ls -l ..
+    # build multi-object-binary
+    - mkdir -p ${CI_PROJECT_DIR}/build-lib && cd ${CI_PROJECT_DIR}/build-lib
     - ../configure
-    - make
-    - make install DESTDIR=$(pwd)/ pkglibdir=zexy
-  dependencies: []
+    - make check
+    - make install DESTDIR=${CI_PROJECT_DIR}/ pkglibdir=zexy
+
+    # build multi-object-binary
+    - mkdir -p ${CI_PROJECT_DIR}/build-obj && cd ${CI_PROJECT_DIR}/build-obj
+    - ../configure --disable-library
+    - make check
+#  dependencies: []
 #  artifacts:
 #    name: ${CI_PROJECT_NAME}-snapshot
 #    paths:
 #      - zexy
 #    expire_in: 1 week
-
-build_objects:
-  stage: build
-  script:
-    - mkdir build-obj && cd build-obj
-    - pwd
-    - ls -l ..
-    - ../configure --disable-library
-    - make
-    - make install DESTDIR=$(pwd)/ pkglibdir=zexy
-  dependencies: []
