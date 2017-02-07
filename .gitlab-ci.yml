@@ -18,7 +18,18 @@ build:
     - mkdir -p ${CI_PROJECT_DIR}/build-obj && cd ${CI_PROJECT_DIR}/build-obj
     - ../configure --disable-library
     - make check
-#  dependencies: []
+
+build-distcheck:
+  stage: build
+  before_script:
+    - apt update && apt -y upgrade
+    - apt -y install automake autoconf make
+    - apt -y install puredata-dev puredata-core
+    - autoreconf -fiv
+  script:
+    # finally make distcheck
+    - ./configure
+    - make distcheck
 #  artifacts:
 #    name: ${CI_PROJECT_NAME}-snapshot
 #    paths:
