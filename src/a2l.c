@@ -74,28 +74,29 @@ static void *a2l_new(void)
   outlet_new(&x->x_obj, 0);
   return (x);
 }
-static void zclass_setup(t_class*c)
+static t_class* zclass_setup(const char*name)
 {
+  t_class *c = class_new(gensym(name), (t_newmethod)a2l_new,
+                        0, sizeof(t_a2l), 0, 0);
   class_addbang    (c, a2l_bang);
   class_addfloat   (c, a2l_float);
   class_addsymbol  (c, a2l_symbol);
   class_addpointer (c, a2l_pointer);
   class_addlist    (c, a2l_list);
   class_addanything(c, a2l_anything);
+  return c;
+}
+static void dosetup()
+{
+  zexy_register("any2list");
+  a2l_class=zclass_setup("any2list");
+  zclass_setup("a2l");
 }
 void any2list_setup(void)
 {
-  if(!a2l_class)
-    zexy_register("any2list");
-  a2l_class = class_new(gensym("any2list"), (t_newmethod)a2l_new,
-                        0, sizeof(t_a2l), 0, 0);
-  zclass_setup(a2l_class);
+  dosetup();
 }
-
 void a2l_setup(void)
 {
-  t_class *c = class_new(gensym("a2l"), (t_newmethod)a2l_new,
-                        0, sizeof(t_a2l), 0, 0);
-  zclass_setup(c);
-  any2list_setup();
+  dosetup();
 }

@@ -26,7 +26,7 @@
 #define LIST_NGETBYTE 100 /* bigger that this we use alloc, not alloca */
 
 
-static t_class *mypdlist_class = NULL;
+static t_class *lister_class = NULL;
 
 #ifdef HAVE_ALLOCA_H
 # define ATOMS_ALLOCA(x, n) ((x) = (t_atom *)((n) < LIST_NGETBYTE ?  \
@@ -89,7 +89,7 @@ static void mypdlist_free(t_mypdlist *x)
 
 static void *mypdlist_new(t_symbol *s, int argc, t_atom *argv)
 {
-  t_mypdlist *x = (t_mypdlist *)pd_new(mypdlist_class);
+  t_mypdlist *x = (t_mypdlist *)pd_new(lister_class);
 
   outlet_new(&x->x_obj, 0);
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym("lst2"));
@@ -110,27 +110,28 @@ static void mypdlist_help(t_mypdlist*x)
   post("\n"HEARTSYMBOL " lister\t\t:: basic list storage (use pd>=0.39 for real [list] objects)");
 }
 
-static void lister_class_setup(t_class*c) {
+static t_class* zclass_setup(const char*name) {
+  t_class *c = class_new(gensym(name), (t_newmethod)mypdlist_new,
+                         (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
   class_addbang    (c, mypdlist_bang);
   class_addlist    (c, mypdlist_list);
   class_addmethod  (c, (t_method)mypdlist_secondlist,
                     gensym("lst2"), A_GIMME, 0);
   class_addmethod(c, (t_method)mypdlist_help, gensym("help"),
                   A_NULL);
+  return c;
+}
+static void dosetup()
+{
+  zexy_register("lister");
+  lister_class = zclass_setup("lister");
+  zclass_setup("l");
 }
 void lister_setup(void)
 {
-  if(!mypdlist_class)
-    zexy_register("lister");
-  mypdlist_class = class_new(gensym("lister"), (t_newmethod)mypdlist_new,
-                             (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
-  lister_class_setup(mypdlist_class);
+  dosetup();
 }
 void l_setup(void)
 {
-  t_class *c = class_new(gensym("l"), (t_newmethod)mypdlist_new,
-                         (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
-
-  lister_class_setup(c);
-  lister_setup();
+  dosetup();
 }

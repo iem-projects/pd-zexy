@@ -95,24 +95,25 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 
   return (x);
 }
-static void zclass_setup(t_class*c)
+static t_class* zclass_setup(const char*name)
 {
+  t_class*c = class_new(gensym(name), (t_newmethod)demux_new,
+                          0, sizeof(t_demux), 0, A_GIMME,  0);
   class_addanything (c, demux_any);
   class_addlist     (c, demux_list);
+  return c;
+}
+static void dosetup()
+{
+  zexy_register("demultiplex");
+  demux_class=zclass_setup("demultiplex");
+  zclass_setup("demux");
 }
 void demultiplex_setup(void)
 {
-  if(!demux_class)
-    zexy_register("demultiplex");
-  demux_class = class_new(gensym("demultiplex"), (t_newmethod)demux_new,
-                          0, sizeof(t_demux), 0, A_GIMME,  0);
-  zclass_setup(demux_class);
+  dosetup();
 }
 void demux_setup(void)
 {
-  t_class*c = class_new(gensym("demux"), (t_newmethod)demux_new,
-                          0, sizeof(t_demux), 0, A_GIMME,  0);
-  zclass_setup(c);
-  demultiplex_setup();
+  dosetup();
 }
-

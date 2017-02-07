@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *demux_class=NULL;
+static t_class *demux_tilde_class=NULL;
 
 typedef struct _demux {
   t_object x_obj;
@@ -92,7 +92,7 @@ static void demux_free(t_demux *x)
 
 static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 {
-  t_demux *x = (t_demux *)pd_new(demux_class);
+  t_demux *x = (t_demux *)pd_new(demux_tilde_class);
   int i;
 
   if (!argc) {
@@ -113,31 +113,28 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 
   return (x);
 }
-static void zclass_setup(t_class*c)
+static t_class* zclass_setup(const char*name)
 {
+  t_class *c = class_new(gensym(name), (t_newmethod)demux_new,
+                         (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
   class_addfloat(c, demux_output);
-  class_addmethod(c, (t_method)demux_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  class_addmethod(c, (t_method)demux_dsp, gensym("dsp"), A_CANT, 0);
   class_addmethod(c, nullfn, gensym("signal"), 0);
 
   class_addmethod(c, (t_method)demux_helper, gensym("help"), 0);
+  return c;
+}
+static void dosetup()
+{
+  zexy_register("demultiplex~");
+  demux_tilde_class=zclass_setup("demultiplex~");
+  zclass_setup("demux~");
 }
 void demultiplex_tilde_setup(void)
 {
-  if(!demux_class)
-    zexy_register("demultiplex~");
-
-  demux_class = class_new(gensym("demultiplex~"), (t_newmethod)demux_new,
-                          (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
-  zclass_setup(demux_class);
+  dosetup();
 }
 void demux_tilde_setup(void)
 {
-  t_class *c = class_new(gensym("demux~"), (t_newmethod)demux_new,
-                         (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
-  zclass_setup(c);
-  demultiplex_tilde_setup();
+  dosetup();
 }
-
-
-
