@@ -1,9 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
 
-#TESTS=runtests.sh
-
-clean-local:
-	-rm -f runtests.txt
 
 EXTRA_DIST = \
 	README.txt \
