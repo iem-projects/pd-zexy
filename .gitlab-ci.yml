@@ -12,12 +12,15 @@ depends:
     - apt -y install automake autoconf make
     - apt -y install puredata-dev puredata-core
     - autoreconf -fiv
+    - pwd
+    - ls -l
 
 build_library:
   stage: build
   script:
     - mkdir build-lib && cd build-lib
     - pwd
+    - ls -l ..
     - ../configure
     - make
     - make install DESTDIR=$(pwd)/ pkglibdir=zexy
@@ -33,6 +36,7 @@ build_objects:
   script:
     - mkdir build-obj && cd build-obj
     - pwd
+    - ls -l ..
     - ../configure --disable-library
     - make
     - make install DESTDIR=$(pwd)/ pkglibdir=zexy
