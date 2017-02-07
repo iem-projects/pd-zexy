@@ -20,7 +20,7 @@ EXTRA_DIST += \
 	msgfile/msgfile.txt \
 	msgfile/CR.txt \
 	testtests/README.txt \
-	$(nada)
+	$(TESTS)
 
 TEST_EXTENSIONS = .pd
 PD_LOG_COMPILER = $(srcdir)/run1.sh
