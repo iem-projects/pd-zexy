@@ -8,7 +8,7 @@ stages:
 depends:
   stage: depends
   script:
-    - apt update && apt upgrade
+    - apt update && apt -y upgrade
     - apt -y install automake autoconf make
     - apt -y install puredata-dev puredata-core
     - autoreconf -fiv
