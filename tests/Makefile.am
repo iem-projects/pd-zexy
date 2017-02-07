@@ -8,6 +8,7 @@ clean-local:
 EXTRA_DIST = \
 	README.txt \
 	run1.sh \
+	run1.pd \
 	runtests.sh \
 	runtests.bat \
 	runtests_nogui.pd \
