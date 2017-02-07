@@ -97,5 +97,5 @@ void a2l_setup(void)
   t_class *c = class_new(gensym("a2l"), (t_newmethod)a2l_new,
                         0, sizeof(t_a2l), 0, 0);
   zclass_setup(c);
-  a2l_setup();
+  any2list_setup();
 }
