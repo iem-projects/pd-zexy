@@ -64,7 +64,8 @@ void operating_system_setup(void)
 {
   operating_system_class = class_new(gensym("operating_system"),
                                      (t_newmethod)operating_system_new,
-                                     0, sizeof(t_operating_system), 0, A_NULL);
+                                     0, sizeof(t_operating_system), 0,
+                                     A_NULL);
 
   class_addbang  (operating_system_class, operating_system_bang);
   class_addmethod(operating_system_class, (t_method)operating_system_help,

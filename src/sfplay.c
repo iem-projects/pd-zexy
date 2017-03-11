@@ -596,7 +596,7 @@ static void sfplay_dsp(t_sfplay *x, t_signal **sp)
 
 
 /* create sfplay with args <channels> <skip> */
-static void *sfplay_new(t_floatarg chan,t_floatarg skip)
+static void *sfplay_new(t_floatarg chan, t_floatarg skip)
 {
   t_sfplay *x = (t_sfplay *)pd_new(sfplay_class);
   t_int c = chan;

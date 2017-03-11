@@ -122,7 +122,7 @@ static void mux_free(t_mux*x)
 static t_class* zclass_setup(const char*name)
 {
   t_class*c = class_new(gensym(name), (t_newmethod)mux_new,
-                        (t_method)mux_free, sizeof(t_mux), CLASS_NOINLET, A_GIMME,  0);
+                        (t_method)mux_free, sizeof(t_mux), CLASS_NOINLET, A_GIMME, 0);
   return c;
 }
 static void dosetup()
