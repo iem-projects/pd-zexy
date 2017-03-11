@@ -153,7 +153,7 @@ static void *sigABS_new(void)
 void abs_tilde_setup(void)
 {
   sigABS_class = class_new(gensym("abs~"), (t_newmethod)sigABS_new, 0,
-                           sizeof(t_abs), 0, A_DEFFLOAT, 0);
+                           sizeof(t_abs), 0, A_NULL);
   CLASS_MAINSIGNALIN(sigABS_class, t_abs, x_f);
   class_addmethod(sigABS_class, (t_method)sigABS_dsp, gensym("dsp"),
                   A_CANT, 0);

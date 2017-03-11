@@ -81,7 +81,7 @@ void atof_setup(void)
 {
   atof_class = class_new(gensym("atof"), (t_newmethod)atof_new,
                          (t_method)atof_free,
-                         sizeof(t_atof), 0, A_DEFFLOAT, 0);
+                         sizeof(t_atof), 0, A_NULL);
 
   class_addbang(atof_class, (t_method)atof_bang);
   class_addfloat(atof_class, (t_method)atof_float);

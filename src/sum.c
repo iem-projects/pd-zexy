@@ -53,7 +53,7 @@ static void sum_help(void)
 void sum_setup(void)
 {
   sum_class = class_new(gensym("sum"), (t_newmethod)sum_new, 0,
-                        sizeof(t_sum), 0, A_DEFFLOAT, 0);
+                        sizeof(t_sum), 0, A_NULL);
 
   class_addlist(sum_class, (t_method)sum_list);
   class_addmethod(sum_class, (t_method)sum_help, gensym("help"), 0);

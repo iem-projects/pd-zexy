@@ -610,7 +610,8 @@ void sfrecord_setup(void)
 {
   sfrecord_class = class_new(gensym("sfrecord"), (t_newmethod)sfrecord_new,
                              (t_method)sfrecord_free,
-                             sizeof(t_sfrecord), 0, A_DEFFLOAT, A_DEFFLOAT,0);
+                             sizeof(t_sfrecord), 0,
+                             A_DEFFLOAT, A_NULL);
   class_addmethod(sfrecord_class, nullfn, gensym("signal"), 0);
   class_addmethod(sfrecord_class, (t_method)sfrecord_dsp, gensym("dsp"),
                   A_CANT, 0);

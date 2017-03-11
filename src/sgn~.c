@@ -198,7 +198,7 @@ static void *sgnTilde_new(void)
 void sgn_tilde_setup(void)
 {
   sgnTilde_class = class_new(gensym("sgn~"), (t_newmethod)sgnTilde_new, 0,
-                             sizeof(t_sgnTilde), 0, A_DEFFLOAT, 0);
+                             sizeof(t_sgnTilde), 0, A_NULL);
   class_addmethod(sgnTilde_class, nullfn, gensym("signal"), 0);
   class_addmethod(sgnTilde_class, (t_method)sgnTilde_dsp, gensym("dsp"),
                   A_CANT, 0);

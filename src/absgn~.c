@@ -135,7 +135,7 @@ static void *sigABSGN_new(void)
 void absgn_tilde_setup(void)
 {
   sigABSGN_class = class_new(gensym("absgn~"), (t_newmethod)sigABSGN_new, 0,
-                             sizeof(t_absgn), 0, A_DEFFLOAT, 0);
+                             sizeof(t_absgn), 0, A_NULL);
   CLASS_MAINSIGNALIN(sigABSGN_class, t_absgn, x_f);
   class_addmethod(sigABSGN_class, (t_method)sigABSGN_dsp, gensym("dsp"),
                   A_CANT, 0);

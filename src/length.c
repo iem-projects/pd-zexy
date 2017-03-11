@@ -45,7 +45,7 @@ static void *length_new(void)
 void length_setup(void)
 {
   length_class = class_new(gensym("length"), (t_newmethod)length_new, 0,
-                           sizeof(t_length), 0, A_DEFFLOAT, 0);
+                           sizeof(t_length), 0, A_NULL);
 
   class_addlist(length_class, (t_method)length_list);
   class_addanything(length_class, (t_method)length_any);
