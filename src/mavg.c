@@ -32,21 +32,24 @@ typedef struct _mavg {
 
 static void mavg_resize(t_mavg *x, t_float f)
 {
-  int i;
+  int i = (int)f;
   t_float *dumbuf;
 
-  f = (int)f;
-  if ((f<1) || (f == x->size)) {
+  if ((i<1) || (i == x->size)) {
     return;
   }
 
-  freebytes(x->buf, sizeof(t_float)*x->size);
-  x->n_inv = 1.0/f;
-  x->size = f;
-  x->buf = getbytes(sizeof(t_float)*x->size);
+  dumbuf = getbytes(sizeof(t_float)*i);
+  if(!dumbuf) {
+    pd_error(x, "unable to allocate memory for %d elements", i);
+    return;
+  }
+  if(x->buf)
+    freebytes(x->buf, sizeof(t_float)*x->size);
+  x->buf = x->wp = dumbuf;
+  x->size = i;
+  x->n_inv = 1.0/(t_float)i;
 
-  dumbuf = x->wp = x->buf;
-  i = x->size;
   while(i--) {
     *dumbuf++ = x->avg;
   }
@@ -58,6 +61,8 @@ static void mavg_set(t_mavg *x, t_symbol* UNUSED(s), int argc,
   int i = x->size;
   t_float *dummy = x->buf;
   t_float f=(argc)?atom_getfloat(argv):x->avg;
+  if(!x->buf)
+    return;
 
   while (i--) {
     *dummy++=f;
@@ -71,6 +76,8 @@ static void mavg_float(t_mavg *x, t_float f)
   int i = x->size;
   t_float dummy = 0;
   t_float *dumb = x->buf;
+  if(!x->buf)
+    return;
 
   *x->wp++ = f;
   if (x->wp == x->buf + x->size) {
@@ -94,15 +101,12 @@ static void *mavg_new(t_floatarg f)
 
   outlet_new(&x->x_obj, gensym("float"));
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
+  x->size = 0;
+  x->buf = x->wp = NULL;
+  x->n_inv = 0.;
+  x->avg = 0.;
 
-  x->buf = x->wp = (t_float *)getbytes(sizeof(t_float) * i);
-  x->size = i;
-  x->n_inv = 1.0f/(t_float)i;
-
-  dumbuf = x->buf;
-  while (i--) {
-    *dumbuf++=0;
-  }
+  mavg_resize(x, i);
 
   return (x);
 }
