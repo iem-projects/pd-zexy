@@ -3,11 +3,6 @@
 ZEXY_H=z_zexy.h
 ZEXY_C=z_zexy.c
 
-
-GREP=grep
-AWK=awk
-SED=sed
-
 #################################
 ## functions
 
