@@ -76,11 +76,11 @@ static char*regex_l2s(int *reslen, t_symbol*s, int argc, t_atom*argv)
   i=argc;
   ap=argv;
   while(i--) {
-    char buffer[MAXPDSTRING];
     int len=0;
     if(A_SYMBOL==ap->a_type) {
       len=strlen(ap->a_w.w_symbol->s_name);
     } else {
+      char buffer[MAXPDSTRING];
       atom_string(ap, buffer, MAXPDSTRING);
       len=strlen(buffer);
     }

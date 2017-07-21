@@ -154,8 +154,8 @@ static int enlarge_cstr_if_required(const char **c_str, int *len,
 
 static int cstr_char_pos(const char *c_str, const char c)
 {
-  int cnt=1;
   if (c_str) {
+    int cnt=1;
     do {
       if (*c_str==c) {
         return cnt;
@@ -179,7 +179,6 @@ static void freadln_readline (t_freadln *x)
   t_binbuf *bbuf;
   t_atom *abuf;
   int abuf_length;
-  int rewind_after;
 
   if (!x->x_file) {
     pd_error(x, "no file opened for reading");
@@ -212,7 +211,7 @@ static void freadln_readline (t_freadln *x)
            !(items_read < x->x_textbuf_length));
 
   if (linebreak_pos-1  < items_read - strlen(x->linebreak_chr)) {
-    rewind_after=items_read-linebreak_pos;
+    int rewind_after=items_read-linebreak_pos;
     fseek(x->x_file,-(long)(rewind_after),SEEK_CUR);
   }
   if (linebreak_pos==-1) {

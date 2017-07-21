@@ -103,7 +103,6 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x,
 
 static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
 {
-  t_fifop_list*fifo=0;
   t_fifop_list*entry=0;
 
   if(fifoprio==0) {
@@ -127,7 +126,7 @@ static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
   /* insert entry into fifo */
   if(fifoprio->fifo_end) {
     /* append to the end of the fifo */
-    fifo=fifoprio->fifo_end;
+    t_fifop_list*fifo=fifoprio->fifo_end;
 
     /* add new entry to end of fifo */
     fifo->next=entry;

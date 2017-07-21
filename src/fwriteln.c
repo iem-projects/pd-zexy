@@ -107,9 +107,9 @@ static void fwriteln_open (t_fwriteln *x, t_symbol *s, t_symbol*type)
 static void fwriteln_write (t_fwriteln *x, t_symbol *s, int argc,
                             t_atom *argv)
 {
-  int length=0;
   char *text=x->x_textbuf;
   if (x->x_file) {
+    int length=0;
     if ((s!=gensym("list"))||(argv->a_type==A_SYMBOL)) {
       snprintf(text,MAXPDSTRING,"%s ", s->s_name);
       text[MAXPDSTRING-1]=0;

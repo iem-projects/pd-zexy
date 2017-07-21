@@ -91,11 +91,11 @@ static t_int *blockshuffle_perform(t_int *w)
   t_sample *in = (t_sample *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
-  int i=0;
   t_sample *temp=x->blockbuf;
   t_int    *idx =x->indices;
 
   if(idx) {
+    int i=0;
     for(i=0; i<n; i++) {
       temp[i]=in[idx[i]];
     }

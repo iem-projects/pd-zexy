@@ -55,9 +55,9 @@ static t_int *sigzero_perform(t_int *w)
   t_sigzero *x = (t_sigzero *)w[2];
   int n = (int)w[3];
 
-  int non_zero = 0;
 
   if (x->activate) {
+    int non_zero = 0;
     while (n--) {
       if (*in++ != 0.) {
         non_zero = 1;

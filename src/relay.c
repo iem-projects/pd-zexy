@@ -56,9 +56,9 @@ typedef struct _relay {
 static void relay_anything(t_relay *x, t_symbol *sel, int argc,
                            t_atom *argv)
 {
-  t_relayelement *e;
-  int nelement;
   if (x->x_type == A_SYMBOL) {
+    int nelement;
+    t_relayelement *e;
     for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++) {
       if (e->e_w.w_symbol == sel) {
         outlet_anything(e->e_outlet, sel, argc, argv);

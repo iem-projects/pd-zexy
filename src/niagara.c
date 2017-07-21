@@ -61,7 +61,7 @@ static void niagara_any(t_niagara *x, t_symbol *s, int argc, t_atom *argv)
 {
   int n_l, n_r;
   t_atom *ap_l, *ap_r;
-  t_symbol *s_r, *s_l;
+  t_symbol *s_l;
   int dumrock = x->rock;
   int rock = ((dumrock < 0.f)?(argc+dumrock):dumrock-1);
 
@@ -73,7 +73,7 @@ static void niagara_any(t_niagara *x, t_symbol *s, int argc, t_atom *argv)
   ap_r = &argv[n_l];
 
   if (n_r) {
-    s_r = 0;
+    t_symbol *s_r = 0;
     if (ap_r->a_type == A_FLOAT) {
       s_r = gensym("list");
     } else {

@@ -143,9 +143,9 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
                            || newentry>=x->maxentries)) {
       /* do some resizing */
       int maxentries=(newentry>x->maxentries)?newentry:(x->maxentries*2);
-      int i;
       t_symbol**buf=(t_symbol **)getbytes(sizeof(t_symbol *) * maxentries);
       if(buf!=0) {
+        int i;
         memcpy(buf, x->names, sizeof(t_symbol *) * x->maxentries);
         for(i=x->maxentries; i<maxentries; i++) {
           buf[i]=0;

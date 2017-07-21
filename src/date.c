@@ -79,10 +79,10 @@ typedef struct _date {
 static void *date_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_date *x = (t_date *)pd_new(date_class);
-  char buf[5];
 
   x->GMT=0;
   if (argc) {
+    char buf[5];
     atom_string(argv, buf, 5);
     if (buf[0]=='G' && buf[1]=='M' && buf[2]=='T') {
       x->GMT = 1;
