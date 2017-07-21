@@ -237,13 +237,11 @@ static void liststorage_bang(t_liststorage *x)
 static void liststorage_add(t_liststorage *x, t_symbol *s, int ac,
                             t_atom *av)
 {
-  t_msglist*list=NULL;
   int slot=_liststorage_checkslot(x,
                                   "attempting to add data to invalid slot", 1);
   if(slot<0) {
     return;
   }
-  list=_liststorage_getslot(x, slot);
   x->x_slots[slot]=_liststorage_add2slot(x->x_slots[slot], ac, av);
 }
 
@@ -271,7 +269,7 @@ static void liststorage_clearall(t_liststorage *x)
 static void liststorage_insert(t_liststorage *x, t_floatarg f)
 {
   int current=x->x_currentslot;
-  int slot=-1;
+  int slot;
   int i=0;
 
   x->x_currentslot=f;

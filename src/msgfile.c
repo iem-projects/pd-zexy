@@ -848,7 +848,6 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
       pd_error(x, "msgfile: read error (headroom %d too small!)",
                MSGFILE_HEADROOM);
       goto read_error;
-      break;
     }
     if (*bufptr == separator) {
       *cbb = ' ';
