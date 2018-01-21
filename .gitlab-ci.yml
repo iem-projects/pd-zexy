@@ -4,8 +4,8 @@ build:
   stage: build
   before_script:
     - apt update && apt -y upgrade
-    - apt -y install automake autoconf make
-    - apt -y install puredata-dev puredata-core
+    - apt install -y --no-install-recommends automake autoconf make
+    - apt install -y --no-install-recommends puredata-dev puredata-core
     - autoreconf -fiv
   script:
     # build multi-object-binary
@@ -22,8 +22,8 @@ build-obj:
   stage: build
   before_script:
     - apt update && apt -y upgrade
-    - apt -y install automake autoconf make
-    - apt -y install puredata-dev puredata-core
+    - apt install -y --no-install-recommends automake autoconf make
+    - apt install -y --no-install-recommends puredata-dev puredata-core
     - autoreconf -fiv
   script:
     # build multi-object-binary
@@ -35,8 +35,8 @@ build-distcheck:
   stage: build
   before_script:
     - apt update && apt -y upgrade
-    - apt -y install automake autoconf make
-    - apt -y install puredata-dev puredata-core
+    - apt install -y --no-install-recommends automake autoconf make
+    - apt install -y --no-install-recommends puredata-dev puredata-core
     - autoreconf -fiv
   script:
     # finally make distcheck
