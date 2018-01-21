@@ -165,7 +165,8 @@ static void lpt_bang(t_lpt *x)
 static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_lpt *x = (t_lpt *)pd_new(lpt_class);
-  char*devname=atom_getsymbol(argv)->s_name;
+  char*devname=0;
+
   if(s==gensym("lp")) {
     error("lpt: the use of 'lp' has been deprecated; use 'lpt' instead");
   }
@@ -200,6 +201,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
        we ignore the file (device) case by now;
        LATER think about this
     */
+    devname=atom_getsymbol(argv)->s_name;
     x->device=-1;
     x->port=strtol(devname, 0, 16);
     if(0==x->port) {
