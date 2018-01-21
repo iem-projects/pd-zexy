@@ -184,12 +184,15 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     switch ((int)((argc)?atom_getfloat(argv):0)) {
     case 0:
       x->port = BASE0;
+      devname="lpt0";
       break;
     case 1:
       x->port = BASE1;
+      devname="lpt1";
       break;
     case 2:
       x->port = BASE2;
+      devname="lpt2";
       break;
     default:
       error("lpt : only lpt0, lpt1 and lpt2 are accessible");
