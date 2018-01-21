@@ -128,7 +128,9 @@ if [ "x${RUNTESTS_NOLOG}" != "x" ]; then
   RUNTESTS_FINAL_LOG=
 fi
 if [ "x${RUNTESTS_FINAL_LOG}" = "x" ]; then
- :
+ if [ ${SUCCESS} -ne 0 ]; then
+   cat "${RUNTESTS_LOG}"
+ fi
 else
  cat ${RUNTESTS_LOG} >> ${RUNTESTS_FINAL_LOG}
 fi
