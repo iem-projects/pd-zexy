@@ -200,10 +200,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
       return (x);
     }
   } else {
-    /* SYMBOL might be a file or a hex port-number;
-       we ignore the file (device) case by now;
-       LATER think about this
-    */
+    /* SYMBOL might be a file or a hex port-number */
     devname=atom_getsymbol(argv)->s_name;
     x->device=-1;
     x->port=strtol(devname, 0, 16);
