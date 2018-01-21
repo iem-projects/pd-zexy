@@ -88,7 +88,7 @@ static void zexy_help(void)
   post("sigzero~\t:: indicates whether a signal is zero throughout the block");
   post("avg~\t\t:: outputs average of a signal as float");
   post("tavg~\t\t:: outputs average of a signal between two bangs");
-  post("envrms~\t\t:: an env~-object that ouputs rms instead of db");
+  post("envrms~\t\t:: an env~-object that outputs rms instead of db");
   post("pdf~\t\t:: power density function");
 
   endpost();
