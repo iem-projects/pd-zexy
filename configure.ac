@@ -119,7 +119,7 @@ AC_HEADER_TIME
 
 dnl Checks for library functions.
 AC_FUNC_MMAP
-AC_CHECK_FUNCS([select socket strerror])
+AC_CHECK_FUNCS([select socket strerror strndup])
 
 IEM_CHECK_FAT(ARCH_FLAG)
 

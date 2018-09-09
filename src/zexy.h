@@ -93,6 +93,22 @@
 # define STATIC_INLINE static
 #endif
 
+#ifndef HAVE_STRNDUP
+#include <stdlib.h>
+#include <string.h>
+static char *strndup(const char *s, size_t n) {
+  char *result=0;
+  size_t len = strlen(s);
+  if(len>n) len=n+1;
+
+  result = malloc(len);
+  if(!result)
+    return result;
+  result[len-1] = 0;
+  return memcpy(result, s, len);
+}
+#endif /* !HAVE_STRNDUP */
+
 #ifdef __APPLE__
 # include <AvailabilityMacros.h>
 # if defined (MAC_OS_X_VERSION_10_3) && MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_3
