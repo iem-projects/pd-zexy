@@ -1,5 +1,8 @@
 ###################################################
 ### configuration templates (to be used for snapshot and release builds)
+variables:
+  PDVERSION: 0.48-1
+
 .build:snapshot: &snapshot
   except:
     - tags
@@ -35,9 +38,14 @@
   tags:
      - osx
   stage: build
+  before_script:
+    - wget -O Pd.tgz http://msp.ucsd.edu/Software/pd-${PDVERSION}.mac.tar.gz
+    - rm -rf "/tmp/pd"
+    - mkdir -p "/tmp/pd"
+    - tar --strip-components=1 -xf Pd.tgz -C /tmp/pd
   script:
     - autoreconf -fiv
-    - ./configure
+    - ./configure --with-pd=/tmp/pd || cat config.log
     - make
     - make install DESTDIR=$(pwd) libdir=/
 
@@ -48,13 +56,14 @@
   variables:
     IEMCI_CONFIGURATIONS: mingw32
   before_script:
-    - wget -O Pd.zip http://msp.ucsd.edu/Software/pd-0.48-1.msw.zip
-    - mkdir -p "${PROGRAMFILESX86}/pd"
-    - unzip -q Pd.zip -d "${PROGRAMFILESX86}/pd"
-    - mv -v "${PROGRAMFILESX86}/pd"/*/* "${PROGRAMFILESX86}/pd"
+    - wget -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.msw.zip
+    - rm -rf "/tmp/pd"
+    - mkdir -p "/tmp/pd"
+    - unzip -q Pd.zip -d "/tmp/pd"
+    - mv -v "/tmp/pd"/*/* "/tmp/pd"
   script:
     - autoreconf -fiv
-    - ./configure --with-extension=m_i386
+    - ./configure --with-extension=m_i386 --with-pd=/tmp/pd || cat config.log
     - make
     - make install DESTDIR=$(pwd) libdir=/
 
@@ -65,15 +74,16 @@
   variables:
     IEMCI_CONFIGURATIONS: mingw64
   before_script:
-    - wget -O Pd.zip http://msp.ucsd.edu/Software/pd-0.48-1.windows.64bit.zip
-    - mkdir -p "${PROGRAMFILES}/pd"
-    - unzip -q Pd.zip -d "${PROGRAMFILES}/pd"
-    - mv -v "${PROGRAMFILES}/pd"/*/* "${PROGRAMFILES}/pd"
+    - wget -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.windows.64bit.zip
+    - rm -rf "/tmp/pd"
+    - mkdir -p "/tmp/pd"
+    - unzip -q Pd.zip -d "/tmp/pd"
+    - mv -v "/tmp/pd"/*/* "/tmp/pd"
   script:
     - autoreconf -fiv
     - ./configure
     - make
-    - make install DESTDIR=$(pwd) libdir=/
+    - make install DESTDIR=$(pwd) libdir=/ --with-pd=/tmp/pd || cat config.log
 
 ###################################################
 ### the actual jobs: (linux,macos,windows)*(release,snapshot)
