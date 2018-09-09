@@ -95,7 +95,7 @@ static char*regex_l2s(int *reslen, t_symbol*s, int argc, t_atom*argv)
   result = (char*)getbytes((length+1)*sizeof(char));
 
   if (s) {
-    char *buf = s->s_name;
+    const char *buf = s->s_name;
     strcpy(result+pos, buf);
     pos+=strlen(buf);
     if(i) {

@@ -746,7 +746,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   char buf[MAXPDSTRING], *bufptr, *readbuf;
   char *charbinbuf=NULL, *cbb;
   int charbinbuflength=0;
-  char*dirname=canvas_getdir(x->x_canvas)->s_name;
+  const char*dirname=canvas_getdir(x->x_canvas)->s_name;
 
   int mode = x->mode;
   char separator, eol;

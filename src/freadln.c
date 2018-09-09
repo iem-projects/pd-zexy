@@ -79,7 +79,7 @@ static void freadln_close (t_freadln *x)
 static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
 {
   char filenamebuf[MAXPDSTRING], *filenamebufptr;
-  char*dirname=canvas_getdir(x->x_canvas)->s_name;
+  const char*dirname=canvas_getdir(x->x_canvas)->s_name;
   int fd, len;
   post("open: %s", s->s_name);
 

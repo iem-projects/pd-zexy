@@ -53,7 +53,7 @@ typedef struct _makesymbol {
   t_object x_obj;
   t_symbol *x_sym;
 
-  char* mask;
+  const char* mask;
   char* buf;
 } t_makesymbol;
 
@@ -70,7 +70,7 @@ static void reset_mask(t_makesymbol *x, t_symbol *s)
 
 typedef char cstring[MAXSTRINGLENG];
 
-static t_symbol* list2symbol(char *masque, int argc, t_atom *argv)
+static t_symbol* list2symbol(const char *masque, int argc, t_atom *argv)
 {
   cstring*buf=(cstring*)getbytes(MAXSTRINGARGS*sizeof(cstring));
   cstring buffer;

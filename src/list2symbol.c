@@ -41,7 +41,7 @@ static void list2symbol_bang(t_list2symbol *x)
   char *result = 0;
   int length = 0, len=0;
   int i= argc;
-  char *connector=0;
+  const char *connector=0;
   char connlen=0;
   char*buffer = (char*)getbytes(MAXPDSTRING*sizeof(char));
   if(x->connector) {
@@ -79,7 +79,7 @@ static void list2symbol_bang(t_list2symbol *x)
 
   /* 2nd create the symbol */
   if (x->s) {
-    char *buf = x->s->s_name;
+    const char *buf = x->s->s_name;
     int buflen=strlen(buf);
     strncpy(result+len, buf, length-len);
     len+=buflen;
