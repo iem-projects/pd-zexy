@@ -42,7 +42,7 @@ variables:
     - wget -O Pd.tgz http://msp.ucsd.edu/Software/pd-${PDVERSION}.mac.tar.gz
     - rm -rf "/tmp/pd"
     - mkdir -p "/tmp/pd"
-    - tar --strip-components=1 -xf Pd.tgz -C /tmp/pd
+    - tar --strip-components=1 -xf Pd.tgz -C /tmp/pd/Contents/Resources/
   script:
     - autoreconf -fiv
     - ./configure --with-pd=/tmp/pd || cat config.log
