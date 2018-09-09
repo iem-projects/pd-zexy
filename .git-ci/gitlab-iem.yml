@@ -64,7 +64,7 @@ variables:
   script:
     - autoreconf -fiv
     - ./configure --with-extension=m_i386 --with-pd=/tmp/pd || cat config.log
-    - make
+    - make LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll" # configure fails to properly detect pd.dll
     - make install DESTDIR=$(pwd) libdir=/
 
 .build:w64: &build_w64
@@ -82,7 +82,7 @@ variables:
   script:
     - autoreconf -fiv
     - ./configure
-    - make
+    - make LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll" # configure fails to properly detect pd.dll
     - make install DESTDIR=$(pwd) libdir=/ --with-pd=/tmp/pd || cat config.log
 
 ###################################################
