@@ -57,8 +57,7 @@ variables:
     IEMCI_CONFIGURATIONS: mingw32
   before_script:
     - wget -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.msw.zip
-    - rm -rf "/tmp/pd"
-    - mkdir -p "/tmp/pd"
+    - rm -rf "/tmp/pd"; mkdir -p "/tmp/pd"
     - unzip -q Pd.zip -d "/tmp/pd"
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
   script:
@@ -75,8 +74,7 @@ variables:
     IEMCI_CONFIGURATIONS: mingw64
   before_script:
     - wget -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.windows.64bit.zip
-    - rm -rf "/tmp/pd"
-    - mkdir -p "/tmp/pd"
+    - rm -rf "/tmp/pd"; mkdir -p "/tmp/pd"
     - unzip -q Pd.zip -d "/tmp/pd"
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
   script:
