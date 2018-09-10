@@ -42,10 +42,10 @@ variables:
     - wget -O Pd.tgz http://msp.ucsd.edu/Software/pd-${PDVERSION}.mac.tar.gz
     - rm -rf "/tmp/pd"
     - mkdir -p "/tmp/pd"
-    - tar --strip-components=1 -xf Pd.tgz -C /tmp/pd/Contents/Resources/
+    - tar --strip-components=1 -xf Pd.tgz -C /tmp/pd/
   script:
     - autoreconf -fiv
-    - ./configure --with-pd=/tmp/pd || cat config.log
+    - ./configure --with-pd=/tmp/pd/Contents/Resources/ || cat config.log
     - make
     - make install DESTDIR=$(pwd) libdir=/
 
