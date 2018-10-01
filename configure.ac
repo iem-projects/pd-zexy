@@ -108,7 +108,7 @@ else
   AC_CHECK_LIB([pd], [nullfn])
 fi
 
-AC_CHECK_LIB([regex], [regcomp])
+AC_SEARCH_LIBS([regcomp], [regex gnurx])
 
 dnl Checks for header files.
 AC_HEADER_STDC
