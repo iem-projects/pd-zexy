@@ -62,8 +62,8 @@ variables:
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
   script:
     - autoreconf -fiv
-    - ./configure --with-extension=m_i386 --with-pd=/tmp/pd || cat config.log
-    - make LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll -Wl,-lregex" # configure fails to properly detect pd.dll and libregex
+    - ./configure --disable-library --with-extension=m_i386 --with-pd=/tmp/pd || cat config.log
+    - make -k LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll -Wl,-lregex" # configure fails to properly detect pd.dll and libregex
     - make install DESTDIR=$(pwd) libdir=/
 
 .build:w64: &build_w64
@@ -79,8 +79,8 @@ variables:
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
   script:
     - autoreconf -fiv
-    - ./configure --with-pd=/tmp/pd || cat config.log
-    - make LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll" # configure fails to properly detect pd.dll
+    - ./configure --disable-library --with-pd=/tmp/pd || cat config.log
+    - make -k LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll" # configure fails to properly detect pd.dll
     - make install DESTDIR=$(pwd) libdir=/
 
 ###################################################
