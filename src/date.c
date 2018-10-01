@@ -40,9 +40,14 @@
 
 #include "zexy.h"
 
-#ifdef __WIN32__
-# define USE_TIMEB
+#if (defined __WIN32__)
+# if (defined __i386__) && (defined __MINGW32__)
+/* unless compiling under mingw/32bit, we want USE_TIMEB in redmond-land */
+# else
+#  define USE_TIMEB
+# endif
 #endif
+
 
 #ifdef __APPLE__
 # include <sys/types.h>
