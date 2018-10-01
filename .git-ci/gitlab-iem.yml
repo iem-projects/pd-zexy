@@ -39,7 +39,7 @@ variables:
      - osx
   stage: build
   before_script:
-    - wget -O Pd.tgz http://msp.ucsd.edu/Software/pd-${PDVERSION}.mac.tar.gz
+    - wget -q -O Pd.tgz http://msp.ucsd.edu/Software/pd-${PDVERSION}.mac.tar.gz
     - rm -rf "/tmp/pd"
     - mkdir -p "/tmp/pd"
     - tar --strip-components=1 -xf Pd.tgz -C /tmp/pd/
@@ -56,7 +56,7 @@ variables:
   variables:
     IEMCI_CONFIGURATIONS: mingw32
   before_script:
-    - wget -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.msw.zip
+    - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.msw.zip
     - rm -rf "/tmp/pd"; mkdir -p "/tmp/pd"
     - unzip -q Pd.zip -d "/tmp/pd"
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
@@ -73,7 +73,7 @@ variables:
   variables:
     IEMCI_CONFIGURATIONS: mingw64
   before_script:
-    - wget -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.windows.64bit.zip
+    - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.windows.64bit.zip
     - rm -rf "/tmp/pd"; mkdir -p "/tmp/pd"
     - unzip -q Pd.zip -d "/tmp/pd"
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
