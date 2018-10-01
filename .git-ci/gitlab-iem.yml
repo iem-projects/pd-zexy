@@ -63,7 +63,7 @@ variables:
   script:
     - autoreconf -fiv
     - ./configure --with-extension=m_i386 --with-pd=/tmp/pd || cat config.log
-    - make LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll" # configure fails to properly detect pd.dll
+    - make LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll -Wl,-lregex" # configure fails to properly detect pd.dll and libregex
     - make install DESTDIR=$(pwd) libdir=/
 
 .build:w64: &build_w64
