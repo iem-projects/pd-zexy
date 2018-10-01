@@ -79,9 +79,9 @@ variables:
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
   script:
     - autoreconf -fiv
-    - ./configure
+    - ./configure --with-pd=/tmp/pd || cat config.log
     - make LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll" # configure fails to properly detect pd.dll
-    - make install DESTDIR=$(pwd) libdir=/ --with-pd=/tmp/pd || cat config.log
+    - make install DESTDIR=$(pwd) libdir=/
 
 ###################################################
 ### the actual jobs: (linux,macos,windows)*(release,snapshot)
