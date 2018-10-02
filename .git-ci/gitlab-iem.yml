@@ -130,7 +130,7 @@ deken:
   script:
     - chmod -R go-w artifacts/
 # remove ltlib leftovers
-    - find archive/ "(" -name "*.la" -or -name "*.a" ")" -delete
+    - find artifacts/ "(" -name "*.la" -or -name "*.a" ")" -delete
 # create a source package
     - git archive --format=tar --prefix=artifacts/src/${CI_PROJECT_NAME}/ HEAD | tar xf -
 # create deken packages
