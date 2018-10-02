@@ -793,6 +793,10 @@ void limiter_tilde_setup(void)
                   A_FLOAT, 0);
   class_addmethod(limiter_class, (t_method)set_threshold,	gensym("treshold"),
                   A_FLOAT, 0);
+  class_addmethod(limiter_class, (t_method)set_threshold,	gensym("thresh"),
+                  A_FLOAT, 0);
+  class_addmethod(limiter_class, (t_method)set_threshold,	gensym("threshold"),
+                  A_FLOAT, 0);
   class_addmethod(limiter_class, (t_method)set_ratio,	gensym("ratio"),
                   A_FLOAT, 0);
   class_addmethod(limiter_class, (t_method)set1,		gensym("set"), A_FLOAT,
