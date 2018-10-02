@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.60])
 
-AC_INIT([zexy], [2.2.7], [zmoelnig@iem.at], [zexy], [https://git.iem.at/pd/zexy])
+AC_INIT([zexy], [2.2.8], [zmoelnig@iem.at], [zexy], [https://git.iem.at/pd/zexy])
 AM_INIT_AUTOMAKE([1.10 foreign])
 m4_ifdef([LT_INIT], 
 	[LT_INIT([disable-static win32-dll])],
