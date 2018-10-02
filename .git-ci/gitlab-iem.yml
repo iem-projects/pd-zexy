@@ -60,11 +60,13 @@ variables:
     - rm -rf "/tmp/pd"; mkdir -p "/tmp/pd"
     - unzip -q Pd.zip -d "/tmp/pd"
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
+    - pacman --noconfirm -S mingw-w64-i686-ntldd
   script:
     - autoreconf -fiv
     - ./configure --disable-library --with-extension=m_i386 --with-pd=/tmp/pd || cat config.log
     - make -k LDFLAGS="-Wl,--enable-auto-import" LIBS="-Wl,/tmp/pd/bin/pd.dll -Wl,-lregex" # configure fails to properly detect pd.dll and libregex
     - make install DESTDIR=$(pwd) libdir=/
+    - .git-ci/localdeps.win.sh zexy/*.m_i386 || true
 
 .build:w64: &build_w64
   stage: build
@@ -77,11 +79,13 @@ variables:
     - rm -rf "/tmp/pd"; mkdir -p "/tmp/pd"
     - unzip -q Pd.zip -d "/tmp/pd"
     - mv -v "/tmp/pd"/*/* "/tmp/pd"
+    - pacman --noconfirm -S mingw-w64-x86_64-ntldd
   script:
     - autoreconf -fiv
     - ./configure --disable-library --with-pd=/tmp/pd || cat config.log
     - make -k LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll" # configure fails to properly detect pd.dll
     - make install DESTDIR=$(pwd) libdir=/
+    - .git-ci/localdeps.win.sh zexy/*.dll || true
 
 ###################################################
 ### the actual jobs: (linux,macos,windows)*(release,snapshot)
