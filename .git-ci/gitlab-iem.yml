@@ -128,6 +128,7 @@ deken:
   before_script:
     - apt-get update && apt-get --no-install-recommends -y install deken
   script:
+    - chmod -R go-w archive/
 # remove ltlib leftovers
     - find archive/ "(" -name "*.la" -or -name "*.a" ")" -delete
 # create a source package
