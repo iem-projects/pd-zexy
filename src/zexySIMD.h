@@ -21,7 +21,7 @@ static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
                         unsigned int numinchannels, unsigned int numoutchannels)
 {
   /* this currently only works with single input, single output */
-  /* LATER make it work truely multichannel */
+  /* LATER make it work truly multichannel */
   if(1==numinchannels && 1==numoutchannels) {
     t_int w1[4], w2[4];
     t_sample4 in, in1[4], in2[4], out1[4], out2[4];
