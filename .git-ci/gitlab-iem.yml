@@ -63,7 +63,7 @@ variables:
   script:
     - autoreconf -fiv
     - ./configure --disable-library --with-extension=m_i386 --with-pd=/tmp/pd || cat config.log
-    - make -k LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll -Wl,-lregex" # configure fails to properly detect pd.dll and libregex
+    - make -k LDFLAGS="-Wl,--enable-auto-import" LIBS="-Wl,/tmp/pd/bin/pd.dll -Wl,-lregex" # configure fails to properly detect pd.dll and libregex
     - make install DESTDIR=$(pwd) libdir=/
 
 .build:w64: &build_w64
