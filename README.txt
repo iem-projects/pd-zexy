@@ -15,7 +15,7 @@ outline of this file::
 general::
 ==============================================================================
 the zexy external is a collection of externals for miller.s.puckette's
-realtime-computermusic-environment called "puredata" (or abbreviated "pd")
+realtime-computermusic-environment called "pure data" (or abbreviated "pd")
 this zexy external will be of no use, if you don't have a running version of
 pd on your system.
 check out for http://pd.iem.at to learn more about pd and how to get it
@@ -40,20 +40,20 @@ see INSTALL for more detailed instructions
 #3> make install
 
 installation directory:
-by defaultm zexy will install into /usr/local/lib/pd/extra/zexy
+by default, zexy will install into /usr/local/lib/pd/extra/zexy
 the path can be changed via the "--prefix", or "--libdir"
 e.g. "./configure --prefix=/usr" -> /usr/lib/pd/extra/zexy
 e.g. "./configure --libdir=/tmp/foo" -> /tmp/foo/zexy
 
 puredata headers:
-zexy needs to find the Pd headers (and Pd.lib on some systems) during the build
+zexy needs to find the pd headers (and pd.lib on some systems) during the build
 process.
 if you have installed the headers in a non-standard location, you can specify
 them with the "--with-pd" option:
 "./configure --with-pd=/usr/include/pd" will add /usr/include/pd to the INCLUDE
 path.
-"./configure --with-pd=/home/me/src/Pd-0.43.1" can be used to add
-/home/me/src/Pd-0.43.1/src to the INCLUDEs and /home/me/src/Pd-0.43.1/bin to the
+"./configure --with-pd=/home/me/src/pd-0.43.1" can be used to add
+/home/me/src/pd-0.43.1/src to the INCLUDEs and /home/me/src/pd-0.43.1/bin to the
 library search path
 
 custom external extension:
@@ -98,8 +98,8 @@ to compile:
 	#> ./configure --prefix=/c/program/pd; make; make install
  OR
  + cross-compilation for windows on linux using mingw (assumes that the
-   crosscompiler is "i586-mingw32msvc-cc")
-	#> ./configure --host=i586-mingw32msvc --with-extension=dll \
+   crosscompiler is "i686-w64-mingw32-gcc")
+	#> ./configure --host=i686-w64-mingw32 --with-extension=dll \
 	   --disable-PIC --with-pd=/path/to/win/pd/
 	#> make CFLAGS="-fno-unit-at-a-time"
      notes: configure tries to set the CFLAGS to "-g -O2" if the compiler
@@ -110,13 +110,17 @@ to compile:
 
 making pd run with the zexy external::
 ==============================================================================
-make sure, that pd will be looking at this location
-(add "-path <mypath>/pd/externs" either to your .pdrc or each time
-you execute pd)
-make sure, that you somehow load the zexy external (either add "-lib zexy"
-(if you advised pd somehow to look at the correct place)
-or "-lib <myzexypath>/zexy" to your startup-script (.pdrc or whatever)
-or load it via the object "zexy" at runtime
+make sure, that pd will be looking at the location you installed zexy to.
+ideally install zexy to some place, where pd already searches for libraries,
+e.g. "~/.local/lib/pd/extra/" (linux), "~/Library/Pd/extra/" (macOS) or
+"%AppData%\Pd\extra\" (Windows).
+if this is not an option, either add the path to your "Path..." settings in pd,
+or start pd with the cmdline option "-path /path/where/zexy/lives" (you can omit
+the trailing "/zexy" component of the path)
+
+make sure, that you somehow load the zexy external, either by adding something
+like [declare -path zexy -lib zexy] to your patches that use zexy, or by adding
+"zexy" to the "Startup..." libraries (or by starting pd with "-lib zexy").
 
 license::
 ==============================================================================
