@@ -126,7 +126,7 @@ deken:
   variables:
     DEKEN_ROOT: "yes"
   before_script:
-    - apt-get update && apt-get --no-install-recommends -y install deken
+    - apt-get update && apt-get --no-install-recommends -y install deken git
   script:
     - chmod -R go-w artifacts/
 # remove ltlib leftovers
