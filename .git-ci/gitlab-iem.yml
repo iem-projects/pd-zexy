@@ -45,7 +45,7 @@ variables:
     - tar --strip-components=1 -xf Pd.tgz -C /tmp/pd/
   script:
     - autoreconf -fiv
-    - ./configure --with-pd=/tmp/pd/Contents/Resources/ || cat config.log
+    - ./configure --enable-fat-binary=i386,x86_64 --with-extension=d_fat --with-pd=/tmp/pd/Contents/Resources/ || cat config.log
     - make
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} libdir=/
 
