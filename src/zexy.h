@@ -187,18 +187,10 @@ void verbose(int level, const char *fmt, ...);
 # define z_fclose fclose
 #endif
 
-
-#if (defined __x86_64__) && (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION >= 41)
-# define zarray_t t_word
-# define zarray_getarray garray_getfloatwords
-# define zarray_getfloat(pointer, index) (pointer[index].w_float)
-# define zarray_setfloat(pointer, index, value) ((pointer[index].w_float)=value)
-#else
-# define zarray_t t_float
-# define zarray_getarray garray_getfloatarray
-# define zarray_getfloat(pointer, index) (pointer[index])
-# define zarray_setfloat(pointer, index, value) ((pointer[index])=value)
-#endif
+#define zarray_t t_word
+#define zarray_getarray garray_getfloatwords
+#define zarray_getfloat(pointer, index) (pointer[index].w_float)
+#define zarray_setfloat(pointer, index, value) ((pointer[index].w_float)=value)
 
 
 #endif /* INCLUDE_ZEXY_H__ */
