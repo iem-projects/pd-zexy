@@ -128,6 +128,7 @@ deken:
   before_script:
     - apt-get update && apt-get --no-install-recommends -y install deken
   script:
+    - find archive/ "(" -name "*.la" -or -name "*.a" ")" -delete
     - git archive --format=tar --prefix=artifacts/src/${CI_PROJECT_NAME}/ HEAD | tar xf -
     - for d in artifacts/*/${CI_PROJECT_NAME}/; do deken package --version="${CI_COMMIT_TAG#v}" "${d}"; done
     - test -z "${DEKEN_USERNAME}" || test -z "${DEKEN_PASSWORD}" || deken upload --no-source-error ./*.dek
