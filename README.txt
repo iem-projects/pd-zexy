@@ -14,15 +14,15 @@ outline of this file::
 
 general::
 ==============================================================================
-the zexy external is a collection of externals for miller.s.puckette's 
+the zexy external is a collection of externals for miller.s.puckette's
 realtime-computermusic-environment called "puredata" (or abbreviated "pd")
-this zexy external will be of no use, if you don't have a running version of 
+this zexy external will be of no use, if you don't have a running version of
 pd on your system.
-check out for http://pd.iem.at to learn more about pd and how to get it 
+check out for http://pd.iem.at to learn more about pd and how to get it
 
-note: the zexy external is published under the Gnu General Public License 
-that is included (GnuGPL.txt). some parts of the code are taken directly 
-from the pd source-code, they, of course, fall under the license pd is 
+note: the zexy external is published under the Gnu General Public License
+that is included (GnuGPL.txt). some parts of the code are taken directly
+from the pd source-code, they, of course, fall under the license pd is
 published under.
 
 
@@ -91,31 +91,31 @@ e.g. "./configure --enable-fat-binary=i386,ppc --with-extension=d_fat"
 win32 :
 ------------------------------------------------------------------------------
 
-to compile: 
+to compile:
  + w/ MSVC use the build project found in build/win-vs*/
  OR
  + with GCC configure your pd path, eg:
 	#> ./configure --prefix=/c/program/pd; make; make install
  OR
- + cross-compilation for windows on linux using mingw (assumes that the 
+ + cross-compilation for windows on linux using mingw (assumes that the
    crosscompiler is "i586-mingw32msvc-cc")
 	#> ./configure --host=i586-mingw32msvc --with-extension=dll \
 	   --disable-PIC --with-pd=/path/to/win/pd/
 	#> make CFLAGS="-fno-unit-at-a-time"
      notes: configure tries to set the CFLAGS to "-g -O2" if the compiler
-            accepts this; however, this optimization sometimes generates 
+            accepts this; however, this optimization sometimes generates
 	    binaries that cannot be loaded by pd; it seems that disabling
 	    the "unit-at-a-time" optimization (which gets enabled by "-O2")
 	    is the cause of this problem. turning it off might help
 
 making pd run with the zexy external::
 ==============================================================================
-make sure, that pd will be looking at this location 
-(add "-path <mypath>/pd/externs" either to your .pdrc or each time 
+make sure, that pd will be looking at this location
+(add "-path <mypath>/pd/externs" either to your .pdrc or each time
 you execute pd)
-make sure, that you somehow load the zexy external (either add "-lib zexy" 
-(if you advised pd somehow to look at the correct place) 
-or "-lib <myzexypath>/zexy" to your startup-script (.pdrc or whatever) 
+make sure, that you somehow load the zexy external (either add "-lib zexy"
+(if you advised pd somehow to look at the correct place)
+or "-lib <myzexypath>/zexy" to your startup-script (.pdrc or whatever)
 or load it via the object "zexy" at runtime
 
 license::
