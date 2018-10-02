@@ -46,11 +46,11 @@
 #define CR_MODE 1
 #define CSV_MODE 2
 /* modi
-   PD : separate items by ' '; seperate lines by ";\n"
+   PD : separate items by ' '; separate lines by ";\n"
    looks like a PD-file
-   CR : separate items by ' '; seperate lines by " \n"
+   CR : separate items by ' '; separate lines by " \n"
    how you would expect a file to look like
-   CSV: separate items by ','; seperate lines by " \n"
+   CSV: separate items by ','; separate lines by " \n"
    spreadsheet: each argument gets its own column
 */
 

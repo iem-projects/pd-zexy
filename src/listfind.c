@@ -1,5 +1,5 @@
 /*
- * listfind: find a sublist in a list and return the index of the occurence (or indices if there are more)
+ * listfind: find a sublist in a list and return the index of the occurrence (or indices if there are more)
  *
  * (c) 1999-2011 IOhannes m zmölnig, forum::für::umläute, institute of electronic music and acoustics (iem)
  *

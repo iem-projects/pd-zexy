@@ -36,11 +36,11 @@ Modified:
   to search for, then with the first skip the first part of a
   soundfile is also loaded by the OS.
 
-  I experimented with asynchronous buffering with paralell
+  I experimented with asynchronous buffering with parallel
   process,which has shown no much performance hit, since more
   processes has to be handled and the modern OS's do caching anyway
   also caching is done in modern hard disk, so an additional cache
-  woud be an overhead, if not special behaviour is needed (big jumps
+  would be an overhead, if not special behaviour is needed (big jumps
   etc).
 
   This sfplayers should be used with an appropriate audio buffer for
@@ -153,7 +153,7 @@ static void sfplay_helper(t_sfplay* UNUSED(x))
 
 /* METHOD: "open" file */
 
-/* this dont use memory map, because I dont know about this on NT ?
+/* this don't use memory map, because I don't know about this on NT ?
 Use of the buffered functions fopen, fseek fread fclose instead the
 non buffered ones open read close */
 
@@ -214,7 +214,7 @@ static void sfplay_close(t_sfplay *x)
   return;
 }
 
-/* for skipping header of soundfile  Dont use this for memory map */
+/* for skipping header of soundfile. don't use this for memory map */
 
 static int sfplay_skip(t_sfplay *x)
 {
@@ -255,7 +255,7 @@ static void sfplay_start(t_sfplay *x)
   post("sfplay: start");
 #endif
 
-  /* new offset postion ? (fom inlet offset) */
+  /* new offset position ? (fom inlet offset) */
   if( ((t_float) of) != x->x_offset) {
     x->skip=1;
     x->x_offset = of;
@@ -426,7 +426,7 @@ static t_int *sfplay_perform(t_int *w)
 
     if(!x->play || x->please_stop) {
 
-      /* if closing dont need o go to stop */
+      /* if closing don't need o go to stop */
       if(x->please_close) {
         x->state = SFPLAY_CLOSE;
         x->count = SFPLAY_WAITTICKS;
@@ -495,7 +495,7 @@ static t_int *sfplay_perform(t_int *w)
         *out[i]++ = s*(1./32768.);
       }
     }
-    return (w+c+4); /* dont zero out outs */
+    return (w+c+4); /* don't zero out outs */
 
   /* ok read error please close */
   case SFPLAY_ERROR:

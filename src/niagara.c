@@ -23,9 +23,11 @@
 
 /*
   divides a package into 2 sub-packages at a specified point
-  like the niagara-falls, some water goes down to the left side, the rest to the right side, devided by the rock
+  like the niagara-falls, some water goes down to the left side,
+  the rest to the right side, divided by the rock
 
-  nowadays you can do this with [list split] (though this cannot handle negative indices)
+  nowadays you can do this with [list split]
+  (though this cannot handle negative indices)
 */
 
 static t_class *niagara_class=NULL;

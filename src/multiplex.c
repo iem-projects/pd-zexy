@@ -23,8 +23,9 @@
 /*
  * THINK: should the selector-inlet be the first or the last ???
  * pros/cons:
- *  the 1st inlet being the selector is not consistant with pd (hot/cold)
- *   but as it since the hot inlet is selectable, the whole object is not really consitant
+ *  the 1st inlet being the selector is not consistent with pd (hot/cold)
+ *   but it since the hot inlet is selectable, the whole object is not really
+ *   consistent
  *  numbering would have to start with 1 (for the 1st not-leftmost inlet)
  * if the selector is rightmost this would mean: cold is right(most), hot is (somewhere) left
  * numbering would be ok

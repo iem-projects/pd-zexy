@@ -117,7 +117,7 @@ static void state_out(t_sfrecord *x, int state)
 
 /* METHOD: "open" file */
 
-/* this dont use memory map, because I dont know about this on NT ?
+/* this don't use memory map, because I don't know about this on NT ?
 Use of the buffered functions fopen, fseek fread fclose instead the
 non buffered ones open read close */
 
@@ -348,7 +348,7 @@ static t_int *sfrecord_perform(t_int *w)
   case SFRECORD_WRITE:				/* yes write now */
 
     if(!x->write || x->please_stop) {
-      /* if closing dont need to go to stop */
+      /* if closing don't need to go to stop */
       if(x->please_close)	{
         x->state = SFRECORD_CLOSE;
         x->count = SFRECORD_WAITTICKS;

@@ -99,8 +99,8 @@ typedef struct _limctl {
 } t_limctl;
 
 typedef struct _cmpctl {
-  t_float treshold,
-          ratio;		/* uclimit is the very same is the limiter1-limit (decalculated relative to our treshold) */
+  t_float threshold,
+          ratio;		/* uclimit is the very same is the limiter1-limit (decalculated relative to our threshold) */
   t_float uclimit,
           climit_inverse;	/* climit == compressed limit (uclimit == uncompressed limit) */
 
@@ -161,7 +161,7 @@ static void set_uclimit(t_limiter *x)
 {
   t_cmpctl *c = x->cmp;
   t_float limit = x->val1->limit, limitdB = rmstodb(limit), ratio = c->ratio,
-          tresh = c->treshold, treshdB = rmstodb(tresh);
+          tresh = c->threshold, treshdB = rmstodb(tresh);
 
   c->climit_inverse  = limit / tresh;
   c->uclimit = tresh / dbtorms(treshdB+(limitdB - treshdB)/ratio);
@@ -172,15 +172,15 @@ static void set_uclimit(t_limiter *x)
 
 /* settings */
 
-static void set_treshold(t_limiter *x, t_float treshold)
+static void set_threshold(t_limiter *x, t_float threshold)
 {
   t_cmpctl *c = x->cmp;
-  t_float tresh = dbtorms (treshold);
+  t_float tresh = dbtorms (threshold);
   if (tresh > x->val1->limit) {
     tresh = x->val1->limit;
   }
 
-  c->treshold = tresh;
+  c->threshold = tresh;
 
   set_uclimit(x);
 }
@@ -246,8 +246,8 @@ static void set_limit(t_limiter *x, t_floatarg limit)
   }
   x->val1->limit = dbtorms(limit);
 
-  if (x->val1->limit < x->cmp->treshold) {
-    x->cmp->treshold = x->val1->limit;
+  if (x->val1->limit < x->cmp->threshold) {
+    x->cmp->threshold = x->val1->limit;
   }
   set_uclimit(x);
 }
@@ -271,8 +271,8 @@ static void set_limits(t_limiter *x, t_floatarg limit1, t_floatarg limit2)
   x->val1->limit = lim1;
   x->val2->limit = lim1/lim2;
 
-  if (lim1 < x->cmp->treshold) {
-    x->cmp->treshold = lim1;
+  if (lim1 < x->cmp->threshold) {
+    x->cmp->threshold = lim1;
   }
   set_uclimit(x);
 }
@@ -286,8 +286,8 @@ static void set1(t_limiter *x, t_floatarg limit, t_floatarg hold,
   x->val1->hold_samples = calc_holdsamples(hold, x->buf_size);
   x->val1->change_of_amplification = calc_coa(release);
 
-  if (lim < x->cmp->treshold) {
-    x->cmp->treshold = lim;
+  if (lim < x->cmp->threshold) {
+    x->cmp->threshold = lim;
   }
   set_uclimit(x);
 }
@@ -305,13 +305,13 @@ static void set2(t_limiter *x, t_floatarg limit, t_floatarg hold,
 
 
 static void set_compressor(t_limiter *x, t_floatarg limit,
-                           t_floatarg treshold, t_floatarg ratio)
+                           t_floatarg threshold, t_floatarg ratio)
 {
   t_cmpctl *c = x->cmp;
   t_float lim = dbtorms(limit);
-  t_float tresh = dbtorms(treshold);
+  t_float tresh = dbtorms(threshold);
 
-  if ((limit == 0) && (treshold == 0) && (ratio == 0)) {
+  if ((limit == 0) && (threshold == 0) && (ratio == 0)) {
     set_mode(x, COMPRESS);
     return;
   }
@@ -325,7 +325,7 @@ static void set_compressor(t_limiter *x, t_floatarg limit,
 
   c->ratio = ratio;
   x->val1->limit = lim;
-  c->treshold = tresh;
+  c->threshold = tresh;
   set_uclimit(x);
 
   set_mode(x, COMPRESS);
@@ -368,12 +368,12 @@ static void status(t_limiter *x)
     break;
   case COMPRESS:
     post("%d-channel compressor @ %fkHz\n"
-         "\noutput-limit\t= %fdB\ntreshold\t= %fdB\ninput-limit\t= %f\nratio\t\t= 1:%f\n"
+         "\noutput-limit\t= %fdB\nthreshold\t= %fdB\ninput-limit\t= %f\nratio\t\t= 1:%f\n"
          "\nhold\t\t= %fms\nrelease\t\t= %fms\n"
          "\namplify\t\t= %fdB\n",
          x->number_of_inlets, sr,
-         rmstodb(c->treshold * c->climit_inverse), rmstodb(c->treshold),
-         rmstodb(c->treshold / c->uclimit), 1./c->ratio,
+         rmstodb(c->threshold * c->climit_inverse), rmstodb(c->threshold),
+         rmstodb(c->threshold / c->uclimit), 1./c->ratio,
          (v1->hold_samples) / sr, LN2 / (log(v1->change_of_amplification) * sr),
          rmstodb(x->amplification));
   }
@@ -400,8 +400,8 @@ static void limiter_tilde_helper(t_limiter *x)
     break;
   case COMPRESS:
     poststring("\n'ratio <compressratio>'\t\t: set compressratio (Åœ0.5Åœ instead of Åœ1:2Åœ)"
-               "\n'treshold <treshold>'\t\t: set treshold of the compressor"
-               "\n'compress <limit><treshold><ratio>'\t: set compressor"
+               "\n'threshold <threshold>'\t\t: set threshold of the compressor"
+               "\n'compress <limit><threshold><ratio>'\t: set compressor"
                "\n..........note that <limit> is the same for COMPRESSOR and LIMITER..........");
     break;
   default:
@@ -545,7 +545,7 @@ static t_int *limiter_perform(t_int *w)
   const t_float holdshort	= v2->hold_samples;
   const t_float coa_short	= v2->change_of_amplification;
 
-  t_float tresh  = c->treshold;
+  t_float tresh  = c->threshold;
   t_float uclimit = c->uclimit;
   t_float climit_inv = c->climit_inverse;
 
@@ -564,7 +564,7 @@ static t_int *limiter_perform(t_int *w)
     while (n--) {
       max_val = *in;
 
-      /* the MAIN routine for the 1-treshold-limiter */
+      /* the MAIN routine for the 1-threshold-limiter */
 
       if ((max_val * amp) > limit) {
         amp = limit / max_val;
@@ -620,7 +620,7 @@ static t_int *limiter_perform(t_int *w)
     while (n--) {
       max_val = *in;
 
-      /* the MAIN routine for the compressor (very similar to the 1-treshold-limiter) */
+      /* the MAIN routine for the compressor (very similar to the 1-threshold-limiter) */
 
       if (max_val * amp > tresh) {
         amp = tresh / max_val;
@@ -732,7 +732,7 @@ static void *limiter_new(t_symbol *s, int argc, t_atom *argv)
   x->cmp = (t_cmpctl *)getbytes(sizeof(t_cmpctl));
 
   x->cmp->ratio = 1.;
-  x->cmp->treshold = 1;
+  x->cmp->threshold = 1;
 
   set1(x, 100, 30, 139);
   set2(x, 110, 5, 14.2);
@@ -789,9 +789,9 @@ void limiter_tilde_setup(void)
                   0);
 
 
-  class_addmethod(limiter_class, (t_method)set_treshold,	gensym("tresh"),
+  class_addmethod(limiter_class, (t_method)set_threshold,	gensym("tresh"),
                   A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set_treshold,	gensym("treshold"),
+  class_addmethod(limiter_class, (t_method)set_threshold,	gensym("treshold"),
                   A_FLOAT, 0);
   class_addmethod(limiter_class, (t_method)set_ratio,	gensym("ratio"),
                   A_FLOAT, 0);

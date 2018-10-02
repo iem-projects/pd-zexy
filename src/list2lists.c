@@ -1,5 +1,5 @@
 /*
- * list2lists:  split a list into several sublists given by their lenghts
+ * list2lists:  split a list into several sublists given by their lengths
  *
  * (c) 1999-2011 IOhannes m zmölnig, forum::für::umläute, institute of electronic music and acoustics (iem)
  *
