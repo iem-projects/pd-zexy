@@ -144,18 +144,6 @@ static void zexy_register(char*object)
 }
 #endif /* ZEXY_LIBRARY */
 
-#if (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION > 43)
-# define z_open sys_open
-# define z_close sys_close
-# define z_fopen sys_fopen
-# define z_fclose sys_fclose
-#else
-# define z_open open
-# define z_close close
-# define z_fopen fopen
-# define z_fclose fclose
-#endif
-
 #define zarray_t t_word
 #define zarray_getarray garray_getfloatwords
 #define zarray_getfloat(pointer, index) (pointer[index].w_float)

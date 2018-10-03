@@ -762,20 +762,20 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
 
   if (fd < 0) {
     /* open via path failed, fall back */
-    fd=z_open(filename->s_name, rmode);
+    fd=sys_open(filename->s_name, rmode);
     if(fd < 0) {
       pd_error(x, "can't open in %s/%s",  dirname, filename->s_name);
       return;
     } else {
-      z_close(fd);
+      sys_close(fd);
       sprintf(filnam, "%s", filename->s_name);
     }
   } else {
-    z_close(fd);
+    sys_close(fd);
     sprintf(filnam, "%s/%s", buf, bufptr);
   }
 
-  fil=z_fopen(filnam, "rb");
+  fil=sys_fopen(filnam, "rb");
   if(fil==NULL) {
     pd_error(x, "could not open '%s'", filnam);
     return;
@@ -787,7 +787,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   if (!(readbuf = t_getbytes(length))) {
     pd_error(x, "msgfile_read: could not reserve %ld bytes to read into",
              length);
-    z_fclose(fil);
+    sys_fclose(fil);
     return;
   }
 
@@ -820,13 +820,13 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   if ((readlength = fread(readbuf, sizeof(char), length, fil)) < length) {
     pd_error(x, "msgfile_read: unable to read %s: %ld of %ld", filnam,
              readlength, length);
-    z_fclose(fil);
+    sys_fclose(fil);
     t_freebytes(readbuf, length);
     return;
   }
 
   /* close */
-  z_fclose(fil);
+  sys_fclose(fil);
 
   /* convert separators and eols to what pd expects in a binbuf*/
   bufptr=readbuf;
@@ -946,7 +946,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   canvas_makefilename(x->x_canvas, filename->s_name,
                       buf, MAXPDSTRING);
   sys_bashfilename(buf, filnam);
-  if (!(f = z_fopen(filnam, "w"))) {
+  if (!(f = sys_fopen(filnam, "w"))) {
     pd_error(x, "msgfile : failed to open %s", filnam);
   } else {
     /* write */
@@ -956,7 +956,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   }
   /* close */
   if (f) {
-    z_fclose(f);
+    sys_fclose(f);
   }
 
   binbuf_free(bbuf);

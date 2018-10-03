@@ -184,10 +184,10 @@ static void sfplay_open(t_sfplay *x,t_symbol *filename,t_symbol *endian)
 #endif
 
   if (x->fp != NULL) {
-    z_fclose(x->fp);  /* should not happen */
+    sys_fclose(x->fp);  /* should not happen */
   }
 
-  if (!(x->fp = z_fopen(x->filename->s_name,BINREADMODE))) {
+  if (!(x->fp = sys_fopen(x->filename->s_name,BINREADMODE))) {
     error("sfplay: can't open %s", x->filename->s_name);
   }
 }
@@ -203,7 +203,7 @@ static void sfplay_close(t_sfplay *x)
   /* now in state machine
   if(x->fp != NULL)
   {
-     z_fclose(x->fp);
+     sys_fclose(x->fp);
      x->fp = NULL;
   }
   */
@@ -523,7 +523,7 @@ static t_int *sfplay_perform(t_int *w)
 
       /* avoid openfiles */
       if(x->fp) {
-        z_fclose(x->fp);
+        sys_fclose(x->fp);
         x->fp = NULL;
       };
 

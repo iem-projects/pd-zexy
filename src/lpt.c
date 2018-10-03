@@ -206,14 +206,14 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     x->port=strtol(devname, 0, 16);
     if(0==x->port) {
 #ifdef HAVE_LINUX_PPDEV_H
-      x->device = z_open(devname, O_RDWR);
+      x->device = sys_open(devname, O_RDWR);
       if(x->device<=0) {
         error("lpt: bad device %s", devname);
         return(x);
       } else {
         if (ioctl (x->device, PPCLAIM)) {
           perror ("PPCLAIM");
-          z_close (x->device);
+          sys_close (x->device);
           x->device=-1;
         }
       }
@@ -282,7 +282,7 @@ static void lpt_free(t_lpt *x)
 # ifdef HAVE_LINUX_PPDEV_H
   if (x->device>0) {
     ioctl (x->device, PPRELEASE);
-    z_close(x->device);
+    sys_close(x->device);
     x->device=0;
   } else
 # endif
