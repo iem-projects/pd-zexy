@@ -135,10 +135,4 @@ static void zexy_register(char*object)
 }
 #endif /* ZEXY_LIBRARY */
 
-#define zarray_t t_word
-#define zarray_getarray garray_getfloatwords
-#define zarray_getfloat(pointer, index) (pointer[index].w_float)
-#define zarray_setfloat(pointer, index, value) ((pointer[index].w_float)=value)
-
-
 #endif /* INCLUDE_ZEXY_H__ */

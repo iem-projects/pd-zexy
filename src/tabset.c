@@ -35,15 +35,15 @@ static void tabset_float(t_tabset *x, t_floatarg f)
 {
   t_garray *A;
   int npoints;
-  zarray_t *vec;
+  t_word *vec;
 
   if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class))) {
     error("%s: no such array", x->x_arrayname->s_name);
-  } else if (!zarray_getarray(A, &npoints, &vec)) {
+  } else if (!garray_getfloatwords(A, &npoints, &vec)) {
     error("%s: bad template for tabset", x->x_arrayname->s_name);
   } else {
     while(npoints--) {
-      zarray_setfloat(vec, 0, f);
+      vec->w_float = f;
       vec++;
     }
     garray_redraw(A);
@@ -55,28 +55,28 @@ static void tabset_list(t_tabset *x, t_symbol* UNUSED(s), int argc,
 {
   t_garray *A;
   int npoints;
-  zarray_t *vec;
+  t_word *vec;
 
   if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class))) {
     error("%s: no such array", x->x_arrayname->s_name);
-  } else if (!zarray_getarray(A, &npoints, &vec)) {
+  } else if (!garray_getfloatwords(A, &npoints, &vec)) {
     error("%s: bad template for tabset", x->x_arrayname->s_name);
   } else {
     if (argc>=npoints)
       while(npoints--) {
         t_float f= atom_getfloat(argv++);
-        zarray_setfloat(vec, 0, f);
+        vec->w_float = f;
         vec++;
       }
     else {
       npoints-=argc;
       while (argc--) {
         t_float f= atom_getfloat(argv++);
-        zarray_setfloat(vec, 0, f);
+        vec->w_float = f;
         vec++;
       }
       while (npoints--) {
-        zarray_setfloat(vec, 0, 0);
+        vec->w_float = 0.;
         vec++;
       }
     }

@@ -33,11 +33,11 @@ static void tabdump_bang(t_tabdump *x)
 {
   t_garray *A;
   int npoints;
-  zarray_t *vec;
+  t_word *vec;
 
   if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class))) {
     error("%s: no such array", x->x_arrayname->s_name);
-  } else if (!zarray_getarray(A, &npoints, &vec)) {
+  } else if (!garray_getfloatwords(A, &npoints, &vec)) {
     error("%s: bad template for tabdump", x->x_arrayname->s_name);
   } else {
     int n;
@@ -55,7 +55,7 @@ static void tabdump_bang(t_tabdump *x)
 
     atombuf = (t_atom *)getbytes(sizeof(t_atom)*npoints);
     for (n = 0; n < npoints; n++) {
-      SETFLOAT(&atombuf[n], zarray_getfloat(vec, start+n));
+      SETFLOAT(&atombuf[n], vec[start+n].w_float);
     }
     outlet_list(x->x_obj.ob_outlet, gensym("list"), npoints, atombuf);
     freebytes(atombuf,sizeof(t_atom)*npoints);

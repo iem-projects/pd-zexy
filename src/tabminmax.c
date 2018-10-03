@@ -35,11 +35,11 @@ static void tabminmax_bang(t_tabminmax *x)
 {
   t_garray *A;
   int npoints;
-  zarray_t *vec;
+  t_word *vec;
 
   if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class))) {
     error("%s: no such array", x->x_arrayname->s_name);
-  } else if (!zarray_getarray(A, &npoints, &vec)) {
+  } else if (!garray_getfloatwords(A, &npoints, &vec)) {
     error("%s: bad template for tabminmax", x->x_arrayname->s_name);
   } else {
     int n;
@@ -57,14 +57,14 @@ static void tabminmax_bang(t_tabminmax *x)
     }
     npoints=stop-start;
 
-    min=zarray_getfloat(vec, start);
+    min=vec[start].w_float;
     max=min;
 
     mindex=start;
     maxdex=start;
 
     for (n = 1; n < npoints; n++) {
-      t_float val=zarray_getfloat(vec, start+n);
+      t_float val=vec[start+n].w_float;
       if(val<min) {
         mindex=start+n;
         min=val;
