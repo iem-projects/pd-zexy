@@ -31,15 +31,6 @@
 #ifndef INCLUDE_ZEXY_H__
 #define INCLUDE_ZEXY_H__
 
-#ifdef __WIN32__
-# ifndef NT
-#  define NT
-# endif
-# ifndef MSW
-#  define MSW
-# endif
-#endif
-
 /*
  * to use the zexyconf.h compile-time configurations, you have to set HAVE_CONFIG_H
  * usually this is done in Make.config by configure
