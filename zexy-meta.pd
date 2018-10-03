@@ -297,7 +297,7 @@ the type;
 #X text 430 82 bug-reports: zmoelnig-AT-iem.at;
 #N canvas 498 232 309 146 META 0;
 #X text 10 10 NAME zexy;
-#X text 10 30 VERSION @PACKAGE_VERSION@;
+#X text 10 30 VERSION 2.2.8;
 #X text 10 50 AUTHOR IOhannes m zmölnig;
 #X text 10 70 LICENSE GPL-2;
 #X text 10 90 DESCRIPTION the swiss army knife for Pd;
