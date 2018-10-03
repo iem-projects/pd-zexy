@@ -9,7 +9,10 @@
 # library name
 lib.name = zexy
 
+
 make-lib-executable=yes
+with-regex=yes
+
 # input source file (class name == source file basename)
 class.sources = \
 	src/0x260x260x7e.c \
@@ -148,6 +151,21 @@ endif
 ifeq ($(make-lib-executable),yes)
  CPPFLAGS+=-DZEXY_LIBRARY
 endif
+
+ifeq ($(with-regex),yes)
+ CPPFLAGS+=-DHAVE_REGEX_H
+endif
+
+define forWindows
+ ifeq ($(with-regex),yes)
+   regex.class.ldlibs = -lregex
+   matchbox.class.ldlibs = -lregex
+   ifeq ($(make-lib-executable),yes)
+     ldlibs = -lregex
+   endif
+ endif
+endef
+
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
 PDLIBBUILDER_DIR=pd-lib-builder/
