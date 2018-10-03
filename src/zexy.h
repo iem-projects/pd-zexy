@@ -31,18 +31,6 @@
 #ifndef INCLUDE_ZEXY_H__
 #define INCLUDE_ZEXY_H__
 
-/*
- * to use the zexyconf.h compile-time configurations, you have to set HAVE_CONFIG_H
- * usually this is done in Make.config by configure
- */
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#else
-# include "zexyconf.h"
-#endif /* HAVE_CONFIG_H */
-
-
-
 /* these pragmas are only used for MSVC, not MinGW or Cygwin */
 #ifdef _MSC_VER
 # pragma warning( disable : 4018 )
@@ -52,8 +40,6 @@
 #endif
 
 #include "m_pd.h"
-
-
 
 
 #ifndef VERSION
