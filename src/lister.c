@@ -19,24 +19,8 @@
 
 #include "zexy.h"
 
-#ifdef HAVE_ALLOCA_H
-# include <alloca.h>
-#endif
-
-#define LIST_NGETBYTE 100 /* bigger that this we use alloc, not alloca */
-
-
 static t_class *lister_class = NULL;
 
-#ifdef HAVE_ALLOCA_H
-# define ATOMS_ALLOCA(x, n) ((x) = (t_atom *)((n) < LIST_NGETBYTE ?  \
-        alloca((n) * sizeof(t_atom)) : getbytes((n) * sizeof(t_atom))))
-# define ATOMS_FREEA(x, n) ( \
-    ((n) < LIST_NGETBYTE || (freebytes((x), (n) * sizeof(t_atom)), 0)))
-#else
-# define ATOMS_ALLOCA(x, n) ((x) = (t_atom *)getbytes((n) * sizeof(t_atom)))
-# define ATOMS_FREEA(x, n) (freebytes((x), (n) * sizeof(t_atom)))
-#endif
 
 static void atoms_copy(int argc, t_atom *from, t_atom *to)
 {
@@ -66,11 +50,10 @@ static void mypdlist_secondlist(t_mypdlist *x, t_symbol *s, int argc,
 static void mypdlist_bang(t_mypdlist *x)
 {
   int outc=x->x_n;
-  t_atom*outv;
-  ATOMS_ALLOCA(outv, outc);
+  t_atom*outv = (t_atom*)getbytes(outc * sizeof(t_atom));
   atoms_copy(x->x_n, x->x_list, outv);
   outlet_list(x->x_obj.ob_outlet, gensym("list"), outc, outv);
-  ATOMS_FREEA(outv, outc);
+  freebytes(outv, outc * sizeof(t_atom));
 }
 
 
