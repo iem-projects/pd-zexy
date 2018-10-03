@@ -109,13 +109,6 @@ static char *strndup(const char *s, size_t n) {
 }
 #endif /* !HAVE_STRNDUP */
 
-#ifdef __APPLE__
-# include <AvailabilityMacros.h>
-# if defined (MAC_OS_X_VERSION_10_3) && MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_3
-#  define sqrtf sqrt
-# endif /* OSX-10.3 */
-#endif /* APPLE */
-
 
 #ifdef __GNUC__
 #  define UNUSED(x) ZUNUSED_ ## x __attribute__((__unused__))
