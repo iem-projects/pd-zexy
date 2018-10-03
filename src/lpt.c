@@ -50,14 +50,14 @@
 # include <stdlib.h>
 # include <errno.h>
 
-# ifdef HAVE_LINUX_PPDEV_H
+# ifdef __linux__
 #  include <unistd.h>
 #  include <sys/ioctl.h>
 #  include <linux/ppdev.h>
 #  include <linux/parport.h>
 #  include <fcntl.h>
 #  include <stdio.h>
-# endif /* HAVE_LINUX_PPDEV_H */
+# endif /* __linux__ */
 
 
 # ifdef __WIN32__
@@ -119,7 +119,7 @@ static void lpt_float(t_lpt *x, t_floatarg f)
 {
 #ifdef Z_WANT_LPT
   unsigned char b = f;
-# ifdef HAVE_LINUX_PPDEV_H
+# ifdef __linux__
   if (x->device>0) {
     ioctl (x->device, PPWDATA, &b);
   } else
@@ -134,7 +134,7 @@ static void lpt_control(t_lpt *x, t_floatarg f)
 {
 #ifdef Z_WANT_LPT
   unsigned char b = f;
-# ifdef HAVE_LINUX_PPDEV_H
+# ifdef __linux__
   if (x->device>0) {
     ioctl (x->device, PPWCONTROL, &b);
   } else
@@ -148,7 +148,7 @@ static void lpt_control(t_lpt *x, t_floatarg f)
 static void lpt_bang(t_lpt *x)
 {
 #ifdef Z_WANT_LPT
-# ifdef HAVE_LINUX_PPDEV_H
+# ifdef __linux__
   if (x->device>0) {
     unsigned char b=0;
     ioctl (x->device, PPRCONTROL, &b);
@@ -205,7 +205,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     x->device=-1;
     x->port=strtol(devname, 0, 16);
     if(0==x->port) {
-#ifdef HAVE_LINUX_PPDEV_H
+#ifdef __linux__
       x->device = sys_open(devname, O_RDWR);
       if(x->device<=0) {
         error("lpt: bad device %s", devname);
@@ -217,7 +217,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
           x->device=-1;
         }
       }
-#endif /* HAVE_LINUX_PPDEV_H */
+#endif /* __linux__ */
     }
   }
 
@@ -279,7 +279,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
 static void lpt_free(t_lpt *x)
 {
 #ifdef Z_WANT_LPT
-# ifdef HAVE_LINUX_PPDEV_H
+# ifdef __linux__
   if (x->device>0) {
     ioctl (x->device, PPRELEASE);
     sys_close(x->device);
