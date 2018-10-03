@@ -2,10 +2,6 @@
 # Needs Makefile.pdlibbuilder as helper makefile for platform-dependent build
 # settings and rules.
 
-## TODO
-# - regex
-# - aliases
-
 # library name
 lib.name = zexy
 
