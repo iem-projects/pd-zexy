@@ -93,10 +93,9 @@
 # define STATIC_INLINE static
 #endif
 
-#ifndef HAVE_STRNDUP
 #include <stdlib.h>
 #include <string.h>
-static char *strndup(const char *s, size_t n) {
+static char *zexy_strndup(const char *s, size_t n) {
   char *result=0;
   size_t len = strlen(s);
   if(len>n) len=n+1;
@@ -107,8 +106,6 @@ static char *strndup(const char *s, size_t n) {
   result[len-1] = 0;
   return memcpy(result, s, len);
 }
-#endif /* !HAVE_STRNDUP */
-
 
 #ifdef __GNUC__
 #  define UNUSED(x) ZUNUSED_ ## x __attribute__((__unused__))

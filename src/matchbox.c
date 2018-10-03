@@ -349,7 +349,7 @@ static int atommatch_osc(t_atom*pattern, t_atom*test)
   int result = FALSE;
 
   if(pattern->a_type==A_SYMBOL) {
-    s_pattern=strndup(pattern->a_w.w_symbol->s_name, MAXPDSTRING);
+    s_pattern=zexy_strndup(pattern->a_w.w_symbol->s_name, MAXPDSTRING);
     pattern_size = strnlen(s_pattern, MAXPDSTRING);
   } else {
     pattern_size=sizeof(char)*MAXPDSTRING;
@@ -357,7 +357,7 @@ static int atommatch_osc(t_atom*pattern, t_atom*test)
     atom_string(pattern, s_pattern, pattern_size);
   }
   if(test->a_type==A_SYMBOL) {
-    s_test=strndup(test->a_w.w_symbol->s_name, MAXPDSTRING);
+    s_test=zexy_strndup(test->a_w.w_symbol->s_name, MAXPDSTRING);
     test_size = strnlen(s_test, MAXPDSTRING);
   } else {
     test_size=sizeof(char)*MAXPDSTRING;
@@ -400,7 +400,7 @@ static int atommatch_regex(regex_t*pattern,  t_atom*test)
   }
 
   if(test->a_type==A_SYMBOL) {
-    s_test=strndup(test->a_w.w_symbol->s_name, MAXPDSTRING);
+    s_test=zexy_strndup(test->a_w.w_symbol->s_name, MAXPDSTRING);
     test_size = strnlen(s_test, MAXPDSTRING);
   } else {
     test_size=sizeof(char)*MAXPDSTRING;
@@ -455,7 +455,7 @@ static t_listlist*matchlistlist_regex(unsigned int*numresults,
     int pattern_size=0;
     t_atom*pattern=p_argv+i;
     if(pattern->a_type==A_SYMBOL) {
-      s_pattern=strndup(pattern->a_w.w_symbol->s_name, MAXPDSTRING);
+      s_pattern=zexy_strndup(pattern->a_w.w_symbol->s_name, MAXPDSTRING);
       pattern_size=strnlen(s_pattern, MAXPDSTRING);
     } else {
       pattern_size=sizeof(char)*MAXPDSTRING;

@@ -95,7 +95,7 @@ static void strcmp_symbol(t_strcmp *x, t_symbol *s)
   if(x->str1&&x->n1) {
     freebytes(x->str1, x->n1);
   }
-  x->str1=strndup(s->s_name, MAXPDSTRING);
+  x->str1=zexy_strndup(s->s_name, MAXPDSTRING);
   x->n1=strnlen(x->str1, MAXPDSTRING);
   strcmp_bang(x);
 }
@@ -110,7 +110,7 @@ static void strcmp_secondsymbol(t_strcmp *x, t_symbol *s)
   if(x->str2&&x->n2) {
     freebytes(x->str2, x->n2);
   }
-  x->str2=strndup(s->s_name, MAXPDSTRING);
+  x->str2=zexy_strndup(s->s_name, MAXPDSTRING);
   x->n2=strnlen(x->str2, MAXPDSTRING);
 }
 
