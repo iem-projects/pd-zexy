@@ -38,6 +38,7 @@ script:
     - wget -q -O Pd.tgz http://msp.ucsd.edu/Software/pd-${PDVERSION}.mac.tar.gz
     - rm -rf /Applications/Pd*.app/
     - tar xvf Pd.tgz -C /Applications/
+    - rm -f Pd.tgz
 
 .build:w32: &build_w32
   stage: build
@@ -50,6 +51,7 @@ script:
     - mkdir -p "${PROGRAMFILESX86}/pd"
     - unzip -q Pd.zip -d "${PROGRAMFILESX86}/pd"
     - mv -v "${PROGRAMFILESX86}/pd"/*/* "${PROGRAMFILESX86}/pd"
+    - rm -f Pd.zip
 
 .build:w64: &build_w64
   stage: build
@@ -62,6 +64,7 @@ script:
     - mkdir -p "${PROGRAMFILES}/pd"
     - unzip -q Pd.zip -d "${PROGRAMFILES}/pd"
     - mv -v "${PROGRAMFILES}/pd"/*/* "${PROGRAMFILES}/pd"
+    - rm -f Pd.zip
 
 ###################################################
 ### the actual jobs: (linux,macos,windows)*(release,snapshot)
