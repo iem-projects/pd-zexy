@@ -162,7 +162,7 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
       if(newentry>0) {
         newentry--;
         if(x->names[newentry]) { /* it is already taken! */
-          z_verbose(1,
+          verbose(1,
                     "index :: couldn't add element '%s' at position %d (already taken)",
                     s->s_name, newentry+1);
           outlet_float(x->x_obj.ob_outlet, -1.f);
@@ -184,7 +184,7 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
       error("index :: max number of elements (%d) reached !", x->maxentries);
     }
   } else {
-    z_verbose(1, "index :: element '%s' already exists", s->s_name);
+    verbose(1, "index :: element '%s' already exists", s->s_name);
   }
   /* couldn't add the symbol to our index table */
   outlet_float(x->x_obj.ob_outlet, -1.f);
@@ -213,7 +213,7 @@ static void index_delete(t_index *x, t_symbol* UNUSED(s), int argc,
     x->entries--;
     outlet_float(x->x_obj.ob_outlet, 0.0);
   } else {
-    z_verbose(1, "index :: couldn't find element");
+    verbose(1, "index :: couldn't find element");
     outlet_float(x->x_obj.ob_outlet, -1.0);
   }
 }

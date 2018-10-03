@@ -154,27 +154,6 @@ static void zexy_register(char*object)
 }
 #endif /* ZEXY_LIBRARY */
 
-#if (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION > 38)
-/*
- * pd>=0.39 has a verbose() function; older versions don't
- * btw, this finally makes zexy binary incompatible with older version
- */
-# define z_verbose verbose
-
-/* when compiling zexy as library, we also provide now provide a dummy verbose() function,
- * which will chime in, when pd is lacking one
- * this should make zexy binary compatible with older pd versions again
- */
-# ifndef __WIN32__
-void verbose(int level, const char *fmt, ...);
-# endif
-#else
-/*
- * on older version we just shut up!
- */
-# define z_verbose
-#endif
-
 #if (defined PD_MAJOR_VERSION && defined PD_MINOR_VERSION) && (PD_MAJOR_VERSION > 0 || PD_MINOR_VERSION > 43)
 # define z_open sys_open
 # define z_close sys_close
