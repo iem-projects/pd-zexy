@@ -9,6 +9,7 @@
 # library name
 lib.name = zexy
 
+make-lib-executable=yes
 # input source file (class name == source file basename)
 class.sources = \
 	src/0x260x260x7e.c \
@@ -144,7 +145,6 @@ cflags += -DBUILD_DATE='"$(BUILD_DATE)"'
 endif
 
 
-make-lib-executable=yes
 ifeq ($(make-lib-executable),yes)
  CPPFLAGS+=-DZEXY_LIBRARY
 endif
