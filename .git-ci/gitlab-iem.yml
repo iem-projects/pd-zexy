@@ -3,6 +3,10 @@
 variables:
   PDVERSION: 0.49-0
 
+script:
+  - make
+  - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
+
 .build:snapshot: &snapshot
   except:
     - tags
@@ -24,15 +28,7 @@ variables:
   image: gcc
   stage: build
   before_script:
-    - apt-get update
-    - apt-get install -y --no-install-recommends automake autoconf make
-    - apt-get install -y --no-install-recommends puredata-dev puredata-core
-  script:
-    - autoreconf -fiv
-    - ./configure
-    - make
-    - make check VERBOSE=1
-    - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} libdir=/
+    - apt-get update && apt-get install -y --no-install-recommends make puredata-dev
 
 .build:macos: &build_macos
   tags:
@@ -40,14 +36,8 @@ variables:
   stage: build
   before_script:
     - wget -q -O Pd.tgz http://msp.ucsd.edu/Software/pd-${PDVERSION}.mac.tar.gz
-    - rm -rf "/tmp/pd"
-    - mkdir -p "/tmp/pd"
-    - tar --strip-components=1 -xf Pd.tgz -C /tmp/pd/
-  script:
-    - autoreconf -fiv
-    - ./configure --enable-fat-binary=i386,x86_64 --with-extension=d_fat --with-pd=/tmp/pd/Contents/Resources/ || cat config.log
-    - make
-    - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} libdir=/
+    - rm -rf /Applications/Pd*.app/
+    - tar xvf Pd.tgz -C /Applications/
 
 .build:w32: &build_w32
   stage: build
@@ -57,16 +47,9 @@ variables:
     IEMCI_CONFIGURATIONS: mingw32
   before_script:
     - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}-i386.msw.zip
-    - rm -rf "/tmp/pd"; mkdir -p "/tmp/pd"
-    - unzip -q Pd.zip -d "/tmp/pd"
-    - mv -v "/tmp/pd"/*/* "/tmp/pd"
-    - pacman --noconfirm -S mingw-w64-i686-ntldd
-  script:
-    - autoreconf -fiv
-    - ./configure --with-extension=m_i386 --with-pd=/tmp/pd || cat config.log
-    - make -k LDFLAGS="-Wl,--enable-auto-import" LIBS="-Wl,/tmp/pd/bin/pd.dll -Wl,-lregex" # configure fails to properly detect pd.dll and libregex
-    - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} libdir=/
-    - .git-ci/localdeps.win.sh artifacts/${CI_JOB_NAME%_*}/zexy/*.m_i386 || true
+    - mkdir -p "${PROGRAMFILESX86}/pd"
+    - unzip -q Pd.zip -d "${PROGRAMFILESX86}/pd"
+    - mv -v "${PROGRAMFILESX86}/pd"/*/* "${PROGRAMFILESX86}/pd"
 
 .build:w64: &build_w64
   stage: build
@@ -74,18 +57,11 @@ variables:
     - windows
   variables:
     IEMCI_CONFIGURATIONS: mingw64
-  before_script:
-    - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.msw.zip
-    - rm -rf "/tmp/pd"; mkdir -p "/tmp/pd"
-    - unzip -q Pd.zip -d "/tmp/pd"
-    - mv -v "/tmp/pd"/*/* "/tmp/pd"
-    - pacman --noconfirm -S mingw-w64-x86_64-ntldd
   script:
-    - autoreconf -fiv
-    - ./configure --with-pd=/tmp/pd || cat config.log
-    - make -k LDFLAGS="-L/tmp/pd/bin -Wl,-l:pd.dll" # configure fails to properly detect pd.dll
-    - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} libdir=/
-    - .git-ci/localdeps.win.sh artifacts/${CI_JOB_NAME%_*}/zexy/*.dll || true
+    - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.msw.zip
+    - mkdir -p "${PROGRAMFILES}/pd"
+    - unzip -q Pd.zip -d "${PROGRAMFILES}/pd"
+    - mv -v "${PROGRAMFILES}/pd"/*/* "${PROGRAMFILES}/pd"
 
 ###################################################
 ### the actual jobs: (linux,macos,windows)*(release,snapshot)
@@ -116,7 +92,6 @@ W32_snapshot:
 W64_snapshot:
   <<: *build_w64
   <<: *snapshot
-
 
 deken:
   stage: deploy
