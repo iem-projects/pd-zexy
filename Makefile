@@ -111,7 +111,9 @@ mux~.class.sources = src/multiplex~.c
 mux.class.sources = src/multiplex.c
 l2s.class.sources = src/list2symbol.c
 s2l.class.sources = src/symbol2list.c
-unfold.class.sources = src/drip.c
+l2i.class.sources = src/list2int.c
+any2list.class.sources = src/a2l.c
+
 # abs-aliases: any2list, l2i
 
 lpt.class.sources = \
@@ -170,3 +172,38 @@ endef
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
 PDLIBBUILDER_DIR=pd-lib-builder/
 include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
+
+COPY=cp
+# aliases
+vpath %.pd abs reference
+zexyaliases = \
+	any2list.pd any2list-help.pd \
+	demux-help.pd demux~-help.pd \
+	mux-help.pd mux~-help.pd \
+	l2i.pd l2i-help.pd \
+	l2s-help.pd s2l-help.pd l-help.pd \
+	$(empty)
+
+# create aliases
+$(zexyaliases):
+	test -e $< && $(COPY) $< $@
+
+# delete aliases
+clean_zexyalias:
+	-rm -f $(zexyaliases)
+
+any2list.pd: a2l.pd
+any2list-help.pd: a2l-help.pd
+l2i.pd: list2int.pd
+l2i-help.pd: list2int-help.pd
+l2s-help.pd: list2symbol-help.pd
+s2l-help.pd: symbol2list-help.pd
+l-help.pd: lister-help.pd
+mux-help.pd: multiplex-help.pd
+mux~-help.pd: multiplex~-help.pd
+demux-help.pd: demultiplex-help.pd
+demux~-help.pd: demultiplex~-help.pd
+
+all: $(zexyaliases)
+
+datafiles += $(zexyaliases)
