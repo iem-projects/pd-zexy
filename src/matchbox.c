@@ -28,6 +28,7 @@
 
 
 #include "zexy.h"
+#include "zexy_strndup.h"
 
 #define MATCHBOX_EXACT 0
 #define MATCHBOX_OSC 1

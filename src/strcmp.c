@@ -18,6 +18,7 @@
  */
 
 #include "zexy.h"
+#include "zexy_strndup.h"
 #include <stdlib.h>
 #include <string.h>
 
