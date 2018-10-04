@@ -24,7 +24,7 @@ variables:
   image: gcc
   stage: build
   before_script:
-    - apt-get update && apt-get install -y --no-install-recommends make puredata-dev
+    - apt-get update && apt-get install -y --no-install-recommends make puredata-dev puredata-core
   script:
     - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
