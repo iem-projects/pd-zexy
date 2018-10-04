@@ -1,5 +1,16 @@
 #!/bin/sh
 
+
+if [ "x$(which realpath)" = "x" ]; then
+realpath() {
+    if [ -d "$1" ]; then
+        (cd "$1"; pwd -P)
+    else
+        (cd $(dirname "$1"); pwd -P)
+    fi
+}
+fi
+
 PD=${PD:=pd}
 LIBDIR=${LIBDIR:=../src/.libs/}
 SRCDIR=${SRCDIR:=../}
