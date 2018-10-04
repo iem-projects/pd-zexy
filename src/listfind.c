@@ -67,7 +67,7 @@ static void listfind_list2(t_listfind*x,t_symbol*UNUSED(s), int argc, t_atom*arg
   DEBUGFUN(post("list2: %d %x", x->x_argc, x->x_argv));
 }
 
-static int atom_equals(t_atom*a1, t_atom*a2)
+static int UNUSED_FUNCTION(atom_equals) (t_atom*a1, t_atom*a2)
 {
   if(a1->a_type!=a2->a_type) {
     return 0;
