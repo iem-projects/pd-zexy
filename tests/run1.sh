@@ -18,7 +18,7 @@ count_error=0
 
 usage() {
 cat 1>&2 <<EOF
-usage: $0 [options] <testpatch>
+usage: $0 [options] <testpatch> [ <testpatch>... ]
 	<testpatch>: Pd-patch to be tested
     options
 	-v	raise verbosity
@@ -117,15 +117,20 @@ fi
     esac
 }
 summary_success() {
-if [ 1 -le $verbosity ]; then
-    echo "${brg}TOTAL${std} ${count_all}"
-    echo "${grn}PASS${std} ${count_pass}"
-    echo "${red}FAIL${std}: ${count_fail}"
-    echo "${blu}SKIP${std}: ${count_skip}"
-    echo "${grn}XFAIL${std}: ${count_xfail}"
-    echo "${red}XPASS${std}: ${count_xpass}"
-    echo "${mgn}HARDFAIL${std}: ${count_error}"
-fi
+    if [ 0 -le $verbosity ]; then
+        echo ""
+        echo "${grn}============================================================================${std}"
+        echo "${grn}Testsuite summary"
+        echo "${grn}============================================================================${std}"
+        echo "${brg}TOTAL${std}\t${count_all}"
+        echo "${grn}PASS${std}\t${count_pass}"
+        echo "${red}FAIL${std}\t${count_fail}"
+        echo "${blu}SKIP${std}\t${count_skip}"
+        echo "${lgn}XFAIL${std}\t${count_xfail}"
+        echo "${lrd}XPASS${std}\t${count_xpass}"
+        echo "${mgn}ERROR${std}\t${count_error}"
+        echo "${grn}============================================================================${std}"
+    fi
 }
 
 should_fail() {
@@ -185,6 +190,10 @@ while getopts "vqlxXh?" opt; do
     esac
 done
 shift $(($OPTIND - 1))
+if [ $# -lt 1 ]; then
+    usage
+fi
+
 
 wantfail=${shouldfail}
 PD=$(which ${PD})
@@ -193,6 +202,7 @@ if [ "x${PD}" = "x" ]; then
 fi
 LIBFLAGS="-path ${LIBDIR}:${SRCDIR}/abs:. -lib ${LIBDIR}/zexy"
 
+do_runtest() {
 
 TEST=$1
 if [  ! -e "${TEST}" ]; then
@@ -240,10 +250,13 @@ if test ${SUCCESS} -ge 1 && test ${showlog} -ge 1 && test $verbosity -le 3; then
     cat "${TMPFILE}"
 fi
 rm "${TMPFILE}"
-
 report_success $SUCCESS $TEST
+}
 
 
+for t in "$@"; do
+    do_runtest "$t"
+done
 
 if [  ${count_all} -gt 1 ]; then
     summary_success
