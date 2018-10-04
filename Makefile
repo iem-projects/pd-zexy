@@ -209,7 +209,7 @@ pd:
 	$(shell echo PATH=$(PDBINDIR):$(PDINCLUDEDIR)/../bin:$$PATH)
 	echo "PD: $(PD)"
 
-check: all pd
+check: all pd vars
 	PD=$(PD) LIBDIR=. find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -v -Xls {} "+"
 
 datafiles += $(zexyaliases)
