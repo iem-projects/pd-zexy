@@ -68,14 +68,14 @@ report_success() {
 if [ 1 -le $verbosity ]; then
     case "$1" in
         0)
-            if [ "x${shouldfail}" = "x1" ]; then
+            if [ "x${wantfail}" = "x1" ]; then
                 echo "${lgn}XFAIL${std}: $2"
             else
                 echo "${grn}PASS${std}: $2"
             fi
             ;;
         1)
-            if [ "x${shouldfail}" = "x1" ]; then
+            if [ "x${wantfail}" = "x1" ]; then
                 echo "${lrd}XPASS${std}: $2"
             else
                 echo "${red}FAIL${std}: $2"
@@ -95,7 +95,7 @@ fi
     count_all=$((count_all+1))
     case "$1" in
         0)
-            if [ "x${shouldfail}" = "x1" ]; then
+            if [ "x${wantfail}" = "x1" ]; then
                 count_xfail=$((count_xfail+1))
             else
                 count_pass=$((count_pass+1))
@@ -108,7 +108,7 @@ fi
             count_error=$((count_error+1))
             ;;
         *)
-            if [ "x${shouldfail}" = "x1" ]; then
+            if [ "x${wantfail}" = "x1" ]; then
                 count_xpass=$((count_xpass+1))
             else
                 count_fail=$((count_fail+1))
@@ -128,21 +128,33 @@ if [ 1 -le $verbosity ]; then
 fi
 }
 
+should_fail() {
+    if [ "x$1" = "xauto" ]; then
+        if [ "x${2#fail}" != "x${2}" ]; then
+            echo 1
+        else
+            echo 0
+        fi
+    else
+        echo $1
+    fi
+}
+
 check_success() {
-    if [  ${shouldfail} -ge 1 ]; then
-        case "${SUCCESS}" in
+    if [  ${wantfail} -ge 1 ]; then
+        case "$1" in
             0)
                 echo 1
                 ;;
             77|99)
-                echo ${SUCCESS}
+                echo $1
                 ;;
             *)
                 echo 0
                 ;;
         esac
     else
-        echo ${SUCCESS}
+        echo $1
     fi
 }
 
@@ -174,6 +186,7 @@ while getopts "vqlxXh?" opt; do
 done
 shift $(($OPTIND - 1))
 
+wantfail=${shouldfail}
 PD=$(which ${PD})
 if [ "x${PD}" = "x" ]; then
  exit 77
@@ -192,16 +205,6 @@ TESTOBJ=$(realpath $TEST)
 TESTOBJ=${TESTOBJ#${SCRIPTDIR}}
 TESTOBJ=${TESTOBJ#/}
 TESTOBJ=${TESTOBJ%%/*}
-
-if [ "x${shouldfail}" = "xauto" ]; then
-    if [ "x${TEST##*/fail}" != "x${TEST}" ]; then
-        shouldfail=1
-    else
-        shouldfail=0
-    fi
-fi
-
-
 
 TMPFILE=$(mktemp)
 
@@ -230,6 +233,7 @@ then
     SUCCESS=1
 fi
 
+wantfail=$(should_fail $shouldfail ${TEST##*/})
 SUCCESS=$(check_success $SUCCESS)
 
 if test "x${SUCCESS}" != "x0" && test ${showlog} -ge 1 && test 3 -gt $verbosity; then
