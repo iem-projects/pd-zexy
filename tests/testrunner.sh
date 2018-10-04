@@ -85,10 +85,10 @@ if [ 1 -le $verbosity ]; then
             echo "${blu}SKIP${std}: $2"
             ;;
         99)
-            echo "${mgn}HARDFAIL${std}: $2"
+            echo "${mgn}ERROR${std}: $2"
             ;;
         *)
-            echo "${red}FAIL$1_${std}: $2"
+            echo "${red}FAIL$1${std}: $2"
             ;;
     esac
 fi
@@ -198,6 +198,7 @@ fi
 wantfail=${shouldfail}
 PD=$(which ${PD})
 if [ "x${PD}" = "x" ]; then
+ echo "couldn't find Pd (Hint: use the PD environment variable)" 1>&2
  exit 77
 fi
 LIBFLAGS="-path ${LIBDIR}:${SRCDIR}/abs:. -lib ${LIBDIR}/zexy"
