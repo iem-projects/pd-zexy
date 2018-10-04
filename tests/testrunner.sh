@@ -132,19 +132,26 @@ fi
             ;;
     esac
 }
+highlight_nonnull() {
+    if [  $1 -gt 0 ]; then
+        echo "$2$1$std"
+    else
+        echo "$1"
+    fi
+}
 summary_success() {
     if [ 0 -le $verbosity ]; then
         echo ""
         echo "${grn}============================================================================${std}"
         echo "${grn}Testsuite summary"
         echo "${grn}============================================================================${std}"
-        echo "${brg}TOTAL${std}\t${count_all}"
-        echo "${grn}PASS${std}\t${count_pass}"
-        echo "${red}FAIL${std}\t${count_fail}"
-        echo "${blu}SKIP${std}\t${count_skip}"
-        echo "${lgn}XFAIL${std}\t${count_xfail}"
-        echo "${lrd}XPASS${std}\t${count_xpass}"
-        echo "${mgn}ERROR${std}\t${count_error}"
+        echo "${brg}TOTAL${std}\t$(highlight_nonnull ${count_all} ${brg})"
+        echo "${grn}PASS${std}\t$(highlight_nonnull ${count_pass} ${grn})"
+        echo "${red}FAIL${std}\t$(highlight_nonnull ${count_fail} ${red})"
+        echo "${blu}SKIP${std}\t$(highlight_nonnull ${count_skip} ${blu})"
+        echo "${lgn}XFAIL${std}\t$(highlight_nonnull ${count_xfail} ${lgn})"
+        echo "${lrd}XPASS${std}\t$(highlight_nonnull ${count_xpass} ${lrd})"
+        echo "${mgn}ERROR${std}\t$(highlight_nonnull ${count_error} ${mgn})"
         echo "${grn}============================================================================${std}"
     fi
 
