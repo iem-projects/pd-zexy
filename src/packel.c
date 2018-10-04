@@ -122,7 +122,7 @@ static void packel_free(t_packel *x)
 }
 
 
-static void *packel_new(t_symbol*s, int argc, t_atom*argv)
+static void *packel_new(t_symbol*UNUSED(s), int argc, t_atom*argv)
 {
   t_packel *x = (t_packel *)pd_new(packel_class);
 

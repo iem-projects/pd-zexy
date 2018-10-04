@@ -55,7 +55,7 @@ static void *operating_system_new(void)
   return (x);
 }
 
-static void operating_system_help(t_operating_system*x)
+static void operating_system_help(t_operating_system*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " operating_system\t:: get the current operating system");
 }

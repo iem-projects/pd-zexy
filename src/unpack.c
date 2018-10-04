@@ -54,7 +54,7 @@ static void zunpack_any(t_zunpack *x, t_symbol *s, int argc, t_atom *argv)
   }
 }
 
-static void zunpack_list(t_zunpack *x, t_symbol *s, int argc, t_atom *argv)
+static void zunpack_list(t_zunpack *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   zunpack_any(x, 0, argc, argv);
 }
@@ -76,7 +76,7 @@ static void zunpack_free(t_zunpack *x)
   x->x_out=0;
 }
 
-static void *zunpack_new(t_symbol*s, int argc, t_atom*argv)
+static void *zunpack_new(t_symbol*UNUSED(s), int argc, t_atom*UNUSED(argv))
 {
   t_zunpack *x = (t_zunpack *)pd_new(zunpack_class);
   int count=(argc>0)?argc:2;

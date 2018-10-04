@@ -173,7 +173,7 @@ static void regex_case(t_regex *x, t_float f)
 }
 
 
-static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
+static void regex_regex(t_regex *x, t_symbol*UNUSED(s), int argc, t_atom*argv)
 {
 #ifdef HAVE_REGEX_H
   char*result=0;
@@ -200,7 +200,7 @@ static void regex_regex(t_regex *x, t_symbol*s, int argc, t_atom*argv)
 }
 
 /* compare the given list as string with the precompiled regex */
-static void regex_symbol(t_regex *x, t_symbol *s, int argc, t_atom*argv)
+static void regex_symbol(t_regex *x, t_symbol *UNUSED(s), int argc, t_atom*argv)
 {
 #ifdef HAVE_REGEX_H
   char*teststring=0;
@@ -280,7 +280,7 @@ cleanup:
 #endif
 }
 
-static void *regex_new(t_symbol *s, int argc, t_atom*argv)
+static void *regex_new(t_symbol *UNUSED(s), int argc, t_atom*argv)
 {
   t_regex *x = (t_regex *)pd_new(regex_class);
 
@@ -330,7 +330,7 @@ static void regex_free(t_regex *x)
 #endif
 }
 
-static void regex_help(t_regex*x)
+static void regex_help(t_regex*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " regex\t\t:: test the input whether it matches a regular expression");
 }

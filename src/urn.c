@@ -147,7 +147,7 @@ static void *urn_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-static void urn_help(t_urn*x)
+static void urn_help(t_urn*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " urn\t\t:: generate randum numbers without repetition");
 }

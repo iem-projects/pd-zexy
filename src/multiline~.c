@@ -285,7 +285,7 @@ static void *mline_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 }
 
 
-static void mline_help(t_mline*x)
+static void mline_help(t_mline*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " multiline~\t:: ramped multiplication of multiple signals");
 }

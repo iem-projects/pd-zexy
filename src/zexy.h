@@ -115,9 +115,8 @@ static void zexy_register(char*object)
   }
 }
 #else
-static void zexy_register(char*object)
+static void zexy_register(char*UNUSED(object))
 {
-  object=0;
 }
 #endif /* ZEXY_LIBRARY */
 

@@ -64,7 +64,7 @@ static void *prime_new(void)
   return (x);
 }
 
-static void prime_help(t_prime*x)
+static void prime_help(t_prime*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " prime\t\t:: test whether a given number is prime");
 }

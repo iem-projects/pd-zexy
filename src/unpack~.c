@@ -39,7 +39,7 @@ static void sigunpack_float(t_sigunpack *x, t_float f)
   }
 }
 
-static void sigunpack_list(t_sigunpack *x, t_symbol *s, int argc,
+static void sigunpack_list(t_sigunpack *x, t_symbol *UNUSED(s), int argc,
                            t_atom *argv)
 {
   t_atom *ap = argv;

@@ -72,7 +72,7 @@ static void mux_anything(t_muxproxy *y, t_symbol *s, int argc,
   }
 }
 
-static void *mux_new(t_symbol *s, int argc, t_atom *argv)
+static void *mux_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
 {
   int n = (argc < 2)?2:argc;
   t_mux *x = (t_mux *)pd_new(mux_class);

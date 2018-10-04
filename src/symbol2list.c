@@ -159,10 +159,10 @@ static void *symbol2list_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-static void symbol2list_free(t_symbol2list *x)
+static void symbol2list_free(t_symbol2list *UNUSED(x))
 {}
 
-static void symbol2list_help(t_symbol2list*x)
+static void symbol2list_help(t_symbol2list*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " symbol2list\t:: split a symbol into a list of atoms");
 }

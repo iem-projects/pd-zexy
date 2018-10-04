@@ -123,7 +123,7 @@ static void tabread4_tilde_dsp(t_tabread4_tilde *x, t_signal **sp)
 
 }
 
-static void tabread4_tilde_free(t_tabread4_tilde *x)
+static void tabread4_tilde_free(t_tabread4_tilde *UNUSED(x))
 {
 }
 

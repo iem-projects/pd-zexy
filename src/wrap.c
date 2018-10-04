@@ -71,7 +71,7 @@ static void *wrap_new(t_symbol *s, int argc, t_atom*argv)
   return (x);
 }
 
-static void wrap_help(t_wrap*x)
+static void wrap_help(t_wrap*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " wrap\t\t:: wrap a float between to boundaries");
 }

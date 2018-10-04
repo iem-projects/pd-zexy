@@ -86,13 +86,13 @@ static void zpack_any(t_zpack*x, t_symbol *s, int argc, t_atom *argv)
   zpack_bang(x);
 }
 
-static void zpack_list(t_zpack*x, t_symbol *s, int argc, t_atom *argv)
+static void zpack_list(t_zpack*x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   zpack_any(x, 0, argc, argv);
 }
 
 
-static void zpack_proxy_list(t_zpackproxy *y, t_symbol *s, int argc,
+static void zpack_proxy_list(t_zpackproxy *y, t_symbol *UNUSED(s), int argc,
                              t_atom *argv)
 {
   /* until we have lists of lists, this only uses the 1st element */
@@ -100,8 +100,8 @@ static void zpack_proxy_list(t_zpackproxy *y, t_symbol *s, int argc,
     setatom(y->p_master, argv, y->id);
   }
 }
-static void zpack_proxy_any(t_zpackproxy *y, t_symbol *s, int argc,
-                            t_atom *argv)
+static void zpack_proxy_any(t_zpackproxy *y, t_symbol *s,
+                            int UNUSED(argc), t_atom *UNUSED(argv))
 {
   /* until we have lists of lists, this only uses the selector */
   t_atom a;
@@ -109,7 +109,7 @@ static void zpack_proxy_any(t_zpackproxy *y, t_symbol *s, int argc,
   setatom(y->p_master, &a, y->id);
 }
 
-static void *zpack_new(t_symbol *s, int argc, t_atom *argv)
+static void *zpack_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_zpack *x = (t_zpack *)pd_new(zpack_class);
   int n =0;

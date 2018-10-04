@@ -71,7 +71,7 @@ static void sort_buffer(t_sort *x, int argc, t_atom *argv)
   }
 }
 
-static void sort_list(t_sort *x, t_symbol *s, int argc, t_atom *argv)
+static void sort_list(t_sort *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   int step = argc, n;
   t_atom *atombuf = (t_atom *)getbytes(sizeof(t_atom) * argc);
@@ -146,7 +146,7 @@ static void *sort_new(t_floatarg f)
   return (x);
 }
 
-static void sort_help(t_sort*x)
+static void sort_help(t_sort*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " sort\t\t:: sort a list of numbers");
 }

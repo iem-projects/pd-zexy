@@ -120,7 +120,7 @@ static void multireceive_clear(t_multireceive *x)
 }
 
 
-static void multireceive_set(t_multireceive *x, t_symbol*s, int argc,
+static void multireceive_set(t_multireceive *x, t_symbol*UNUSED(s), int argc,
                              t_atom*argv)
 {
   multireceive_clear(x);
@@ -145,7 +145,7 @@ static void multireceive_free(t_multireceive *x)
   x->x_out=NULL;
 }
 
-static void *multireceive_new(t_symbol *s, int argc, t_atom *argv)
+static void *multireceive_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_multireceive *x = (t_multireceive *)pd_new(multireceive_class);
   x->x_proxy=(t_multireceive_proxy*)pd_new(multireceive_proxy_class);

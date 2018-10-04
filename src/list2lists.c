@@ -44,7 +44,7 @@ typedef struct _list2lists {
 
 
 
-static void list2lists_list2(t_list2lists*x,t_symbol*s, int argc,
+static void list2lists_list2(t_list2lists*x,t_symbol*UNUSED(s), int argc,
                              t_atom*argv)
 {
   if(x->x_length!=0) {
@@ -132,7 +132,7 @@ static void *list2lists_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 }
 
 
-static void list2lists_help(t_list2lists*x)
+static void list2lists_help(t_list2lists*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " list2lists\t\t:: split lists into multiple sublists based on matches");
 }

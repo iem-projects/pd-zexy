@@ -135,12 +135,12 @@ static void list2symbol_anything(t_list2symbol *x, t_symbol *s, int argc,
   list2symbol_bang(x);
 }
 
-static void list2symbol_list(t_list2symbol *x, t_symbol *s, int argc,
+static void list2symbol_list(t_list2symbol *x, t_symbol *UNUSED(s), int argc,
                              t_atom *argv)
 {
   list2symbol_anything(x, 0, argc, argv);
 }
-static void *list2symbol_new(t_symbol *s, int argc, t_atom *argv)
+static void *list2symbol_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_list2symbol *x = (t_list2symbol *)pd_new(list2symbol_class);
 

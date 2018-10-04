@@ -597,7 +597,7 @@ static t_listlist*matchlistlist(unsigned int*numresults,
 }
 
 
-static void matchbox_list(t_matchbox*x, t_symbol*s, int argc, t_atom*argv)
+static void matchbox_list(t_matchbox*x, t_symbol*UNUSED(s), int argc, t_atom*argv)
 {
   unsigned int results=0;
   int mode=x->x_mode;
@@ -613,7 +613,7 @@ static void matchbox_list(t_matchbox*x, t_symbol*s, int argc, t_atom*argv)
   }
 }
 
-static void matchbox_add(t_matchbox*x, t_symbol*s, int argc, t_atom*argv)
+static void matchbox_add(t_matchbox*x, t_symbol*UNUSED(s), int argc, t_atom*argv)
 {
   /* 1st match, whether we already have this entry */
   if(matchlistlist(0, x->x_lists, argc, argv, MATCHBOX_EXACT, FALSE)) {
@@ -628,7 +628,7 @@ static void matchbox_add(t_matchbox*x, t_symbol*s, int argc, t_atom*argv)
   x->x_numlists++;
 }
 
-static void matchbox_delete(t_matchbox*x, t_symbol*s, int argc,
+static void matchbox_delete(t_matchbox*x, t_symbol*UNUSED(s), int argc,
                             t_atom*argv)
 {
   unsigned int results=0;
@@ -695,7 +695,7 @@ static void matchbox_mode(t_matchbox*x, t_symbol*s)
   }
 }
 
-static void *matchbox_new(t_symbol *s, int argc, t_atom*argv)
+static void *matchbox_new(t_symbol *UNUSED(s), int argc, t_atom*argv)
 {
   t_matchbox *x = (t_matchbox *)pd_new(matchbox_class);
 
@@ -728,7 +728,7 @@ static void matchbox_free(t_matchbox *x)
   x->x_lists=0;
 }
 
-static void matchbox_help(t_matchbox*x)
+static void matchbox_help(t_matchbox*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " matchbox\t\t:: find a list in a pool of lists");
 }

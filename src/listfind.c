@@ -45,7 +45,7 @@ typedef struct _listfind {
 
 
 
-static void listfind_list2(t_listfind*x,t_symbol*s, int argc, t_atom*argv)
+static void listfind_list2(t_listfind*x,t_symbol*UNUSED(s), int argc, t_atom*argv)
 {
   if(x->x_argv!=0) {
     freebytes(x->x_argv, sizeof(t_atom)*x->x_argc);
@@ -167,7 +167,7 @@ static void listfind_doit(t_outlet*out, int longcount, t_atom*longlist,
   freebytes(ap, length*sizeof(t_atom));
 }
 
-static void listfind_list(t_listfind *x, t_symbol *s, int argc,
+static void listfind_list(t_listfind *x, t_symbol *UNUSED(s), int argc,
                           t_atom *argv)
 {
 #if 0
@@ -217,7 +217,7 @@ static void *listfind_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 }
 
 
-static void listfind_help(t_listfind*x)
+static void listfind_help(t_listfind*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " listfind\t\t:: split lists into multiple sublists based on matches");
 }

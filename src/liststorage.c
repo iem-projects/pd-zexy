@@ -234,7 +234,7 @@ static void liststorage_bang(t_liststorage *x)
 }
 
 /* add a new list to the current slot */
-static void liststorage_add(t_liststorage *x, t_symbol *s, int ac,
+static void liststorage_add(t_liststorage *x, t_symbol *UNUSED(s), int ac,
                             t_atom *av)
 {
   int slot=_liststorage_checkslot(x,

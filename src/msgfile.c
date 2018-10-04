@@ -444,7 +444,7 @@ static int atom2rangeint(t_atom*a, int range) {
     return -range;
   return (unsigned int)f;
 }
-static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
+static void msgfile_delete(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   int count = node_count(x);
   int pos = atom2rangeint(av+0, count);
@@ -489,13 +489,13 @@ static void msgfile_delete(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
   }
 }
 
-static void msgfile_add(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
+static void msgfile_add(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   msgfile_end(x);
   add_currentnode(x);
   write_currentnode(x, ac, av);
 }
-static void msgfile_add2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
+static void msgfile_add2(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   msgfile_end(x);
   if (x->current) {
@@ -511,7 +511,7 @@ static void msgfile_add2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
     x->current = x->current->next;
   }
 }
-static void msgfile_append(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
+static void msgfile_append(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   add_currentnode(x);
   write_currentnode(x, ac, av);
@@ -528,14 +528,14 @@ static void msgfile_append2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
     msgfile_append(x, s, ac, av);
   }
 }
-static void msgfile_insert(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
+static void msgfile_insert(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   t_msglist *cur = x->current;
   insert_currentnode(x);
   write_currentnode(x, ac, av);
   x->current = cur;
 }
-static void msgfile_insert2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
+static void msgfile_insert2(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   t_msglist *cur = x->current;
   if ((x->current) && (x->current->previous)) {
@@ -551,7 +551,7 @@ static void msgfile_set(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
   msgfile_add(x, s, ac, av);
 }
 
-static void msgfile_replace(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
+static void msgfile_replace(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   if(x->current) {
     if(x->current->thislist) {
@@ -628,7 +628,7 @@ static void msgfile_bang(t_msgfile *x)
   }
 }
 
-static void msgfile_find(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
+static void msgfile_find(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   t_msglist *found = 0;
   t_msglist *cur=x->current;
@@ -985,7 +985,7 @@ static void msgfile_print(t_msgfile *x)
   }
 }
 
-static void msgfile_help(t_msgfile *x)
+static void msgfile_help(t_msgfile *UNUSED(x))
 {
   post("\n"HEARTSYMBOL " msgfile\t:: handle and store files of lists");
   post("goto <n>\t: goto line <n>"
@@ -1022,7 +1022,7 @@ static void msgfile_free(t_msgfile *x)
   freebytes(x->current, sizeof(t_msglist));
 }
 
-static void *msgfile_new(t_symbol *s, int argc, t_atom *argv)
+static void *msgfile_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_msgfile *x = (t_msgfile *)pd_new(msgfile_class);
 

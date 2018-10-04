@@ -158,7 +158,7 @@ static t_int *sgnTilde_performSSE(t_int *w)
 }
 #endif /* __SSE__ */
 
-static void sgnTilde_dsp(t_sgnTilde *x, t_signal **sp)
+static void sgnTilde_dsp(t_sgnTilde *UNUSED(x), t_signal **sp)
 {
 #ifdef __SSE__
   if(
