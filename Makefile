@@ -202,4 +202,7 @@ demux~-help.pd: demultiplex~-help.pd
 
 all: $(zexyaliases)
 
+check: all
+	LIBDIR=. find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -vXl {} "+"
+
 datafiles += $(zexyaliases)
