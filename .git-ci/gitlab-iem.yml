@@ -38,6 +38,7 @@ variables:
     - rm -rf /Applications/Pd*.app/
     - tar xvf Pd.tgz -C /Applications/
     - rm -f Pd.tgz
+    - export PD=/Applications/Pd*.app/Contents/Resources/bin/pd
   script:
     - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
@@ -49,12 +50,13 @@ variables:
   variables:
     IEMCI_CONFIGURATIONS: mingw32
   before_script:
+    - pacman --noconfirm -S mingw-w64-i686-ntldd
     - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}-i386.msw.zip
     - mkdir -p "${PROGRAMFILESX86}/pd"
     - unzip -q Pd.zip -d "${PROGRAMFILESX86}/pd"
     - mv -v "${PROGRAMFILESX86}/pd"/*/* "${PROGRAMFILESX86}/pd"
     - rm -f Pd.zip
-    - pacman --noconfirm -S mingw-w64-i686-ntldd
+    - export PD="${PROGRAMFILESX86}/pd/bin/pd.com"
   script:
     - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
@@ -67,12 +69,13 @@ variables:
   variables:
     IEMCI_CONFIGURATIONS: mingw64
   before_script:
+    - pacman --noconfirm -S mingw-w64-x86_64-ntldd
     - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.msw.zip
     - mkdir -p "${PROGRAMFILES}/pd"
     - unzip -q Pd.zip -d "${PROGRAMFILES}/pd"
     - mv -v "${PROGRAMFILES}/pd"/*/* "${PROGRAMFILES}/pd"
     - rm -f Pd.zip
-    - pacman --noconfirm -S mingw-w64-x86_64-ntldd
+    - export PD="${PROGRAMFILES}/pd/bin/pd.com"
   script:
     - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
