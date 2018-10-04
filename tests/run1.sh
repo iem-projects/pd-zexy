@@ -236,7 +236,7 @@ fi
 wantfail=$(should_fail $shouldfail ${TEST##*/})
 SUCCESS=$(check_success $SUCCESS)
 
-if test "x${SUCCESS}" != "x0" && test ${showlog} -ge 1 && test 3 -gt $verbosity; then
+if test ${SUCCESS} -ge 1 && test ${showlog} -ge 1 && test $verbosity -le 3; then
     cat "${TMPFILE}"
 fi
 rm "${TMPFILE}"
