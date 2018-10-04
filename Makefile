@@ -202,7 +202,10 @@ demux~-help.pd: demultiplex~-help.pd
 
 all: $(zexyaliases)
 
+
+PD=$(firstword $(shell PATH=$$PDBINDIR:$$PDINCLUDEDIR/../bin:$$PATH which pd))
+
 check: all
-	LIBDIR=. find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -vXl {} "+"
+	PD=$(PD) LIBDIR=. find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -vXl {} "+"
 
 datafiles += $(zexyaliases)
