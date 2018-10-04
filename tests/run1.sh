@@ -60,14 +60,14 @@ reportsuccess() {
     case "$1" in
         0)
             if [ "x${shouldfail}" = "x1" ]; then
-                echo "${grn}XFAIL${std}: $2"
+                echo "${lgn}XFAIL${std}: $2"
             else
-                echo "${grn}PASS${std} $2"
+                echo "${grn}PASS${std}: $2"
             fi
             ;;
         1)
             if [ "x${shouldfail}" = "x1" ]; then
-                echo "${red}XPASS${std}: $2"
+                echo "${lrd}XPASS${std}: $2"
             else
                 echo "${red}FAIL${std}: $2"
             fi
@@ -79,7 +79,8 @@ reportsuccess() {
             echo "${mgn}HARDFAIL${std}: $2"
             ;;
         *)
-            echo "${lrd}FAIL$1${std}: $2"
+            echo "${red}FAIL$1_${std}: $2"
+            ;;
             ;;
     esac
 }
