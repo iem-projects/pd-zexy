@@ -21,7 +21,6 @@ usage: $0 [options] <testpatch>
 EOF
 exit
 }
-
 catverbose() {
   if [ $1 -le $verbosity ]; then
      cat
@@ -114,8 +113,13 @@ done
 shift $(($OPTIND - 1))
 
 PD=$(which ${PD})
-TEST=$1
+if [ "x${PD}" = "x" ]; then
+ exit 77
+fi
+LIBFLAGS="-path ${LIBDIR}:${SRCDIR}/abs:. -lib ${LIBDIR}/zexy"
 
+
+TEST=$1
 if [  ! -e "${TEST}" ]; then
     usage
 fi
@@ -135,11 +139,8 @@ if [ "x${shouldfail}" = "xauto" ]; then
     fi
 fi
 
-if [ "x${PD}" = "x" ]; then
- exit 77
-fi
 
-LIBFLAGS="-path ${LIBDIR}:${SRCDIR}/abs:. -lib ${LIBDIR}/zexy"
+
 TMPFILE=$(mktemp)
 
 ${VALGRIND} ${PD} \
