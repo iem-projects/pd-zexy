@@ -64,7 +64,7 @@ else
     std=
 fi
 
-reportsuccess() {
+report_success() {
 if [ 1 -le $verbosity ]; then
     case "$1" in
         0)
@@ -116,7 +116,7 @@ fi
             ;;
     esac
 }
-summarysuccess() {
+summary_success() {
 if [ 1 -le $verbosity ]; then
     echo "${brg}TOTAL${std} ${count_all}"
     echo "${grn}PASS${std} ${count_pass}"
@@ -126,6 +126,24 @@ if [ 1 -le $verbosity ]; then
     echo "${red}XPASS${std}: ${count_xpass}"
     echo "${mgn}HARDFAIL${std}: ${count_error}"
 fi
+}
+
+check_success() {
+    if [  ${shouldfail} -ge 1 ]; then
+        case "${SUCCESS}" in
+            0)
+                echo 1
+                ;;
+            77|99)
+                echo ${SUCCESS}
+                ;;
+            *)
+                echo 0
+                ;;
+        esac
+    else
+        echo ${SUCCESS}
+    fi
 }
 
 verbosity=1
@@ -212,31 +230,19 @@ then
     SUCCESS=1
 fi
 
-if [  ${shouldfail} -ge 1 ]; then
-  case "${SUCCESS}" in
-      0)
-          SUCCESS=1
-      ;;
-      77|99)
-          :
-      ;;
-      *)
-          SUCCESS=0
-      ;;
-  esac
-fi
+SUCCESS=$(check_success $SUCCESS)
 
 if test "x${SUCCESS}" != "x0" && test ${showlog} -ge 1 && test 3 -gt $verbosity; then
     cat "${TMPFILE}"
 fi
 rm "${TMPFILE}"
 
-reportsuccess $SUCCESS $TEST
+report_success $SUCCESS $TEST
 
 
 
 if [  ${count_all} -gt 1 ]; then
-    summarysuccess
+    summary_success
 fi
 
 exit ${SUCCESS}
