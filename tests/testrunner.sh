@@ -221,7 +221,7 @@ fi
 
 
 wantfail=${shouldfail}
-PD=$(which ${PD})
+PD=$(which "${PD}")
 if [ "x${PD}" = "x" ]; then
  echo "couldn't find Pd (Hint: use the PD environment variable)" 1>&2
  sys_exit 77
@@ -237,7 +237,7 @@ fi
 
 # assume that the first component of the test-path is the object to be tested
 # at least this object must not fail to create
-TESTOBJ=$(realpath $TEST)
+TESTOBJ=$(realpath "${TEST}")
 TESTOBJ=${TESTOBJ#${SCRIPTDIR}}
 TESTOBJ=${TESTOBJ#/}
 TESTOBJ=${TESTOBJ%%/*}
@@ -245,12 +245,12 @@ TESTOBJ=${TESTOBJ%%/*}
 TMPFILE=$(mktemp)
 
 SUCCESS=0
-${VALGRIND} ${PD} \
+${VALGRIND} "${PD}" \
 	    -noprefs -nostdpath \
 	    -oss -nosound -nrt \
 	    -nogui -batch -verbose \
 	    ${LIBFLAGS} \
-	    -open ${TESTDIR}/run1.pd \
+	    -open "${TESTDIR}/run1.pd" \
 	    -send "test ${TEST%.pd}" \
             >"${TMPFILE}" 2>&1
 SUCCESS=$?
@@ -283,7 +283,7 @@ if test ${SUCCESS} -ge 1 && test ${showlog} -ge 1 && test $verbosity -le 3; then
     cat "${TMPFILE}"
 fi
 rm "${TMPFILE}"
-report_success $SUCCESS $TEST
+report_success $SUCCESS "$TEST"
 
 }
 
