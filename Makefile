@@ -203,10 +203,9 @@ demux~-help.pd: demultiplex~-help.pd
 all: $(zexyaliases)
 
 
-PD=$(firstword $(shell PATH="$(PDBINDIR)":"$(PDINCLUDEDIR)"/../bin:$$PATH which pd))
+PD=$(shell PATH="$(PDBINDIR)":"$(PDINCLUDEDIR)"/../bin:$$PATH which pd)
 
 pd:
-	$(shell echo PATH="$(PDBINDIR)":"$(PDINCLUDEDIR)/../bin":$$PATH)
 	echo "PD: $(PD)"
 
 check: all pd vars
