@@ -3,9 +3,10 @@
 PD=${PD:=pd}
 LIBDIR=${LIBDIR:=../src/.libs/}
 SRCDIR=${SRCDIR:=../}
-TESTDIR=${TESTDIR:=.}
+SCRIPTDIR=${0%/*}
+TESTDIR=${TESTDIR:=${SCRIPTDIR}}
+SCRIPTDIR=$(realpath ${SCRIPTDIR})
 
-SCRIPTDIR=$(realpath ${0%/*})
 
 usage() {
 cat 1>&2 <<EOF
@@ -28,23 +29,58 @@ catverbose() {
      cat >/dev/null
   fi
 }
+if test "X$TERM" != Xdumb && test -t 1 2>/dev/null; then
+    red='^[[0;31m'
+    #    grn='^[[0;32m'
+    lgn='^[[1;32m'
+    blu='^[[1;34m'
+    mgn='^[[0;35m'
+    brg='^[[1m'
+    #std='^[[m'
+
+    red='\e[0;31m'
+    lrd='\e[0;91m'
+    grn="\e[32m"
+    lgn='\e[1;32m'
+    blu='\e[1;34m'
+    mgn='\e[0;35m'
+    brg='\e[1m'
+
+    std="\e[0m"
+else
+    red=
+    grn=
+    lgn=
+    blu=
+    mgn=
+    brg=
+    std=
+fi
 
 reportsuccess() {
     case "$1" in
         0)
-            echo "SUCCESS: $2"
+            if [ "x${shouldfail}" = "x1" ]; then
+                echo "${grn}XFAIL${std}: $2"
+            else
+                echo "${grn}PASS${std} $2"
+            fi
             ;;
         1)
-            echo "FAIL: $2"
+            if [ "x${shouldfail}" = "x1" ]; then
+                echo "${red}XPASS${std}: $2"
+            else
+                echo "${red}FAIL${std}: $2"
+            fi
             ;;
         77)
-            echo "SKIP: $2"
+            echo "${blu}SKIP${std}: $2"
             ;;
         99)
-            echo "HARDFAIL: $2"
+            echo "${mgn}HARDFAIL${std}: $2"
             ;;
         *)
-            echo "FAIL$1: $2"
+            echo "${lrd}FAIL$1${std}: $2"
             ;;
     esac
 }
@@ -150,7 +186,9 @@ if test "x${SUCCESS}" != "x0" && test ${showlog} -ge 1 && test 3 -gt $verbosity;
 fi
 rm "${TMPFILE}"
 
-reportsuccess $SUCCESS $TEST | catverbose 1
+if [ 1 -le $verbosity ]; then
+    reportsuccess $SUCCESS $TEST
+fi
 
 
 exit ${SUCCESS}
