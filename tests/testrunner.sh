@@ -26,8 +26,13 @@ usage: $0 [options] <testpatch> [ <testpatch>... ]
         -l      show log on failure
         -x      expect test to fail
         -X      test-files starting with fail are expected to fail
+        -s      soft fail (don't fail on skip)
 EOF
 exit
+}
+sys_exit() {
+    test $softfail -gt 0 && test $1 -eq 77 && exit 0
+    exit $1
 }
 catverbose() {
   if [ $1 -le $verbosity ]; then
@@ -131,6 +136,11 @@ summary_success() {
         echo "${mgn}ERROR${std}\t${count_error}"
         echo "${grn}============================================================================${std}"
     fi
+
+    if [  ${count_skip} -gt 0 ]; then SUCCESS=77; fi
+    if [  $((count_pass+count_xfail)) -gt 0 ]; then SUCCESS=0; fi
+    if [  $((count_fail+count_xpass)) -gt 0 ]; then SUCCESS=1; fi
+    if [  ${count_error} -gt 0 ]; then SUCCESS=99; fi
 }
 
 should_fail() {
@@ -166,8 +176,9 @@ check_success() {
 verbosity=1
 showlog=0
 shouldfail=0
+softfail=0
 
-while getopts "vqlxXh?" opt; do
+while getopts "vqlxXsh?" opt; do
     case $opt in
         v)
             verbosity=$((verbosity+1))
@@ -184,6 +195,9 @@ while getopts "vqlxXh?" opt; do
         X)
             shouldfail=auto
             ;;
+        s)
+            softfail=1
+            ;;
         :|h|\?)
             usage
             ;;
@@ -199,7 +213,7 @@ wantfail=${shouldfail}
 PD=$(which ${PD})
 if [ "x${PD}" = "x" ]; then
  echo "couldn't find Pd (Hint: use the PD environment variable)" 1>&2
- exit 77
+ sys_exit 77
 fi
 LIBFLAGS="-path ${LIBDIR}:${SRCDIR}/abs:. -lib ${LIBDIR}/zexy"
 
@@ -259,6 +273,7 @@ if test ${SUCCESS} -ge 1 && test ${showlog} -ge 1 && test $verbosity -le 3; then
 fi
 rm "${TMPFILE}"
 report_success $SUCCESS $TEST
+
 }
 
 
@@ -270,4 +285,4 @@ if [  ${count_all} -gt 1 ]; then
     summary_success
 fi
 
-exit ${SUCCESS}
+sys_exit ${SUCCESS}
