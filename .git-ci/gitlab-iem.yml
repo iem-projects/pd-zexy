@@ -26,6 +26,7 @@ variables:
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends make puredata-dev
   script:
+    - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
 
 .build:macos: &build_macos
@@ -38,6 +39,7 @@ variables:
     - tar xvf Pd.tgz -C /Applications/
     - rm -f Pd.tgz
   script:
+    - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
 
 .build:w32: &build_w32
@@ -54,6 +56,7 @@ variables:
     - rm -f Pd.zip
     - pacman --noconfirm -S mingw-w64-i686-ntldd
   script:
+    - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
     - .git-ci/localdeps.win.sh artifacts/${CI_JOB_NAME%_*}/zexy/*.dll || true
 
@@ -71,6 +74,7 @@ variables:
     - rm -f Pd.zip
     - pacman --noconfirm -S mingw-w64-x86_64-ntldd
   script:
+    - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
     - .git-ci/localdeps.win.sh artifacts/${CI_JOB_NAME%_*}/zexy/*.dll || true
 
