@@ -205,10 +205,7 @@ all: $(zexyaliases)
 
 PD=$(shell PATH="$(PDBINDIR)":"$(PDINCLUDEDIR)"/../bin:$$PATH which pd)
 
-pd:
-	echo "PD: $(PD)"
-
-check: all pd vars
-	PD=$(PD) LIBDIR=. find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -v -Xls {} "+"
+check: all
+	PD="$(PD)" LIBDIR=. find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -v -Xls {} "+"
 
 datafiles += $(zexyaliases)
