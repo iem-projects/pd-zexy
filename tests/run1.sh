@@ -7,6 +7,14 @@ SCRIPTDIR=${0%/*}
 TESTDIR=${TESTDIR:=${SCRIPTDIR}}
 SCRIPTDIR=$(realpath ${SCRIPTDIR})
 
+count_all=0
+count_pass=0
+count_fail=0
+count_skip=0
+count_xfail=0
+count_xpass=0
+count_error=0
+
 
 usage() {
 cat 1>&2 <<EOF
@@ -57,6 +65,7 @@ else
 fi
 
 reportsuccess() {
+if [ 1 -le $verbosity ]; then
     case "$1" in
         0)
             if [ "x${shouldfail}" = "x1" ]; then
@@ -81,8 +90,42 @@ reportsuccess() {
         *)
             echo "${red}FAIL$1_${std}: $2"
             ;;
+    esac
+fi
+    count_all=$((count_all+1))
+    case "$1" in
+        0)
+            if [ "x${shouldfail}" = "x1" ]; then
+                count_xfail=$((count_xfail+1))
+            else
+                count_pass=$((count_pass+1))
+            fi
+            ;;
+        77)
+            count_skip=$((count_skip+1))
+            ;;
+        99)
+            count_error=$((count_error+1))
+            ;;
+        *)
+            if [ "x${shouldfail}" = "x1" ]; then
+                count_xpass=$((count_xpass+1))
+            else
+                count_fail=$((count_fail+1))
+            fi
             ;;
     esac
+}
+summarysuccess() {
+if [ 1 -le $verbosity ]; then
+    echo "${brg}TOTAL${std} ${count_all}"
+    echo "${grn}PASS${std} ${count_pass}"
+    echo "${red}FAIL${std}: ${count_fail}"
+    echo "${blu}SKIP${std}: ${count_skip}"
+    echo "${grn}XFAIL${std}: ${count_xfail}"
+    echo "${red}XPASS${std}: ${count_xpass}"
+    echo "${mgn}HARDFAIL${std}: ${count_error}"
+fi
 }
 
 verbosity=1
@@ -188,9 +231,12 @@ if test "x${SUCCESS}" != "x0" && test ${showlog} -ge 1 && test 3 -gt $verbosity;
 fi
 rm "${TMPFILE}"
 
-if [ 1 -le $verbosity ]; then
-    reportsuccess $SUCCESS $TEST
-fi
+reportsuccess $SUCCESS $TEST
 
+
+
+if [  ${count_all} -gt 1 ]; then
+    summarysuccess
+fi
 
 exit ${SUCCESS}
