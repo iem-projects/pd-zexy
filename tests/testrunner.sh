@@ -218,19 +218,26 @@ TESTOBJ=${TESTOBJ%%/*}
 
 TMPFILE=$(mktemp)
 
+SUCCESS=0
 ${VALGRIND} ${PD} \
-	-noprefs -nostdpath \
-	-oss -nosound -nrt \
-	-nogui -batch -verbose \
-	${LIBFLAGS} \
-	-open ${TESTDIR}/run1.pd \
-	-send "test ${TEST%.pd}" 2>&1 \
-	| tee "${TMPFILE}" \
-	| catverbose 3
-
-
-egrep "^regression-test: ${TEST%.pd}: OK" "${TMPFILE}" >/dev/null
+	    -noprefs -nostdpath \
+	    -oss -nosound -nrt \
+	    -nogui -batch -verbose \
+	    ${LIBFLAGS} \
+	    -open ${TESTDIR}/run1.pd \
+	    -send "test ${TEST%.pd}" \
+            >"${TMPFILE}" 2>&1
 SUCCESS=$?
+cat "${TMPFILE}" | catverbose 3
+
+if [ $SUCCESS -eq 0 ]; then
+if egrep "^regression-test" "${TMPFILE}" >/dev/null; then
+    egrep "^regression-test: ${TEST%.pd}: OK" "${TMPFILE}" >/dev/null
+    SUCCESS=$?
+else
+    SUCCESS=77
+fi
+fi
 
 
 if egrep -B1 "^error: \.\.\. couldn't create" "${TMPFILE}" \
