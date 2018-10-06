@@ -42,6 +42,8 @@
 #define MODE_IOPL   0
 #define MODE_NONE   -1
 
+#define Z_WANT_LPT 1
+
 #include "zexy.h"
 
 /* ----------------------- lpt --------------------- */
