@@ -204,6 +204,6 @@ all: $(zexyaliases)
 
 
 check: all
-	LIBDIR=. find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -v -Xls {} "+"
+	LIBDIR=$(CURDIR) find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -v -Xls {} "+"
 
 datafiles += $(zexyaliases)
