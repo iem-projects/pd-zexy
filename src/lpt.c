@@ -42,7 +42,13 @@
 #define MODE_IOPL   0
 #define MODE_NONE   -1
 
-#define Z_WANT_LPT 1
+#if defined __linux__
+# define Z_WANT_LPT 1
+#elif defined __WIN32__
+# define Z_WANT_LPT 1
+#else
+# warning no lpt-support for this OS
+#endif
 
 #include "zexy.h"
 
