@@ -98,6 +98,16 @@ class.sources = \
 	src/z~.c \
 	$(empty)
 
+lpt.class.sources = \
+	src/lpt.c \
+	src/winNT_portio.c \
+	$(empty)
+
+lib.setup.sources = \
+	src/zexy.c \
+	src/z_zexy.c \
+	$(empty)
+
 ## TODO: install help-files for these aliases
 l.class.sources = src/lister.c
 lp.class.sources = src/lpt.c
@@ -111,16 +121,6 @@ l2i.class.sources = src/list2int.c
 any2list.class.sources = src/a2l.c
 
 # abs-aliases: any2list, l2i
-
-lpt.class.sources = \
-	src/lpt.c \
-	src/winNT_portio.c \
-	$(empty)
-
-lib.setup.sources = \
-	src/zexy.c \
-	src/z_zexy.c \
-	$(empty)
 
 # all extra files to be included in binary distribution of the library
 datafiles = \
