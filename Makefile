@@ -110,7 +110,6 @@ lib.setup.sources = \
 
 ## TODO: install help-files for these aliases
 l.class.sources = src/lister.c
-lp.class.sources = src/lpt.c
 demux~.class.sources = src/demultiplex~.c
 demux.class.sources = src/demultiplex.c
 mux~.class.sources = src/multiplex~.c
