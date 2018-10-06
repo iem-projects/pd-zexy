@@ -6,7 +6,7 @@
 #define Z_SIMD_BLOCK 16  /* must be a power of 2 */
 #define Z_SIMD_BYTEALIGN (128/8)   /* assume 128 bits */
 #define Z_SIMD_CHKBLOCKSIZE(n) (!(n&(Z_SIMD_BLOCK-1)))
-#define Z_SIMD_CHKALIGN(ptr) ( ((unsigned long)(ptr) & (Z_SIMD_BYTEALIGN-1)) == 0 )
+#define Z_SIMD_CHKALIGN(ptr) ( ((t_int)(ptr) & (Z_SIMD_BYTEALIGN-1)) == 0 )
 
 typedef union {
   __m128 vec;
