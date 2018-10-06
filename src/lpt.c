@@ -52,17 +52,7 @@
 # include <stdlib.h>
 # include <errno.h>
 
-# ifdef __linux__
-#  include <unistd.h>
-#  include <sys/ioctl.h>
-#  include <linux/ppdev.h>
-#  include <linux/parport.h>
-#  include <fcntl.h>
-#  include <stdio.h>
-# endif /* __linux__ */
-
-
-# ifdef __WIN32__
+# if defined __WIN32__
 /* on windoze everything is so complicated... */
 extern int read_parport(unsigned short int port);
 extern void write_parport(unsigned short int port, int value);
@@ -89,8 +79,15 @@ static int sys_inb(unsigned short int port)
 {
   return read_parport(port);
 }
-# else
+
+# elif defined (__linux__)
 /* thankfully there is linux */
+#  include <unistd.h>
+#  include <sys/ioctl.h>
+#  include <linux/ppdev.h>
+#  include <linux/parport.h>
+#  include <fcntl.h>
+#  include <stdio.h>
 #  include <sys/io.h>
 
 static void sys_outb(unsigned char byte, unsigned short int port)
@@ -101,8 +98,14 @@ static int sys_inb(unsigned short int port)
 {
   return inb(port);
 }
-# endif /* __WIN32__ */
-#endif /* Z_WANT_LP */
+
+# else
+static void sys_outb(unsigned char UNUSED(byte), unsigned short int UNUSED(port))
+{}
+static int sys_inb(unsigned short int UNUSED(port))
+{ return 0; }
+# endif /* OS */
+#endif /* Z_WANT_LPT */
 
 
 static int count_iopl = 0;
