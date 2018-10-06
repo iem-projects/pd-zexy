@@ -12,8 +12,8 @@ realpath() {
 fi
 
 PD=${PD:=$(which pd)}
-LIBDIR=${LIBDIR:=../src/.libs/}
-SRCDIR=${SRCDIR:=../}
+LIBDIR=${LIBDIR:=..}
+ABSDIR=${ABSDIR:=${LIBDIR}/abs}
 SCRIPTDIR=${0%/*}
 TESTDIR=${TESTDIR:=${SCRIPTDIR}}
 SCRIPTDIR=$(realpath ${SCRIPTDIR})
@@ -232,7 +232,7 @@ if [ "x${PD}" = "x" ]; then
  echo "couldn't find Pd (Hint: use the PD environment variable)" 1>&2
  sys_exit 77
 fi
-LIBFLAGS="-path ${LIBDIR}:${SRCDIR}/abs:. -lib ${LIBDIR}/zexy"
+LIBFLAGS="-path ${LIBDIR} -path ${ABSDIR} -path . -lib ${LIBDIR}/zexy"
 
 do_runtest() {
 
