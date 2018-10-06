@@ -11,13 +11,13 @@
 #include <stdio.h>
 #include <windows.h>
 
-int read_parport(int port);
-void write_parport(int port, int value);
-int open_port(int port);
+int read_parport(unsigned short int port);
+void write_parport(unsigned short int port, int value);
+int open_port(unsigned short int port);
 
 static BOOL bPrivException = FALSE;
 
-int read_parport(int port)
+int read_parport(unsigned short int port)
 {
   unsigned char value;
 #ifdef _MSC_VER
@@ -32,7 +32,7 @@ int read_parport(int port)
   return (int)value;
 }
 
-void write_parport(int port, int invalue)
+void write_parport(unsigned short int port, int invalue)
 {
   /* _outp((unsigned short)port, value); */
   BYTE value = (BYTE)invalue;
@@ -114,7 +114,7 @@ static int IsWinNT(void)
 }
 
 /* open parport */
-int open_port(int port)
+int open_port(unsigned short int port)
 {
   if(IsWinNT()) {	/* we are under NT and need kernel driver */
     if(StartUpIoPorts(port, 1, 0)) {
