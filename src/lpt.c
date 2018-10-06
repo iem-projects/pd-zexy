@@ -226,7 +226,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     }
   }
 
-  if ((x->device<0) && (!x->port || x->port>65535)) {
+  if ((x->device<0) && (!x->port)) {
     error("lpt : bad port %x", x->port);
     x->port = 0;
     return (x);
