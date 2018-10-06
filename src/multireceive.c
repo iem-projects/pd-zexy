@@ -58,7 +58,6 @@ static unsigned long long unique(void) {
   uid=(((unsigned long long)tb.time)<<(4*sizeof(uid))) | (unsigned long long)(tb.millitm);
 #else
   struct timeval tv;
-  struct timezone tz;
 
   gettimeofday(&tv, 0);
 

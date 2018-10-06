@@ -97,7 +97,6 @@ static void *mavg_new(t_floatarg f)
 {
   t_mavg *x = (t_mavg *)pd_new(mavg_class);
   int i = (f<1)?2:f;
-  t_float *dumbuf;
 
   outlet_new(&x->x_obj, gensym("float"));
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
