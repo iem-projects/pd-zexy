@@ -11,7 +11,7 @@ realpath() {
 }
 fi
 
-PD=${PD:=pd}
+PD=${PD:=$(which pd)}
 LIBDIR=${LIBDIR:=../src/.libs/}
 SRCDIR=${SRCDIR:=../}
 SCRIPTDIR=${0%/*}
@@ -228,7 +228,6 @@ fi
 
 
 wantfail=${shouldfail}
-PD=$(which "${PD}")
 if [ "x${PD}" = "x" ]; then
  echo "couldn't find Pd (Hint: use the PD environment variable)" 1>&2
  sys_exit 77
