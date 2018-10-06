@@ -39,7 +39,7 @@ variables:
     - rm -rf /Applications/Pd*.app/
     - tar xvf Pd.tgz -C /Applications/
     - rm -f Pd.tgz
-    - export PD=$(find /Applications/Pd*.app/Contents/Resources/bin/ type f -name pd -quit)
+    - export PD=$(find /Applications/Pd*.app/Contents/Resources/bin/ type f -name pd -print -quit)
   script:
     - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
