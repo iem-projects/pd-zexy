@@ -62,11 +62,11 @@
 
 # ifdef __WIN32__
 /* on windoze everything is so complicated... */
-extern int read_parport(int port);
-extern void write_parport(int port, int value);
-extern int open_port(int port);
+extern int read_parport(unsigned short int port);
+extern void write_parport(unsigned short int port, int value);
+extern int open_port(unsigned short int port);
 
-static int ioperm(int port, int a, int b)
+static int ioperm(unsigned short int port, int a, int b)
 {
   if(open_port(port) == -1) {
     return(1);
@@ -79,11 +79,11 @@ static int iopl(int i)
   return(-1);
 }
 
-static void sys_outb(unsigned char byte, int port)
+static void sys_outb(unsigned char byte, unsigned short int port)
 {
   write_parport(port, byte);
 }
-static int sys_inb(int port)
+static int sys_inb(unsigned short int port)
 {
   return read_parport(port);
 }
@@ -91,11 +91,11 @@ static int sys_inb(int port)
 /* thankfully there is linux */
 #  include <sys/io.h>
 
-static void sys_outb(unsigned char byte, int port)
+static void sys_outb(unsigned char byte, unsigned short int port)
 {
   outb(byte, port);
 }
-static int sys_inb(int port)
+static int sys_inb(unsigned short int port)
 {
   return inb(port);
 }
@@ -109,7 +109,7 @@ static t_class *lpt_class=NULL;
 typedef struct _lpt {
   t_object x_obj;
 
-  unsigned long port;
+  unsigned short int port;
   int device; /* file descriptor of device, in case we are using one ...*/
 
   int mode; /* MODE_IOPERM, MODE_IOPL */
@@ -166,6 +166,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_lpt *x = (t_lpt *)pd_new(lpt_class);
   const char*devname=0;
+  long int hexport = 0;
 
   if(s==gensym("lp")) {
     error("lpt: the use of 'lp' has been deprecated; use 'lpt' instead");
@@ -203,7 +204,9 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     /* SYMBOL might be a file or a hex port-number */
     devname=atom_getsymbol(argv)->s_name;
     x->device=-1;
-    x->port=strtol(devname, 0, 16);
+    hexport=strtol(devname, 0, 16);
+    if((hexport >= 0) && (hexport <= 0xFFFF))
+      x->port = hexport;
     if(0==x->port) {
 #ifdef __linux__
       x->device = sys_open(devname, O_RDWR);
