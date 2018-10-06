@@ -6,7 +6,7 @@
  * to plug this on the usb bus.
  * if the interface changes, only this file has to be adopted for the target system
  */
-#if defined __WIN32__ && defined Z_WANT_LPT
+#if defined __WIN32__
 
 #include <stdio.h>
 #include <windows.h>
@@ -125,4 +125,4 @@ int open_port(unsigned short int port)
     return(0);
   }
 }
-#endif /* __WIN32__ & Z_WANT_LPT */
+#endif /* __WIN32__ */
