@@ -83,25 +83,57 @@ static HINSTANCE hInpOutDll;
 /* reference count for the DLL-handle */
 static int z_inpout32_refcount = 0;
 
+static int z_getWinErr(char*outstr, size_t len) {
+  wchar_t*errstr;
+  size_t i;
+  DWORD err = GetLastError();
+  outstr[0] = 0;
+  if(!err) {
+    return 0;
+  }
+  errstr=calloc(len, sizeof(wchar_t));
+  FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, err,
+                 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), errstr, len, NULL);
+  for(i=0; i<len; i++) {
+    wchar_t wc = errstr[i];
+    char c = ((wc>=0) && (wc<128))?((char)(wc)):'?';
+    if((10 == c) || (13 == c))
+      c = ' ';
+
+    outstr[i] = c;
+  }
+  free(errstr);
+  outstr[len-1] = 0;
+  return err;
+}
+static void z_findfile(const char*filename, char*buf, size_t bufsize) {
+  char *bufptr;
+  int fd = open_via_path(".", filename, "", buf, &bufptr, bufsize, 0);
+
+  if (fd < 0) {
+    snprintf(buf, bufsize-1, "%s", filename);
+  } else {
+    sys_close(fd);
+    snprintf(buf, bufsize-1, "%s/%s", buf, bufptr);
+  }
+  buf[bufsize-1] = 0;
+
+}
+
 static int z_inpout32_ctor() {
   if(!z_inpout32_refcount) {
-    wchar_t err[256];
-    memset(err, 0, sizeof(wchar_t)*256);
-    hInpOutDll = LoadLibrary ( INPOUT_DLL );
+    char filename[MAXPDSTRING];
+    z_findfile(INPOUT_DLL, filename, MAXPDSTRING);
 
-    FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(),
-                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), err, 255, NULL);
-    int msgboxID = MessageBoxW( NULL,
-                                err,
-                                (LPCWSTR)L"☠",
-                                MB_OK );
+    SetLastError(0);
+    hInpOutDll = LoadLibrary ( filename );
     if ( hInpOutDll == NULL )  {
+      char errstring[MAXPDSTRING];
+      int err = z_getWinErr(errstring, MAXPDSTRING);
       error("unable to open %s for accessing the parallel-port!", INPOUT_DLL);
-      error("InpOut32 must be installed --> http://www.highrez.co.uk/downloads/inpout32/");
-      return 0;
-    }
-    if (!gfpIsInpOutDriverOpen()) {
-      error("unable to start InpOut32 driver!");
+      error("error[%d]: %s", err, errstring);
+      error("make sure you have InpOut32 installed");
+      error("--> http://www.highrez.co.uk/downloads/inpout32/");
       return 0;
     }
     gfpOut32 = (lpOut32)GetProcAddress(hInpOutDll, "Out32");
@@ -110,6 +142,11 @@ static int z_inpout32_ctor() {
     gfpIsXP64Bit = (lpIsXP64Bit)GetProcAddress(hInpOutDll, "IsXP64Bit");
   }
   z_inpout32_refcount++;
+
+  if (!gfpIsInpOutDriverOpen()) {
+    error("unable to start InpOut32 driver!");
+    return 0;
+  }
   return z_inpout32_refcount;
 }
 static void z_inpout32_dtor() {
@@ -354,18 +391,19 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
       return (x);
     }
   }
+#ifdef __WIN32__
+  z_inpout32_ctor();
+#else
   if(x->device>0) {
     post("lpt: connected to device %s", devname);
   } else {
     post("lpt: connected to port %x in mode '%s'", x->port,
          (x->mode==MODE_IOPL)?"iopl":"ioperm");
   }
+#endif
   if (x->mode==MODE_IOPL) {
     post("lpt-warning: this might seriously damage your pc...");
   }
-#ifdef __WIN32__
-  z_inpout32_ctor();
-#endif
 
 #else
   error("zexy has been compiled without [lpt]!");
@@ -399,5 +437,4 @@ void lpt_setup(void)
 
   class_addmethod(lpt_class, (t_method)lpt_helper, gensym("help"), 0);
   zexy_register("lpt");
-  z_inpout32_ctor();
 }
