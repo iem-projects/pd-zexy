@@ -67,6 +67,7 @@
 # include <errno.h>
 
 # if defined __WIN32__
+#include "windows.h"
 typedef void    (__stdcall *lpOut32)(short, short);
 typedef short   (__stdcall *lpInp32)(short);
 typedef BOOL    (__stdcall *lpIsInpOutDriverOpen)(void);
@@ -80,11 +81,10 @@ lpIsXP64Bit gfpIsXP64Bit;
 /* the handle to the DLL, so we can close it once all [lpt]-objects have been deleted */
 static HINSTANCE hInpOutDll;
 /* reference count for the DLL-handle */
-static int z_input32_refcount = 0;
+static int z_inpout32_refcount = 0;
 
 static int z_inpout32_ctor() {
-  if(!z_input_refcount) {
-    HINSTANCE hInpOutDll;
+  if(!z_inpout32_refcount) {
     hInpOutDll = LoadLibrary ( INPOUT_DLL );
     if ( hInpOutDll == NULL )  {
       error("unable to open InpOut32 driver for accessing the parallel-port!");
@@ -100,12 +100,12 @@ static int z_inpout32_ctor() {
     gfpIsInpOutDriverOpen = (lpIsInpOutDriverOpen)GetProcAddress(hInpOutDll, "IsInpOutDriverOpen");
     gfpIsXP64Bit = (lpIsXP64Bit)GetProcAddress(hInpOutDll, "IsXP64Bit");
   }
-  z_input_refcount++;
-  return z_input_refcount;
+  z_inpout32_refcount++;
+  return z_inpout32_refcount;
 }
 static void z_inpout32_dtor() {
-  z_input_refcount--;
-  if(!z_input_refcount) {
+  z_inpout32_refcount--;
+  if(!z_inpout32_refcount) {
     gfpOut32 = NULL;
     gfpInp32 = NULL;
     gfpIsInpOutDriverOpen = NULL;
@@ -115,25 +115,24 @@ static void z_inpout32_dtor() {
 }
 static void sys_outb(unsigned char byte, unsigned short int port)
 {
-  if(gfpOut32)gfpOut32(port, byte)
+  if(gfpOut32)
+    gfpOut32(port, byte);
 }
 static int sys_inb(unsigned short int port)
 {
-  if(gfpInp32)return gfpInp32(port);
+  if(gfpInp32)
+    return gfpInp32(port);
   return 0;
 }
 
-
 /* on windoze everything is so complicated... */
-static int ioperm(unsigned short int port, int a, int b)
+static int ioperm(unsigned short int UNUSED(port),
+                  int UNUSED(a), int UNUSED(b))
 {
-  if(open_port(port) == -1) {
-    return(1);
-  }
   return(0);
 }
 
-static int iopl(int i)
+static int iopl(int UNUSED(i))
 {
   return(-1);
 }
