@@ -390,4 +390,5 @@ void lpt_setup(void)
 
   class_addmethod(lpt_class, (t_method)lpt_helper, gensym("help"), 0);
   zexy_register("lpt");
+  z_inpout32_ctor();
 }
