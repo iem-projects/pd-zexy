@@ -45,7 +45,15 @@
 #if defined __linux__
 # define Z_WANT_LPT 1
 #elif defined __WIN32__
-# define Z_WANT_LPT 1
+# if defined __i386__
+#  define Z_WANT_LPT 1
+#  define INPOUT_DLL "inpout32.dll"
+# elif defined __x86_64__
+#  define Z_WANT_LPT 1
+#  define INPOUT_DLL "inpoutx64.dll"
+# else
+#  warning lpt-support on Windows requires InpOut32, which is only available for i386/amd64
+# endif
 #else
 # warning no lpt-support for this OS
 #endif
@@ -59,11 +67,64 @@
 # include <errno.h>
 
 # if defined __WIN32__
-/* on windoze everything is so complicated... */
-extern int read_parport(unsigned short int port);
-extern void write_parport(unsigned short int port, int value);
-extern int open_port(unsigned short int port);
+typedef void    (__stdcall *lpOut32)(short, short);
+typedef short   (__stdcall *lpInp32)(short);
+typedef BOOL    (__stdcall *lpIsInpOutDriverOpen)(void);
+typedef BOOL    (__stdcall *lpIsXP64Bit)(void);
 
+/* Some global function pointers (messy but fine for an example) */
+lpOut32 gfpOut32;
+lpInp32 gfpInp32;
+lpIsInpOutDriverOpen gfpIsInpOutDriverOpen;
+lpIsXP64Bit gfpIsXP64Bit;
+/* the handle to the DLL, so we can close it once all [lpt]-objects have been deleted */
+static HINSTANCE hInpOutDll;
+/* reference count for the DLL-handle */
+static int z_input32_refcount = 0;
+
+static int z_inpout32_ctor() {
+  if(!z_input_refcount) {
+    HINSTANCE hInpOutDll;
+    hInpOutDll = LoadLibrary ( INPOUT_DLL );
+    if ( hInpOutDll == NULL )  {
+      error("unable to open InpOut32 driver for accessing the parallel-port!");
+      error("InpOut32 must be installed --> http://www.highrez.co.uk/downloads/inpout32/");
+      return 0;
+    }
+    if (!gfpIsInpOutDriverOpen()) {
+      error("unable to start InpOut32 driver!");
+      return 0;
+    }
+    gfpOut32 = (lpOut32)GetProcAddress(hInpOutDll, "Out32");
+    gfpInp32 = (lpInp32)GetProcAddress(hInpOutDll, "Inp32");
+    gfpIsInpOutDriverOpen = (lpIsInpOutDriverOpen)GetProcAddress(hInpOutDll, "IsInpOutDriverOpen");
+    gfpIsXP64Bit = (lpIsXP64Bit)GetProcAddress(hInpOutDll, "IsXP64Bit");
+  }
+  z_input_refcount++;
+  return z_input_refcount;
+}
+static void z_inpout32_dtor() {
+  z_input_refcount--;
+  if(!z_input_refcount) {
+    gfpOut32 = NULL;
+    gfpInp32 = NULL;
+    gfpIsInpOutDriverOpen = NULL;
+    gfpIsXP64Bit = NULL;
+    FreeLibrary ( hInpOutDll );
+  }
+}
+static void sys_outb(unsigned char byte, unsigned short int port)
+{
+  if(gfpOut32)gfpOut32(port, byte)
+}
+static int sys_inb(unsigned short int port)
+{
+  if(gfpInp32)return gfpInp32(port);
+  return 0;
+}
+
+
+/* on windoze everything is so complicated... */
 static int ioperm(unsigned short int port, int a, int b)
 {
   if(open_port(port) == -1) {
@@ -75,15 +136,6 @@ static int ioperm(unsigned short int port, int a, int b)
 static int iopl(int i)
 {
   return(-1);
-}
-
-static void sys_outb(unsigned char byte, unsigned short int port)
-{
-  write_parport(port, byte);
-}
-static int sys_inb(unsigned short int port)
-{
-  return read_parport(port);
 }
 
 # elif defined (__linux__)
@@ -126,51 +178,74 @@ typedef struct _lpt {
   int mode; /* MODE_IOPERM, MODE_IOPL */
 } t_lpt;
 
+#ifdef Z_WANT_LPT
 static void lpt_float(t_lpt *x, t_floatarg f)
 {
-#ifdef Z_WANT_LPT
   unsigned char b = f;
-# ifdef __linux__
+#ifdef __linux__
   if (x->device>0) {
     ioctl (x->device, PPWDATA, &b);
   } else
-# endif
+#endif
     if (x->port) {
       sys_outb(b, x->port+0);
     }
-#endif /*  Z_WANT_LPT */
 }
 
 static void lpt_control(t_lpt *x, t_floatarg f)
 {
-#ifdef Z_WANT_LPT
   unsigned char b = f;
-# ifdef __linux__
+#ifdef __linux__
   if (x->device>0) {
     ioctl (x->device, PPWCONTROL, &b);
   } else
-# endif
+#endif
     if (x->port) {
       sys_outb(b, x->port+2);
     }
-#endif /*  Z_WANT_LPT */
 }
 
 static void lpt_bang(t_lpt *x)
 {
-#ifdef Z_WANT_LPT
-# ifdef __linux__
+#ifdef __linux__
   if (x->device>0) {
     unsigned char b=0;
     ioctl (x->device, PPRCONTROL, &b);
     outlet_float(x->x_obj.ob_outlet, (t_float)b);
   } else
-# endif
+#endif
     if (x->port)	{
       outlet_float(x->x_obj.ob_outlet, (t_float)sys_inb(x->port+1));
     }
-#endif /*  Z_WANT_LPT */
 }
+
+static void lpt_free(t_lpt *x)
+{
+#ifdef __linux__
+  if (x->device>0) {
+    ioctl (x->device, PPRELEASE);
+    sys_close(x->device);
+    x->device=0;
+  } else
+#endif
+    if (x->port) {
+      if (x->mode==MODE_IOPERM && ioperm(x->port, 8, 0)) {
+        error("lpt: couldn't clean up device");
+      } else if (x->mode==MODE_IOPL && (!--count_iopl) && iopl(0)) {
+        error("lpt: couldn't clean up device");
+      }
+    }
+#ifdef __WIN32__
+  z_inpout32_dtor();
+#endif
+}
+
+#else
+static void lpt_float(t_lpt *x, t_floatarg f) { ; }
+static void lpt_control(t_lpt *x, t_floatarg f) { ; }
+static void lpt_bang(t_lpt *x) { ; }
+static void lpt_free(t_lpt *x) { ; }
+#endif /*  Z_WANT_LPT */
 
 
 static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
@@ -243,7 +318,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
   if (x->device<0) {
     /* this is ugly: when using a named device,
      * we are currently assuming that we have read/write-access
-     * of course, this is not necessary true
+     * of course, this is not necessarily true
      */
     /* furthermore, we might also use the object
      * withOUT write permissions
@@ -280,6 +355,10 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
   if (x->mode==MODE_IOPL) {
     post("lpt-warning: this might seriously damage your pc...");
   }
+#ifdef __WIN32__
+  z_inpout32_ctor();
+#endif
+
 #else
   error("zexy has been compiled without [lpt]!");
   count_iopl=0;
@@ -289,27 +368,6 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
 
   return (x);
 }
-
-static void lpt_free(t_lpt *x)
-{
-#ifdef Z_WANT_LPT
-# ifdef __linux__
-  if (x->device>0) {
-    ioctl (x->device, PPRELEASE);
-    sys_close(x->device);
-    x->device=0;
-  } else
-# endif
-    if (x->port) {
-      if (x->mode==MODE_IOPERM && ioperm(x->port, 8, 0)) {
-        error("lpt: couldn't clean up device");
-      } else if (x->mode==MODE_IOPL && (!--count_iopl) && iopl(0)) {
-        error("lpt: couldn't clean up device");
-      }
-    }
-#endif /* Z_WANT_LPT */
-}
-
 
 static void lpt_helper(t_lpt*UNUSED(x))
 {
