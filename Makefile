@@ -49,6 +49,7 @@ class.sources = \
 	src/listfind.c \
 	src/liststorage.c \
 	src/longload.c \
+	src/lpt.c \
 	src/makesymbol.c \
 	src/matchbox.c \
 	src/mavg.c \
@@ -96,11 +97,6 @@ class.sources = \
 	src/urn.c \
 	src/wrap.c \
 	src/z~.c \
-	$(empty)
-
-lpt.class.sources = \
-	src/lpt.c \
-	src/winNT_portio.c \
 	$(empty)
 
 lib.setup.sources = \
