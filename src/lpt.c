@@ -87,7 +87,7 @@ static int z_inpout32_ctor() {
   if(!z_inpout32_refcount) {
     hInpOutDll = LoadLibrary ( INPOUT_DLL );
     if ( hInpOutDll == NULL )  {
-      error("unable to open InpOut32 driver for accessing the parallel-port!");
+      error("unable to open %s for accessing the parallel-port!", INPOUT_DLL);
       error("InpOut32 must be installed --> http://www.highrez.co.uk/downloads/inpout32/");
       return 0;
     }
