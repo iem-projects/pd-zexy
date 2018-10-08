@@ -85,7 +85,16 @@ static int z_inpout32_refcount = 0;
 
 static int z_inpout32_ctor() {
   if(!z_inpout32_refcount) {
+    wchar_t err[256];
+    memset(err, 0, sizeof(wchar_t)*256);
     hInpOutDll = LoadLibrary ( INPOUT_DLL );
+
+    FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(),
+                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), err, 255, NULL);
+    int msgboxID = MessageBoxW( NULL,
+                                err,
+                                (LPCWSTR)L"☠",
+                                MB_OK );
     if ( hInpOutDll == NULL )  {
       error("unable to open %s for accessing the parallel-port!", INPOUT_DLL);
       error("InpOut32 must be installed --> http://www.highrez.co.uk/downloads/inpout32/");
