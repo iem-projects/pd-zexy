@@ -31,7 +31,6 @@
      TODO: test for timeouts,...
 
    thanks to
-    Olaf Matthes: porting to WindozeNT/2000/XP
     Thomas Musil: adding "control-output" and "input"
 */
 #define BASE0  0x3bc
