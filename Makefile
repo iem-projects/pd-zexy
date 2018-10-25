@@ -151,10 +151,10 @@ endif
 
 define forWindows
  ifeq ($(with-regex),yes)
-   regex.class.ldlibs = -lregex
-   matchbox.class.ldlibs = -lregex
+   regex.class.ldlibs += -lregex
+   matchbox.class.ldlibs += -lregex
    ifeq ($(make-lib-executable),yes)
-     ldlibs = -lregex
+     ldlibs += -lregex
    endif
  endif
 endef
