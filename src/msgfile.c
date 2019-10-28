@@ -146,6 +146,9 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
 
   ap = (t_atom *)getbytes(newsize * sizeof(t_atom));
   memcpy(ap, cur->thislist, cur->n * sizeof(t_atom));
+
+  freebytes(cur->thislist, cur->n * sizeof(t_atom));
+
   cur->thislist = ap;
   memcpy(cur->thislist + cur->n, av, ac * sizeof(t_atom));
 
