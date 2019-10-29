@@ -884,6 +884,83 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename,
   msgfile_read2(x, filename, format);
 }
 
+
+static char* escape_pd(const char*src, char*dst) {
+  /* ',' -> '\,'; ' ' -> '\ ' */
+  char*dptr = dst;
+  while(*src) {
+    switch(*src) {
+    default:
+      break;
+#if 0
+      /* Pd already escapes these for us... */
+    case ',': case ';':
+#endif
+    case ' ':
+      *dptr++ = '\\';
+      break;
+    case 0:
+      *dptr++ = 0;
+      return dst;
+    }
+    *dptr++=*src++;
+  }
+  *dptr++ = 0;
+  return dst;
+}
+static char* escape_csv(const char*src, char*dst) {
+  /* if there are special characters in the string, quote everything */
+  int needsquotes = 0;
+  const char*sptr;
+  char*dptr = dst;
+  for(sptr = src; *sptr; sptr++) {
+    switch(*sptr) {
+    default: break;
+    case ',':
+    case '"':
+    case '\n':
+      needsquotes = 1;
+      break;
+    }
+    if(needsquotes)
+      break;
+  }
+  if (needsquotes)
+    *dptr++ = '"';
+
+  for(sptr = src; *sptr; sptr++) {
+    switch(*sptr) {
+    default: break;
+
+      /* unescape "\," and "\;" */
+    case '\\':
+      switch(sptr[1]) {
+      default: break;
+      case ',': case ';': case '\\':
+        sptr++;
+        break;
+      }
+      break;
+    }
+
+    /* escape quotes */
+    switch(*sptr) {
+    default: break;
+    case '"':
+      *dptr++ = '"';
+      break;
+    }
+    *dptr++=*sptr;
+  }
+
+  if (needsquotes)
+    *dptr++ = '"';
+  *dptr++ = 0;
+  return dst;
+}
+
+typedef char*(*t_escapefn)(const char*src, char*dst);
+
 static void msgfile_write(t_msgfile *x, t_symbol *filename,
                           t_symbol *format)
 {
