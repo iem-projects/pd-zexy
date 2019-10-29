@@ -978,8 +978,8 @@ static void msgfile_print(t_msgfile *x)
   while (cur) {
     t_msglist *dum=cur;
     int i;
-    j++;
     startpost("line %d:", j);
+    j++;
     for (i = 0; i < dum->n; i++) {
       t_atom *a = dum->thislist + i;
       postatom(1, a);
