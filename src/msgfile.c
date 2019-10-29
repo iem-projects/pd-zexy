@@ -144,15 +144,13 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
 
   newsize = cur->n + ac;
 
-  ap = (t_atom *)getbytes(newsize * sizeof(t_atom));
-  memcpy(ap, cur->thislist, cur->n * sizeof(t_atom));
+  ap = (t_atom*)resizebytes(cur->thislist, cur->n * sizeof(t_atom), newsize * sizeof(t_atom));
+  if (ap) {
+    cur->thislist = ap;
+    memcpy(cur->thislist + cur->n, av, ac * sizeof(t_atom));
 
-  freebytes(cur->thislist, cur->n * sizeof(t_atom));
-
-  cur->thislist = ap;
-  memcpy(cur->thislist + cur->n, av, ac * sizeof(t_atom));
-
-  cur->n = newsize;
+    cur->n = newsize;
+  }
 }
 
 static void delete_currentnode(t_msgfile *x)
