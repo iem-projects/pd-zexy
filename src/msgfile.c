@@ -912,11 +912,11 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   switch (mode) {
   case CR_MODE:
     separator = ' ';
-    eol = ' ';
+    eol = 0;
     break;
   case CSV_MODE:
     separator = ',';
-    eol = ' ';
+    eol = 0;
     break;
   default:
     separator = ' ';
@@ -947,7 +947,8 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
       if(i + 1 < cur->n)
         errcount += (fwrite(&separator, sizeof(char), 1, f) < 1);
     }
-    errcount += (fwrite(&eol, sizeof(char), 1, f) < 1);
+    if(eol)
+      errcount += (fwrite(&eol, sizeof(char), 1, f) < 1);
     errcount += (fwrite("\n", sizeof(char), 1, f) < 1);
   }
 
