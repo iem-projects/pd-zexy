@@ -888,23 +888,14 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
                           t_symbol *format)
 {
   char buf[MAXPDSTRING];
-  t_binbuf *bbuf = binbuf_new();
   t_msglist *cur = x->start;
 
-  char *mytext = 0, *dumtext;
   char filnam[MAXPDSTRING];
-  int textlen = 0, i;
-
   char separator, eol;
   int mode = x->mode;
+  int errcount = 0;
 
   FILE *f=0;
-
-  while(cur) {
-    binbuf_add(bbuf, cur->n, cur->thislist);
-    binbuf_addsemi(bbuf);
-    cur = cur->next;
-  }
 
   if(format&&gensym("")!=format) {
     if(gensym("cr")==format) {
@@ -933,38 +924,38 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
     break;
   }
 
-  binbuf_gettext(bbuf, &mytext, &textlen);
-  dumtext = mytext;
-  i = textlen;
-
-  while(i--) {
-    if (*dumtext==' ') {
-      *dumtext=separator;
-    } else if ((*dumtext==';') && (dumtext[1]=='\n')) {
-      *dumtext = eol;
-    }
-    dumtext++;
-  }
 
   /* open */
   canvas_makefilename(x->x_canvas, filename->s_name,
                       buf, MAXPDSTRING);
   sys_bashfilename(buf, filnam);
-  if (!(f = sys_fopen(filnam, "w"))) {
+  f = sys_fopen(filnam, "w");
+  if (!f) {
     pd_error(x, "msgfile : failed to open %s", filnam);
-  } else {
-    /* write */
-    if (fwrite(mytext, textlen*sizeof(char), 1, f) < 1) {
-      pd_error(x, "msgfile : failed to write %s", filnam);
-    }
-  }
-  /* close */
-  if (f) {
-    sys_fclose(f);
+    return;
   }
 
-  binbuf_free(bbuf);
-  freebytes(mytext, textlen);
+  for(cur = x->start; cur; cur=cur->next) {
+    int i;
+    for(i=0; i<cur->n; i++) {
+      int mylen = 0;
+      char mytext[MAXPDSTRING];
+      atom_string(cur->thislist+i, mytext, MAXPDSTRING);
+      mylen = strnlen(mytext, MAXPDSTRING);
+      /* TODO: escape blanks(PD/CR), commas/quotes(CSV) */
+      errcount += (fwrite(mytext, mylen, sizeof(char), f) < 1);
+      if(i + 1 < cur->n)
+        errcount += (fwrite(&separator, sizeof(char), 1, f) < 1);
+    }
+    errcount += (fwrite(&eol, sizeof(char), 1, f) < 1);
+    errcount += (fwrite("\n", sizeof(char), 1, f) < 1);
+  }
+
+  if (errcount > 0) {
+    pd_error(x, "msgfile : failed to write '%s': % d errors", filnam, errcount);
+  }
+  /* close */
+  sys_fclose(f);
 }
 
 /* ********************************** */
