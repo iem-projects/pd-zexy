@@ -964,6 +964,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   }
 
   binbuf_free(bbuf);
+  freebytes(mytext, textlen);
 }
 
 /* ********************************** */
