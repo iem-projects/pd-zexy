@@ -971,6 +971,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   char separator, eol;
   int mode = x->mode;
   int errcount = 0;
+  t_escapefn escapefn = escape_pd;
 
   FILE *f=0;
 
@@ -979,6 +980,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
       mode = CR_MODE;
     } else if(gensym("csv")==format) {
       mode = CSV_MODE;
+      escapefn = escape_csv;
     } else if(gensym("pd")==format) {
       mode = PD_MODE;
     } else if(format&&format->s_name) {
@@ -1015,12 +1017,24 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   for(cur = x->start; cur; cur=cur->next) {
     int i;
     for(i=0; i<cur->n; i++) {
-      int mylen = 0;
-      char mytext[MAXPDSTRING];
-      atom_string(cur->thislist+i, mytext, MAXPDSTRING);
-      mylen = strnlen(mytext, MAXPDSTRING);
-      /* TODO: escape blanks(PD/CR), commas/quotes(CSV) */
-      errcount += (fwrite(mytext, mylen, sizeof(char), f) < 1);
+      t_atom*a = cur->thislist + i;
+      switch(a->a_type) {
+      case A_FLOAT:
+        errcount += (fprintf(f, "%g", atom_getfloat(a)) < 1);
+        break;
+      case A_POINTER:
+        errcount += (fprintf(f, "%p", a->a_w.w_gpointer) < 1);
+        break;
+      default: {
+        int mylen = 0;
+        char mytext[MAXPDSTRING];
+        char mytext2[MAXPDSTRING*2];
+        atom_string(a, mytext, MAXPDSTRING);
+        escapefn(mytext, mytext2);
+        mylen = strnlen(mytext2, MAXPDSTRING);
+        errcount += (fwrite(mytext2, mylen, sizeof(char), f) < 1);
+      }
+      }
       if(i + 1 < cur->n)
         errcount += (fwrite(&separator, sizeof(char), 1, f) < 1);
     }
