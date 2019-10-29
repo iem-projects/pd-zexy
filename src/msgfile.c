@@ -346,16 +346,19 @@ static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
 {
   int ac = binbuf_getnatom(bbuf);
   t_atom *ap = binbuf_getvec(bbuf);
+  t_atom*last = ap;
 
   while (ac--) {
     if (ap->a_type == A_SEMI) {
-      add_currentnode(x);
-    } else {
-      write_currentnode(x, 1, ap);
+      if(ap > last) {
+        add_currentnode(x);
+        write_currentnode(x, ap-last-1, last+1);
+        last = ap;
+      }
     }
     ap++;
   }
-
+  add_currentnode(x);
   delete_emptynodes(x);
 }
 
