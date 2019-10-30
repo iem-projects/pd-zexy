@@ -384,7 +384,6 @@ static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int
     src++;
 
   while(*src) {
-#if 1
     if (!quoted || '"' == src[0]) {
       switch (src[quoted]) {
       default: break;
@@ -400,34 +399,6 @@ static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int
         break;
       }
     }
-#else
-    if (quoted) {
-      if ('"' == src[0]) {
-        switch (src[1]) {
-        default: break;
-        case '\n': /* EOL */
-        case ',': /* EOC */
-          if(len<MAXPDSTRING)
-            dst[len++]=0;
-          dst[MAXPDSTRING-1] = 0;
-          return src+1+(src[1]==',');
-        case '"': /* quote */
-          src++;
-          break;
-        }
-      }
-    } else {
-      switch (src[0]) {
-      default: break;
-      case '\n': /* EOL */
-      case ',': /* EOC */
-        if(len<MAXPDSTRING)
-          dst[len++]=0;
-        dst[MAXPDSTRING-1] = 0;
-        return src+1+(src[1]==',');
-      }
-    }
-#endif
     if(len<MAXPDSTRING)
       dst[len++]=*src;
     src++;
