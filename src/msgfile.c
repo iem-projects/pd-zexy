@@ -428,6 +428,7 @@ static void msgfile_csv2listbuf(t_msgfile *x, const char*src) {
       src++;
     }
   }
+  binbuf_free(bbuf);
 }
 
 
