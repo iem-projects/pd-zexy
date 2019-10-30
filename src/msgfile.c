@@ -962,14 +962,10 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   long readlength, length, pos;
   char filnam[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
-  char *charbinbuf=NULL, *cbb;
-  int charbinbuflength=0;
   const char*dirname=canvas_getdir(x->x_canvas)->s_name;
 
   int mode = x->mode;
   char separator, eol;
-
-  t_binbuf *bbuf = binbuf_new();
 
 #ifdef __WIN32__
   rmode |= O_BINARY;
@@ -1047,50 +1043,13 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
 
   /* we overallocated readbuf by 1, so we can store a terminating 0 */
   readbuf[length] = 0;
-  /* convert separators and eols to what pd expects in a binbuf*/
-  bufptr=readbuf;
 
-# define MSGFILE_HEADROOM 1024
-  charbinbuflength=2*length+MSGFILE_HEADROOM;
-
-  charbinbuf=(char*)getbytes(charbinbuflength);
-
-  cbb=charbinbuf;
-  for(pos=0; pos<charbinbuflength; pos++) {
-    charbinbuf[pos]=0;
+  if(CSV_MODE==mode) {
+    msgfile_csv2listbuf(x, readbuf);
+  } else {
+    msgfile_fudi2listbuf(x, readbuf, eol);
   }
-
-  *cbb++=';';
-  pos=1;
-  while (readlength--) {
-    if(pos>=charbinbuflength) {
-      pd_error(x, "msgfile: read error (headroom %d too small!)",
-               MSGFILE_HEADROOM);
-      goto read_error;
-    }
-    if (*bufptr == separator) {
-      *cbb = ' ';
-    } else if (*bufptr==eol) {
-      *cbb++=';';
-      pos++;
-      *cbb='\n';
-    } else {
-      *cbb=*bufptr;
-    }
-
-    bufptr++;
-    cbb++;
-    pos++;
-  }
-
-  /* convert to binbuf */
-  binbuf_text(bbuf, charbinbuf, charbinbuflength);
-  msgfile_binbuf2listbuf(x, bbuf);
-
-read_error:
-  binbuf_free(bbuf);
   t_freebytes(readbuf, length+1);
-  t_freebytes(charbinbuf, charbinbuflength);
 }
 static void msgfile_read(t_msgfile *x, t_symbol *filename,
                          t_symbol *format)
