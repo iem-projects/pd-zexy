@@ -999,12 +999,11 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
     t_freebytes(readbuf, length+1);
     return;
   }
-  /* we overallocated readbuf by 1, so we can store a terminating 0 */
-  readbuf[length] = 0;
-
   /* close */
   sys_fclose(fil);
 
+  /* we overallocated readbuf by 1, so we can store a terminating 0 */
+  readbuf[length] = 0;
   /* convert separators and eols to what pd expects in a binbuf*/
   bufptr=readbuf;
 
