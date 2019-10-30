@@ -362,6 +362,103 @@ static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
   delete_emptynodes(x);
 }
 
+static t_atomtype str2atom(const char*atombuf, t_atom*ap, int force_symbol) {
+  if(!force_symbol) {
+    double f = 0;
+    int count=0;
+    int x = sscanf(atombuf, "%lg%n", &f, &count);
+    if(x && strlen(atombuf)==count) {
+      SETFLOAT(ap, f);
+      return A_FLOAT;
+    }
+  }
+  SETSYMBOL(ap, gensym(atombuf));
+  return A_SYMBOL;
+}
+
+static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int*_quoted) {
+  size_t len = 0;
+  int quoted = (src[0] == '"');
+  *_quoted = quoted;
+  if (quoted)
+    src++;
+
+  while(*src) {
+#if 1
+    if (!quoted || '"' == src[0]) {
+      switch (src[quoted]) {
+      default: break;
+      case '\n': /* EOL */
+      case ',': /* EOC */
+        if(len<MAXPDSTRING)
+          dst[len++]=0;
+        dst[MAXPDSTRING-1] = 0;
+        return src+quoted+(src[quoted]==',');
+      case '"': /* quote */
+        if(quoted)
+          src++;
+        break;
+      }
+    }
+#else
+    if (quoted) {
+      if ('"' == src[0]) {
+        switch (src[1]) {
+        default: break;
+        case '\n': /* EOL */
+        case ',': /* EOC */
+          if(len<MAXPDSTRING)
+            dst[len++]=0;
+          dst[MAXPDSTRING-1] = 0;
+          return src+1+(src[1]==',');
+        case '"': /* quote */
+          src++;
+          break;
+        }
+      }
+    } else {
+      switch (src[0]) {
+      default: break;
+      case '\n': /* EOL */
+      case ',': /* EOC */
+        if(len<MAXPDSTRING)
+          dst[len++]=0;
+        dst[MAXPDSTRING-1] = 0;
+        return src+1+(src[1]==',');
+      }
+    }
+#endif
+    if(len<MAXPDSTRING)
+      dst[len++]=*src;
+    src++;
+  }
+  dst[MAXPDSTRING-1] = 0;
+  return src;
+}
+
+static void msgfile_csv2listbuf(t_msgfile *x, const char*src, size_t len) {
+  const char*sptr=src;
+  t_binbuf*bbuf=binbuf_new();
+  char atombuf[MAXPDSTRING];
+  while(*src) {
+    int issymbol = 0;
+    src = msgfile_csv2atombuf(src, atombuf, &issymbol);
+    if(*atombuf) {
+      t_atom a;
+      str2atom(atombuf, &a, issymbol);
+      binbuf_add(bbuf, 1, &a);
+    }
+    if(*src == '\n') {
+      t_atom*argv = binbuf_getvec(bbuf);
+      int argc =  binbuf_getnatom(bbuf);
+      add_currentnode(x);
+      write_currentnode(x, argc, argv);
+      binbuf_clear(bbuf);
+      src++;
+    }
+  }
+}
+
 
 static char* escape_pd(const char*src, char*dst) {
   /* ',' -> '\,'; ' ' -> '\ ' */
