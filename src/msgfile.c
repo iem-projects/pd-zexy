@@ -436,7 +436,7 @@ static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int
   return src;
 }
 
-static void msgfile_csv2listbuf(t_msgfile *x, const char*src, size_t len) {
+static void msgfile_csv2listbuf(t_msgfile *x, const char*src) {
   const char*sptr=src;
   t_binbuf*bbuf=binbuf_new();
   char atombuf[MAXPDSTRING];
