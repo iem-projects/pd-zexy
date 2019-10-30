@@ -835,6 +835,31 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   rmode |= O_BINARY;
 #endif
 
+  if (gensym("cr")==format) {
+    mode = CR_MODE;
+  } else if (gensym("csv")==format) {
+    mode = CSV_MODE;
+  } else if (gensym("pd")==format) {
+    mode = PD_MODE;
+  } else if (*format->s_name) {
+    pd_error(x, "msgfile_read: unknown flag: %s", format->s_name);
+  }
+
+  switch (mode) {
+  case CR_MODE:
+    separator = ' ';
+    eol = '\n';
+    break;
+  case CSV_MODE:
+    separator = ',';
+    eol = ' ';
+    break;
+  default:
+    separator = '\n';
+    eol = ';';
+    break;
+  }
+
   fd = open_via_path(dirname,
                      filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0);
 
@@ -867,31 +892,6 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
              length);
     sys_fclose(fil);
     return;
-  }
-
-  if (gensym("cr")==format) {
-    mode = CR_MODE;
-  } else if (gensym("csv")==format) {
-    mode = CSV_MODE;
-  } else if (gensym("pd")==format) {
-    mode = PD_MODE;
-  } else if (*format->s_name) {
-    pd_error(x, "msgfile_read: unknown flag: %s", format->s_name);
-  }
-
-  switch (mode) {
-  case CR_MODE:
-    separator = ' ';
-    eol = '\n';
-    break;
-  case CSV_MODE:
-    separator = ',';
-    eol = ' ';
-    break;
-  default:
-    separator = '\n';
-    eol = ';';
-    break;
   }
 
   /* read */
