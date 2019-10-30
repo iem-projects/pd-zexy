@@ -431,6 +431,77 @@ static void msgfile_csv2listbuf(t_msgfile *x, const char*src) {
   binbuf_free(bbuf);
 }
 
+static const char*msgfile_fudi2atombuf(const char*src, char dst[MAXPDSTRING], const char eol) {
+  size_t len = 0;
+
+  while(*src) {
+    char c = *src;
+    char c2;
+    switch (c) {
+    case '\\': /* quoting */
+      c2=*src++;
+      c=*src;
+      switch(c) {
+      case ',': case ';':
+      case '\t': case ' ':
+      case '\n': case '\r':
+        break;
+      default:
+        if(len<MAXPDSTRING)dst[len++]=c2;
+        break;
+      }
+      break;
+    default:
+      if (eol != c)
+        break;
+    case '\n': case '\r': /* EOL/EOA */
+    case '\t': case ' ':  /* EOA */
+      if(len<MAXPDSTRING)
+        dst[len++]=0;
+      dst[MAXPDSTRING-1] = 0;
+      while(1) {
+        switch(*src) {
+          /* skip leading whitespace */
+        case '\n': case '\r': case ' ': case '\t':
+          break;
+        default:
+          return src;
+        }
+        src++;
+      }
+      return src;
+    }
+    if(len<MAXPDSTRING)
+      dst[len++]=c;
+    src++;
+  }
+  dst[MAXPDSTRING-1] = 0;
+  return src;
+}
+
+static void msgfile_fudi2listbuf(t_msgfile *x, const char*src, const char eol) {
+  const char*sptr=src;
+  t_binbuf*bbuf=binbuf_new();
+  char atombuf[MAXPDSTRING];
+  while(*src) {
+    src = msgfile_fudi2atombuf(src, atombuf, eol);
+    if(*atombuf) {
+      t_atom a;
+      str2atom(atombuf, &a, 0);
+      binbuf_add(bbuf, 1, &a);
+    }
+    if(*src == eol) {
+      t_atom*argv = binbuf_getvec(bbuf);
+      int argc =  binbuf_getnatom(bbuf);
+      add_currentnode(x);
+      write_currentnode(x, argc, argv);
+      binbuf_clear(bbuf);
+      src++;
+    }
+  }
+  binbuf_free(bbuf);
+}
+
 
 static char* escape_pd(const char*src, char*dst) {
   /* ',' -> '\,'; ' ' -> '\ ' */
