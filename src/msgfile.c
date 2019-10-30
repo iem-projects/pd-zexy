@@ -887,7 +887,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   length=ftell(fil);
   fseek(fil, 0, SEEK_SET);
 
-  if (!(readbuf = t_getbytes(length))) {
+  if (!(readbuf = t_getbytes(length+1))) {
     pd_error(x, "msgfile_read: could not reserve %ld bytes to read into",
              length);
     sys_fclose(fil);
@@ -899,9 +899,11 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
     pd_error(x, "msgfile_read: unable to read %s: %ld of %ld", filnam,
              readlength, length);
     sys_fclose(fil);
-    t_freebytes(readbuf, length);
+    t_freebytes(readbuf, length+1);
     return;
   }
+  /* we overallocated readbuf by 1, so we can store a terminating 0 */
+  readbuf[length] = 0;
 
   /* close */
   sys_fclose(fil);
@@ -948,7 +950,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
 
 read_error:
   binbuf_free(bbuf);
-  t_freebytes(readbuf, length);
+  t_freebytes(readbuf, length+1);
   t_freebytes(charbinbuf, charbinbuflength);
 }
 static void msgfile_read(t_msgfile *x, t_symbol *filename,
