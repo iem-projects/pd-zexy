@@ -365,7 +365,7 @@ static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
 static t_atomtype str2atom(const char*atombuf, t_atom*ap, int force_symbol) {
   if(!force_symbol) {
     double f = 0;
-    int count=0;
+    unsigned int count=0;
     int x = sscanf(atombuf, "%lg%n", &f, &count);
     if(x && strlen(atombuf)==count) {
       SETFLOAT(ap, f);
