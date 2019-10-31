@@ -42,17 +42,21 @@
 /* ****************************************************************************** */
 /* msgfile : save and load messages... */
 
-#define PD_MODE 0
-#define CR_MODE 1
-#define CSV_MODE 2
-/* modi
-   PD : separate items by ' '; separate lines by ";\n"
-   looks like a PD-file
-   CR : separate items by ' '; separate lines by " \n"
-   how you would expect a file to look like
-   CSV: separate items by ','; separate lines by " \n"
-   spreadsheet: each argument gets its own column
-*/
+typedef enum {
+ /* PD
+  * separate items by whitespace (' ', '\t'), separate lines by ";"
+  * looks like a Pd-file */
+ FORMAT_PD = 0,
+ /* CR
+  * separate items by whitespace (' ', '\t'), separate lines by linebreaks ("\n")
+  * how you would expect a file to look like
+  * (use Pd's parser that has some quirks with escaped linebreaks) */
+ FORMAT_CR,
+ /* CSV: separate items by ','; separate lines by " \n"
+  * spreadsheet: each argument gets its own column
+  * with proper escaping of everything */
+ FORMAT_CSV,
+} t_msgfile_format;
 
 
 typedef struct _msglist {
@@ -67,7 +71,7 @@ typedef struct _msgfile {
   t_object x_obj;              /* everything */
   t_outlet *x_secondout;        /* "done" */
 
-  int mode;
+  t_msgfile_format format;
 
   t_msglist *start;
 
@@ -1010,24 +1014,24 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   const char*dirname=canvas_getdir(x->x_canvas)->s_name;
   t_parsefn parsefn = parse_fudi;
 
-  int mode = x->mode;
+  int format = x->format;
 
 #ifdef __WIN32__
   rmode |= O_BINARY;
 #endif
 
   if (gensym("cr")==format) {
-    mode = CR_MODE;
+    format = FORMAT_CR;
   } else if (gensym("csv")==format) {
-    mode = CSV_MODE;
+    format = FORMAT_CSV;
   } else if (gensym("pd")==format) {
-    mode = PD_MODE;
+    format = FORMAT_PD;
   } else if (*format->s_name) {
     pd_error(x, "msgfile_read: unknown flag: %s", format->s_name);
   }
 
-  switch(mode) {
-  case CSV_MODE:
+  switch(format) {
+  case FORMAT_CSV:
     use_binbufparser = 0;
     break;
   default:
@@ -1040,7 +1044,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
      * but is consistent with how [textfile] reads the data
      */
     t_binbuf*bbuf = binbuf_new();
-    binbuf_read_via_canvas(bbuf, filename->s_name, x->x_canvas, (CR_MODE == mode));
+    binbuf_read_via_canvas(bbuf, filename->s_name, x->x_canvas, (FORMAT_CR == format));
     msgfile_addbinbuf(x, bbuf);
     binbuf_free(bbuf);
     return;
@@ -1116,7 +1120,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
 
   char filnam[MAXPDSTRING];
   char separator, eol;
-  int mode = x->mode;
+  t_msgfile_format format = x->format;
   int errcount = 0;
   t_escapefn escapefn = escape_pd;
 
@@ -1124,23 +1128,23 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
 
   if(format&&gensym("")!=format) {
     if(gensym("cr")==format) {
-      mode = CR_MODE;
+      format = FORMAT_CR;
     } else if(gensym("csv")==format) {
-      mode = CSV_MODE;
+      format = FORMAT_CSV;
       escapefn = escape_csv;
     } else if(gensym("pd")==format) {
-      mode = PD_MODE;
+      format = FORMAT_PD;
     } else if(format&&format->s_name) {
       pd_error(x, "msgfile_write: ignoring unknown flag: %s", format->s_name);
     }
   }
 
-  switch (mode) {
-  case CR_MODE:
+  switch (format) {
+  case FORMAT_CR:
     separator = ' ';
     eol = 0;
     break;
-  case CSV_MODE:
+  case FORMAT_CSV:
     separator = ',';
     eol = 0;
     break;
@@ -1266,16 +1270,16 @@ static void *msgfile_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   x->start   = 0;
   x->previous= 0;
 
-  x->mode=PD_MODE; /* that's the default */
+  x->format=FORMAT_PD; /* that's the default */
 
   if ((argc==1) && (argv->a_type == A_SYMBOL)) {
-    t_symbol*mode=atom_getsymbol(argv);
-    if      (gensym("cr") == mode) {
-      x->mode = CR_MODE;
-    } else if (gensym("csv")== mode) {
-      x->mode = CSV_MODE;
-    } else if (gensym("pd") == mode) {
-      x->mode = PD_MODE;
+    t_symbol*format=atom_getsymbol(argv);
+    if      (gensym("cr") == format) {
+      x->format = FORMAT_CR;
+    } else if (gensym("csv")== format) {
+      x->format = FORMAT_CSV;
+    } else if (gensym("pd") == format) {
+      x->format = FORMAT_PD;
     } else {
       pd_error(x, "msgfile: unknown argument %s", argv->a_w.w_symbol->s_name);
     }
