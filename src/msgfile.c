@@ -509,6 +509,15 @@ static void msgfile_str2parse(t_msgfile *x, const char*src, t_parsefn parsefn) {
       binbuf_clear(bbuf);
     }
   }
+
+  do {
+    t_atom*argv = binbuf_getvec(bbuf);
+    int argc =  binbuf_getnatom(bbuf);
+    if(argc) {
+      add_currentnode(x);
+      write_currentnode(x, argc, argv);
+    }
+  } while(0);
   binbuf_free(bbuf);
   delete_emptynodes(x);
 }
