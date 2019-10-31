@@ -1261,10 +1261,10 @@ static void msgfile_help(t_msgfile *UNUSED(x))
        "\nfind <list>\t: search for <list>"
        "\nread <file> [<format>]\t: read <file> as <format>"
        "\nwrite <file> [<format>]\t: write <file> as <format>"
-       "\n\t\t: valid <formats> are\t: pd, cr, csv"
+       "\n\t\t: valid <formats> are\t: pd, cr, fudi, txt, csv"
        "\n\nprint\t\t: show buffer (for debugging)"
        "\nhelp\t\t: show this help");
-  post("creation: \"msgfile [<format>]\": <format> defines fileaccess-mode(default is PD)");
+  post("creation: \"msgfile [<format>]\": <format> defines fileaccess-mode(default is 'pd')");
 }
 static void msgfile_free(t_msgfile *x)
 {
