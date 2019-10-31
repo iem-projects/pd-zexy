@@ -592,7 +592,7 @@ static char* escape_pd(const char*src, char*dst) {
       /* Pd already escapes these for us... */
     case ',': case ';':
 #endif
-    case ' ':
+    case ' ': case '\n': case '\r': case '\t':
       *dptr++ = '\\';
       break;
     case 0:
