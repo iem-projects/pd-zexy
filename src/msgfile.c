@@ -342,26 +342,6 @@ static int atomcmp(t_atom *this, t_atom *that)
 }
 
 
-static void msgfile_binbuf2listbuf(t_msgfile *x, t_binbuf *bbuf)
-{
-  int ac = binbuf_getnatom(bbuf);
-  t_atom *ap = binbuf_getvec(bbuf);
-  t_atom*last = ap;
-
-  while (ac--) {
-    if (ap->a_type == A_SEMI) {
-      if(ap > last) {
-        add_currentnode(x);
-        write_currentnode(x, ap-last-1, last+1);
-        last = ap;
-      }
-    }
-    ap++;
-  }
-  add_currentnode(x);
-  delete_emptynodes(x);
-}
-
 static t_atomtype str2atom(const char*atombuf, t_atom*ap, int force_symbol) {
   if(!force_symbol) {
     double f = 0;
@@ -376,7 +356,7 @@ static t_atomtype str2atom(const char*atombuf, t_atom*ap, int force_symbol) {
   return A_SYMBOL;
 }
 
-static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int *_eol, int*_quoted) {
+static const char*parse_csv(const char*src, char dst[MAXPDSTRING], int *_eol, int*_quoted) {
   size_t len = 0;
   int quoted = (src[0] == '"');
   *_eol = 0;
@@ -409,14 +389,111 @@ static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int
   return src;
 }
 
-static void msgfile_csv2listbuf(t_msgfile *x, const char*src) {
-  const char*sptr=src;
+static const char*parse_fudi(const char*src, char dst[MAXPDSTRING], int *_eol, int*_quoted) {
+  size_t len = 0;
+  *_quoted = 0;
+  *_eol = 0;
+
+  while(*src) {
+    char c = *src++;
+    char c2;
+    switch (c) {
+    case '\\': /* quoting */
+      c2=c;
+      c=*src++;
+      switch(c) {
+      case ',': case ';':
+      case '\t': case ' ': case '\n': case '\r':
+        break;
+      default:
+        if(len<MAXPDSTRING)dst[len++]=c2;
+        break;
+      }
+      break;
+    case ';':
+      *_eol = 1;
+    case '\n': case '\r': /* EOL/EOA */
+    case '\t': case ' ':  /* EOA */
+      goto atomend;
+      break;
+    }
+    if(len<MAXPDSTRING)
+      dst[len++]=c;
+  }
+ atomend:
+  if(len<MAXPDSTRING)
+    dst[len++]=0;
+
+  while(*src) {
+    switch(*src) {
+      /* skip remaining whitespace */
+    case '\n': case '\r': case ' ': case '\t':
+      break;
+    default:
+      return src;
+    }
+    src++;
+  }
+  return src;
+}
+
+static const char*parse_cr(const char*src, char dst[MAXPDSTRING], int *_eol, int*_quoted) {
+  size_t len = 0;
+  *_quoted = 0;
+  *_eol = 0;
+
+  while(*src) {
+    char c = *src++;
+    char c2;
+    switch (c) {
+    case '\\': /* quoting */
+      c2=c;
+      c=*src++;
+      switch(c) {
+      case ',': case ';':
+      case '\t': case ' ': case '\n': case '\r':
+        break;
+      default:
+        if(len<MAXPDSTRING)dst[len++]=c2;
+        break;
+      }
+      break;
+    case '\n': case '\r': /* EOL/EOA */
+      *_eol = 1;
+    case '\t': case ' ':  /* EOA */
+      goto atomend;
+      break;
+    }
+    if(len<MAXPDSTRING)
+      dst[len++]=c;
+  }
+ atomend:
+  if(len<MAXPDSTRING)
+    dst[len++]=0;
+
+  while(*src) {
+    switch(*src) {
+      /* skip remaining whitespace */
+    case '\n': case '\r': case ' ': case '\t':
+      break;
+    default:
+      return src;
+    }
+    src++;
+  }
+  return src;
+}
+
+typedef const char*(*t_parsefn)(const char*src, char dst[MAXPDSTRING], int *_eol, int*_symbol);
+
+static void msgfile_str2parse(t_msgfile *x, const char*src, t_parsefn parsefn) {
   t_binbuf*bbuf=binbuf_new();
-  char atombuf[MAXPDSTRING];
+  char atombuf[MAXPDSTRING + 1];
   while(*src) {
     int issymbol = 0;
     int iseol = 0;
-    src = msgfile_csv2atombuf(src, atombuf, &iseol, &issymbol);
+    src = parsefn(src, atombuf, &iseol, &issymbol);
+    atombuf[MAXPDSTRING] = 0;
     if(*atombuf) {
       t_atom a;
       str2atom(atombuf, &a, issymbol);
@@ -431,79 +508,8 @@ static void msgfile_csv2listbuf(t_msgfile *x, const char*src) {
     }
   }
   binbuf_free(bbuf);
+  delete_emptynodes(x);
 }
-
-static const char*msgfile_fudi2atombuf(const char*src, char dst[MAXPDSTRING], const char eol) {
-  size_t len = 0;
-
-  while(*src) {
-    char c = *src;
-    char c2;
-    switch (c) {
-    case '\\': /* quoting */
-      c2=*src++;
-      c=*src;
-      switch(c) {
-      case ',': case ';':
-      case '\t': case ' ':
-      case '\n': case '\r':
-        break;
-      default:
-        if(len<MAXPDSTRING)dst[len++]=c2;
-        break;
-      }
-      break;
-    default:
-      if (eol != c)
-        break;
-    case '\n': case '\r': /* EOL/EOA */
-    case '\t': case ' ':  /* EOA */
-      if(len<MAXPDSTRING)
-        dst[len++]=0;
-      dst[MAXPDSTRING-1] = 0;
-      while(1) {
-        switch(*src) {
-          /* skip leading whitespace */
-        case '\n': case '\r': case ' ': case '\t':
-          break;
-        default:
-          return src;
-        }
-        src++;
-      }
-      return src;
-    }
-    if(len<MAXPDSTRING)
-      dst[len++]=c;
-    src++;
-  }
-  dst[MAXPDSTRING-1] = 0;
-  return src;
-}
-
-static void msgfile_fudi2listbuf(t_msgfile *x, const char*src, const char eol) {
-  const char*sptr=src;
-  t_binbuf*bbuf=binbuf_new();
-  char atombuf[MAXPDSTRING];
-  while(*src) {
-    src = msgfile_fudi2atombuf(src, atombuf, eol);
-    if(*atombuf) {
-      t_atom a;
-      str2atom(atombuf, &a, 0);
-      binbuf_add(bbuf, 1, &a);
-    }
-    if(*src == eol) {
-      t_atom*argv = binbuf_getvec(bbuf);
-      int argc =  binbuf_getnatom(bbuf);
-      add_currentnode(x);
-      write_currentnode(x, argc, argv);
-      binbuf_clear(bbuf);
-      src++;
-    }
-  }
-  binbuf_free(bbuf);
-}
-
 
 static char* escape_pd(const char*src, char*dst) {
   /* ',' -> '\,'; ' ' -> '\ ' */
@@ -961,13 +967,13 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
 
   int fd=0;
   FILE*fil=NULL;
-  long readlength, length, pos;
+  long readlength, length;
   char filnam[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
   const char*dirname=canvas_getdir(x->x_canvas)->s_name;
+  t_parsefn parsefn = parse_fudi;
 
   int mode = x->mode;
-  char separator, eol;
 
 #ifdef __WIN32__
   rmode |= O_BINARY;
@@ -985,16 +991,13 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
 
   switch (mode) {
   case CR_MODE:
-    separator = ' ';
-    eol = '\n';
+    parsefn = parse_cr;
     break;
   case CSV_MODE:
-    separator = ',';
-    eol = ' ';
+    parsefn = parse_csv;
     break;
   default:
-    separator = '\n';
-    eol = ';';
+    parsefn = parse_fudi;
     break;
   }
 
@@ -1046,11 +1049,8 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   /* we overallocated readbuf by 1, so we can store a terminating 0 */
   readbuf[length] = 0;
 
-  if(CSV_MODE==mode) {
-    msgfile_csv2listbuf(x, readbuf);
-  } else {
-    msgfile_fudi2listbuf(x, readbuf, eol);
-  }
+  msgfile_str2parse(x, readbuf, parsefn);
+
   t_freebytes(readbuf, length+1);
 }
 static void msgfile_read(t_msgfile *x, t_symbol *filename,
