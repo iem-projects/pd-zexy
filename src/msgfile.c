@@ -47,11 +47,20 @@ typedef enum {
   * separate items by whitespace (' ', '\t'), separate lines by ";"
   * looks like a Pd-file */
  FORMAT_PD = 0,
+ /* FUDI
+  * separate items by whitespace (' ', '\t'), separate lines by ";"
+  * looks like a Pd-file, but uses our own parser (to better handle escaped linebreaks) */
+ FORMAT_FUDI = 0,
  /* CR
   * separate items by whitespace (' ', '\t'), separate lines by linebreaks ("\n")
   * how you would expect a file to look like
   * (use Pd's parser that has some quirks with escaped linebreaks) */
  FORMAT_CR,
+ /* TXT:
+  * separate items by whitespace (' ', '\t'), separate lines by "\n"
+  * how you would expect a file to look like
+  * (uses our own parser that handles escaped '\n' better!) */
+ FORMAT_TXT,
  /* CSV: separate items by ','; separate lines by " \n"
   * spreadsheet: each argument gets its own column
   * with proper escaping of everything */
@@ -108,8 +117,12 @@ static t_msgfile_format symbol2format(t_msgfile*x, t_symbol*s) {
     return x->format;
   if (gensym("pd")==s)
     return FORMAT_PD;
+  if (gensym("fudi")==s)
+    return FORMAT_FUDI;
   if (gensym("cr")==s)
     return FORMAT_CR;
+  if (gensym("txt")==s)
+    return FORMAT_TXT;
   if (gensym("csv")==s)
     return FORMAT_CSV;
   pd_error(x, "msgfile: ignoring unknown format: '%s'", s->s_name);
@@ -1039,6 +1052,11 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   case FORMAT_CSV:
     parsefn = parse_csv;
     break;
+  case FORMAT_TXT:
+    parsefn = parse_txt;
+    break;
+  case FORMAT_FUDI:
+    parsefn = parse_fudi;
     break;
   default:
     parsefn = 0;
