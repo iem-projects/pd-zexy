@@ -403,6 +403,7 @@ static const char*parse_csv(const char*src, char dst[MAXPDSTRING], int *_eol, in
       default: break;
       case '\n': /* EOL */
         *_eol = 1;
+        /* fallthrough */
       case ',': /* EOC */
         if(len<MAXPDSTRING)
           dst[len++]=0;
