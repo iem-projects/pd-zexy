@@ -1016,7 +1016,6 @@ static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol*s1,
 static void msgfile_read2(t_msgfile *x, t_symbol *filename,
                           t_symbol *sformat)
 {
-  int use_binbufparser = 1;
   int rmode = 0;
 
   int fd=0;
@@ -1025,7 +1024,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   char filnam[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
   const char*dirname=canvas_getdir(x->x_canvas)->s_name;
-  t_parsefn parsefn = parse_fudi;
+  t_parsefn parsefn = 0;
 
   t_msgfile_format format = symbol2format(x, sformat);
 
@@ -1035,13 +1034,14 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
 
   switch(format) {
   case FORMAT_CSV:
-    use_binbufparser = 0;
+    parsefn = parse_csv;
+    break;
     break;
   default:
-    use_binbufparser = 1;
+    parsefn = 0;
   }
 
-  if( use_binbufparser ) {
+  if( !parsefn ) {
     /* use Pd's own parser
      * this gives somewhat weird results with escaped LF,
      * but is consistent with how [textfile] reads the data
@@ -1103,7 +1103,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   /* we overallocated readbuf by 1, so we can store a terminating 0 */
   readbuf[length] = 0;
 
-  msgfile_str2parse(x, readbuf, parse_csv);
+  msgfile_str2parse(x, readbuf, parsefn);
 
   t_freebytes(readbuf, length+1);
 }
