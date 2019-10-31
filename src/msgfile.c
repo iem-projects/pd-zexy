@@ -1159,6 +1159,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   case FORMAT_CSV:
     separator = ',';
     eol = 0;
+    escapefn = escape_csv;
     break;
   default:
     separator = ' ';
