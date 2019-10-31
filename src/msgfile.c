@@ -522,6 +522,31 @@ static void msgfile_str2parse(t_msgfile *x, const char*src, t_parsefn parsefn) {
   delete_emptynodes(x);
 }
 
+static int nextsemi(t_atom*argv, int argc) {
+  int count = 0;
+  for(count=0; count<argc; count++) {
+    if (A_SEMI==argv[count].a_type)
+      return count + 1;
+  }
+  return 0;
+}
+
+static void msgfile_addbinbuf(t_msgfile *x, t_binbuf*bbuf) {
+  t_atom*argv = binbuf_getvec(bbuf);
+  int argc =  binbuf_getnatom(bbuf);
+
+  while(argc>0) {
+    int next = nextsemi(argv, argc);
+    if(next>1) {
+      add_currentnode(x);
+      write_currentnode(x, next-1, argv);
+    }
+    argv+=next;
+    argc-=next;
+  }
+  delete_emptynodes(x);
+}
+
 static char* escape_pd(const char*src, char*dst) {
   /* ',' -> '\,'; ' ' -> '\ ' */
   char*dptr = dst;
