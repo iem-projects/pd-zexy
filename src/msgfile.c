@@ -56,6 +56,9 @@ typedef enum {
   * spreadsheet: each argument gets its own column
   * with proper escaping of everything */
  FORMAT_CSV,
+
+ /* illegal format */
+ FORMAT_ILLEGAL,
 } t_msgfile_format;
 
 
