@@ -98,7 +98,20 @@ static void msgfile_end(t_msgfile *x);
 static void msgfile_goto(t_msgfile *x, t_float f);
 
 /* ************************************************************************ */
-/* helper functions                                                           */
+/* helper functions                                                         */
+
+static t_msgfile_format symbol2format(t_msgfile*x, t_symbol*s) {
+  if (!s || gensym("")==s)
+    return x->format;
+  if (gensym("pd")==s)
+    return FORMAT_PD;
+  if (gensym("cr")==s)
+    return FORMAT_CR;
+  if (gensym("csv")==s)
+    return FORMAT_CSV;
+  pd_error(x, "msgfile: ignoring unknown format: '%s'", s->s_name);
+  return x->format;
+}
 
 static int is_float(t_atom*a)
 {
@@ -1001,7 +1014,7 @@ static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol*s1,
 /* file I/O                           */
 
 static void msgfile_read2(t_msgfile *x, t_symbol *filename,
-                          t_symbol *format)
+                          t_symbol *sformat)
 {
   int use_binbufparser = 1;
   int rmode = 0;
@@ -1014,21 +1027,11 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   const char*dirname=canvas_getdir(x->x_canvas)->s_name;
   t_parsefn parsefn = parse_fudi;
 
-  int format = x->format;
+  t_msgfile_format format = symbol2format(x, sformat);
 
 #ifdef __WIN32__
   rmode |= O_BINARY;
 #endif
-
-  if (gensym("cr")==format) {
-    format = FORMAT_CR;
-  } else if (gensym("csv")==format) {
-    format = FORMAT_CSV;
-  } else if (gensym("pd")==format) {
-    format = FORMAT_PD;
-  } else if (*format->s_name) {
-    pd_error(x, "msgfile_read: unknown flag: %s", format->s_name);
-  }
 
   switch(format) {
   case FORMAT_CSV:
@@ -1113,31 +1116,18 @@ static void msgfile_read(t_msgfile *x, t_symbol *filename,
 
 
 static void msgfile_write(t_msgfile *x, t_symbol *filename,
-                          t_symbol *format)
+                          t_symbol *sformat)
 {
   char buf[MAXPDSTRING];
   t_msglist *cur = x->start;
 
   char filnam[MAXPDSTRING];
   char separator, eol;
-  t_msgfile_format format = x->format;
+  t_msgfile_format format = symbol2format(x, sformat);
   int errcount = 0;
   t_escapefn escapefn = escape_pd;
 
   FILE *f=0;
-
-  if(format&&gensym("")!=format) {
-    if(gensym("cr")==format) {
-      format = FORMAT_CR;
-    } else if(gensym("csv")==format) {
-      format = FORMAT_CSV;
-      escapefn = escape_csv;
-    } else if(gensym("pd")==format) {
-      format = FORMAT_PD;
-    } else if(format&&format->s_name) {
-      pd_error(x, "msgfile_write: ignoring unknown flag: %s", format->s_name);
-    }
-  }
 
   switch (format) {
   case FORMAT_CR:
@@ -1273,16 +1263,7 @@ static void *msgfile_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   x->format=FORMAT_PD; /* that's the default */
 
   if ((argc==1) && (argv->a_type == A_SYMBOL)) {
-    t_symbol*format=atom_getsymbol(argv);
-    if      (gensym("cr") == format) {
-      x->format = FORMAT_CR;
-    } else if (gensym("csv")== format) {
-      x->format = FORMAT_CSV;
-    } else if (gensym("pd") == format) {
-      x->format = FORMAT_PD;
-    } else {
-      pd_error(x, "msgfile: unknown argument %s", argv->a_w.w_symbol->s_name);
-    }
+    x->format = symbol2format(x, atom_getsymbol(argv));
   }
 
   outlet_new(&x->x_obj, gensym("list"));
