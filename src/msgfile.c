@@ -454,7 +454,7 @@ static const char*parse_fudi(const char*src, char dst[MAXPDSTRING], int *_eol, i
   return src;
 }
 
-static const char*parse_cr(const char*src, char dst[MAXPDSTRING], int *_eol, int*_quoted) {
+static const char*parse_txt(const char*src, char dst[MAXPDSTRING], int *_eol, int*_quoted) {
   size_t len = 0;
   *_quoted = 0;
   *_eol = 0;
