@@ -376,9 +376,10 @@ static t_atomtype str2atom(const char*atombuf, t_atom*ap, int force_symbol) {
   return A_SYMBOL;
 }
 
-static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int*_quoted) {
+static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int *_eol, int*_quoted) {
   size_t len = 0;
   int quoted = (src[0] == '"');
+  *_eol = 0;
   *_quoted = quoted;
   if (quoted)
     src++;
@@ -388,11 +389,12 @@ static const char*msgfile_csv2atombuf(const char*src, char dst[MAXPDSTRING], int
       switch (src[quoted]) {
       default: break;
       case '\n': /* EOL */
+        *_eol = 1;
       case ',': /* EOC */
         if(len<MAXPDSTRING)
           dst[len++]=0;
         dst[MAXPDSTRING-1] = 0;
-        return src+quoted+(src[quoted]==',');
+        return src+1+quoted;
       case '"': /* quote */
         if(quoted)
           src++;
@@ -413,19 +415,19 @@ static void msgfile_csv2listbuf(t_msgfile *x, const char*src) {
   char atombuf[MAXPDSTRING];
   while(*src) {
     int issymbol = 0;
-    src = msgfile_csv2atombuf(src, atombuf, &issymbol);
+    int iseol = 0;
+    src = msgfile_csv2atombuf(src, atombuf, &iseol, &issymbol);
     if(*atombuf) {
       t_atom a;
       str2atom(atombuf, &a, issymbol);
       binbuf_add(bbuf, 1, &a);
     }
-    if(*src == '\n') {
+    if(iseol) {
       t_atom*argv = binbuf_getvec(bbuf);
       int argc =  binbuf_getnatom(bbuf);
       add_currentnode(x);
       write_currentnode(x, argc, argv);
       binbuf_clear(bbuf);
-      src++;
     }
   }
   binbuf_free(bbuf);
