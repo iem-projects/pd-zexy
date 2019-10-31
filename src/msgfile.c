@@ -1152,6 +1152,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   FILE *f=0;
 
   switch (format) {
+  case FORMAT_TXT:
   case FORMAT_CR:
     separator = ' ';
     eol = 0;
