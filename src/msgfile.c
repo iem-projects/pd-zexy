@@ -999,6 +999,7 @@ static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol*s1,
 static void msgfile_read2(t_msgfile *x, t_symbol *filename,
                           t_symbol *format)
 {
+  int use_binbufparser = 1;
   int rmode = 0;
 
   int fd=0;
@@ -1025,17 +1026,27 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
     pd_error(x, "msgfile_read: unknown flag: %s", format->s_name);
   }
 
-  switch (mode) {
-  case CR_MODE:
-    parsefn = parse_cr;
-    break;
+  switch(mode) {
   case CSV_MODE:
-    parsefn = parse_csv;
+    use_binbufparser = 0;
     break;
   default:
-    parsefn = parse_fudi;
-    break;
+    use_binbufparser = 1;
   }
+
+  if( use_binbufparser ) {
+    /* use Pd's own parser
+     * this gives somewhat weird results with escaped LF,
+     * but is consistent with how [textfile] reads the data
+     */
+    t_binbuf*bbuf = binbuf_new();
+    binbuf_read_via_canvas(bbuf, filename->s_name, x->x_canvas, (CR_MODE == mode));
+    msgfile_addbinbuf(x, bbuf);
+    binbuf_free(bbuf);
+    return;
+  }
+
+  /* cannot use Pd's binbuf parser, so we do our own thing */
 
   fd = open_via_path(dirname,
                      filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0);
@@ -1085,7 +1096,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   /* we overallocated readbuf by 1, so we can store a terminating 0 */
   readbuf[length] = 0;
 
-  msgfile_str2parse(x, readbuf, parsefn);
+  msgfile_str2parse(x, readbuf, parse_csv);
 
   t_freebytes(readbuf, length+1);
 }
