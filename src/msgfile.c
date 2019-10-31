@@ -474,7 +474,9 @@ static const char*parse_cr(const char*src, char dst[MAXPDSTRING], int *_eol, int
   while(*src) {
     switch(*src) {
       /* skip remaining whitespace */
-    case '\n': case '\r': case ' ': case '\t':
+    case '\n': case '\r':
+      *_eol = 1;
+    case ' ': case '\t':
       break;
     default:
       return src;
