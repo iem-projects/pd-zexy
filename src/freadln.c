@@ -49,7 +49,7 @@ typedef struct freadln {
   FILE *x_file;
   char *x_filename;
   char *x_textbuf;
-  int  x_textbuf_length;
+  size_t  x_textbuf_length;
   t_outlet *x_message_outlet;
   t_outlet *x_readybang_outlet;
 
@@ -133,8 +133,8 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
   x->x_textbuf_length=MIN_FREADLN_LENGTH;
 }
 
-static int enlarge_cstr_if_required(const char **c_str, int *len,
-                                    const int desired_min_length)
+static size_t enlarge_cstr_if_required(const char **c_str, size_t *len,
+                                    const size_t desired_min_length)
 {
   if ((!(*c_str))||*len==0) {
     *c_str = (char*) calloc (1,sizeof(char));
@@ -175,7 +175,7 @@ static void freadln_readline (t_freadln *x)
 {
   int min_length=(x->x_textbuf_length < 1)?1:x->x_textbuf_length;
   int linebreak_pos=0;
-  int items_read;
+  size_t items_read;
   t_binbuf *bbuf;
   t_atom *abuf;
   int abuf_length;
@@ -210,7 +210,7 @@ static void freadln_readline (t_freadln *x)
                                          x->linebreak_chr[0]))==-1) &&
            !(items_read < x->x_textbuf_length));
 
-  if (linebreak_pos-1  < items_read - strlen(x->linebreak_chr)) {
+  if (linebreak_pos + strlen(x->linebreak_chr) < items_read + 1 ) {
     int rewind_after=items_read-linebreak_pos;
     fseek(x->x_file,-(long)(rewind_after),SEEK_CUR);
   }
