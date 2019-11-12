@@ -43,7 +43,7 @@ STATIC_INLINE void string2atom(t_atom *ap, const char* cp, int clen)
   char *buffer=getbytes(sizeof(char)*(clen+1));
   char *endptr[1];
   t_float ftest;
-  strncpy(buffer, cp, clen);
+  strncpy(buffer, cp, clen+1);
   buffer[clen]=0;
   ftest=strtod(buffer, endptr);
   /* what should we do with the special cases of hexadecimal values, "INF" and "NAN" ???
