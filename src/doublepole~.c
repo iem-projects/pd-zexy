@@ -124,4 +124,5 @@ void doublepole_tilde_setup(void)
   class_addmethod(sigdoublepole_class, (t_method)sigdoublepole_set,
                   gensym("clear"),
                   A_GIMME, 0);
+  zexy_register("doublepole~");
 }
