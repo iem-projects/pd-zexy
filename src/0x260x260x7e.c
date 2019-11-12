@@ -278,7 +278,7 @@ static void scalarandand_tilde_dsp(t_scalarandand_tilde *x, t_signal **sp)
     }
 }
 
-static void andand_tilde_help(t_object*x)
+static void andand_tilde_help(t_object* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " &&~\t\t:: logical AND operation on 2 signals");
 }

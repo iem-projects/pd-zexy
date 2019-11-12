@@ -234,7 +234,7 @@ static void scalareq_tilde_dsp(t_scalareq_tilde *x, t_signal **sp)
     }
 }
 
-static void eq_tilde_help(t_object*x)
+static void eq_tilde_help(t_object* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " &&~\t\t:: test 2 signals for equality");
 }

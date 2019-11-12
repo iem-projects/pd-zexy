@@ -252,7 +252,7 @@ static void scalaroror_tilde_dsp(t_scalaroror_tilde *x, t_signal **sp)
     }
 }
 
-static void oror_tilde_help(t_object*x)
+static void oror_tilde_help(t_object* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " &&~\t\t:: logical OR operation on 2 signals");
 }

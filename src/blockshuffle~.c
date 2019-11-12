@@ -68,8 +68,8 @@ static void blockshuffle_buildindex(t_blockshuffle *x, int blocksize)
   }
 }
 
-static void blockshuffle_list(t_blockshuffle *x, t_symbol*s, int argc,
-                              t_atom*argv)
+static void blockshuffle_list(t_blockshuffle *x, t_symbol* UNUSED(s),
+    int argc, t_atom*argv)
 {
   int i;
   if(x->shuffle) {
@@ -119,7 +119,7 @@ static void blockshuffle_dsp(t_blockshuffle *x, t_signal **sp)
           sp[0]->s_n);
 }
 
-static void blockshuffle_helper(void)
+static void blockshuffle_helper(t_blockshuffle* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " blockshuffle~-object for shuffling the samples within a signal-block");
   post("'help' : view this\n"

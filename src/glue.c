@@ -105,7 +105,7 @@ static void *glue_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-static void glue_help(t_glue*x)
+static void glue_help(t_glue* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " glue\t\t:: glue together 2 lists (like [list append])");
 }

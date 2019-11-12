@@ -234,7 +234,7 @@ static void scalarlt_tilde_dsp(t_scalarlt_tilde *x, t_signal **sp)
       dsp_add(scalarlt_tilde_perf8, 4, in, &x->x_g, out, n);
     }
 }
-static void lt_tilde_help(t_object*x)
+static void lt_tilde_help(t_object* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " <~\t\t:: compare 2 signals");
 }

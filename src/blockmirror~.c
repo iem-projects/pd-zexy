@@ -81,7 +81,7 @@ static void blockmirror_dsp(t_blockmirror *x, t_signal **sp)
   dsp_add(blockmirror_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void blockmirror_helper(t_blockmirror*x)
+static void blockmirror_helper(t_blockmirror* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " blockmirror~-object for reverting a signal");
   post("'help' : view this\n"

@@ -64,8 +64,8 @@ static t_int *sigdoublepole_perform(t_int *w)
   return (w+5);
 }
 
-static void sigdoublepole_list(t_sigdoublepole *x, t_symbol *s, int argc,
-                               t_atom *argv)
+static void sigdoublepole_list(t_sigdoublepole *x, t_symbol* UNUSED(s),
+    int argc, t_atom *argv)
 {
   t_float fb1 = atom_getfloatarg(0, argc, argv);
   t_float fb2 = atom_getfloatarg(1, argc, argv);
@@ -93,8 +93,8 @@ stable:
   c->c_fb2 = fb2;
 }
 
-static void sigdoublepole_set(t_sigdoublepole *x, t_symbol *s, int argc,
-                              t_atom *argv)
+static void sigdoublepole_set(t_sigdoublepole *x, t_symbol* UNUSED(s),
+    int argc, t_atom *argv)
 {
   t_doublepolectl *c = x->x_ctl;
   c->c_x1 = atom_getfloatarg(0, argc, argv);

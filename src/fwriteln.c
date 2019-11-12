@@ -189,7 +189,7 @@ static void fwriteln_free (t_fwriteln *x)
   fwriteln_close(x);
 }
 
-static void *fwriteln_new(t_symbol *s, int argc, t_atom *argv)
+static void *fwriteln_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   #define MAXFMTSTRING 10
   int k;

@@ -156,7 +156,7 @@ static void *scalmul_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-static void scalmul_help(t_scalmul*x)
+static void scalmul_help(t_scalmul* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " .\t\t:: scalar multiplication (in-product)");
 }

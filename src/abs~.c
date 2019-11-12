@@ -116,7 +116,7 @@ static t_int *sigABS_performSSE(t_int *w)
 }
 #endif /* __SSE__ */
 
-static void sigABS_dsp(t_abs *x, t_signal **sp)
+static void sigABS_dsp(t_abs * UNUSED(x), t_signal **sp)
 {
 #ifdef __SSE__
   if(

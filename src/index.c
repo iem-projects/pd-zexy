@@ -352,7 +352,7 @@ static void index_free(t_index *x)
 }
 
 
-static void index_helper(t_index *x)
+static void index_helper(t_index* UNUSED(x))
 {
   endpost();
   post(""HEARTSYMBOL " index :: index symbols to indices");

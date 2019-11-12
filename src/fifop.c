@@ -264,7 +264,7 @@ static void fifop_dump(t_fifop*x)
   }
 }
 
-static void fifop_help(t_fifop*x)
+static void fifop_help(t_fifop* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " fifop\t\t:: a First-In-First-Out queue with priorities");
 }
