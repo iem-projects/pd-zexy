@@ -136,20 +136,23 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
 static size_t enlarge_cstr_if_required(const char **c_str, size_t *len,
                                     const size_t desired_min_length)
 {
+  size_t L;
   if ((!(*c_str))||*len==0) {
     *c_str = (char*) calloc (1,sizeof(char));
     return 1;
   }
-  if (len[0]<desired_min_length) {
+  L=*len;
+  if (L<desired_min_length) {
     do {
-      len[0]<<=1;
-    } while ((len[0]<desired_min_length)&&(len[0]!=0));
-    freebytes((char*)*c_str, sizeof(char)*len[0]);
-    if (!(*c_str=(char*)calloc(len[0],sizeof(char)))) {
-      len[0]=0;
+      L<<=1;
+    } while ((L<desired_min_length)&&(L!=0));
+    freebytes((char*)*c_str, sizeof(char)*L);
+    if (!(*c_str=(char*)calloc(L,sizeof(char)))) {
+      L=0;
     }
   }
-  return len[0];
+  *len = L;
+  return L;
 }
 
 static int cstr_char_pos(const char *c_str, const char c)
