@@ -46,7 +46,7 @@ typedef struct fwriteln {
   char *x_filename;
   char *x_textbuf;
   char linebreak_chr[3];
-  char format_string_afloats[10];
+  char format_string_afloats[MAXPDSTRING];
 } t_fwriteln;
 
 
@@ -191,55 +191,50 @@ static void fwriteln_free (t_fwriteln *x)
 
 static void *fwriteln_new(t_symbol *s, int argc, t_atom *argv)
 {
+  #define MAXFMTSTRING 10
   int k;
-  int width;
-  int precision;
-  char float_format[3]="g ";
-  char width_str[3]="";
-  char precision_str[4]="";
-  char prefix[3]="%";
+  char float_format = 'g';
+  char sign=0;
+  char width_str[MAXFMTSTRING];
+  char precision_str[MAXFMTSTRING];
   t_fwriteln *x = (t_fwriteln *)pd_new(fwriteln_class);
+  memset(width_str, 0, MAXFMTSTRING);
+  memset(precision_str, 0, MAXFMTSTRING);
+
   x->x_filename=0;
   x->x_file=0;
   x->x_textbuf=0;
+
   for (k=0; k<argc; k++) {
-    if (atom_getsymbol(&argv[k])==gensym("p")) {
+    t_symbol*S = atom_getsymbol(&argv[k]);
+    if (gensym("p")==S) {
       if ((k+1>=argc)||(argv[k+1].a_type!=A_FLOAT)) {
-        post("fwriteln: no value given for precision!");
+        pd_error(x, "fwriteln: no value given for precision!");
       } else {
-        precision=atom_getint(&argv[++k]);
+        int precision=(int)atom_getfloat(&argv[++k]);
         precision=(precision<0)?0:precision;
         precision=(precision>30)?30:precision;
-        snprintf(precision_str,4,".%d",precision);
+        snprintf(precision_str, MAXFMTSTRING, ".%d",precision);
       }
-    } else if (atom_getsymbol(&argv[k])==gensym("w")) {
+    } else if (gensym("w")==S) {
       if ((k+1>=argc)||(argv[k+1].a_type!=A_FLOAT)) {
-        post("fwriteln: no value given for width!");
+        pd_error(x, "fwriteln: no value given for width!");
       } else {
-        width=atom_getint(&argv[++k]);
+        int width=(int)atom_getfloat(&argv[++k]);
         width=(width<1)?1:width;
         width=(width>40)?40:width;
-        snprintf(width_str,3,"%d",width);
+        snprintf(width_str, MAXFMTSTRING, "%d",width);
       }
-    } else if (atom_getsymbol(&argv[k])==gensym("g")) {
-      float_format[0]='g';
-    } else if (atom_getsymbol(&argv[k])==gensym("f")) {
-      float_format[0]='f';
-    } else if (atom_getsymbol(&argv[k])==gensym("e")) {
-      float_format[0]='e';
-    } else if (atom_getsymbol(&argv[k])==gensym("-")) {
-      strcpy(prefix,"%-");
-    } else if (atom_getsymbol(&argv[k])==gensym("+")) {
-      strcpy(prefix,"%+");
+    } else if (gensym("g")==S || gensym("f")==S || gensym("e")==S) {
+      float_format = S->s_name[0];
+    } else if (gensym("-")==S || gensym("+")==S) {
+      sign = S->s_name[0];
     }
   }
-  x->format_string_afloats[0]='\0';
-  strncat(x->format_string_afloats,prefix,2);
-  strncat(x->format_string_afloats,width_str,2);
-  strncat(x->format_string_afloats,precision_str,3);
-  strncat(x->format_string_afloats,float_format,2);
+  snprintf(x->format_string_afloats, MAXPDSTRING, "%%%c%s%s%c ", sign, width_str, precision_str, float_format);
   return (void *)x;
 }
+
 
 void fwriteln_setup(void)
 {
@@ -253,4 +248,3 @@ void fwriteln_setup(void)
 
   zexy_register("fwriteln");
 }
-
