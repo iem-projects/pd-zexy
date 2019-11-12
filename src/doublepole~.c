@@ -4,7 +4,7 @@
 
 /*  "filters", both linear and nonlinear.
 */
-#include "m_pd.h"
+#include "zexy.h"
 #include <math.h>
 
 //* ---------------- doublepole~ - raw doublepole filter ----------------- */
