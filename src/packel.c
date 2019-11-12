@@ -59,6 +59,7 @@ static void packel_outelement(t_packel*x, int id, t_symbol*s,int argc,
     switch (current->a_type) {
     case A_NULL:
       outlet_bang(out);
+      break;
     default:
       outlet_list(out, gensym("list"), 1, current);
     }
