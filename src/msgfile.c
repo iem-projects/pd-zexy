@@ -1088,12 +1088,16 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
       return;
     } else {
       sys_close(fd);
-      sprintf(filnam, "%s", filename->s_name);
+      snprintf(filnam, MAXPDSTRING, "%s", filename->s_name);
     }
   } else {
     sys_close(fd);
-    sprintf(filnam, "%s/%s", buf, bufptr);
+    if(snprintf(filnam, MAXPDSTRING, "%s/%s", buf, bufptr) < 0) {
+      pd_error(x, "can't create in '%s/%s'",  buf, bufptr);
+      return;
+    }
   }
+  filnam[MAXPDSTRING-1]=0;
 
   fil=sys_fopen(filnam, "rb");
   if(fil==NULL) {
