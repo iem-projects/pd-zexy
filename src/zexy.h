@@ -73,6 +73,9 @@
 #ifdef __GNUC__
 # define UNUSED(x) ZUNUSED_ ## x __attribute__((__unused__))
 # define UNUSED_FUNCTION(x) __attribute__((__unused__)) ZUNUSEDFUN_ ## x
+# if __GNUC__ >= 9
+#  pragma GCC diagnostic ignored "-Wcast-function-type"
+# endif
 #else
 # define UNUSED(x) ZUNUSED_ ## x
 # define UNUSED_FUNCTION(x) ZUNUSEDFUN_ ## x
