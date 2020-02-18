@@ -170,7 +170,7 @@ static void *noish_new(t_floatarg f)
   return (x);
 }
 
-void noish_tilde_setup(void)
+ZEXY_SETUP void noish_tilde_setup(void)
 {
   noish_class = class_new(gensym("noish~"), (t_newmethod)noish_new, 0,
                           sizeof(t_nois), 0,

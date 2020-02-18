@@ -236,7 +236,7 @@ static void *fwriteln_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 }
 
 
-void fwriteln_setup(void)
+ZEXY_SETUP void fwriteln_setup(void)
 {
   fwriteln_class = class_new(gensym("fwriteln"), (t_newmethod)fwriteln_new,
                              (t_method) fwriteln_free, sizeof(t_fwriteln), CLASS_DEFAULT, A_GIMME, 0);

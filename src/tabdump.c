@@ -105,7 +105,7 @@ static void tabdump_helper(void)
 
 }
 
-void tabdump_setup(void)
+ZEXY_SETUP void tabdump_setup(void)
 {
   tabdump_class = class_new(gensym("tabdump"), (t_newmethod)tabdump_new,
                             0, sizeof(t_tabdump), 0, A_DEFSYM, 0);

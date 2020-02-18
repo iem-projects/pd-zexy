@@ -61,7 +61,7 @@ static void *sleepgrain_new(void)
   return (x);
 }
 
-void sleepgrain_setup(void)
+ZEXY_SETUP void sleepgrain_setup(void)
 {
   sleepgrain_class = class_new(gensym("sleepgrain"),
                                (t_newmethod)sleepgrain_new,

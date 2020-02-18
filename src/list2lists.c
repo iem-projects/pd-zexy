@@ -137,7 +137,7 @@ static void list2lists_help(t_list2lists*UNUSED(x))
   post("\n"HEARTSYMBOL " list2lists\t\t:: split lists into multiple sublists based on matches");
 }
 
-void list2lists_setup(void)
+ZEXY_SETUP void list2lists_setup(void)
 {
   list2lists_class = class_new(gensym("list2lists"),
                                (t_newmethod)list2lists_new,

@@ -1304,7 +1304,7 @@ static void *msgfile_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-void msgfile_setup(void)
+ZEXY_SETUP void msgfile_setup(void)
 {
   msgfile_class = class_new(gensym("msgfile"), (t_newmethod)msgfile_new,
                             (t_method)msgfile_free, sizeof(t_msgfile), 0, A_GIMME, 0);

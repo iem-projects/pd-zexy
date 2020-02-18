@@ -109,7 +109,7 @@ static void dosetup()
   demux_class=zclass_setup("demultiplex");
   zclass_setup("demux");
 }
-void demultiplex_setup(void)
+ZEXY_SETUP void demultiplex_setup(void)
 {
   dosetup();
 }

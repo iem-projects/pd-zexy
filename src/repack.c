@@ -165,7 +165,7 @@ static void *repack_new(t_floatarg f)
   return (x);
 }
 
-void repack_setup(void)
+ZEXY_SETUP void repack_setup(void)
 {
   repack_class = class_new(gensym("repack"), (t_newmethod)repack_new,
                            0, sizeof(t_repack), 0, A_DEFFLOAT, 0);

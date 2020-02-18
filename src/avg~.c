@@ -71,7 +71,7 @@ static void avg_help(void)
 }
 
 
-void avg_tilde_setup(void)
+ZEXY_SETUP void avg_tilde_setup(void)
 {
   avg_class = class_new(gensym("avg~"), (t_newmethod)avg_new, 0,
                         sizeof(t_avg), 0, A_NULL);

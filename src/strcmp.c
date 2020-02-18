@@ -175,7 +175,7 @@ static void strcmp_help(t_strcmp*UNUSED(x))
 }
 
 
-void strcmp_setup(void)
+ZEXY_SETUP void strcmp_setup(void)
 {
   strcmp_class = class_new(gensym("strcmp"), (t_newmethod)strcmp_new,
                            (t_method)strcmp_free, sizeof(t_strcmp), 0, A_GIMME, 0);

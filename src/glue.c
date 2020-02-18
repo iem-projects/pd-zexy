@@ -110,7 +110,7 @@ static void glue_help(t_glue* UNUSED(x))
   post("\n"HEARTSYMBOL " glue\t\t:: glue together 2 lists (like [list append])");
 }
 
-void glue_setup(void)
+ZEXY_SETUP void glue_setup(void)
 {
   glue_class = class_new(gensym("glue"), (t_newmethod)glue_new,
                          (t_method)glue_free, sizeof(t_glue), 0, A_GIMME, 0);

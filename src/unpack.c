@@ -111,7 +111,7 @@ void zunpack_setup(void)
   zexy_register("unpack");
 }
 
-void unpack_setup(void)
+ZEXY_SETUP void unpack_setup(void)
 {
   zunpack_setup();
 }

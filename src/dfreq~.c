@@ -105,7 +105,7 @@ static void dfreq_tilde_helper(void)
 }
 
 
-void dfreq_tilde_setup(void)
+ZEXY_SETUP void dfreq_tilde_setup(void)
 {
   dfreq_class = class_new(gensym("dfreq~"), (t_newmethod)dfreq_new, 0,
                           sizeof(t_dfreq), 0, A_NULL);

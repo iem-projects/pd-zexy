@@ -136,7 +136,7 @@ static void dosetup()
                              CLASS_PD | CLASS_NOINLET, 0);
   class_addanything(muxproxy_class, mux_anything);
 }
-void multiplex_setup(void)
+ZEXY_SETUP void multiplex_setup(void)
 {
   dosetup();
 }

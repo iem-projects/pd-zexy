@@ -197,7 +197,7 @@ static void *drip_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-void drip_setup(void)
+ZEXY_SETUP void drip_setup(void)
 {
   drip_class = class_new(gensym("drip"), (t_newmethod)drip_new,
                          (t_method)drip_free,

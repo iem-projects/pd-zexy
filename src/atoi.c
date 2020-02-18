@@ -95,7 +95,7 @@ static void *atoi_new(void)
   return (x);
 }
 
-void atoi_setup(void)
+ZEXY_SETUP void atoi_setup(void)
 {
   atoi_class = class_new(gensym("atoi"), (t_newmethod)atoi_new,
                          (t_method)atoi_free,

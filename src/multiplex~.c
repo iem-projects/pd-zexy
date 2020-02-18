@@ -129,7 +129,7 @@ static void dosetup()
   mux_tilde_class=zclass_setup("multiplex~");
   zclass_setup("mux~");
 }
-void multiplex_tilde_setup(void)
+ZEXY_SETUP void multiplex_tilde_setup(void)
 {
   dosetup();
 }

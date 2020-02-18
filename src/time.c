@@ -109,7 +109,7 @@ static void help_time(t_time* UNUSED(x))
   post("\ncreation\t:: 'time [GMT]': show local time or GMT");
 }
 
-void time_setup(void)
+ZEXY_SETUP void time_setup(void)
 {
   time_class = class_new(gensym("time"),
                          (t_newmethod)time_new, 0,

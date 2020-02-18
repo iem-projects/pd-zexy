@@ -186,7 +186,7 @@ static void dosetup()
   symbol2list_class=zclass_setup("symbol2list");
   zclass_setup("s2l");
 }
-void symbol2list_setup(void)
+ZEXY_SETUP void symbol2list_setup(void)
 {
   dosetup();
 }

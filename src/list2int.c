@@ -94,7 +94,7 @@ static void dosetup()
   list2int_class=zclass_setup("list2int");
   zclass_setup("l2i");
 }
-void list2int_setup(void)
+ZEXY_SETUP void list2int_setup(void)
 {
   dosetup();
 }

@@ -50,7 +50,7 @@ static void sum_help(void)
   post("sum\t:: calculate the sum of a list of floats");
 }
 
-void sum_setup(void)
+ZEXY_SETUP void sum_setup(void)
 {
   sum_class = class_new(gensym("sum"), (t_newmethod)sum_new, 0,
                         sizeof(t_sum), 0, A_NULL);

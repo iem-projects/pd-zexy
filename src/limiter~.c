@@ -765,7 +765,7 @@ static void limiter_free(t_limiter *x)
 
 
 
-void limiter_tilde_setup(void)
+ZEXY_SETUP void limiter_tilde_setup(void)
 {
   init_sinc();
 

@@ -115,7 +115,7 @@ static void mavg_help(void)
   post("mavg\t:: moving average filter");
 }
 
-void mavg_setup(void)
+ZEXY_SETUP void mavg_setup(void)
 {
   mavg_class = class_new(gensym("mavg"), (t_newmethod)mavg_new, 0,
                          sizeof(t_mavg), 0, A_DEFFLOAT, 0);

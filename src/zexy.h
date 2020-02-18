@@ -94,6 +94,8 @@ typedef struct _mypdlist {
 # define BUILD_DATE  __DATE__
 #endif
 
+/* marker for setup-functions to be called by zexy_setup() */
+#define ZEXY_SETUP
 
 #ifndef ZEXY_LIBRARY
 static void zexy_register(char*object)

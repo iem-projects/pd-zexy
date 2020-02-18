@@ -124,7 +124,7 @@ static void sigunpack_help(void)
   post("unpack~\t:: outputs a sequence of floats as a signal");
 }
 
-void unpack_tilde_setup(void)
+ZEXY_SETUP void unpack_tilde_setup(void)
 {
   sigunpack_class = class_new(gensym("unpack~"), (t_newmethod)sigunpack_new,
                               0,

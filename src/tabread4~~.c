@@ -127,7 +127,7 @@ static void tabread4_tilde_free(t_tabread4_tilde *UNUSED(x))
 {
 }
 
-void tabread4_tilde_tilde_setup(void)
+ZEXY_SETUP void tabread4_tilde_tilde_setup(void)
 {
   tabread4_tilde_class = class_new(gensym("tabread4~~"),
                                    (t_newmethod)tabread4_tilde_new, (t_method)tabread4_tilde_free,

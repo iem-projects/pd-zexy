@@ -161,7 +161,7 @@ static void scalmul_help(t_scalmul* UNUSED(x))
   post("\n"HEARTSYMBOL " .\t\t:: scalar multiplication (in-product)");
 }
 
-void setup_0x2e(void)
+ZEXY_SETUP void setup_0x2e(void)
 {
   scalmul_class = class_new(gensym("."), (t_newmethod)scalmul_new,
                             (t_method)scalmul_free, sizeof(t_scalmul), 0, A_GIMME, 0);

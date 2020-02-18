@@ -146,7 +146,7 @@ static void zdel_helper(void)
 }
 
 
-void z_tilde_setup(void)
+ZEXY_SETUP void z_tilde_setup(void)
 {
   zNdelay_class = class_new(gensym("z~"), (t_newmethod)zNdelay_new,
                             (t_method)zNdelay_free,

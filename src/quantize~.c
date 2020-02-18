@@ -104,7 +104,7 @@ static void *quantize_new(t_floatarg f)
   return (x);
 }
 
-void quantize_tilde_setup(void)
+ZEXY_SETUP void quantize_tilde_setup(void)
 {
   quantize_class = class_new(gensym("quantize~"), (t_newmethod)quantize_new,
                              0,

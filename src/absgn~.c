@@ -132,7 +132,7 @@ static void *sigABSGN_new(void)
   return (x);
 }
 
-void absgn_tilde_setup(void)
+ZEXY_SETUP void absgn_tilde_setup(void)
 {
   sigABSGN_class = class_new(gensym("absgn~"), (t_newmethod)sigABSGN_new, 0,
                              sizeof(t_absgn), 0, A_NULL);

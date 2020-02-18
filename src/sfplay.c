@@ -662,7 +662,7 @@ static void sfplay_free(t_sfplay *x)
   freebytes(x->filep, DACBLKSIZE*sizeof(short)*x->x_channels);
 }
 
-void sfplay_setup(void)
+ZEXY_SETUP void sfplay_setup(void)
 {
   sfplay_class = class_new(gensym("sfplay"), (t_newmethod)sfplay_new,
                            (t_method)sfplay_free,

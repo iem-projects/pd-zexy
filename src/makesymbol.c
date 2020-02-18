@@ -146,7 +146,7 @@ static void makesymbol_helper(t_makesymbol* UNUSED(x))
        "%s");
 }
 
-void makesymbol_setup(void)
+ZEXY_SETUP void makesymbol_setup(void)
 {
   makesymbol_class = class_new(gensym("makesymbol"),
                                (t_newmethod)makesymbol_new, (t_method)makesymbol_free,

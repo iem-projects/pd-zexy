@@ -290,7 +290,7 @@ static void mline_help(t_mline*UNUSED(x))
   post("\n"HEARTSYMBOL " multiline~\t:: ramped multiplication of multiple signals");
 }
 
-void multiline_tilde_setup(void)
+ZEXY_SETUP void multiline_tilde_setup(void)
 {
   mline_class = class_new(gensym("multiline~"), (t_newmethod)mline_new,
                           (t_method)mline_free,

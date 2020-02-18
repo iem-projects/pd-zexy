@@ -108,7 +108,7 @@ static void *rawprint_new(t_symbol*s)
   return (x);
 }
 
-void rawprint_setup(void)
+ZEXY_SETUP void rawprint_setup(void)
 {
   rawprint_class = class_new(gensym("rawprint"),
                              (t_newmethod)rawprint_new,

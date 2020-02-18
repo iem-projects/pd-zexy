@@ -180,7 +180,7 @@ static void dosetup()
   list2symbol_class=zclass_setup("list2symbol");
   zclass_setup("l2s");
 }
-void list2symbol_setup(void)
+ZEXY_SETUP void list2symbol_setup(void)
 {
   dosetup();
 }

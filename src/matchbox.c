@@ -734,7 +734,7 @@ static void matchbox_help(t_matchbox*UNUSED(x))
   post("\n"HEARTSYMBOL " matchbox\t\t:: find a list in a pool of lists");
 }
 
-void matchbox_setup(void)
+ZEXY_SETUP void matchbox_setup(void)
 {
 #ifdef MATCHBOX_OSC
   post("matchbox: OSC-pattern matching code (c) Matt Wright, CNMAT");

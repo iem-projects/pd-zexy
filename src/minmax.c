@@ -76,7 +76,7 @@ static void minmax_help(void)
   post("minmax\t:: get minimum and maximum of a list of floats");
 }
 
-void minmax_setup(void)
+ZEXY_SETUP void minmax_setup(void)
 {
   minmax_class = class_new(gensym("minmax"), (t_newmethod)minmax_new, 0,
                            sizeof(t_minmax), 0, A_NULL);

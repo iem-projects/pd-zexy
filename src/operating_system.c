@@ -60,7 +60,7 @@ static void operating_system_help(t_operating_system*UNUSED(x))
   post("\n"HEARTSYMBOL " operating_system\t:: get the current operating system");
 }
 
-void operating_system_setup(void)
+ZEXY_SETUP void operating_system_setup(void)
 {
   operating_system_class = class_new(gensym("operating_system"),
                                      (t_newmethod)operating_system_new,

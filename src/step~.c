@@ -129,7 +129,7 @@ static void *step_new(t_floatarg farg)
   return (x);
 }
 
-void step_tilde_setup(void)
+ZEXY_SETUP void step_tilde_setup(void)
 {
   step_class = class_new(gensym("step~"), (t_newmethod)step_new, 0,
                          sizeof(t_step), 0, A_DEFFLOAT, 0);

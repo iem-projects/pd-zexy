@@ -150,7 +150,7 @@ static void sigenvrms_help(void)
 }
 
 
-void envrms_tilde_setup(void)
+ZEXY_SETUP void envrms_tilde_setup(void)
 {
   sigenvrms_class = class_new(gensym("envrms~"), (t_newmethod)sigenvrms_new,
                               (t_method)sigenvrms_ff, sizeof(t_sigenvrms), 0, A_DEFFLOAT, A_DEFFLOAT, 0);

@@ -377,7 +377,7 @@ static void index_helper(t_index* UNUSED(x))
   post("creation:\"index [<maxelements> [<auto>]]\": creates a <maxelements> sized index");
 }
 
-void index_setup(void)
+ZEXY_SETUP void index_setup(void)
 {
   index_class = class_new(gensym("index"),
                           (t_newmethod)index_new, (t_method)index_free,

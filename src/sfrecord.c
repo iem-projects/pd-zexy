@@ -598,7 +598,7 @@ static void sfrecord_free(t_sfrecord *x)
   freebytes(x->filep, DACBLKSIZE*sizeof(short)*x->x_channels);
 }
 
-void sfrecord_setup(void)
+ZEXY_SETUP void sfrecord_setup(void)
 {
   sfrecord_class = class_new(gensym("sfrecord"), (t_newmethod)sfrecord_new,
                              (t_method)sfrecord_free,

@@ -130,7 +130,7 @@ static void dosetup()
   demux_tilde_class=zclass_setup("demultiplex~");
   zclass_setup("demux~");
 }
-void demultiplex_tilde_setup(void)
+ZEXY_SETUP void demultiplex_tilde_setup(void)
 {
   dosetup();
 }

@@ -77,7 +77,7 @@ static void *atof_new(void)
   return (x);
 }
 
-void atof_setup(void)
+ZEXY_SETUP void atof_setup(void)
 {
   atof_class = class_new(gensym("atof"), (t_newmethod)atof_new,
                          (t_method)atof_free,

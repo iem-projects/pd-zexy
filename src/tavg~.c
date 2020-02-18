@@ -73,7 +73,7 @@ static void tavg_help(void)
   post("<bang>\t\t:  triggers the output");
 }
 
-void tavg_tilde_setup(void)
+ZEXY_SETUP void tavg_tilde_setup(void)
 {
   tavg_class = class_new(gensym("tavg~"), (t_newmethod)tavg_new, 0,
                          sizeof(t_tavgtilde), 0, A_NULL);

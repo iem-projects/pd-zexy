@@ -155,7 +155,7 @@ static void *relay_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-void relay_setup(void)
+ZEXY_SETUP void relay_setup(void)
 {
   relay_class = class_new(gensym("relay"), (t_newmethod)relay_new,
                           (t_method)relay_free, sizeof(t_relay), 0, A_GIMME, 0);

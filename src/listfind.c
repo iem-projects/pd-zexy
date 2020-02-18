@@ -222,7 +222,7 @@ static void listfind_help(t_listfind*UNUSED(x))
   post("\n"HEARTSYMBOL " listfind\t\t:: split lists into multiple sublists based on matches");
 }
 
-void listfind_setup(void)
+ZEXY_SETUP void listfind_setup(void)
 {
   listfind_class = class_new(gensym("listfind"), (t_newmethod)listfind_new,
                              (t_method)listfind_free, sizeof(t_listfind), 0, A_GIMME, 0);

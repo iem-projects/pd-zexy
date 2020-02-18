@@ -422,7 +422,7 @@ static void lpt_helper(t_lpt*UNUSED(x))
   post("\t\t\"lpt <portaddr>\": connect to port @ <portaddr> (hex)");
 }
 
-void lpt_setup(void)
+ZEXY_SETUP void lpt_setup(void)
 {
   lpt_class = class_new(gensym("lpt"),
                         (t_newmethod)lpt_new, (t_method)lpt_free,

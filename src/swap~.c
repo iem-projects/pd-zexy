@@ -91,7 +91,7 @@ static void *swap_new(void)
   return (x);
 }
 
-void swap_tilde_setup(void)
+ZEXY_SETUP void swap_tilde_setup(void)
 {
   swap_class = class_new(gensym("swap~"), (t_newmethod)swap_new, 0,
                          sizeof(t_swap), 0, A_NULL);

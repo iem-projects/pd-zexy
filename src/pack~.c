@@ -90,7 +90,7 @@ static void sigpack_help(void)
   post("pack~\t:: outputs the signal-vectors as float-packages");
 }
 
-void pack_tilde_setup(void)
+ZEXY_SETUP void pack_tilde_setup(void)
 {
   sigpack_class = class_new(gensym("pack~"), (t_newmethod)sigpack_new,
                             (t_method)sigpack_free,

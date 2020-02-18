@@ -58,7 +58,7 @@ static void *repeat_new(t_symbol* UNUSED(s), int argc, t_atom*argv)
   return (x);
 }
 
-void repeat_setup(void)
+ZEXY_SETUP void repeat_setup(void)
 {
   repeat_class = class_new(gensym("repeat"), (t_newmethod)repeat_new,
                            0, sizeof(t_repeat), 0, A_GIMME, 0);

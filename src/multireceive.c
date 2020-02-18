@@ -156,7 +156,7 @@ static void *multireceive_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-void multireceive_setup(void)
+ZEXY_SETUP void multireceive_setup(void)
 {
   char uniqsym[MAXPDSTRING];
   unsigned long long uid=unique();

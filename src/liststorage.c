@@ -392,7 +392,7 @@ static void *liststorage_new(t_floatarg f)
   return (x);
 }
 
-void liststorage_setup(void)
+ZEXY_SETUP void liststorage_setup(void)
 {
   liststorage_class = class_new(gensym("liststorage"),
                                 (t_newmethod)liststorage_new,

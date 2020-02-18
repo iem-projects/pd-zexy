@@ -192,7 +192,7 @@ void zpack_setup(void)
   zexy_register("pack");
 }
 
-void pack_setup(void)
+ZEXY_SETUP void pack_setup(void)
 {
   zpack_setup();
 }

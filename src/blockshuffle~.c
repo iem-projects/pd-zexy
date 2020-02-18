@@ -151,7 +151,7 @@ static void *blockshuffle_new(void)
   return (x);
 }
 
-void blockshuffle_tilde_setup(void)
+ZEXY_SETUP void blockshuffle_tilde_setup(void)
 {
   blockshuffle_class = class_new(gensym("blockshuffle~"),
                                  (t_newmethod)blockshuffle_new,

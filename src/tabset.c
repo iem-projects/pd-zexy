@@ -105,7 +105,7 @@ static void tabset_helper(void)
   post("creation\t: \"tabset <table>\"");
 }
 
-void tabset_setup(void)
+ZEXY_SETUP void tabset_setup(void)
 {
   tabset_class = class_new(gensym("tabset"), (t_newmethod)tabset_new,
                            0, sizeof(t_tabset), 0, A_DEFSYM, 0);

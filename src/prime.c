@@ -70,7 +70,7 @@ static void prime_help(t_prime*UNUSED(x))
 }
 
 
-void prime_setup(void)
+ZEXY_SETUP void prime_setup(void)
 {
   prime_class = class_new(gensym("prime"),
                           (t_newmethod)prime_new,

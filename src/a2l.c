@@ -96,7 +96,7 @@ void any2list_setup(void)
 {
   dosetup();
 }
-void a2l_setup(void)
+ZEXY_SETUP void a2l_setup(void)
 {
   dosetup();
 }

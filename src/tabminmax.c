@@ -129,7 +129,7 @@ static void tabminmax_helper(void)
 
 }
 
-void tabminmax_setup(void)
+ZEXY_SETUP void tabminmax_setup(void)
 {
   tabminmax_class = class_new(gensym("tabminmax"),
                               (t_newmethod)tabminmax_new,

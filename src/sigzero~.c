@@ -95,7 +95,7 @@ static void *sigzero_new(void)
   return (x);
 }
 
-void sigzero_tilde_setup(void)
+ZEXY_SETUP void sigzero_tilde_setup(void)
 {
   sigzero_class = class_new(gensym("sigzero~"), (t_newmethod)sigzero_new, 0,
                             sizeof(t_sigzero), 0, 0);

@@ -130,7 +130,7 @@ static void pdf_tilde_helper(void)
   post("creation :: 'pdf~ [<n>]':: get the pdf for <n> (default: 64) values");
 }
 
-void pdf_tilde_setup(void)
+ZEXY_SETUP void pdf_tilde_setup(void)
 {
   pdf_class = class_new(gensym("pdf~"), (t_newmethod)pdf_new,
                         (t_method)pdf_free,

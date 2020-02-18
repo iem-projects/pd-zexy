@@ -265,7 +265,7 @@ static void *freadln_new(void)
   return (void *)x;
 }
 
-void freadln_setup(void)
+ZEXY_SETUP void freadln_setup(void)
 {
   freadln_class = class_new(gensym("freadln"), (t_newmethod)freadln_new,
                             (t_method) freadln_free, sizeof(t_freadln), 0, 0);

@@ -104,7 +104,7 @@ static void *blockmirror_new(void)
   return (x);
 }
 
-void blockmirror_tilde_setup(void)
+ZEXY_SETUP void blockmirror_tilde_setup(void)
 {
   blockmirror_class = class_new(gensym("blockmirror~"),
                                 (t_newmethod)blockmirror_new,

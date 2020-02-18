@@ -110,7 +110,7 @@ static void dosetup()
   lister_class = zclass_setup("lister");
   zclass_setup("l");
 }
-void lister_setup(void)
+ZEXY_SETUP void lister_setup(void)
 {
   dosetup();
 }

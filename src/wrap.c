@@ -76,7 +76,7 @@ static void wrap_help(t_wrap*UNUSED(x))
   post("\n"HEARTSYMBOL " wrap\t\t:: wrap a float between to boundaries");
 }
 
-void wrap_setup(void)
+ZEXY_SETUP void wrap_setup(void)
 {
   wrap_class = class_new(gensym("wrap"),
                          (t_newmethod)wrap_new,
