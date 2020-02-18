@@ -100,42 +100,49 @@ typedef struct _mypdlist {
 #define ZEXY_SETUP
 
 /* convenience functions */
+static int zexy_argparse(const char*argstring, int argc, t_atomtype*argv)
+{
+  const char*args = argstring;
+  int i;
+  for(i=0; i<argc; i++)
+    argv[i]=A_NULL;
+  for(i=0; i<argc && *args; i++, args++) {
+    switch(*args) {
+    case 'f':
+      argv[i] = A_FLOAT;
+      break;
+    case 'F':
+      argv[i] = A_DEFFLOAT;
+      break;
+    case 's':
+      argv[i] = A_SYMBOL;
+      break;
+    case 'S':
+      argv[i] = A_DEFSYM;
+      break;
+    case 'p':
+      argv[i] = A_POINTER;
+      break;
+    case '!':
+      argv[i] = A_CANT;
+      break;
+    case '*':
+      argv[i] = A_GIMME;
+      break;
+    default:
+      error("ZEXYERROR: unknown argument specifier '%s'", argstring);
+      return -1;
+    }
+  }
+  return i;
+}
+
 static void MAYBE_USED_FUNCTION(zexy_addmethod) (t_class*c, t_method fn, const char*s, const char*args)
 {
   /* wrapper around 'class_addmethod' that is a bit more terse... */
-  const char*arguments = args;
   t_atomtype at[5];
-  int i;
-  for(i=0; i<5; i++)
-    at[i]=A_NULL;
-  for(i=0; i<5 && *args; i++, args++) {
-    switch(*args) {
-    case 'f':
-      at[i] = A_FLOAT;
-      break;
-    case 'F':
-      at[i] = A_DEFFLOAT;
-      break;
-    case 's':
-      at[i] = A_SYMBOL;
-      break;
-    case 'S':
-      at[i] = A_DEFSYM;
-      break;
-    case 'p':
-      at[i] = A_POINTER;
-      break;
-    case '!':
-      at[i] = A_CANT;
-      break;
-    case '*':
-      at[i] = A_GIMME;
-      break;
-    default:
-      error("%s: unknown argument specifier '%s'", s, arguments);
-      return;
-    }
-  }
+  if(zexy_argparse(args, 5, at) < 0)
+    return;
   class_addmethod(c, fn, gensym(s), at[0], at[1], at[2], at[3], at[4], A_NULL);
 }
 
