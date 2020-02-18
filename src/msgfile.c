@@ -1308,70 +1308,45 @@ ZEXY_SETUP void msgfile_setup(void)
 {
   msgfile_class = class_new(gensym("msgfile"), (t_newmethod)msgfile_new,
                             (t_method)msgfile_free, sizeof(t_msgfile), 0, A_GIMME, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_goto, gensym("goto"),
-                  A_DEFFLOAT, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_rewind, gensym("rewind"),
-                  0);
-  class_addmethod(msgfile_class, (t_method)msgfile_rewind, gensym("begin"),
-                  0);
-  class_addmethod(msgfile_class, (t_method)msgfile_end, gensym("end"), 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_goto, "goto", "F");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_rewind, "rewind", "");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_rewind, "begin", "");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_end, "end", "");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_next, "next", "F");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_prev, "prev", "F");
 
-  class_addmethod(msgfile_class, (t_method)msgfile_next, gensym("next"),
-                  A_DEFFLOAT, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_prev, gensym("prev"),
-                  A_DEFFLOAT, 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_skip, "skip", "F");
 
-  class_addmethod(msgfile_class, (t_method)msgfile_skip, gensym("skip"),
-                  A_DEFFLOAT, 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_set, "set", "*");
 
-  class_addmethod(msgfile_class, (t_method)msgfile_set, gensym("set"),
-                  A_GIMME, 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_clear, "clear", "");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_delete, "delete", "*");
 
-  class_addmethod(msgfile_class, (t_method)msgfile_clear, gensym("clear"),
-                  0);
-  class_addmethod(msgfile_class, (t_method)msgfile_delete, gensym("delete"),
-                  A_GIMME, 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_add, "add", "*");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_add2, "add2", "*");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_append, "append", "*");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_append2, "append2", "*");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_insert, "insert", "*");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_insert2, "insert2", "*");
 
-  class_addmethod(msgfile_class, (t_method)msgfile_add, gensym("add"),
-                  A_GIMME, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_add2, gensym("add2"),
-                  A_GIMME, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_append, gensym("append"),
-                  A_GIMME, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_append2,
-                  gensym("append2"), A_GIMME, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_insert, gensym("insert"),
-                  A_GIMME, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_insert2,
-                  gensym("insert2"), A_GIMME, 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_replace, "replace", "*");
 
-  class_addmethod(msgfile_class, (t_method)msgfile_replace,
-                  gensym("replace"), A_GIMME, 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_find, "find", "*");
 
-  class_addmethod(msgfile_class, (t_method)msgfile_find, gensym("find"),
-                  A_GIMME, 0);
-
-  class_addmethod(msgfile_class, (t_method)msgfile_read, gensym("read"),
-                  A_SYMBOL, A_DEFSYM, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_read2, gensym("read2"),
-                  A_SYMBOL, A_DEFSYM, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_write, gensym("write"),
-                  A_SYMBOL, A_DEFSYM, 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_print, gensym("print"),
-                  0);
-  class_addmethod(msgfile_class, (t_method)msgfile_flush, gensym("flush"),
-                  0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_read, "read", "sS");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_read2, "read2", "sS");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_write, "write", "sS");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_print, "print", "");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_flush, "flush", "");
 
   class_addbang(msgfile_class, msgfile_bang);
-  class_addmethod(msgfile_class, (t_method)msgfile_this, gensym("this"), 0);
-  class_addmethod(msgfile_class, (t_method)msgfile_where, gensym("where"),
-                  0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_this, "this", "");
+  zexy_addmethod(msgfile_class, (t_method)msgfile_where, "where", "");
 
 
-  class_addmethod(msgfile_class, (t_method)msgfile_sort, gensym("sort"),
-                  A_SYMBOL, A_SYMBOL, A_SYMBOL, 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_sort, "sort", "sss");
 
-  class_addmethod(msgfile_class, (t_method)msgfile_help, gensym("help"), 0);
+  zexy_addmethod(msgfile_class, (t_method)msgfile_help, "help", "");
 
   zexy_register("msgfile");
 }

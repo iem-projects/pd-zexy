@@ -98,10 +98,8 @@ static t_class* zclass_setup(const char*name) {
                          (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
   class_addbang    (c, mypdlist_bang);
   class_addlist    (c, mypdlist_list);
-  class_addmethod  (c, (t_method)mypdlist_secondlist,
-                    gensym("lst2"), A_GIMME, 0);
-  class_addmethod(c, (t_method)mypdlist_help, gensym("help"),
-                  A_NULL);
+  zexy_addmethod(c, (t_method)mypdlist_secondlist, "lst2", "*");
+  zexy_addmethod(c, (t_method)mypdlist_help, "help", "");
   return c;
 }
 static void dosetup()

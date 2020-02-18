@@ -605,15 +605,15 @@ ZEXY_SETUP void sfrecord_setup(void)
                              (t_method)sfrecord_free,
                              sizeof(t_sfrecord), 0,
                              A_DEFFLOAT, A_NULL);
-  class_addmethod(sfrecord_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sfrecord_class, (t_method)sfrecord_dsp, gensym("dsp"), A_CANT, 0);
+  zexy_addmethod(sfrecord_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(sfrecord_class, (t_method)sfrecord_dsp, "dsp", "!");
 
   /* method open with filename */
-  class_addmethod(sfrecord_class, (t_method)sfrecord_open, gensym("open"), A_SYMBOL, A_SYMBOL, A_NULL);
-  class_addmethod(sfrecord_class, (t_method)sfrecord_close, gensym("close"), A_NULL);
+  zexy_addmethod(sfrecord_class, (t_method)sfrecord_open, "open", "ss");
+  zexy_addmethod(sfrecord_class, (t_method)sfrecord_close, "close", "");
 
-  class_addmethod(sfrecord_class, (t_method)sfrecord_start, gensym("start"), A_NULL);
-  class_addmethod(sfrecord_class, (t_method)sfrecord_stop, gensym("stop"), A_NULL);
+  zexy_addmethod(sfrecord_class, (t_method)sfrecord_start, "start", "");
+  zexy_addmethod(sfrecord_class, (t_method)sfrecord_stop, "stop", "");
 
   /* start/stop with 0/1 */
   class_addfloat(sfrecord_class, sfrecord_float);
@@ -622,7 +622,7 @@ ZEXY_SETUP void sfrecord_setup(void)
   class_addbang(sfrecord_class,sfrecord_bang);
 
   /* some help */
-  class_addmethod(sfrecord_class, (t_method)sfrecord_helper, gensym("help"), A_NULL);
+  zexy_addmethod(sfrecord_class, (t_method)sfrecord_helper, "help", "");
   class_sethelpsymbol(sfrecord_class, gensym("sf-play_record"));
   zexy_register("sfrecord");
 }

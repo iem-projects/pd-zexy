@@ -115,9 +115,9 @@ ZEXY_SETUP void glue_setup(void)
   glue_class = class_new(gensym("glue"), (t_newmethod)glue_new,
                          (t_method)glue_free, sizeof(t_glue), 0, A_GIMME, 0);
   class_addlist(glue_class, glue_lst);
-  class_addmethod  (glue_class, (t_method)glue_lst2, gensym(""), A_GIMME, 0);
+  zexy_addmethod(glue_class, (t_method)glue_lst2, "", "*");
   class_addbang(glue_class, glue_bang);
-  class_addmethod  (glue_class, (t_method)glue_help, gensym("help"), 0);
+  zexy_addmethod(glue_class, (t_method)glue_help, "help", "");
 
   zexy_register("glue");
 }

@@ -243,21 +243,16 @@ ZEXY_SETUP void setup_0x3c0x7e(void)
 {
   lt_tilde_class = class_new(gensym("<~"), (t_newmethod)lt_tilde_new, 0,
                              sizeof(t_lt_tilde), 0, A_GIMME, 0);
-  class_addmethod(lt_tilde_class, (t_method)lt_tilde_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  zexy_addmethod(lt_tilde_class, (t_method)lt_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(lt_tilde_class, t_lt_tilde, x_f);
-  class_addmethod  (lt_tilde_class, (t_method)lt_tilde_help, gensym("help"),
-                    A_NULL);
+  zexy_addmethod(lt_tilde_class, (t_method)lt_tilde_help, "help", "");
   class_sethelpsymbol(lt_tilde_class, gensym("zigbinops"));
 
   scalarlt_tilde_class = class_new(gensym("<~"), 0, 0,
                                    sizeof(t_scalarlt_tilde), 0, 0);
   CLASS_MAINSIGNALIN(scalarlt_tilde_class, t_scalarlt_tilde, x_f);
-  class_addmethod(scalarlt_tilde_class, (t_method)scalarlt_tilde_dsp,
-                  gensym("dsp"),
-                  A_CANT, 0);
-  class_addmethod  (scalarlt_tilde_class, (t_method)lt_tilde_help,
-                    gensym("help"), A_NULL);
+  zexy_addmethod(scalarlt_tilde_class, (t_method)scalarlt_tilde_dsp, "dsp", "!");
+  zexy_addmethod(scalarlt_tilde_class, (t_method)lt_tilde_help, "help", "");
   class_sethelpsymbol(scalarlt_tilde_class, gensym("zigbinops"));
   zexy_register("<~");
 }

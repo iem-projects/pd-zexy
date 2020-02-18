@@ -269,10 +269,8 @@ ZEXY_SETUP void freadln_setup(void)
 {
   freadln_class = class_new(gensym("freadln"), (t_newmethod)freadln_new,
                             (t_method) freadln_free, sizeof(t_freadln), 0, 0);
-  class_addmethod(freadln_class, (t_method)freadln_open, gensym("open"),
-                  A_SYMBOL, A_DEFSYM, 0);
-  class_addmethod(freadln_class, (t_method)freadln_close, gensym("close"),
-                  A_NULL, 0);
+  zexy_addmethod(freadln_class, (t_method)freadln_open, "open", "sS");
+  zexy_addmethod(freadln_class, (t_method)freadln_close, "close", "");
   class_addbang(freadln_class, (t_method)freadln_readline);
 
   zexy_register("freadln");

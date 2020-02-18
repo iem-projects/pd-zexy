@@ -201,10 +201,10 @@ ZEXY_SETUP void sgn_tilde_setup(void)
                              (t_newmethod)sgnTilde_new, 0,
                              sizeof(t_sgnTilde), 0,
                              A_NULL);
-  class_addmethod(sgnTilde_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sgnTilde_class, (t_method)sgnTilde_dsp, gensym("dsp"), A_CANT, 0);
+  zexy_addmethod(sgnTilde_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(sgnTilde_class, (t_method)sgnTilde_dsp, "dsp", "!");
 
-  class_addmethod(sgnTilde_class, (t_method)sgnTilde_helper, gensym("help"), 0);
+  zexy_addmethod(sgnTilde_class, (t_method)sgnTilde_helper, "help", "");
   class_sethelpsymbol(sgnTilde_class, gensym("zigbinops"));
   zexy_register("sgn~");
 }

@@ -300,15 +300,11 @@ ZEXY_SETUP void fifop_setup(void)
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);
 
-  class_addmethod  (fifop_class, (t_method)fifop_clear, gensym("clear"),
-                    A_NULL);
-  class_addmethod  (fifop_class, (t_method)fifop_dump, gensym("dump"),
-                    A_NULL);
+  zexy_addmethod(fifop_class, (t_method)fifop_clear, "clear", "");
+  zexy_addmethod(fifop_class, (t_method)fifop_dump, "dump", "");
 
-  class_addmethod  (fifop_class, (t_method)fifop_query, gensym("info"),
-                    A_NULL);
-  class_addmethod  (fifop_class, (t_method)fifop_help, gensym("help"),
-                    A_NULL);
+  zexy_addmethod(fifop_class, (t_method)fifop_query, "info", "");
+  zexy_addmethod(fifop_class, (t_method)fifop_help, "help", "");
 
   zexy_register("fifop");
 }

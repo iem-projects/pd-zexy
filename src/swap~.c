@@ -94,12 +94,12 @@ ZEXY_SETUP void swap_tilde_setup(void)
 {
   swap_class = class_new(gensym("swap~"), (t_newmethod)swap_new, 0,
                          sizeof(t_swap), 0, A_NULL);
-  class_addmethod(swap_class, nullfn, gensym("signal"), 0);
-  class_addmethod(swap_class, (t_method)swap_dsp, gensym("dsp"), A_CANT, 0);
+  zexy_addmethod(swap_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(swap_class, (t_method)swap_dsp, "dsp", "!");
 
   class_addfloat(swap_class, swap_float);
   class_addbang(swap_class, swap_bang);
 
-  class_addmethod(swap_class, (t_method)swap_helper, gensym("help"), 0);
+  zexy_addmethod(swap_class, (t_method)swap_helper, "help", "");
   zexy_register("swap~");
 }

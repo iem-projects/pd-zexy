@@ -176,8 +176,7 @@ ZEXY_SETUP void repack_setup(void)
   class_addpointer (repack_class, repack_pointer);
   class_addlist    (repack_class, repack_list);
   class_addanything(repack_class, repack_anything);
-  class_addmethod  (repack_class, (t_method)repack_set, gensym(""),
-                    A_DEFFLOAT, 0);
+  zexy_addmethod(repack_class, (t_method)repack_set, "", "F");
 
   zexy_register("repack");
 }

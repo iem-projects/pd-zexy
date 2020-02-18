@@ -83,7 +83,7 @@ ZEXY_SETUP void minmax_setup(void)
 
   class_addlist(minmax_class, (t_method)minmax_list);
   class_addbang(minmax_class, (t_method)minmax_bang);
-  class_addmethod(minmax_class, (t_method)minmax_help, gensym("help"), 0);
+  zexy_addmethod(minmax_class, (t_method)minmax_help, "help", "");
 
   zexy_register("minmax");
 }

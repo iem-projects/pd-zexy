@@ -181,12 +181,10 @@ ZEXY_SETUP void noisi_tilde_setup(void)
                           A_DEFFLOAT, A_NULL);
 
   class_addfloat(noisi_class, set_noisfreq);
-  class_addmethod(noisi_class, (t_method)noisi_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  zexy_addmethod(noisi_class, (t_method)noisi_dsp, "dsp", "!");
 
-  class_addmethod(noisi_class, (t_method)set_noisseed, gensym("seed"),
-                  A_FLOAT, 0);
+  zexy_addmethod(noisi_class, (t_method)set_noisseed, "seed", "f");
 
-  class_addmethod(noisi_class, (t_method)noisi_helper, gensym("help"), 0);
+  zexy_addmethod(noisi_class, (t_method)noisi_helper, "help", "");
   zexy_register("noisi~");
 }

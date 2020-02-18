@@ -341,12 +341,10 @@ ZEXY_SETUP void regex_setup(void)
                           (t_method)regex_free, sizeof(t_regex), 0, A_GIMME, 0);
 
   class_addlist  (regex_class, regex_symbol);
-  class_addmethod(regex_class, (t_method)regex_regex, gensym("regex"),
-                  A_GIMME, 0);
+  zexy_addmethod(regex_class, (t_method)regex_regex, "regex", "*");
 
-  class_addmethod(regex_class, (t_method)regex_case, gensym("case"), A_FLOAT,
-                  0);
+  zexy_addmethod(regex_class, (t_method)regex_case, "case", "f");
 
-  class_addmethod(regex_class, (t_method)regex_help, gensym("help"), A_NULL);
+  zexy_addmethod(regex_class, (t_method)regex_help, "help", "");
   zexy_register("regex");
 }

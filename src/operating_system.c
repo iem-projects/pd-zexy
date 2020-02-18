@@ -68,7 +68,6 @@ ZEXY_SETUP void operating_system_setup(void)
                                      A_NULL);
 
   class_addbang  (operating_system_class, operating_system_bang);
-  class_addmethod(operating_system_class, (t_method)operating_system_help,
-                  gensym("help"), A_NULL);
+  zexy_addmethod(operating_system_class, (t_method)operating_system_help, "help", "");
   zexy_register("operating_system");
 }

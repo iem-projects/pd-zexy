@@ -167,15 +167,9 @@ ZEXY_SETUP void multireceive_setup(void)
                                  sizeof(t_multireceive),
                                  0,
                                  A_GIMME, 0);
-  class_addmethod(multireceive_class,
-                  (t_method)multireceive_set,
-                  gensym("set"),
-                  A_GIMME, 0);
+  zexy_addmethod(multireceive_class, (t_method)multireceive_set, "set", "*");
 
-  class_addmethod(multireceive_class,
-                  (t_method)multireceive_add,
-                  gensym("add"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(multireceive_class, (t_method)multireceive_add, "add", "s");
   snprintf(uniqsym, MAXPDSTRING-2, "multireceive proxy %0llx", uid);
   uniqsym[MAXPDSTRING-1]=0;
   multireceive_proxy_class = class_new(

@@ -118,10 +118,10 @@ static t_class* zclass_setup(const char*name)
   t_class *c = class_new(gensym(name), (t_newmethod)demux_new,
                          (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
   class_addfloat(c, demux_output);
-  class_addmethod(c, (t_method)demux_dsp, gensym("dsp"), A_CANT, 0);
-  class_addmethod(c, nullfn, gensym("signal"), 0);
+  zexy_addmethod(c, (t_method)demux_dsp, "dsp", "!");
+  zexy_addmethod(c, (t_method)nullfn, "signal", "");
 
-  class_addmethod(c, (t_method)demux_helper, gensym("help"), 0);
+  zexy_addmethod(c, (t_method)demux_helper, "help", "");
   return c;
 }
 static void dosetup()

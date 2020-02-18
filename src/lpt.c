@@ -430,9 +430,9 @@ ZEXY_SETUP void lpt_setup(void)
   //class_addcreator((t_newmethod)lpt_new, gensym("lp"), A_GIMME, 0);
 
   class_addfloat(lpt_class, (t_method)lpt_float);
-  class_addmethod(lpt_class, (t_method)lpt_control, gensym("control"), A_FLOAT, 0);
+  zexy_addmethod(lpt_class, (t_method)lpt_control, "control", "f");
   class_addbang(lpt_class, (t_method)lpt_bang);
 
-  class_addmethod(lpt_class, (t_method)lpt_helper, gensym("help"), 0);
+  zexy_addmethod(lpt_class, (t_method)lpt_helper, "help", "");
   zexy_register("lpt");
 }

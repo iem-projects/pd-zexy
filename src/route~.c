@@ -72,9 +72,8 @@ ZEXY_SETUP void route_tilde_setup(void)
                                 sizeof(t_route_tilde), 0, A_NULL);
 
   class_addanything(route_tilde_class, (t_method)route_tilde_any);
-  class_addmethod(route_tilde_class, nullfn, gensym("signal"), 0);
-  class_addmethod(route_tilde_class, (t_method)route_tilde_dsp,
-                  gensym("dsp"), A_CANT, 0);
+  zexy_addmethod(route_tilde_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(route_tilde_class, (t_method)route_tilde_dsp, "dsp", "!");
 
   zexy_register("route~");
 }

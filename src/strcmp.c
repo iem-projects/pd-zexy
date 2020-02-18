@@ -189,7 +189,6 @@ ZEXY_SETUP void strcmp_setup(void)
                                  CLASS_PD | CLASS_NOINLET, 0);
   class_addsymbol(strcmp_proxy_class, strcmp_proxy_symbol);
   class_addlist(strcmp_proxy_class, strcmp_proxy_list);
-  class_addmethod(strcmp_class, (t_method)strcmp_help, gensym("help"),
-                  A_NULL);
+  zexy_addmethod(strcmp_class, (t_method)strcmp_help, "help", "");
   zexy_register("strcmp");
 }

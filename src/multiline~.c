@@ -296,14 +296,12 @@ ZEXY_SETUP void multiline_tilde_setup(void)
                           (t_method)mline_free,
                           sizeof(t_mline), 0, A_GIMME, 0);
 
-  class_addmethod(mline_class, (t_method)mline_dsp, gensym("dsp"),
-                  A_CANT, 0);
-  class_addmethod(mline_class, nullfn, gensym("signal"), 0);
+  zexy_addmethod(mline_class, (t_method)mline_dsp, "dsp", "!");
+  zexy_addmethod(mline_class, (t_method)nullfn, "signal", "");
 
-  class_addmethod(mline_class, (t_method)mline_list, gensym(""), A_GIMME, 0);
-  class_addmethod(mline_class, (t_method)mline_stop, gensym("stop"), 0);
+  zexy_addmethod(mline_class, (t_method)mline_list, "", "*");
+  zexy_addmethod(mline_class, (t_method)mline_stop, "stop", "");
 
-  class_addmethod  (mline_class, (t_method)mline_help, gensym("help"),
-                    A_NULL);
+  zexy_addmethod(mline_class, (t_method)mline_help, "help", "");
   zexy_register("multiline_tilde");
 }

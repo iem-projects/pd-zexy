@@ -174,10 +174,8 @@ static t_class* zclass_setup(const char*name)
                         sizeof(t_symbol2list), 0, A_GIMME, 0);
   class_addsymbol (c, symbol2list_symbol);
   class_addbang   (c, symbol2list_bang);
-  class_addmethod  (c, (t_method)symbol2list_delimiter,
-                    gensym(""), A_SYMBOL, 0);
-  class_addmethod(c, (t_method)symbol2list_help,
-                  gensym("help"), A_NULL);
+  zexy_addmethod(c, (t_method)symbol2list_delimiter, "", "s");
+  zexy_addmethod(c, (t_method)symbol2list_help, "help", "");
   return c;
 }
 static void dosetup()

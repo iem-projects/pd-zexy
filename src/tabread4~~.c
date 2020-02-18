@@ -133,10 +133,8 @@ ZEXY_SETUP void tabread4_tilde_tilde_setup(void)
                                    (t_newmethod)tabread4_tilde_new, (t_method)tabread4_tilde_free,
                                    sizeof(t_tabread4_tilde), 0, A_DEFSYM, 0);
   CLASS_MAINSIGNALIN(tabread4_tilde_class, t_tabread4_tilde, x_f);
-  class_addmethod(tabread4_tilde_class, (t_method)tabread4_tilde_dsp,
-                  gensym("dsp"), A_CANT, 0);
-  class_addmethod(tabread4_tilde_class, (t_method)tabread4_tilde_set,
-                  gensym("set"), A_SYMBOL, 0);
+  zexy_addmethod(tabread4_tilde_class, (t_method)tabread4_tilde_dsp, "dsp", "!");
+  zexy_addmethod(tabread4_tilde_class, (t_method)tabread4_tilde_set, "set", "s");
 
   zexy_register("tabread4~~");
 }

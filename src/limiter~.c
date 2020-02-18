@@ -773,32 +773,32 @@ ZEXY_SETUP void limiter_tilde_setup(void)
                             (t_method)limiter_free,
                             sizeof(t_limiter), 0, A_GIMME, 0);
 
-  class_addmethod(limiter_class, nullfn, gensym("signal"), 0);
-  class_addmethod(limiter_class, (t_method)limiter_dsp, gensym("dsp"), A_CANT, 0);
+  zexy_addmethod(limiter_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(limiter_class, (t_method)limiter_dsp, "dsp", "!");
 
-  class_addmethod(limiter_class, (t_method)limiter_tilde_helper, gensym("help"), 0);
-  class_addmethod(limiter_class, (t_method)status, gensym("print"), 0);
+  zexy_addmethod(limiter_class, (t_method)limiter_tilde_helper, "help", "");
+  zexy_addmethod(limiter_class, (t_method)status, "print", "");
 
-  class_addmethod(limiter_class, (t_method)set_mode, gensym("mode"), A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set_LIMIT, gensym("LIMIT"), 0);
-  class_addmethod(limiter_class, (t_method)set_CRACK, gensym("CRACK"), 0);
-  class_addmethod(limiter_class, (t_method)set_COMPRESS, gensym("COMPRESS"), 0);
+  zexy_addmethod(limiter_class, (t_method)set_mode, "mode", "f");
+  zexy_addmethod(limiter_class, (t_method)set_LIMIT, "LIMIT", "");
+  zexy_addmethod(limiter_class, (t_method)set_CRACK, "CRACK", "");
+  zexy_addmethod(limiter_class, (t_method)set_COMPRESS, "COMPRESS", "");
 
 
-  class_addmethod(limiter_class, (t_method)set_threshold, gensym("tresh"), A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set_threshold, gensym("treshold"), A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set_threshold, gensym("thresh"), A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set_threshold, gensym("threshold"), A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set_ratio, gensym("ratio"), A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set1, gensym("set"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set2, gensym("set2"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set_compressor, gensym("compress"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+  zexy_addmethod(limiter_class, (t_method)set_threshold, "tresh", "f");
+  zexy_addmethod(limiter_class, (t_method)set_threshold, "treshold", "f");
+  zexy_addmethod(limiter_class, (t_method)set_threshold, "thresh", "f");
+  zexy_addmethod(limiter_class, (t_method)set_threshold, "threshold", "f");
+  zexy_addmethod(limiter_class, (t_method)set_ratio, "ratio", "f");
+  zexy_addmethod(limiter_class, (t_method)set1, "set", "fff");
+  zexy_addmethod(limiter_class, (t_method)set2, "set2", "fff");
+  zexy_addmethod(limiter_class, (t_method)set_compressor, "compress", "fff");
 
-  class_addmethod(limiter_class, (t_method)set_limits, gensym("limits"), A_FLOAT, A_FLOAT, 0);
-  class_addmethod(limiter_class, (t_method)set_limit, gensym("limit"), A_FLOAT, 0);
+  zexy_addmethod(limiter_class, (t_method)set_limits, "limits", "ff");
+  zexy_addmethod(limiter_class, (t_method)set_limit, "limit", "f");
   class_addfloat (limiter_class, set_limit);
 
-  class_addmethod(limiter_class, (t_method)reset, gensym("reset"), 0);
+  zexy_addmethod(limiter_class, (t_method)reset, "reset", "");
 
   zexy_register("limiter~");
 }

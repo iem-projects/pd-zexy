@@ -78,6 +78,6 @@ ZEXY_SETUP void prime_setup(void)
                           CLASS_DEFAULT, 0);
 
   class_addfloat(prime_class, prime_float);
-  class_addmethod(prime_class, (t_method)prime_help, gensym("help"), A_NULL);
+  zexy_addmethod(prime_class, (t_method)prime_help, "help", "");
   zexy_register("prime");
 }

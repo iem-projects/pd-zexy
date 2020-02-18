@@ -84,7 +84,7 @@ ZEXY_SETUP void wrap_setup(void)
                          CLASS_DEFAULT, A_GIMME, A_NULL);
 
   class_addfloat (wrap_class, wrap_float);
-  class_addmethod(wrap_class, (t_method)wrap_set, gensym("set"), A_GIMME, 0);
-  class_addmethod(wrap_class, (t_method)wrap_help, gensym("help"), A_NULL);
+  zexy_addmethod(wrap_class, (t_method)wrap_set, "set", "*");
+  zexy_addmethod(wrap_class, (t_method)wrap_help, "help", "");
   zexy_register("wrap");
 }

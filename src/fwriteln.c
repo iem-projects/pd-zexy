@@ -240,10 +240,8 @@ ZEXY_SETUP void fwriteln_setup(void)
 {
   fwriteln_class = class_new(gensym("fwriteln"), (t_newmethod)fwriteln_new,
                              (t_method) fwriteln_free, sizeof(t_fwriteln), CLASS_DEFAULT, A_GIMME, 0);
-  class_addmethod(fwriteln_class, (t_method)fwriteln_open, gensym("open"),
-                  A_SYMBOL, A_DEFSYM, 0);
-  class_addmethod(fwriteln_class, (t_method)fwriteln_close, gensym("close"),
-                  A_NULL, 0);
+  zexy_addmethod(fwriteln_class, (t_method)fwriteln_open, "open", "sS");
+  zexy_addmethod(fwriteln_class, (t_method)fwriteln_close, "close", "");
   class_addanything(fwriteln_class, (t_method)fwriteln_write);
 
   zexy_register("fwriteln");

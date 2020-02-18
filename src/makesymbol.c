@@ -155,10 +155,8 @@ ZEXY_SETUP void makesymbol_setup(void)
   class_addlist(makesymbol_class, makesymbol_list);
   class_addbang(makesymbol_class, makesymbol_bang);
 
-  class_addmethod(makesymbol_class, (t_method)reset_mask, gensym("sym1"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(makesymbol_class, (t_method)reset_mask, "sym1", "s");
 
-  class_addmethod(makesymbol_class, (t_method)makesymbol_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(makesymbol_class, (t_method)makesymbol_helper, "help", "");
   zexy_register("makesymbol");
 }

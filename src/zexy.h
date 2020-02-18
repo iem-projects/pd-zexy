@@ -73,12 +73,14 @@
 #ifdef __GNUC__
 # define UNUSED(x) ZUNUSED_ ## x __attribute__((__unused__))
 # define UNUSED_FUNCTION(x) __attribute__((__unused__)) ZUNUSEDFUN_ ## x
+# define MAYBE_USED_FUNCTION(x) __attribute__((__unused__)) x
 # if __GNUC__ >= 9
 #  pragma GCC diagnostic ignored "-Wcast-function-type"
 # endif
 #else
 # define UNUSED(x) ZUNUSED_ ## x
 # define UNUSED_FUNCTION(x) ZUNUSEDFUN_ ## x
+# define MAYBE_USED_FUNCTION(x) x
 #endif
 
 #define ZEXY_TYPE_EQUAL(type1, type2) (sizeof(type1) == sizeof(type2))
@@ -96,6 +98,46 @@ typedef struct _mypdlist {
 
 /* marker for setup-functions to be called by zexy_setup() */
 #define ZEXY_SETUP
+
+/* convenience functions */
+static void MAYBE_USED_FUNCTION(zexy_addmethod) (t_class*c, t_method fn, const char*s, const char*args)
+{
+  /* wrapper around 'class_addmethod' that is a bit more terse... */
+  const char*arguments = args;
+  t_atomtype at[5];
+  int i;
+  for(i=0; i<5; i++)
+    at[i]=A_NULL;
+  for(i=0; i<5 && *args; i++, args++) {
+    switch(*args) {
+    case 'f':
+      at[i] = A_FLOAT;
+      break;
+    case 'F':
+      at[i] = A_DEFFLOAT;
+      break;
+    case 's':
+      at[i] = A_SYMBOL;
+      break;
+    case 'S':
+      at[i] = A_DEFSYM;
+      break;
+    case 'p':
+      at[i] = A_POINTER;
+      break;
+    case '!':
+      at[i] = A_CANT;
+      break;
+    case '*':
+      at[i] = A_GIMME;
+      break;
+    default:
+      error("%s: unknown argument specifier '%s'", s, arguments);
+      return;
+    }
+  }
+  class_addmethod(c, fn, gensym(s), at[0], at[1], at[2], at[3], at[4], A_NULL);
+}
 
 #ifndef ZEXY_LIBRARY
 static void zexy_register(char*object)

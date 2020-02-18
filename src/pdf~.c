@@ -136,14 +136,13 @@ ZEXY_SETUP void pdf_tilde_setup(void)
                         (t_method)pdf_free,
                         sizeof(t_pdf), 0, A_DEFFLOAT, 0);
 
-  class_addmethod(pdf_class, nullfn, gensym("signal"), 0);
-  class_addmethod(pdf_class, (t_method)pdf_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  zexy_addmethod(pdf_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(pdf_class, (t_method)pdf_dsp, "dsp", "!");
 
-  class_addmethod(pdf_class, (t_method)pdf_bang, gensym("bang"), 0);
-  class_addmethod(pdf_class, (t_method)clear_pdfbuf, gensym("clear"), 0);
+  zexy_addmethod(pdf_class, (t_method)pdf_bang, "bang", "");
+  zexy_addmethod(pdf_class, (t_method)clear_pdfbuf, "clear", "");
   class_addfloat(pdf_class, pdf_float);
 
-  class_addmethod(pdf_class, (t_method)pdf_tilde_helper, gensym("help"), 0);
+  zexy_addmethod(pdf_class, (t_method)pdf_tilde_helper, "help", "");
   zexy_register("pdf~");
 }

@@ -177,12 +177,10 @@ ZEXY_SETUP void noish_tilde_setup(void)
                           A_DEFFLOAT, A_NULL);
 
   class_addfloat(noish_class, set_freq);
-  class_addmethod(noish_class, (t_method)noish_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  zexy_addmethod(noish_class, (t_method)noish_dsp, "dsp", "!");
 
-  class_addmethod(noish_class, (t_method)set_noisseed, gensym("seed"),
-                  A_FLOAT, 0);
+  zexy_addmethod(noish_class, (t_method)set_noisseed, "seed", "f");
 
-  class_addmethod(noish_class, (t_method)noish_helper, gensym("help"), 0);
+  zexy_addmethod(noish_class, (t_method)noish_helper, "help", "");
   zexy_register("noish~");
 }

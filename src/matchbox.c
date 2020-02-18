@@ -746,19 +746,13 @@ ZEXY_SETUP void matchbox_setup(void)
 
   class_addlist  (matchbox_class, matchbox_list);
 
-  class_addmethod(matchbox_class, (t_method)matchbox_add, gensym("add"),
-                  A_GIMME, 0);
-  class_addmethod(matchbox_class, (t_method)matchbox_delete,
-                  gensym("delete"), A_GIMME, 0);
-  class_addmethod(matchbox_class, (t_method)matchbox_clear, gensym("clear"),
-                  A_NULL, 0);
-  class_addmethod(matchbox_class, (t_method)matchbox_dump, gensym("dump"),
-                  A_NULL);
+  zexy_addmethod(matchbox_class, (t_method)matchbox_add, "add", "*");
+  zexy_addmethod(matchbox_class, (t_method)matchbox_delete, "delete", "*");
+  zexy_addmethod(matchbox_class, (t_method)matchbox_clear, "clear", "");
+  zexy_addmethod(matchbox_class, (t_method)matchbox_dump, "dump", "");
 
-  class_addmethod(matchbox_class, (t_method)matchbox_mode, gensym("mode"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(matchbox_class, (t_method)matchbox_mode, "mode", "s");
 
-  class_addmethod(matchbox_class, (t_method)matchbox_help, gensym("help"),
-                  A_NULL);
+  zexy_addmethod(matchbox_class, (t_method)matchbox_help, "help", "");
   zexy_register("matchbox");
 }

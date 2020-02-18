@@ -111,9 +111,8 @@ ZEXY_SETUP void tabset_setup(void)
                            0, sizeof(t_tabset), 0, A_DEFSYM, 0);
   class_addfloat(tabset_class, (t_method)tabset_float);
   class_addlist (tabset_class, (t_method)tabset_list);
-  class_addmethod(tabset_class, (t_method)tabset_set, gensym("set"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(tabset_class, (t_method)tabset_set, "set", "s");
 
-  class_addmethod(tabset_class, (t_method)tabset_helper, gensym("help"), 0);
+  zexy_addmethod(tabset_class, (t_method)tabset_helper, "help", "");
   zexy_register("tabset");
 }

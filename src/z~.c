@@ -151,13 +151,11 @@ ZEXY_SETUP void z_tilde_setup(void)
   zNdelay_class = class_new(gensym("z~"), (t_newmethod)zNdelay_new,
                             (t_method)zNdelay_free,
                             sizeof(t_zNdelay), 0, A_GIMME, 0);
-  class_addmethod(zNdelay_class, nullfn, gensym("signal"), 0);
-  class_addmethod(zNdelay_class, (t_method)zNdelay_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  zexy_addmethod(zNdelay_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(zNdelay_class, (t_method)zNdelay_dsp, "dsp", "!");
 
   class_addfloat(zNdelay_class, zdel_float);
-  class_addmethod(zNdelay_class, (t_method)zdel_float, gensym("ft1"),
-                  A_FLOAT, 0);
-  class_addmethod(zNdelay_class, (t_method)zdel_helper, gensym("help"), 0);
+  zexy_addmethod(zNdelay_class, (t_method)zdel_float, "ft1", "f");
+  zexy_addmethod(zNdelay_class, (t_method)zdel_helper, "help", "");
   zexy_register("z~");
 }

@@ -668,28 +668,20 @@ ZEXY_SETUP void sfplay_setup(void)
                            (t_method)sfplay_free,
                            sizeof(t_sfplay), 0,
                            A_DEFFLOAT, A_DEFFLOAT, A_NULL);
-  class_addmethod(sfplay_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sfplay_class, (t_method)sfplay_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  zexy_addmethod(sfplay_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(sfplay_class, (t_method)sfplay_dsp, "dsp", "!");
 
-  class_addmethod(sfplay_class, (t_method)sfplay_helper, gensym("help"),
-                  A_NULL);
+  zexy_addmethod(sfplay_class, (t_method)sfplay_helper, "help", "");
   class_sethelpsymbol(sfplay_class, gensym("sf-play_record"));
 
   /* method open with filename */
-  class_addmethod(sfplay_class, (t_method)sfplay_open, gensym("open"),
-                  A_SYMBOL,A_SYMBOL,A_NULL);
-  class_addmethod(sfplay_class, (t_method)sfplay_close, gensym("close"),
-                  A_NULL);
+  zexy_addmethod(sfplay_class, (t_method)sfplay_open, "open", "ss");
+  zexy_addmethod(sfplay_class, (t_method)sfplay_close, "close", "");
 
-  class_addmethod(sfplay_class, (t_method)sfplay_start, gensym("start"),
-                  A_NULL);
-  class_addmethod(sfplay_class, (t_method)sfplay_stop,  gensym("stop"),
-                  A_NULL);
-  class_addmethod(sfplay_class, (t_method)sfplay_rewind, gensym("rewind"),
-                  A_NULL);
-  class_addmethod(sfplay_class, (t_method)sfplay_offset, gensym("goto"),
-                  A_DEFFLOAT, A_NULL);
+  zexy_addmethod(sfplay_class, (t_method)sfplay_start, "start", "");
+  zexy_addmethod(sfplay_class, (t_method)sfplay_stop, "stop", "");
+  zexy_addmethod(sfplay_class, (t_method)sfplay_rewind, "rewind", "");
+  zexy_addmethod(sfplay_class, (t_method)sfplay_offset, "goto", "F");
 
   /* start stop with 0 and 1 */
   class_addfloat(sfplay_class, sfplay_float);

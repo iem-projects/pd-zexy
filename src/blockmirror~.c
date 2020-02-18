@@ -110,13 +110,11 @@ ZEXY_SETUP void blockmirror_tilde_setup(void)
                                 (t_newmethod)blockmirror_new,
                                 (t_method)blockmirror_free,
                                 sizeof(t_blockmirror), 0, A_NULL);
-  class_addmethod(blockmirror_class, nullfn, gensym("signal"), 0);
-  class_addmethod(blockmirror_class, (t_method)blockmirror_dsp,
-                  gensym("dsp"), A_CANT, 0);
+  zexy_addmethod(blockmirror_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(blockmirror_class, (t_method)blockmirror_dsp, "dsp", "!");
 
   class_addfloat(blockmirror_class, blockmirror_float);
 
-  class_addmethod(blockmirror_class, (t_method)blockmirror_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(blockmirror_class, (t_method)blockmirror_helper, "help", "");
   zexy_register("blockmirror~");
 }

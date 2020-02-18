@@ -143,10 +143,8 @@ ZEXY_SETUP void list2lists_setup(void)
                                (t_newmethod)list2lists_new,
                                (t_method)list2lists_free, sizeof(t_list2lists), 0, A_GIMME, 0);
   class_addlist    (list2lists_class, list2lists_list);
-  class_addmethod  (list2lists_class, (t_method)list2lists_list2,
-                    gensym("lst2"), A_GIMME, 0);
+  zexy_addmethod(list2lists_class, (t_method)list2lists_list2, "lst2", "*");
 
-  class_addmethod(list2lists_class, (t_method)list2lists_help,
-                  gensym("help"), A_NULL);
+  zexy_addmethod(list2lists_class, (t_method)list2lists_help, "help", "");
   zexy_register("list2lists");
 }

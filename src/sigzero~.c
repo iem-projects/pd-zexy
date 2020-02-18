@@ -101,13 +101,11 @@ ZEXY_SETUP void sigzero_tilde_setup(void)
                             sizeof(t_sigzero), 0, 0);
   class_addfloat(sigzero_class, sigzero_activate);
   class_addbang(sigzero_class, sigzero_banged);
-  class_addmethod(sigzero_class, (t_method)sigzero_off, gensym("off"), 0);
+  zexy_addmethod(sigzero_class, (t_method)sigzero_off, "off", "");
 
-  class_addmethod(sigzero_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sigzero_class, (t_method)sigzero_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  zexy_addmethod(sigzero_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(sigzero_class, (t_method)sigzero_dsp, "dsp", "!");
 
-  class_addmethod(sigzero_class, (t_method)sigzero_tilde_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(sigzero_class, (t_method)sigzero_tilde_helper, "help", "");
   zexy_register("sigzero~");
 }

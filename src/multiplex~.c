@@ -115,12 +115,10 @@ static t_class* zclass_setup(const char*name)
   /* ouch, that hurts... */
   class_addfloat(c, mux_tilde_input);
 
-  class_addmethod(c, (t_method)mux_tilde_dsp, gensym("dsp"),
-                  A_CANT, 0);
-  class_addmethod(c, nullfn, gensym("signal"), 0);
+  zexy_addmethod(c, (t_method)mux_tilde_dsp, "dsp", "!");
+  zexy_addmethod(c, (t_method)nullfn, "signal", "");
 
-  class_addmethod(c, (t_method)mux_tilde_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(c, (t_method)mux_tilde_helper, "help", "");
   return c;
 }
 static void dosetup()

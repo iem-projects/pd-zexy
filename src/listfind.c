@@ -227,10 +227,8 @@ ZEXY_SETUP void listfind_setup(void)
   listfind_class = class_new(gensym("listfind"), (t_newmethod)listfind_new,
                              (t_method)listfind_free, sizeof(t_listfind), 0, A_GIMME, 0);
   class_addlist    (listfind_class, listfind_list);
-  class_addmethod  (listfind_class, (t_method)listfind_list2, gensym("lst2"),
-                    A_GIMME, 0);
+  zexy_addmethod(listfind_class, (t_method)listfind_list2, "lst2", "*");
 
-  class_addmethod(listfind_class, (t_method)listfind_help, gensym("help"),
-                  A_NULL);
+  zexy_addmethod(listfind_class, (t_method)listfind_help, "help", "");
   zexy_register("listfind");
 }

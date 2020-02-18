@@ -156,9 +156,8 @@ ZEXY_SETUP void zexy_sort_setup(void)
                          0, sizeof(t_sort), 0, A_DEFFLOAT,  0);
 
   class_addlist    (sort_class, sort_list);
-  class_addmethod   (sort_class, (t_method)sort_dir, gensym("direction"),
-                     A_DEFFLOAT, 0);
-  class_addmethod(sort_class, (t_method)sort_help, gensym("help"), A_NULL);
+  zexy_addmethod(sort_class, (t_method)sort_dir, "direction", "F");
+  zexy_addmethod(sort_class, (t_method)sort_help, "help", "");
 
   zexy_register("sort");
 }

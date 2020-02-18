@@ -122,10 +122,9 @@ ZEXY_SETUP void mavg_setup(void)
 
   class_addfloat(mavg_class, (t_method)mavg_float);
 
-  class_addmethod(mavg_class, (t_method)mavg_help, gensym("help"), 0);
-  class_addmethod(mavg_class, (t_method)mavg_set, gensym("set"), A_GIMME, 0);
-  class_addmethod(mavg_class, (t_method)mavg_resize, gensym(""), A_DEFFLOAT,
-                  0);
+  zexy_addmethod(mavg_class, (t_method)mavg_help, "help", "");
+  zexy_addmethod(mavg_class, (t_method)mavg_set, "set", "*");
+  zexy_addmethod(mavg_class, (t_method)mavg_resize, "", "F");
 
   zexy_register("mavg");
 }

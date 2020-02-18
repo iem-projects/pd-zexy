@@ -112,10 +112,8 @@ ZEXY_SETUP void tabdump_setup(void)
   class_addbang(tabdump_class, (t_method)tabdump_bang);
   class_addlist(tabdump_class, (t_method)tabdump_list);
 
-  class_addmethod(tabdump_class, (t_method)tabdump_set, gensym("set"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(tabdump_class, (t_method)tabdump_set, "set", "s");
 
-  class_addmethod(tabdump_class, (t_method)tabdump_helper, gensym("help"),
-                  0);
+  zexy_addmethod(tabdump_class, (t_method)tabdump_helper, "help", "");
   zexy_register("tabdump");
 }

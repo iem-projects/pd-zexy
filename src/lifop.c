@@ -282,15 +282,11 @@ ZEXY_SETUP void lifop_setup(void)
   class_addbang    (lifop_class, lifop_bang);
   class_addlist    (lifop_class, lifop_list);
 
-  class_addmethod  (lifop_class, (t_method)lifop_clear, gensym("clear"),
-                    A_NULL);
-  class_addmethod  (lifop_class, (t_method)lifop_dump, gensym("dump"),
-                    A_NULL);
+  zexy_addmethod(lifop_class, (t_method)lifop_clear, "clear", "");
+  zexy_addmethod(lifop_class, (t_method)lifop_dump, "dump", "");
 
-  class_addmethod  (lifop_class, (t_method)lifop_query, gensym("info"),
-                    A_NULL);
-  class_addmethod  (lifop_class, (t_method)lifop_help, gensym("help"),
-                    A_NULL);
+  zexy_addmethod(lifop_class, (t_method)lifop_query, "info", "");
+  zexy_addmethod(lifop_class, (t_method)lifop_help, "help", "");
 
   zexy_register("lifop");
 }

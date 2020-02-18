@@ -157,13 +157,11 @@ ZEXY_SETUP void blockshuffle_tilde_setup(void)
                                  (t_newmethod)blockshuffle_new,
                                  (t_method)blockshuffle_free,
                                  sizeof(t_blockshuffle), 0, A_NULL);
-  class_addmethod(blockshuffle_class, nullfn, gensym("signal"), 0);
-  class_addmethod(blockshuffle_class, (t_method)blockshuffle_dsp,
-                  gensym("dsp"), A_CANT, 0);
+  zexy_addmethod(blockshuffle_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(blockshuffle_class, (t_method)blockshuffle_dsp, "dsp", "!");
 
   class_addlist(blockshuffle_class, blockshuffle_list);
 
-  class_addmethod(blockshuffle_class, (t_method)blockshuffle_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(blockshuffle_class, (t_method)blockshuffle_helper, "help", "");
   zexy_register("blockshuffle~");
 }
