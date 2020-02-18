@@ -107,7 +107,8 @@ static void *niagara_new(t_floatarg f)
 
 ZEXY_SETUP void niagara_setup(void)
 {
-  niagara_class = zexy_new("niagara", niagara_new, 0, t_niagara, 0, "F");
+  niagara_class = zexy_new("niagara",
+    niagara_new, 0, t_niagara, 0, "F");
 
   class_addlist    (niagara_class, niagara_list);
   class_addanything(niagara_class, niagara_any);

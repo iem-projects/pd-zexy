@@ -167,7 +167,8 @@ static void *repack_new(t_floatarg f)
 
 ZEXY_SETUP void repack_setup(void)
 {
-  repack_class = zexy_new("repack", repack_new, 0, t_repack, 0, "F");
+  repack_class = zexy_new("repack",
+    repack_new, 0, t_repack, 0, "F");
 
   class_addbang    (repack_class, repack_bang);
   class_addfloat   (repack_class, repack_float);

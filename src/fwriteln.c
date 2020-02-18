@@ -238,7 +238,8 @@ static void *fwriteln_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 ZEXY_SETUP void fwriteln_setup(void)
 {
-  fwriteln_class = zexy_new("fwriteln", fwriteln_new,  fwriteln_free, t_fwriteln, CLASS_DEFAULT, "*");
+  fwriteln_class = zexy_new("fwriteln",
+    fwriteln_new,  fwriteln_free, t_fwriteln, CLASS_DEFAULT, "*");
   zexy_addmethod(fwriteln_class, (t_method)fwriteln_open, "open", "sS");
   zexy_addmethod(fwriteln_class, (t_method)fwriteln_close, "close", "");
   class_addanything(fwriteln_class, (t_method)fwriteln_write);

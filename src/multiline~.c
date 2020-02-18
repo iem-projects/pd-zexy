@@ -292,7 +292,8 @@ static void mline_help(t_mline*UNUSED(x))
 
 ZEXY_SETUP void multiline_tilde_setup(void)
 {
-  mline_class = zexy_new("multiline~", mline_new, mline_free, t_mline, 0, "*");
+  mline_class = zexy_new("multiline~",
+    mline_new, mline_free, t_mline, 0, "*");
 
   zexy_addmethod(mline_class, (t_method)mline_dsp, "dsp", "!");
   zexy_addmethod(mline_class, (t_method)nullfn, "signal", "");

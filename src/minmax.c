@@ -78,7 +78,8 @@ static void minmax_help(void)
 
 ZEXY_SETUP void minmax_setup(void)
 {
-  minmax_class = zexy_new("minmax", minmax_new, 0, t_minmax, 0, "");
+  minmax_class = zexy_new("minmax",
+    minmax_new, 0, t_minmax, 0, "");
 
   class_addlist(minmax_class, (t_method)minmax_list);
   class_addbang(minmax_class, (t_method)minmax_bang);

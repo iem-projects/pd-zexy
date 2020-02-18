@@ -62,7 +62,8 @@ static void operating_system_help(t_operating_system*UNUSED(x))
 
 ZEXY_SETUP void operating_system_setup(void)
 {
-  operating_system_class = zexy_new("operating_system", operating_system_new, 0, t_operating_system, 0, "");
+  operating_system_class = zexy_new("operating_system",
+    operating_system_new, 0, t_operating_system, 0, "");
 
   class_addbang  (operating_system_class, operating_system_bang);
   zexy_addmethod(operating_system_class, (t_method)operating_system_help, "help", "");

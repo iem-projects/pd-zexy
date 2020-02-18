@@ -148,7 +148,8 @@ static void zdel_helper(void)
 
 ZEXY_SETUP void z_tilde_setup(void)
 {
-  zNdelay_class = zexy_new("z~", zNdelay_new, zNdelay_free, t_zNdelay, 0, "*");
+  zNdelay_class = zexy_new("z~",
+    zNdelay_new, zNdelay_free, t_zNdelay, 0, "*");
   zexy_addmethod(zNdelay_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(zNdelay_class, (t_method)zNdelay_dsp, "dsp", "!");
 

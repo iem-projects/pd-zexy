@@ -157,7 +157,8 @@ static void *relay_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 ZEXY_SETUP void relay_setup(void)
 {
-  relay_class = zexy_new("relay", relay_new, relay_free, t_relay, 0, "*");
+  relay_class = zexy_new("relay",
+    relay_new, relay_free, t_relay, 0, "*");
   class_addlist(relay_class, relay_list);
   class_addanything(relay_class, relay_anything);
   zexy_register("relay");

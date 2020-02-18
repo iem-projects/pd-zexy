@@ -148,7 +148,8 @@ static void makesymbol_helper(t_makesymbol* UNUSED(x))
 
 ZEXY_SETUP void makesymbol_setup(void)
 {
-  makesymbol_class = zexy_new("makesymbol", makesymbol_new, makesymbol_free, t_makesymbol, 0, "*");
+  makesymbol_class = zexy_new("makesymbol",
+    makesymbol_new, makesymbol_free, t_makesymbol, 0, "*");
 
   class_addlist(makesymbol_class, makesymbol_list);
   class_addbang(makesymbol_class, makesymbol_bang);

@@ -152,7 +152,8 @@ static void *sigABS_new(void)
 
 ZEXY_SETUP void abs_tilde_setup(void)
 {
-  sigABS_class = zexy_new("abs~", sigABS_new, 0, t_abs, 0, "");
+  sigABS_class = zexy_new("abs~",
+    sigABS_new, 0, t_abs, 0, "");
   CLASS_MAINSIGNALIN(sigABS_class, t_abs, x_f);
   zexy_addmethod(sigABS_class, (t_method)sigABS_dsp, "dsp", "!");
 

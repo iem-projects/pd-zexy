@@ -129,7 +129,8 @@ static void tabread4_tilde_free(t_tabread4_tilde *UNUSED(x))
 
 ZEXY_SETUP void tabread4_tilde_tilde_setup(void)
 {
-  tabread4_tilde_class = zexy_new("tabread4~~", tabread4_tilde_new, tabread4_tilde_free, t_tabread4_tilde, 0, "S");
+  tabread4_tilde_class = zexy_new("tabread4~~",
+    tabread4_tilde_new, tabread4_tilde_free, t_tabread4_tilde, 0, "S");
   CLASS_MAINSIGNALIN(tabread4_tilde_class, t_tabread4_tilde, x_f);
   zexy_addmethod(tabread4_tilde_class, (t_method)tabread4_tilde_dsp, "dsp", "!");
   zexy_addmethod(tabread4_tilde_class, (t_method)tabread4_tilde_set, "set", "s");

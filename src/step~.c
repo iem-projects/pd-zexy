@@ -132,7 +132,8 @@ static void *step_new(t_floatarg farg)
 
 ZEXY_SETUP void step_tilde_setup(void)
 {
-  step_class = zexy_new("step~", step_new, 0, t_step, 0, "F");
+  step_class = zexy_new("step~",
+    step_new, 0, t_step, 0, "F");
 
   class_addfloat(step_class, step_float);
   class_addbang(step_class, step_bang);

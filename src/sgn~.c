@@ -197,7 +197,8 @@ static void *sgnTilde_new(void)
 
 ZEXY_SETUP void sgn_tilde_setup(void)
 {
-  sgnTilde_class = zexy_new("sgn~", sgnTilde_new, 0, t_sgnTilde, 0, "");
+  sgnTilde_class = zexy_new("sgn~",
+    sgnTilde_new, 0, t_sgnTilde, 0, "");
   zexy_addmethod(sgnTilde_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sgnTilde_class, (t_method)sgnTilde_dsp, "dsp", "!");
 

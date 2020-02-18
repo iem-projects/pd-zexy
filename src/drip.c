@@ -199,7 +199,8 @@ static void *drip_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 ZEXY_SETUP void drip_setup(void)
 {
-  drip_class = zexy_new("drip", drip_new, drip_free, t_drip, 0, "*");
+  drip_class = zexy_new("drip",
+    drip_new, drip_free, t_drip, 0, "*");
 
   class_addbang    (drip_class, drip_bang);
   class_addlist    (drip_class, drip_list);

@@ -267,7 +267,8 @@ static void *freadln_new(void)
 
 ZEXY_SETUP void freadln_setup(void)
 {
-  freadln_class = zexy_new("freadln", freadln_new,  freadln_free, t_freadln, 0, "");
+  freadln_class = zexy_new("freadln",
+    freadln_new,  freadln_free, t_freadln, 0, "");
   zexy_addmethod(freadln_class, (t_method)freadln_open, "open", "sS");
   zexy_addmethod(freadln_class, (t_method)freadln_close, "close", "");
   class_addbang(freadln_class, (t_method)freadln_readline);

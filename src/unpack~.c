@@ -126,7 +126,8 @@ static void sigunpack_help(void)
 
 ZEXY_SETUP void unpack_tilde_setup(void)
 {
-  sigunpack_class = zexy_new("unpack~", sigunpack_new, 0, t_sigunpack, 0, "F");
+  sigunpack_class = zexy_new("unpack~",
+    sigunpack_new, 0, t_sigunpack, 0, "F");
   zexy_addmethod(sigunpack_class, (t_method)sigunpack_dsp, "dsp", "!");
   class_addfloat(sigunpack_class, (t_method)sigunpack_float);
   class_addlist (sigunpack_class, (t_method)sigunpack_list);

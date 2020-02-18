@@ -172,7 +172,8 @@ static void zpack_free(t_zpack*x)
 
 ZEXY_SETUP void zpack_setup(void)
 {
-  zpack_class = zexy_new("zexy/pack", zpack_new, zpack_free, t_zpack, 0, "*");
+  zpack_class = zexy_new("zexy/pack",
+    zpack_new, zpack_free, t_zpack, 0, "*");
 #if 0
   /* oops Pd>=0.42 allows us to override built-ins
    * this is bad as long as the 2 objects are not compatible */
@@ -182,7 +183,8 @@ ZEXY_SETUP void zpack_setup(void)
   class_addlist(zpack_class, zpack_list);
   class_addanything(zpack_class, zpack_any);
 
-  zpackproxy_class = zexy_new("zpack proxy", 0, 0, t_zpackproxy, CLASS_PD | CLASS_NOINLET, "");
+  zpackproxy_class = zexy_new("zpack proxy",
+    0, 0, t_zpackproxy, CLASS_PD | CLASS_NOINLET, "");
   class_addlist(zpackproxy_class, zpack_proxy_list);
   class_addanything(zpackproxy_class, zpack_proxy_any);
 

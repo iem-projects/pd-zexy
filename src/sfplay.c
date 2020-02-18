@@ -664,7 +664,8 @@ static void sfplay_free(t_sfplay *x)
 
 ZEXY_SETUP void sfplay_setup(void)
 {
-  sfplay_class = zexy_new("sfplay", sfplay_new, sfplay_free, t_sfplay, 0, "FF");
+  sfplay_class = zexy_new("sfplay",
+    sfplay_new, sfplay_free, t_sfplay, 0, "FF");
   zexy_addmethod(sfplay_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sfplay_class, (t_method)sfplay_dsp, "dsp", "!");
 
