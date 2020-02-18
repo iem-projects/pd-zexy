@@ -22,7 +22,6 @@
 */
 
 #include "zexy.h"
-#include "z_zexy.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -31,6 +30,9 @@
 #ifdef __WIN32__
 # define vsnprintf _vsnprintf
 #endif
+
+/* foward declarations */
+void  z_zexy_setup(void);
 
 /* do a little help thing */
 
