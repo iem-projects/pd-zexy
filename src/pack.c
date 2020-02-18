@@ -170,7 +170,7 @@ static void zpack_free(t_zpack*x)
   }
 }
 
-void zpack_setup(void)
+ZEXY_SETUP void zpack_setup(void)
 {
   zpack_class = class_new(gensym("zexy/pack"), (t_newmethod)zpack_new,
                           (t_method)zpack_free, sizeof(t_zpack), 0, A_GIMME,  0);
@@ -192,7 +192,7 @@ void zpack_setup(void)
   zexy_register("pack");
 }
 
-ZEXY_SETUP void pack_setup(void)
+void pack_setup(void)
 {
   zpack_setup();
 }

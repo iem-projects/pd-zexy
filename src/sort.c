@@ -150,7 +150,7 @@ static void sort_help(t_sort*UNUSED(x))
 {
   post("\n"HEARTSYMBOL " sort\t\t:: sort a list of numbers");
 }
-void sort_setup(void)
+ZEXY_SETUP void zexy_sort_setup(void)
 {
   sort_class = class_new(gensym("sort"), (t_newmethod)sort_new,
                          0, sizeof(t_sort), 0, A_DEFFLOAT,  0);
@@ -162,3 +162,12 @@ void sort_setup(void)
 
   zexy_register("sort");
 }
+#ifdef ZEXY_LIBRARY
+/* only use sort_setup() when building as standalone objects
+ * see https://git.iem.at/pd/zexy/issues/5
+ */
+void sort_setup(void)
+{
+  zexy_sort_setup();
+}
+#endif

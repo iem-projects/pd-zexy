@@ -92,7 +92,7 @@ static void *zunpack_new(t_symbol*UNUSED(s), int argc, t_atom*UNUSED(argv))
   return (x);
 }
 
-void zunpack_setup(void)
+ZEXY_SETUP void zunpack_setup(void)
 {
 
   zunpack_class = class_new(gensym("zexy/unpack"),
@@ -111,7 +111,7 @@ void zunpack_setup(void)
   zexy_register("unpack");
 }
 
-ZEXY_SETUP void unpack_setup(void)
+void unpack_setup(void)
 {
   zunpack_setup();
 }
