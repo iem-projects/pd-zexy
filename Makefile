@@ -197,6 +197,10 @@ demux~-help.pd: demultiplex~-help.pd
 
 all: $(zexyaliases)
 
+.PHONY: check style
+
+style:
+	astyle --options=src/astyle.rc src/*.c src/*.h
 
 check: all
 	LIBDIR=$(CURDIR) find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -v -Xls {} "+"
