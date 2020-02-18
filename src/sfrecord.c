@@ -601,10 +601,7 @@ static void sfrecord_free(t_sfrecord *x)
 
 ZEXY_SETUP void sfrecord_setup(void)
 {
-  sfrecord_class = class_new(gensym("sfrecord"), (t_newmethod)sfrecord_new,
-                             (t_method)sfrecord_free,
-                             sizeof(t_sfrecord), 0,
-                             A_DEFFLOAT, A_NULL);
+  sfrecord_class = class_new(gensym("sfrecord"), (t_newmethod)sfrecord_new, (t_method)sfrecord_free, sizeof(t_sfrecord), 0, A_DEFFLOAT, A_NULL);
   zexy_addmethod(sfrecord_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sfrecord_class, (t_method)sfrecord_dsp, "dsp", "!");
 

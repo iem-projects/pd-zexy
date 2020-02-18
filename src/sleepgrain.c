@@ -63,9 +63,7 @@ static void *sleepgrain_new(void)
 
 ZEXY_SETUP void sleepgrain_setup(void)
 {
-  sleepgrain_class = class_new(gensym("sleepgrain"),
-                               (t_newmethod)sleepgrain_new,
-                               0, sizeof(t_sleepgrain), 0, A_NULL);
+  sleepgrain_class = class_new(gensym("sleepgrain"), (t_newmethod)sleepgrain_new, 0, sizeof(t_sleepgrain), 0, A_NULL);
 
   class_addbang  (sleepgrain_class, sleepgrain_bang);
   class_addfloat (sleepgrain_class, sleepgrain_float);

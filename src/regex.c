@@ -337,8 +337,7 @@ static void regex_help(t_regex*UNUSED(x))
 
 ZEXY_SETUP void regex_setup(void)
 {
-  regex_class = class_new(gensym("regex"), (t_newmethod)regex_new,
-                          (t_method)regex_free, sizeof(t_regex), 0, A_GIMME, 0);
+  regex_class = class_new(gensym("regex"), (t_newmethod)regex_new, (t_method)regex_free, sizeof(t_regex), 0, A_GIMME, 0);
 
   class_addlist  (regex_class, regex_symbol);
   zexy_addmethod(regex_class, (t_method)regex_regex, "regex", "*");

@@ -95,9 +95,7 @@ static void *zunpack_new(t_symbol*UNUSED(s), int argc, t_atom*UNUSED(argv))
 ZEXY_SETUP void zunpack_setup(void)
 {
 
-  zunpack_class = class_new(gensym("zexy/unpack"),
-                            (t_newmethod)zunpack_new, (t_method)zunpack_free, sizeof(t_zunpack),
-                            0,  A_GIMME, 0);
+  zunpack_class = class_new(gensym("zexy/unpack"), (t_newmethod)zunpack_new, (t_method)zunpack_free, sizeof(t_zunpack), 0, A_GIMME, 0);
 #if 0
   /* oops Pd-0.42 allows us to override built-ins
    * this is bad as long as the 2 objects are not compatible */

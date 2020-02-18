@@ -741,8 +741,7 @@ ZEXY_SETUP void matchbox_setup(void)
 #endif /* MATCHBOX_OSC */
 
 
-  matchbox_class = class_new(gensym("matchbox"), (t_newmethod)matchbox_new,
-                             (t_method)matchbox_free, sizeof(t_matchbox), 0, A_GIMME, 0);
+  matchbox_class = class_new(gensym("matchbox"), (t_newmethod)matchbox_new, (t_method)matchbox_free, sizeof(t_matchbox), 0, A_GIMME, 0);
 
   class_addlist  (matchbox_class, matchbox_list);
 

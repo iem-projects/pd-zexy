@@ -152,8 +152,7 @@ static void sort_help(t_sort*UNUSED(x))
 }
 ZEXY_SETUP void zexy_sort_setup(void)
 {
-  sort_class = class_new(gensym("sort"), (t_newmethod)sort_new,
-                         0, sizeof(t_sort), 0, A_DEFFLOAT,  0);
+  sort_class = class_new(gensym("sort"), (t_newmethod)sort_new, 0, sizeof(t_sort), 0, A_DEFFLOAT, 0);
 
   class_addlist    (sort_class, sort_list);
   zexy_addmethod(sort_class, (t_method)sort_dir, "direction", "F");

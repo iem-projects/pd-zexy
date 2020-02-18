@@ -78,10 +78,7 @@ static void wrap_help(t_wrap*UNUSED(x))
 
 ZEXY_SETUP void wrap_setup(void)
 {
-  wrap_class = class_new(gensym("wrap"),
-                         (t_newmethod)wrap_new,
-                         0, sizeof(t_wrap),
-                         CLASS_DEFAULT, A_GIMME, A_NULL);
+  wrap_class = class_new(gensym("wrap"), (t_newmethod)wrap_new, 0, sizeof(t_wrap), CLASS_DEFAULT, A_GIMME, A_NULL);
 
   class_addfloat (wrap_class, wrap_float);
   zexy_addmethod(wrap_class, (t_method)wrap_set, "set", "*");

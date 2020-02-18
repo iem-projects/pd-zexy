@@ -259,15 +259,13 @@ static void oror_tilde_help(t_object* UNUSED(x))
 
 ZEXY_SETUP void setup_0x7c0x7c0x7e(void)
 {
-  oror_tilde_class = class_new(gensym("||~"), (t_newmethod)oror_tilde_new, 0,
-                               sizeof(t_oror_tilde), 0, A_GIMME, 0);
+  oror_tilde_class = class_new(gensym("||~"), (t_newmethod)oror_tilde_new, 0, sizeof(t_oror_tilde), 0, A_GIMME, 0);
   zexy_addmethod(oror_tilde_class, (t_method)oror_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(oror_tilde_class, t_oror_tilde, x_f);
   zexy_addmethod(oror_tilde_class, (t_method)oror_tilde_help, "help", "");
   class_sethelpsymbol(oror_tilde_class, gensym("zigbinops"));
 
-  scalaroror_tilde_class = class_new(gensym("||~"), 0, 0,
-                                     sizeof(t_scalaroror_tilde), 0, 0);
+  scalaroror_tilde_class = class_new(gensym("||~"), 0, 0, sizeof(t_scalaroror_tilde), 0, 0);
   CLASS_MAINSIGNALIN(scalaroror_tilde_class, t_scalaroror_tilde, x_f);
   zexy_addmethod(scalaroror_tilde_class, (t_method)scalaroror_tilde_dsp, "dsp", "!");
   zexy_addmethod(scalaroror_tilde_class, (t_method)oror_tilde_help, "help", "");

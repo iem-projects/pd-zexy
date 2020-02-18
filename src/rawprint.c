@@ -110,10 +110,7 @@ static void *rawprint_new(t_symbol*s)
 
 ZEXY_SETUP void rawprint_setup(void)
 {
-  rawprint_class = class_new(gensym("rawprint"),
-                             (t_newmethod)rawprint_new,
-                             0, sizeof(t_rawprint),
-                             CLASS_DEFAULT, A_DEFSYMBOL, 0);
+  rawprint_class = class_new(gensym("rawprint"), (t_newmethod)rawprint_new, 0, sizeof(t_rawprint), CLASS_DEFAULT, A_DEFSYMBOL, 0);
 
   class_addanything(rawprint_class, rawprint_any);
   zexy_register("rawprint");

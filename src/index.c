@@ -379,9 +379,7 @@ static void index_helper(t_index* UNUSED(x))
 
 ZEXY_SETUP void index_setup(void)
 {
-  index_class = class_new(gensym("index"),
-                          (t_newmethod)index_new, (t_method)index_free,
-                          sizeof(t_index), 0, A_GIMME, 0);
+  index_class = class_new(gensym("index"), (t_newmethod)index_new, (t_method)index_free, sizeof(t_index), 0, A_GIMME, 0);
 
   class_addsymbol(index_class, index_symbol);
 

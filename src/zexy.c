@@ -167,7 +167,7 @@ void zexy_setup(void)
   endpost();
   endpost();
 
-  zexy_class = class_new(gensym("zexy"), zexy_new, 0, sizeof(t_zexy), 0, 0);
+  zexy_class = class_new(gensym("zexy"), (t_newmethod)zexy_new, 0, sizeof(t_zexy), 0, 0);
   zexy_addmethod(zexy_class, (t_method)zexy_help, "help", "");
 
   zexy_register("zexy");

@@ -139,9 +139,7 @@ static void list2lists_help(t_list2lists*UNUSED(x))
 
 ZEXY_SETUP void list2lists_setup(void)
 {
-  list2lists_class = class_new(gensym("list2lists"),
-                               (t_newmethod)list2lists_new,
-                               (t_method)list2lists_free, sizeof(t_list2lists), 0, A_GIMME, 0);
+  list2lists_class = class_new(gensym("list2lists"), (t_newmethod)list2lists_new, (t_method)list2lists_free, sizeof(t_list2lists), 0, A_GIMME, 0);
   class_addlist    (list2lists_class, list2lists_list);
   zexy_addmethod(list2lists_class, (t_method)list2lists_list2, "lst2", "*");
 

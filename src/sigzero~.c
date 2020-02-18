@@ -97,8 +97,7 @@ static void *sigzero_new(void)
 
 ZEXY_SETUP void sigzero_tilde_setup(void)
 {
-  sigzero_class = class_new(gensym("sigzero~"), (t_newmethod)sigzero_new, 0,
-                            sizeof(t_sigzero), 0, 0);
+  sigzero_class = class_new(gensym("sigzero~"), (t_newmethod)sigzero_new, 0, sizeof(t_sigzero), 0, 0);
   class_addfloat(sigzero_class, sigzero_activate);
   class_addbang(sigzero_class, sigzero_banged);
   zexy_addmethod(sigzero_class, (t_method)sigzero_off, "off", "");

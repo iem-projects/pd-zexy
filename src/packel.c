@@ -153,10 +153,7 @@ static void *packel_new(t_symbol*UNUSED(s), int argc, t_atom*argv)
 
 ZEXY_SETUP void packel_setup(void)
 {
-  packel_class = class_new(gensym("packel"),
-                           (t_newmethod)packel_new, (t_method)packel_free,
-                           sizeof(t_packel), 0,
-                           A_GIMME, 0);
+  packel_class = class_new(gensym("packel"), (t_newmethod)packel_new, (t_method)packel_free, sizeof(t_packel), 0, A_GIMME, 0);
 
   class_addlist  (packel_class, packel_list);
   class_addanything(packel_class, packel_anything);

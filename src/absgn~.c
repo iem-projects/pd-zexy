@@ -134,8 +134,7 @@ static void *sigABSGN_new(void)
 
 ZEXY_SETUP void absgn_tilde_setup(void)
 {
-  sigABSGN_class = class_new(gensym("absgn~"), (t_newmethod)sigABSGN_new, 0,
-                             sizeof(t_absgn), 0, A_NULL);
+  sigABSGN_class = class_new(gensym("absgn~"), (t_newmethod)sigABSGN_new, 0, sizeof(t_absgn), 0, A_NULL);
   CLASS_MAINSIGNALIN(sigABSGN_class, t_absgn, x_f);
   zexy_addmethod(sigABSGN_class, (t_method)sigABSGN_dsp, "dsp", "!");
 

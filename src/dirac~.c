@@ -147,8 +147,7 @@ static void *dirac_new(t_floatarg where)
 
 ZEXY_SETUP void dirac_tilde_setup(void)
 {
-  dirac_class = class_new(gensym("dirac~"), (t_newmethod)dirac_new, 0,
-                          sizeof(t_dirac), 0, A_DEFFLOAT, 0);
+  dirac_class = class_new(gensym("dirac~"), (t_newmethod)dirac_new, 0, sizeof(t_dirac), 0, A_DEFFLOAT, 0);
   class_addfloat(dirac_class, dirac_float);
   class_addbang(dirac_class, dirac_bang);
   zexy_addmethod(dirac_class, (t_method)dirac_dsp, "dsp", "!");

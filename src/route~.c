@@ -67,9 +67,7 @@ static void *route_tilde_new(void)
 
 ZEXY_SETUP void route_tilde_setup(void)
 {
-  route_tilde_class = class_new(gensym("route~"),
-                                (t_newmethod)route_tilde_new, (t_method)route_tilde_free,
-                                sizeof(t_route_tilde), 0, A_NULL);
+  route_tilde_class = class_new(gensym("route~"), (t_newmethod)route_tilde_new, (t_method)route_tilde_free, sizeof(t_route_tilde), 0, A_NULL);
 
   class_addanything(route_tilde_class, (t_method)route_tilde_any);
   zexy_addmethod(route_tilde_class, (t_method)nullfn, "signal", "");

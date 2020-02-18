@@ -112,8 +112,7 @@ static void glue_help(t_glue* UNUSED(x))
 
 ZEXY_SETUP void glue_setup(void)
 {
-  glue_class = class_new(gensym("glue"), (t_newmethod)glue_new,
-                         (t_method)glue_free, sizeof(t_glue), 0, A_GIMME, 0);
+  glue_class = class_new(gensym("glue"), (t_newmethod)glue_new, (t_method)glue_free, sizeof(t_glue), 0, A_GIMME, 0);
   class_addlist(glue_class, glue_lst);
   zexy_addmethod(glue_class, (t_method)glue_lst2, "", "*");
   class_addbang(glue_class, glue_bang);

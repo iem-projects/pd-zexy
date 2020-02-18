@@ -106,9 +106,7 @@ static void *quantize_new(t_floatarg f)
 
 ZEXY_SETUP void quantize_tilde_setup(void)
 {
-  quantize_class = class_new(gensym("quantize~"), (t_newmethod)quantize_new,
-                             0,
-                             sizeof(t_quantize), 0, A_DEFFLOAT, 0);
+  quantize_class = class_new(gensym("quantize~"), (t_newmethod)quantize_new, 0, sizeof(t_quantize), 0, A_DEFFLOAT, 0);
   zexy_addmethod(quantize_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(quantize_class, (t_method)quantize_dsp, "dsp", "!");
 

@@ -92,8 +92,7 @@ static void *swap_new(void)
 
 ZEXY_SETUP void swap_tilde_setup(void)
 {
-  swap_class = class_new(gensym("swap~"), (t_newmethod)swap_new, 0,
-                         sizeof(t_swap), 0, A_NULL);
+  swap_class = class_new(gensym("swap~"), (t_newmethod)swap_new, 0, sizeof(t_swap), 0, A_NULL);
   zexy_addmethod(swap_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(swap_class, (t_method)swap_dsp, "dsp", "!");
 

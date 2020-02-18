@@ -111,9 +111,7 @@ static void help_time(t_time* UNUSED(x))
 
 ZEXY_SETUP void time_setup(void)
 {
-  time_class = class_new(gensym("time"),
-                         (t_newmethod)time_new, 0,
-                         sizeof(t_time), 0, A_GIMME, 0);
+  time_class = class_new(gensym("time"), (t_newmethod)time_new, 0, sizeof(t_time), 0, A_GIMME, 0);
 
   class_addbang(time_class, time_bang);
 

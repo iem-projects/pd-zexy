@@ -117,8 +117,7 @@ static void mavg_help(void)
 
 ZEXY_SETUP void mavg_setup(void)
 {
-  mavg_class = class_new(gensym("mavg"), (t_newmethod)mavg_new, 0,
-                         sizeof(t_mavg), 0, A_DEFFLOAT, 0);
+  mavg_class = class_new(gensym("mavg"), (t_newmethod)mavg_new, 0, sizeof(t_mavg), 0, A_DEFFLOAT, 0);
 
   class_addfloat(mavg_class, (t_method)mavg_float);
 

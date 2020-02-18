@@ -294,8 +294,7 @@ static void *fifop_new(void)
 
 ZEXY_SETUP void fifop_setup(void)
 {
-  fifop_class = class_new(gensym("fifop"), (t_newmethod)fifop_new,
-                          (t_method)fifop_free, sizeof(t_fifop), 0, A_NULL);
+  fifop_class = class_new(gensym("fifop"), (t_newmethod)fifop_new, (t_method)fifop_free, sizeof(t_fifop), 0, A_NULL);
 
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);
