@@ -266,7 +266,8 @@ static void fifop_dump(t_fifop*x)
 
 static void fifop_help(t_fifop* UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " fifop\t\t:: a First-In-First-Out queue with priorities");
+  post("\n"HEARTSYMBOL
+       " fifop\t\t:: a First-In-First-Out queue with priorities");
 }
 
 
@@ -295,7 +296,7 @@ static void *fifop_new(void)
 ZEXY_SETUP void fifop_setup(void)
 {
   fifop_class = zexy_new("fifop",
-    fifop_new, fifop_free, t_fifop, 0, "");
+                         fifop_new, fifop_free, t_fifop, 0, "");
 
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);

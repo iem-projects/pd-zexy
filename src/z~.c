@@ -107,7 +107,7 @@ static void *zNdelay_new(t_symbol*UNUSED(s), int argc, t_atom*argv)
       i=atom_getint(argv);
       break;
     }
-    /* fallthrough */
+  /* fallthrough */
   default:
     error("Bad arguments for [z~]: must be nought or initial delay [in samples]");
     return 0;
@@ -149,7 +149,7 @@ static void zdel_helper(void)
 ZEXY_SETUP void z_tilde_setup(void)
 {
   zNdelay_class = zexy_new("z~",
-    zNdelay_new, zNdelay_free, t_zNdelay, 0, "*");
+                           zNdelay_new, zNdelay_free, t_zNdelay, 0, "*");
   zexy_addmethod(zNdelay_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(zNdelay_class, (t_method)zNdelay_dsp, "dsp", "!");
 

@@ -178,14 +178,14 @@ static void strcmp_help(t_strcmp*UNUSED(x))
 ZEXY_SETUP void strcmp_setup(void)
 {
   strcmp_class = zexy_new("strcmp",
-    strcmp_new, strcmp_free, t_strcmp, 0, "*");
+                          strcmp_new, strcmp_free, t_strcmp, 0, "*");
 
   class_addbang    (strcmp_class, strcmp_bang);
   class_addsymbol  (strcmp_class, strcmp_symbol);
   class_addlist    (strcmp_class, strcmp_list);
 
   strcmp_proxy_class = zexy_new("strcmp proxy",
-    0, 0, t_strcmp_proxy, CLASS_PD | CLASS_NOINLET, "");
+                                0, 0, t_strcmp_proxy, CLASS_PD | CLASS_NOINLET, "");
   class_addsymbol(strcmp_proxy_class, strcmp_proxy_symbol);
   class_addlist(strcmp_proxy_class, strcmp_proxy_list);
   zexy_addmethod(strcmp_class, (t_method)strcmp_help, "help", "");

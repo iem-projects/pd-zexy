@@ -44,10 +44,11 @@ static void rawprint_any(t_rawprint *x, t_symbol*s, int argc, t_atom*argv)
     startpost("%s: ", x->label->s_name);
   }
 
-  if(s)
+  if(s) {
     startpost("\"%s\"", s->s_name);
-  else // this shouldn't happen, but sometimes does...
+  } else { // this shouldn't happen, but sometimes does...
     startpost("NULL");
+  }
 
   while(argc--) {
     switch(argv->a_type) {
@@ -111,7 +112,7 @@ static void *rawprint_new(t_symbol*s)
 ZEXY_SETUP void rawprint_setup(void)
 {
   rawprint_class = zexy_new("rawprint",
-    rawprint_new, 0, t_rawprint, CLASS_DEFAULT, "SBOL");
+                            rawprint_new, 0, t_rawprint, CLASS_DEFAULT, "SBOL");
 
   class_addanything(rawprint_class, rawprint_any);
   zexy_register("rawprint");

@@ -65,8 +65,7 @@ static t_int *quantize_perform(t_int *w)
   if (quantiz)
     while (n--) {
       *out++ = dequantiz*(int)(quantiz**in++);
-    }
-  else while (n--) {
+    } else while (n--) {
       *out++ = *in++;
     }
 
@@ -80,7 +79,8 @@ static void quantize_dsp(t_quantize *x, t_signal **sp)
 
 static void quantize_tilde_helper(t_quantize* UNUSED(x))
 {
-  post(""HEARTSYMBOL " quantize~-object\t:: used for quantizing signals by various degrees");
+  post(""HEARTSYMBOL
+       " quantize~-object\t:: used for quantizing signals by various degrees");
   post("<quants> : quantize a signal into <quants> steps ('0' turns quantizing off)\n"
        "'8bit'   : quantize to 8 bit\n"
        "'16bit'  : quantize to 16 bit (default)\n"
@@ -107,7 +107,7 @@ static void *quantize_new(t_floatarg f)
 ZEXY_SETUP void quantize_tilde_setup(void)
 {
   quantize_class = zexy_new("quantize~",
-    quantize_new, 0, t_quantize, 0, "F");
+                            quantize_new, 0, t_quantize, 0, "F");
   zexy_addmethod(quantize_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(quantize_class, (t_method)quantize_dsp, "dsp", "!");
 
@@ -115,6 +115,7 @@ ZEXY_SETUP void quantize_tilde_setup(void)
   zexy_addmethod(quantize_class, (t_method)quantize_8bit, "8bit", "");
   zexy_addmethod(quantize_class, (t_method)quantize_16bit, "16bit", "");
 
-  zexy_addmethod(quantize_class, (t_method)quantize_tilde_helper, "help", "");
+  zexy_addmethod(quantize_class, (t_method)quantize_tilde_helper, "help",
+                 "");
   zexy_register("quantize~");
 }

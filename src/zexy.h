@@ -104,8 +104,9 @@ static int zexy_argparse(const char*argstring, int argc, t_atomtype*argv)
 {
   const char*args = argstring;
   int i;
-  for(i=0; i<argc; i++)
+  for(i=0; i<argc; i++) {
     argv[i]=A_NULL;
+  }
   for(i=0; i<argc && *args; i++, args++) {
     switch(*args) {
     case 'f':
@@ -137,24 +138,31 @@ static int zexy_argparse(const char*argstring, int argc, t_atomtype*argv)
   return i;
 }
 
-static t_class MAYBE_USED_FUNCTION(*zexy_classnew) (const char*name, t_newmethod newmethod, t_method freemethod, size_t size, int flags, const char*args)
+static t_class MAYBE_USED_FUNCTION(*zexy_classnew) (const char*name,
+    t_newmethod newmethod, t_method freemethod, size_t size, int flags,
+    const char*args)
 {
   t_atomtype at[5];
-  if(zexy_argparse(args, 5, at) < 0)
+  if(zexy_argparse(args, 5, at) < 0) {
     return 0;
-  return class_new(gensym(name), newmethod, freemethod, size, flags, at[0], at[1], at[2], at[3], at[4], A_NULL);
+  }
+  return class_new(gensym(name), newmethod, freemethod, size, flags, at[0],
+                   at[1], at[2], at[3], at[4], A_NULL);
 }
 #define zexy_new(name, ctor, dtor, memberstruct, flags, args) \
   zexy_classnew(name, (t_newmethod)ctor, (t_method)dtor, sizeof(memberstruct), flags, args)
 
 
-static void MAYBE_USED_FUNCTION(zexy_addmethod) (t_class*c, t_method fn, const char*s, const char*args)
+static void MAYBE_USED_FUNCTION(zexy_addmethod) (t_class*c, t_method fn,
+    const char*s, const char*args)
 {
   /* wrapper around 'class_addmethod' that is a bit more terse... */
   t_atomtype at[5];
-  if(zexy_argparse(args, 5, at) < 0)
+  if(zexy_argparse(args, 5, at) < 0) {
     return;
-  class_addmethod(c, fn, gensym(s), at[0], at[1], at[2], at[3], at[4], A_NULL);
+  }
+  class_addmethod(c, fn, gensym(s), at[0], at[1], at[2], at[3], at[4],
+                  A_NULL);
 }
 
 #ifndef ZEXY_LIBRARY

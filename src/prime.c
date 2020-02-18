@@ -73,7 +73,7 @@ static void prime_help(t_prime*UNUSED(x))
 ZEXY_SETUP void prime_setup(void)
 {
   prime_class = zexy_new("prime",
-    prime_new, 0, t_prime, CLASS_DEFAULT, "");
+                         prime_new, 0, t_prime, CLASS_DEFAULT, "");
 
   class_addfloat(prime_class, prime_float);
   zexy_addmethod(prime_class, (t_method)prime_help, "help", "");

@@ -54,10 +54,10 @@ static t_int *sigABS_performSSE(t_int *w)
   __m128  bitmask= _mm_loadu_ps((float*)l_bitmask);
 
   while (n--) {
-    out[0] = _mm_and_ps(in[0] , bitmask);
-    out[1] = _mm_and_ps(in[1] , bitmask);
-    out[2] = _mm_and_ps(in[2] , bitmask);
-    out[3] = _mm_and_ps(in[3] , bitmask);
+    out[0] = _mm_and_ps(in[0], bitmask);
+    out[1] = _mm_and_ps(in[1], bitmask);
+    out[2] = _mm_and_ps(in[2], bitmask);
+    out[3] = _mm_and_ps(in[3], bitmask);
 
     in +=4;
     out+=4;
@@ -153,7 +153,7 @@ static void *sigABS_new(void)
 ZEXY_SETUP void abs_tilde_setup(void)
 {
   sigABS_class = zexy_new("abs~",
-    sigABS_new, 0, t_abs, 0, "");
+                          sigABS_new, 0, t_abs, 0, "");
   CLASS_MAINSIGNALIN(sigABS_class, t_abs, x_f);
   zexy_addmethod(sigABS_class, (t_method)sigABS_dsp, "dsp", "!");
 

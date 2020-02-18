@@ -134,7 +134,7 @@ static void help_date(t_date* UNUSED(x))
 ZEXY_SETUP void date_setup(void)
 {
   date_class = zexy_new("date",
-    date_new, 0, t_date, 0, "*");
+                        date_new, 0, t_date, 0, "*");
 
   class_addbang(date_class, date_bang);
 

@@ -69,7 +69,8 @@ static void mux_tilde_dsp(t_mux *x, t_signal **sp)
 
 static void mux_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL " multiplex~\t:: multiplex a one of various signals to one outlet");
+  post("\n"HEARTSYMBOL
+       " multiplex~\t:: multiplex a one of various signals to one outlet");
   post("<#out>\t : the inlet-number (counting from 0) witch is routed to the outlet"
        "'help'\t : view this");
   post("creation : \"mux~ [arg1 [arg2...]]\"\t: the number of arguments equals the number of inlets\n");
@@ -109,7 +110,7 @@ static void *mux_tilde_new(t_symbol* UNUSED(s), int argc,
 static t_class* zclass_setup(const char*name)
 {
   t_class*c = zexy_new(name,
-    mux_tilde_new, mux_tilde_free, t_mux, 0, "*");
+                       mux_tilde_new, mux_tilde_free, t_mux, 0, "*");
 
   /* ouch, that hurts... */
   class_addfloat(c, mux_tilde_input);

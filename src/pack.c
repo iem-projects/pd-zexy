@@ -86,13 +86,15 @@ static void zpack_any(t_zpack*x, t_symbol *s, int argc, t_atom *argv)
   zpack_bang(x);
 }
 
-static void zpack_list(t_zpack*x, t_symbol *UNUSED(s), int argc, t_atom *argv)
+static void zpack_list(t_zpack*x, t_symbol *UNUSED(s), int argc,
+                       t_atom *argv)
 {
   zpack_any(x, 0, argc, argv);
 }
 
 
-static void zpack_proxy_list(t_zpackproxy *y, t_symbol *UNUSED(s), int argc,
+static void zpack_proxy_list(t_zpackproxy *y, t_symbol *UNUSED(s),
+                             int argc,
                              t_atom *argv)
 {
   /* until we have lists of lists, this only uses the 1st element */
@@ -173,7 +175,7 @@ static void zpack_free(t_zpack*x)
 ZEXY_SETUP void zpack_setup(void)
 {
   zpack_class = zexy_new("zexy/pack",
-    zpack_new, zpack_free, t_zpack, 0, "*");
+                         zpack_new, zpack_free, t_zpack, 0, "*");
 #if 0
   /* oops Pd>=0.42 allows us to override built-ins
    * this is bad as long as the 2 objects are not compatible */
@@ -184,7 +186,7 @@ ZEXY_SETUP void zpack_setup(void)
   class_addanything(zpack_class, zpack_any);
 
   zpackproxy_class = zexy_new("zpack proxy",
-    0, 0, t_zpackproxy, CLASS_PD | CLASS_NOINLET, "");
+                              0, 0, t_zpackproxy, CLASS_PD | CLASS_NOINLET, "");
   class_addlist(zpackproxy_class, zpack_proxy_list);
   class_addanything(zpackproxy_class, zpack_proxy_any);
 

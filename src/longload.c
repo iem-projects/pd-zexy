@@ -58,6 +58,6 @@ static void *longload_new(t_float f)
 ZEXY_SETUP void longload_setup(void)
 {
   longload_class = zexy_new("longload",
-    longload_new, 0, t_longload, CLASS_NOINLET, "F");
+                            longload_new, 0, t_longload, CLASS_NOINLET, "F");
   zexy_register("longload");
 }

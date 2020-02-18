@@ -65,7 +65,7 @@ static t_int *sigdoublepole_perform(t_int *w)
 }
 
 static void sigdoublepole_list(t_sigdoublepole *x, t_symbol* UNUSED(s),
-    int argc, t_atom *argv)
+                               int argc, t_atom *argv)
 {
   t_float fb1 = atom_getfloatarg(0, argc, argv);
   t_float fb2 = atom_getfloatarg(1, argc, argv);
@@ -94,7 +94,7 @@ stable:
 }
 
 static void sigdoublepole_set(t_sigdoublepole *x, t_symbol* UNUSED(s),
-    int argc, t_atom *argv)
+                              int argc, t_atom *argv)
 {
   t_doublepolectl *c = x->x_ctl;
   c->c_x1 = atom_getfloatarg(0, argc, argv);
@@ -112,11 +112,14 @@ static void sigdoublepole_dsp(t_sigdoublepole *x, t_signal **sp)
 ZEXY_SETUP void doublepole_tilde_setup(void)
 {
   sigdoublepole_class = zexy_new("doublepole~",
-    sigdoublepole_new, 0, t_sigdoublepole, 0, "*");
+                                 sigdoublepole_new, 0, t_sigdoublepole, 0, "*");
   CLASS_MAINSIGNALIN(sigdoublepole_class, t_sigdoublepole, x_f);
-  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_dsp, "dsp", "!");
+  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_dsp, "dsp",
+                 "!");
   class_addlist(sigdoublepole_class, sigdoublepole_list);
-  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_set, "set", "*");
-  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_set, "clear", "*");
+  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_set, "set",
+                 "*");
+  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_set, "clear",
+                 "*");
   zexy_register("doublepole~");
 }

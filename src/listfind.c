@@ -45,7 +45,8 @@ typedef struct _listfind {
 
 
 
-static void listfind_list2(t_listfind*x,t_symbol*UNUSED(s), int argc, t_atom*argv)
+static void listfind_list2(t_listfind*x,t_symbol*UNUSED(s), int argc,
+                           t_atom*argv)
 {
   if(x->x_argv!=0) {
     freebytes(x->x_argv, sizeof(t_atom)*x->x_argc);
@@ -219,13 +220,14 @@ static void *listfind_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 static void listfind_help(t_listfind*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " listfind\t\t:: split lists into multiple sublists based on matches");
+  post("\n"HEARTSYMBOL
+       " listfind\t\t:: split lists into multiple sublists based on matches");
 }
 
 ZEXY_SETUP void listfind_setup(void)
 {
   listfind_class = zexy_new("listfind",
-    listfind_new, listfind_free, t_listfind, 0, "*");
+                            listfind_new, listfind_free, t_listfind, 0, "*");
   class_addlist    (listfind_class, listfind_list);
   zexy_addmethod(listfind_class, (t_method)listfind_list2, "lst2", "*");
 

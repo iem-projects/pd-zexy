@@ -134,13 +134,14 @@ static void *list2lists_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 static void list2lists_help(t_list2lists*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " list2lists\t\t:: split lists into multiple sublists based on matches");
+  post("\n"HEARTSYMBOL
+       " list2lists\t\t:: split lists into multiple sublists based on matches");
 }
 
 ZEXY_SETUP void list2lists_setup(void)
 {
   list2lists_class = zexy_new("list2lists",
-    list2lists_new, list2lists_free, t_list2lists, 0, "*");
+                              list2lists_new, list2lists_free, t_list2lists, 0, "*");
   class_addlist    (list2lists_class, list2lists_list);
   zexy_addmethod(list2lists_class, (t_method)list2lists_list2, "lst2", "*");
 

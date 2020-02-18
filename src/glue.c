@@ -107,13 +107,14 @@ static void *glue_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 static void glue_help(t_glue* UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " glue\t\t:: glue together 2 lists (like [list append])");
+  post("\n"HEARTSYMBOL
+       " glue\t\t:: glue together 2 lists (like [list append])");
 }
 
 ZEXY_SETUP void glue_setup(void)
 {
   glue_class = zexy_new("glue",
-    glue_new, glue_free, t_glue, 0, "*");
+                        glue_new, glue_free, t_glue, 0, "*");
   class_addlist(glue_class, glue_lst);
   zexy_addmethod(glue_class, (t_method)glue_lst2, "", "*");
   class_addbang(glue_class, glue_bang);

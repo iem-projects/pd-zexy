@@ -191,7 +191,7 @@ static void fwriteln_free (t_fwriteln *x)
 
 static void *fwriteln_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
-  #define MAXFMTSTRING 10
+#define MAXFMTSTRING 10
   int k;
   char float_format = 'g';
   char sign=0;
@@ -231,7 +231,8 @@ static void *fwriteln_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
       sign = S->s_name[0];
     }
   }
-  snprintf(x->format_string_afloats, MAXPDSTRING, "%%%c%s%s%c ", sign, width_str, precision_str, float_format);
+  snprintf(x->format_string_afloats, MAXPDSTRING, "%%%c%s%s%c ", sign,
+           width_str, precision_str, float_format);
   return (void *)x;
 }
 
@@ -239,7 +240,7 @@ static void *fwriteln_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 ZEXY_SETUP void fwriteln_setup(void)
 {
   fwriteln_class = zexy_new("fwriteln",
-    fwriteln_new,  fwriteln_free, t_fwriteln, CLASS_DEFAULT, "*");
+                            fwriteln_new,  fwriteln_free, t_fwriteln, CLASS_DEFAULT, "*");
   zexy_addmethod(fwriteln_class, (t_method)fwriteln_open, "open", "sS");
   zexy_addmethod(fwriteln_class, (t_method)fwriteln_close, "close", "");
   class_addanything(fwriteln_class, (t_method)fwriteln_write);

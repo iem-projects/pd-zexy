@@ -77,7 +77,7 @@ static void *a2l_new(void)
 static t_class* zclass_setup(const char*name)
 {
   t_class *c = zexy_new(name,
-    a2l_new, 0, t_a2l, 0, "");
+                        a2l_new, 0, t_a2l, 0, "");
   class_addbang    (c, a2l_bang);
   class_addfloat   (c, a2l_float);
   class_addsymbol  (c, a2l_symbol);

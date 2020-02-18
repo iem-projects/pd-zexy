@@ -99,7 +99,8 @@ static void *dfreq_new(void)
 
 static void dfreq_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL " dfreq~\t :: pitch-detector that counts zero-crossings");
+  post("\n"HEARTSYMBOL
+       " dfreq~\t :: pitch-detector that counts zero-crossings");
   post("\noutputs a frequency estimate as a stream~ that will be updated every zero-X");
   post("\ncreation::\t'dfreq~': that's all");
 }
@@ -108,7 +109,7 @@ static void dfreq_tilde_helper(void)
 ZEXY_SETUP void dfreq_tilde_setup(void)
 {
   dfreq_class = zexy_new("dfreq~",
-    dfreq_new, 0, t_dfreq, 0, "");
+                         dfreq_new, 0, t_dfreq, 0, "");
   zexy_addmethod(dfreq_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(dfreq_class, (t_method)dfreq_dsp, "dsp", "!");
 

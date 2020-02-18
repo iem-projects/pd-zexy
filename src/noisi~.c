@@ -150,7 +150,8 @@ static void noisi_dsp(t_nois *x, t_signal **sp)
 
 static void noisi_helper(void)
 {
-  post("\n"HEARTSYMBOL " noisi~\t:: a bandlimited interpolating pseudo-noise generator");
+  post("\n"HEARTSYMBOL
+       " noisi~\t:: a bandlimited interpolating pseudo-noise generator");
   post("<freq>\t : sampling-frequency (in Hz)\n"
        "'help'\t : view this");
   post("creation : \"noisi~ [<freq>]\"\t: ('0'(default) will produce 'white' noise)\n");
@@ -177,7 +178,7 @@ static void *noisi_new(t_floatarg f)
 ZEXY_SETUP void noisi_tilde_setup(void)
 {
   noisi_class = zexy_new("noisi~",
-    noisi_new, 0, t_nois, 0, "F");
+                         noisi_new, 0, t_nois, 0, "F");
 
   class_addfloat(noisi_class, set_noisfreq);
   zexy_addmethod(noisi_class, (t_method)noisi_dsp, "dsp", "!");

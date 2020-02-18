@@ -79,7 +79,8 @@ static void demux_dsp(t_demux *x, t_signal **sp)
 
 static void demux_helper(void)
 {
-  post("\n"HEARTSYMBOL " demux~\t:: demultiplex a signal to one of various outlets");
+  post("\n"HEARTSYMBOL
+       " demux~\t:: demultiplex a signal to one of various outlets");
   post("<#out>\t : the outlet-number (counting from 0) to witch the inlet is routed"
        "'help'\t : view this");
   post("creation : \"demux~ [arg1 [arg2...]]\"\t: the number of arguments equals the number of outlets\n");
@@ -116,7 +117,7 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 static t_class* zclass_setup(const char*name)
 {
   t_class *c = zexy_new(name,
-    demux_new, demux_free, t_demux, 0, "*");
+                        demux_new, demux_free, t_demux, 0, "*");
   class_addfloat(c, demux_output);
   zexy_addmethod(c, (t_method)demux_dsp, "dsp", "!");
   zexy_addmethod(c, (t_method)nullfn, "signal", "");

@@ -149,13 +149,14 @@ static void *urn_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 static void urn_help(t_urn*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " urn\t\t:: generate randum numbers without repetition");
+  post("\n"HEARTSYMBOL
+       " urn\t\t:: generate randum numbers without repetition");
 }
 
 ZEXY_SETUP void urn_setup(void)
 {
   urn_class = zexy_new("urn",
-    urn_new, 0, t_urn, 0, "*");
+                       urn_new, 0, t_urn, 0, "*");
 
   class_addbang (urn_class, urn_bang);
   zexy_addmethod(urn_class, (t_method)urn_clear, "clear", "");

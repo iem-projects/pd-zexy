@@ -147,34 +147,34 @@ static t_int *andand_tilde_performSSE(t_int *w)
 
   while (n--) {
     __m128 xmm0, xmm1, xmm2;
-    xmm0   = _mm_and_ps  (in1[0] , bitmask); /* =abs(f); */
-    xmm1   = _mm_and_ps  (in2[0] , bitmask);
-    xmm0   = _mm_cmpge_ps(xmm0   ,
+    xmm0   = _mm_and_ps  (in1[0], bitmask);  /* =abs(f); */
+    xmm1   = _mm_and_ps  (in2[0], bitmask);
+    xmm0   = _mm_cmpge_ps(xmm0,
                           one);     /* =(abs(f)>=1.0)=i (a weird cast to integer) */
-    xmm1   = _mm_cmpge_ps(xmm1   , one);
-    xmm2   = _mm_and_ps  (xmm0   , xmm1);    /* =(i0&&i1) */
-    out[0] = _mm_and_ps  (xmm2   , one);     /* 0xfffffff -> 1.0 */
+    xmm1   = _mm_cmpge_ps(xmm1, one);
+    xmm2   = _mm_and_ps  (xmm0, xmm1);       /* =(i0&&i1) */
+    out[0] = _mm_and_ps  (xmm2, one);        /* 0xfffffff -> 1.0 */
 
-    xmm0   = _mm_and_ps  (in1[1] , bitmask);
-    xmm1   = _mm_and_ps  (in2[1] , bitmask);
-    xmm0   = _mm_cmpge_ps(xmm0   , one);
-    xmm1   = _mm_cmpge_ps(xmm1   , one);
-    xmm2   = _mm_and_ps  (xmm0   , xmm1);
-    out[1] = _mm_and_ps  (xmm2   , one);
+    xmm0   = _mm_and_ps  (in1[1], bitmask);
+    xmm1   = _mm_and_ps  (in2[1], bitmask);
+    xmm0   = _mm_cmpge_ps(xmm0, one);
+    xmm1   = _mm_cmpge_ps(xmm1, one);
+    xmm2   = _mm_and_ps  (xmm0, xmm1);
+    out[1] = _mm_and_ps  (xmm2, one);
 
-    xmm0   = _mm_and_ps  (in1[2] , bitmask);
-    xmm1   = _mm_and_ps  (in2[2] , bitmask);
-    xmm0   = _mm_cmpge_ps(xmm0   , one);
-    xmm1   = _mm_cmpge_ps(xmm1   , one);
-    xmm2   = _mm_and_ps  (xmm0   , xmm1);
-    out[2] = _mm_and_ps  (xmm2   , one);
+    xmm0   = _mm_and_ps  (in1[2], bitmask);
+    xmm1   = _mm_and_ps  (in2[2], bitmask);
+    xmm0   = _mm_cmpge_ps(xmm0, one);
+    xmm1   = _mm_cmpge_ps(xmm1, one);
+    xmm2   = _mm_and_ps  (xmm0, xmm1);
+    out[2] = _mm_and_ps  (xmm2, one);
 
-    xmm0   = _mm_and_ps  (in1[3] , bitmask);
-    xmm1   = _mm_and_ps  (in2[3] , bitmask);
-    xmm0   = _mm_cmpge_ps(xmm0   , one);
-    xmm1   = _mm_cmpge_ps(xmm1   , one);
-    xmm2   = _mm_and_ps  (xmm0   , xmm1);
-    out[3] = _mm_and_ps  (xmm2   , one);
+    xmm0   = _mm_and_ps  (in1[3], bitmask);
+    xmm1   = _mm_and_ps  (in2[3], bitmask);
+    xmm0   = _mm_cmpge_ps(xmm0, one);
+    xmm1   = _mm_cmpge_ps(xmm1, one);
+    xmm2   = _mm_and_ps  (xmm0, xmm1);
+    out[3] = _mm_and_ps  (xmm2, one);
 
     in1+=4;
     in2+=4;
@@ -202,25 +202,25 @@ static t_int *scalarandand_tilde_performSSE(t_int *w)
   while (n--) {
     __m128 xmm0, xmm1;
     xmm0   = _mm_and_ps  (in[0], bitmask); /* =abs(f); */
-    xmm0   = _mm_cmpge_ps(xmm0 ,
+    xmm0   = _mm_cmpge_ps(xmm0,
                           one);     /* =(abs(f)>=1.0)=i (a weird cast to integer) */
-    xmm0   = _mm_and_ps  (xmm0 , scalar);  /* =(i0&&i1) */
-    out[0] = _mm_and_ps  (xmm0 , one);     /* 0xfffffff -> 1.0 */
+    xmm0   = _mm_and_ps  (xmm0, scalar);   /* =(i0&&i1) */
+    out[0] = _mm_and_ps  (xmm0, one);      /* 0xfffffff -> 1.0 */
 
     xmm1   = _mm_and_ps  (in[1], bitmask);
-    xmm1   = _mm_cmpge_ps(xmm1 , one);
-    xmm1   = _mm_and_ps  (xmm1 , scalar);
-    out[1] = _mm_and_ps  (xmm1 , one);
+    xmm1   = _mm_cmpge_ps(xmm1, one);
+    xmm1   = _mm_and_ps  (xmm1, scalar);
+    out[1] = _mm_and_ps  (xmm1, one);
 
     xmm0   = _mm_and_ps  (in[2], bitmask);
-    xmm0   = _mm_cmpge_ps(xmm0 , one);
-    xmm0   = _mm_and_ps  (xmm0 , scalar);
-    out[2] = _mm_and_ps  (xmm0 , one);
+    xmm0   = _mm_cmpge_ps(xmm0, one);
+    xmm0   = _mm_and_ps  (xmm0, scalar);
+    out[2] = _mm_and_ps  (xmm0, one);
 
     xmm1   = _mm_and_ps  (in[3], bitmask);
-    xmm1   = _mm_cmpge_ps(xmm1 , one);
-    xmm1   = _mm_and_ps  (xmm1 , scalar);
-    out[3] = _mm_and_ps  (xmm1 , one);
+    xmm1   = _mm_cmpge_ps(xmm1, one);
+    xmm1   = _mm_and_ps  (xmm1, scalar);
+    out[3] = _mm_and_ps  (xmm1, one);
 
     in +=4;
     out+=4;
@@ -286,18 +286,21 @@ static void andand_tilde_help(t_object* UNUSED(x))
 ZEXY_SETUP void setup_0x260x260x7e(void)
 {
   andand_tilde_class = zexy_new("&&~",
-    andand_tilde_new, 0, t_andand_tilde, 0, "*");
+                                andand_tilde_new, 0, t_andand_tilde, 0, "*");
   zexy_addmethod(andand_tilde_class, (t_method)andand_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(andand_tilde_class, t_andand_tilde, x_f);
-  zexy_addmethod(andand_tilde_class, (t_method)andand_tilde_help, "help", "");
+  zexy_addmethod(andand_tilde_class, (t_method)andand_tilde_help, "help",
+                 "");
   class_sethelpsymbol(andand_tilde_class, gensym("zigbinops"));
 
 
   scalarandand_tilde_class = zexy_new("&&~",
-    0, 0, t_scalarandand_tilde, 0, "");
+                                      0, 0, t_scalarandand_tilde, 0, "");
   CLASS_MAINSIGNALIN(scalarandand_tilde_class, t_scalarandand_tilde, x_f);
-  zexy_addmethod(scalarandand_tilde_class, (t_method)scalarandand_tilde_dsp, "dsp", "!");
-  zexy_addmethod(scalarandand_tilde_class, (t_method)andand_tilde_help, "help", "");
+  zexy_addmethod(scalarandand_tilde_class, (t_method)scalarandand_tilde_dsp,
+                 "dsp", "!");
+  zexy_addmethod(scalarandand_tilde_class, (t_method)andand_tilde_help,
+                 "help", "");
   class_sethelpsymbol(scalarandand_tilde_class, gensym("zigbinops"));
 
   zexy_register("&&~");

@@ -163,8 +163,8 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
         newentry--;
         if(x->names[newentry]) { /* it is already taken! */
           verbose(1,
-                    "index :: couldn't add element '%s' at position %d (already taken)",
-                    s->s_name, newentry+1);
+                  "index :: couldn't add element '%s' at position %d (already taken)",
+                  s->s_name, newentry+1);
           outlet_float(x->x_obj.ob_outlet, -1.f);
           return;
         }
@@ -380,7 +380,7 @@ static void index_helper(t_index* UNUSED(x))
 ZEXY_SETUP void index_setup(void)
 {
   index_class = zexy_new("index",
-    index_new, index_free, t_index, 0, "*");
+                         index_new, index_free, t_index, 0, "*");
 
   class_addsymbol(index_class, index_symbol);
 

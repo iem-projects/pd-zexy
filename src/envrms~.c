@@ -132,13 +132,13 @@ static void sigenvrms_dsp(t_sigenvrms *x, t_signal **sp)
   }
 }
 
-    /* callback function for the clock */
+/* callback function for the clock */
 static void sigenvrms_tick(t_sigenvrms *x)
 {
   outlet_float(x->x_outlet, sqrtf(x->x_result));
 }
 
-    /* cleanup on free */
+/* cleanup on free */
 static void sigenvrms_ff(t_sigenvrms *x)
 {
   clock_free(x->x_clock);
@@ -154,7 +154,7 @@ static void sigenvrms_help(void)
 ZEXY_SETUP void envrms_tilde_setup(void)
 {
   sigenvrms_class = zexy_new("envrms~",
-    sigenvrms_new, sigenvrms_ff, t_sigenvrms, 0, "FF");
+                             sigenvrms_new, sigenvrms_ff, t_sigenvrms, 0, "FF");
   zexy_addmethod(sigenvrms_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sigenvrms_class, (t_method)sigenvrms_dsp, "dsp", "!");
 

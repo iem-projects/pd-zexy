@@ -134,7 +134,7 @@ static void freadln_open (t_freadln *x, t_symbol *s, t_symbol*type)
 }
 
 static size_t enlarge_cstr_if_required(const char **c_str, size_t *len,
-                                    const size_t desired_min_length)
+                                       const size_t desired_min_length)
 {
   size_t L;
   if ((!(*c_str))||*len==0) {
@@ -268,7 +268,7 @@ static void *freadln_new(void)
 ZEXY_SETUP void freadln_setup(void)
 {
   freadln_class = zexy_new("freadln",
-    freadln_new,  freadln_free, t_freadln, 0, "");
+                           freadln_new,  freadln_free, t_freadln, 0, "");
   zexy_addmethod(freadln_class, (t_method)freadln_open, "open", "sS");
   zexy_addmethod(freadln_class, (t_method)freadln_close, "close", "");
   class_addbang(freadln_class, (t_method)freadln_readline);

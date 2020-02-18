@@ -79,7 +79,8 @@ static void sigzero_dsp(t_sigzero *x, t_signal **sp)
 
 static void sigzero_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL " sigzero~-object :: for detecting whether a signal is currently zero or not");
+  post("\n"HEARTSYMBOL
+       " sigzero~-object :: for detecting whether a signal is currently zero or not");
   post("'bang'\t: turn the detector on\n"
        "'off'\t: turn it off\n"
        "<1/0>\t: turn it on/off\n"
@@ -98,7 +99,7 @@ static void *sigzero_new(void)
 ZEXY_SETUP void sigzero_tilde_setup(void)
 {
   sigzero_class = zexy_new("sigzero~",
-    sigzero_new, 0, t_sigzero, 0, "");
+                           sigzero_new, 0, t_sigzero, 0, "");
   class_addfloat(sigzero_class, sigzero_activate);
   class_addbang(sigzero_class, sigzero_banged);
   zexy_addmethod(sigzero_class, (t_method)sigzero_off, "off", "");

@@ -137,16 +137,16 @@ static t_int *eq_tilde_performSSE(t_int *w)
   while (n--) {
     __m128 xmm0, xmm1;
     xmm0   = _mm_cmpeq_ps(in1[0], in2[0]);
-    out[0] = _mm_and_ps  (xmm0 , one);
+    out[0] = _mm_and_ps  (xmm0, one);
 
     xmm1   = _mm_cmpeq_ps(in1[1], in2[1]);
-    out[1] = _mm_and_ps  (xmm1 , one);
+    out[1] = _mm_and_ps  (xmm1, one);
 
     xmm0   = _mm_cmpeq_ps(in1[2], in2[2]);
-    out[2] = _mm_and_ps  (xmm0 , one);
+    out[2] = _mm_and_ps  (xmm0, one);
 
     xmm1   = _mm_cmpeq_ps(in1[3], in2[3]);
-    out[3] = _mm_and_ps  (xmm1 , one);
+    out[3] = _mm_and_ps  (xmm1, one);
 
     in1+=4;
     in2+=4;
@@ -241,16 +241,17 @@ static void eq_tilde_help(t_object* UNUSED(x))
 ZEXY_SETUP void setup_0x3d0x3d0x7e(void)
 {
   eq_tilde_class = zexy_new("==~",
-    eq_tilde_new, 0, t_eq_tilde, 0, "*");
+                            eq_tilde_new, 0, t_eq_tilde, 0, "*");
   zexy_addmethod(eq_tilde_class, (t_method)eq_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(eq_tilde_class, t_eq_tilde, x_f);
   zexy_addmethod(eq_tilde_class, (t_method)eq_tilde_help, "help", "");
   class_sethelpsymbol(eq_tilde_class, gensym("zigbinops"));
 
   scalareq_tilde_class = zexy_new("==~",
-    0, 0, t_scalareq_tilde, 0, "");
+                                  0, 0, t_scalareq_tilde, 0, "");
   CLASS_MAINSIGNALIN(scalareq_tilde_class, t_scalareq_tilde, x_f);
-  zexy_addmethod(scalareq_tilde_class, (t_method)scalareq_tilde_dsp, "dsp", "!");
+  zexy_addmethod(scalareq_tilde_class, (t_method)scalareq_tilde_dsp, "dsp",
+                 "!");
   zexy_addmethod(scalareq_tilde_class, (t_method)eq_tilde_help, "help", "");
   class_sethelpsymbol(scalareq_tilde_class, gensym("zigbinops"));
 

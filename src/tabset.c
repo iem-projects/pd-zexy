@@ -67,8 +67,7 @@ static void tabset_list(t_tabset *x, t_symbol* UNUSED(s), int argc,
         t_float f= atom_getfloat(argv++);
         vec->w_float = f;
         vec++;
-      }
-    else {
+      } else {
       npoints-=argc;
       while (argc--) {
         t_float f= atom_getfloat(argv++);
@@ -98,7 +97,8 @@ static void *tabset_new(t_symbol *s)
 
 static void tabset_helper(void)
 {
-  post("\n"HEARTSYMBOL " tabset - object : set a table with a package of floats");
+  post("\n"HEARTSYMBOL
+       " tabset - object : set a table with a package of floats");
   post("'set <table>'\t: set another table\n"
        "<list>\t\t: set the table"
        "<float>\t\t: set the table to constant float\n");
@@ -108,7 +108,7 @@ static void tabset_helper(void)
 ZEXY_SETUP void tabset_setup(void)
 {
   tabset_class = zexy_new("tabset",
-    tabset_new, 0, t_tabset, 0, "S");
+                          tabset_new, 0, t_tabset, 0, "S");
   class_addfloat(tabset_class, (t_method)tabset_float);
   class_addlist (tabset_class, (t_method)tabset_list);
   zexy_addmethod(tabset_class, (t_method)tabset_set, "set", "s");

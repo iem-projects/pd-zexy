@@ -140,23 +140,23 @@ static t_int *oror_tilde_performSSE(t_int *w)
     __m128 xmm0, xmm1, xmm2;
     xmm0   = _mm_cmpneq_ps(in1[0], zero);
     xmm1   = _mm_cmpneq_ps(in2[0], zero);
-    xmm2   = _mm_or_ps    (xmm0 , xmm1);
-    out[0] = _mm_and_ps   (xmm2 , one);
+    xmm2   = _mm_or_ps    (xmm0, xmm1);
+    out[0] = _mm_and_ps   (xmm2, one);
 
     xmm0   = _mm_cmpneq_ps(in1[1], zero);
     xmm1   = _mm_cmpneq_ps(in2[1], zero);
-    xmm2   = _mm_or_ps    (xmm0 , xmm1);
-    out[1] = _mm_and_ps   (xmm2 , one);
+    xmm2   = _mm_or_ps    (xmm0, xmm1);
+    out[1] = _mm_and_ps   (xmm2, one);
 
     xmm0   = _mm_cmpneq_ps(in1[2], zero);
     xmm1   = _mm_cmpneq_ps(in2[2], zero);
-    xmm2   = _mm_or_ps    (xmm0 , xmm1);
-    out[2] = _mm_and_ps   (xmm2 , one);
+    xmm2   = _mm_or_ps    (xmm0, xmm1);
+    out[2] = _mm_and_ps   (xmm2, one);
 
     xmm0   = _mm_cmpneq_ps(in1[3], zero);
     xmm1   = _mm_cmpneq_ps(in2[3], zero);
-    xmm2   = _mm_or_ps    (xmm0 , xmm1);
-    out[3] = _mm_and_ps   (xmm2 , one);
+    xmm2   = _mm_or_ps    (xmm0, xmm1);
+    out[3] = _mm_and_ps   (xmm2, one);
 
     in1+=4;
     in2+=4;
@@ -179,20 +179,20 @@ static t_int *scalaroror_tilde_performSSE(t_int *w)
   while (n--) {
     __m128 xmm0, xmm1;
     xmm0   = _mm_cmpneq_ps(in[0], zero);
-    xmm1   = _mm_or_ps    (xmm0 , scalar);
-    out[0] = _mm_and_ps   (xmm1 , one);
+    xmm1   = _mm_or_ps    (xmm0, scalar);
+    out[0] = _mm_and_ps   (xmm1, one);
 
     xmm0   = _mm_cmpneq_ps(in[1], zero);
-    xmm1   = _mm_or_ps    (xmm0 , scalar);
-    out[1] = _mm_and_ps   (xmm1 , one);
+    xmm1   = _mm_or_ps    (xmm0, scalar);
+    out[1] = _mm_and_ps   (xmm1, one);
 
     xmm0   = _mm_cmpneq_ps(in[2], zero);
-    xmm1   = _mm_or_ps    (xmm0 , scalar);
-    out[2] = _mm_and_ps   (xmm1 , one);
+    xmm1   = _mm_or_ps    (xmm0, scalar);
+    out[2] = _mm_and_ps   (xmm1, one);
 
     xmm0   = _mm_cmpneq_ps(in[3], zero);
-    xmm1   = _mm_or_ps    (xmm0 , scalar);
-    out[3] = _mm_and_ps   (xmm1 , one);
+    xmm1   = _mm_or_ps    (xmm0, scalar);
+    out[3] = _mm_and_ps   (xmm1, one);
 
 
     in +=4;
@@ -260,17 +260,19 @@ static void oror_tilde_help(t_object* UNUSED(x))
 ZEXY_SETUP void setup_0x7c0x7c0x7e(void)
 {
   oror_tilde_class = zexy_new("||~",
-    oror_tilde_new, 0, t_oror_tilde, 0, "*");
+                              oror_tilde_new, 0, t_oror_tilde, 0, "*");
   zexy_addmethod(oror_tilde_class, (t_method)oror_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(oror_tilde_class, t_oror_tilde, x_f);
   zexy_addmethod(oror_tilde_class, (t_method)oror_tilde_help, "help", "");
   class_sethelpsymbol(oror_tilde_class, gensym("zigbinops"));
 
   scalaroror_tilde_class = zexy_new("||~",
-    0, 0, t_scalaroror_tilde, 0, "");
+                                    0, 0, t_scalaroror_tilde, 0, "");
   CLASS_MAINSIGNALIN(scalaroror_tilde_class, t_scalaroror_tilde, x_f);
-  zexy_addmethod(scalaroror_tilde_class, (t_method)scalaroror_tilde_dsp, "dsp", "!");
-  zexy_addmethod(scalaroror_tilde_class, (t_method)oror_tilde_help, "help", "");
+  zexy_addmethod(scalaroror_tilde_class, (t_method)scalaroror_tilde_dsp,
+                 "dsp", "!");
+  zexy_addmethod(scalaroror_tilde_class, (t_method)oror_tilde_help, "help",
+                 "");
   class_sethelpsymbol(scalaroror_tilde_class, gensym("zigbinops"));
 
   zexy_register("||~");

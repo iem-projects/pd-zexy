@@ -59,8 +59,7 @@ static t_int *swap_perform(t_int *w)
       short dummy = FLOAT2SHORT **in++;
       *out++ = SHORT2FLOAT * (short)( ((dummy & 0xFF) << 8) | ((
                                         dummy & 0xFF00) >> 8) );
-    }
-  else while (n--) {
+    } else while (n--) {
       *out++ = *in++;
     }
 
@@ -93,7 +92,7 @@ static void *swap_new(void)
 ZEXY_SETUP void swap_tilde_setup(void)
 {
   swap_class = zexy_new("swap~",
-    swap_new, 0, t_swap, 0, "");
+                        swap_new, 0, t_swap, 0, "");
   zexy_addmethod(swap_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(swap_class, (t_method)swap_dsp, "dsp", "!");
 

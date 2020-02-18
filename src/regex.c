@@ -173,7 +173,8 @@ static void regex_case(t_regex *x, t_float f)
 }
 
 
-static void regex_regex(t_regex *x, t_symbol*UNUSED(s), int argc, t_atom*argv)
+static void regex_regex(t_regex *x, t_symbol*UNUSED(s), int argc,
+                        t_atom*argv)
 {
 #ifdef HAVE_REGEX_H
   char*result=0;
@@ -200,7 +201,8 @@ static void regex_regex(t_regex *x, t_symbol*UNUSED(s), int argc, t_atom*argv)
 }
 
 /* compare the given list as string with the precompiled regex */
-static void regex_symbol(t_regex *x, t_symbol *UNUSED(s), int argc, t_atom*argv)
+static void regex_symbol(t_regex *x, t_symbol *UNUSED(s), int argc,
+                         t_atom*argv)
 {
 #ifdef HAVE_REGEX_H
   char*teststring=0;
@@ -332,13 +334,14 @@ static void regex_free(t_regex *x)
 
 static void regex_help(t_regex*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " regex\t\t:: test the input whether it matches a regular expression");
+  post("\n"HEARTSYMBOL
+       " regex\t\t:: test the input whether it matches a regular expression");
 }
 
 ZEXY_SETUP void regex_setup(void)
 {
   regex_class = zexy_new("regex",
-    regex_new, regex_free, t_regex, 0, "*");
+                         regex_new, regex_free, t_regex, 0, "*");
 
   class_addlist  (regex_class, regex_symbol);
   zexy_addmethod(regex_class, (t_method)regex_regex, "regex", "*");

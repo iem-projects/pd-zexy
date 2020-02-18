@@ -637,8 +637,7 @@ static t_int *limiter_perform(t_int *w)
         } else {
           *out++ = amp *
                    climit_inv;  /* amp must fit for limiting : amp(new) = limit/maxval; = amp(old)*limitOUT/tresh; */
-        }
-      else {
+        } else {
         *out++ = 1.;
       }
 
@@ -749,7 +748,7 @@ static void limiter_free(t_limiter *x)
 
   freebytes(x->val1, sizeof(t_limctl));
   freebytes(x->val2, sizeof(t_limctl));
-  freebytes(x->cmp , sizeof(t_cmpctl));
+  freebytes(x->cmp, sizeof(t_cmpctl));
 
   while (i < x->number_of_inlets)       {
     freebytes(x->in[i++].ringbuf, x->buf_size * sizeof(t_sample));
@@ -770,7 +769,7 @@ ZEXY_SETUP void limiter_tilde_setup(void)
   init_sinc();
 
   limiter_class = zexy_new("limiter~",
-    limiter_new, limiter_free, t_limiter, 0, "*");
+                           limiter_new, limiter_free, t_limiter, 0, "*");
 
   zexy_addmethod(limiter_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(limiter_class, (t_method)limiter_dsp, "dsp", "!");

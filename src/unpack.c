@@ -54,7 +54,8 @@ static void zunpack_any(t_zunpack *x, t_symbol *s, int argc, t_atom *argv)
   }
 }
 
-static void zunpack_list(t_zunpack *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
+static void zunpack_list(t_zunpack *x, t_symbol *UNUSED(s), int argc,
+                         t_atom *argv)
 {
   zunpack_any(x, 0, argc, argv);
 }
@@ -96,7 +97,7 @@ ZEXY_SETUP void zunpack_setup(void)
 {
 
   zunpack_class = zexy_new("zexy/unpack",
-    zunpack_new, zunpack_free, t_zunpack, 0, "*");
+                           zunpack_new, zunpack_free, t_zunpack, 0, "*");
 #if 0
   /* oops Pd-0.42 allows us to override built-ins
    * this is bad as long as the 2 objects are not compatible */

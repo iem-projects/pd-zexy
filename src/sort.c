@@ -71,7 +71,8 @@ static void sort_buffer(t_sort *x, int argc, t_atom *argv)
   }
 }
 
-static void sort_list(t_sort *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
+static void sort_list(t_sort *x, t_symbol *UNUSED(s), int argc,
+                      t_atom *argv)
 {
   int step = argc, n;
   t_atom *atombuf = (t_atom *)getbytes(sizeof(t_atom) * argc);
@@ -107,19 +108,17 @@ static void sort_list(t_sort *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
   if (x->ascending)
     for (n = 0; n < argc; n++) {
       SETFLOAT(&atombuf[n], idx[n]);
-    }
-  else
+    } else
     for (n = 0, i=argc-1; n < argc; n++, i--) {
       SETFLOAT(&atombuf[n], idx[i]);
     }
 
-  outlet_list(x->indexOut , gensym("list"), n, atombuf);
+  outlet_list(x->indexOut, gensym("list"), n, atombuf);
 
   if (x->ascending)
     for (n = 0; n < argc; n++) {
       SETFLOAT(&atombuf[n], buf[n]);
-    }
-  else
+    } else
     for (n = 0, i=argc-1; n < argc; n++, i--) {
       SETFLOAT(&atombuf[n], buf[i]);
     }
@@ -153,7 +152,7 @@ static void sort_help(t_sort*UNUSED(x))
 ZEXY_SETUP void zexy_sort_setup(void)
 {
   sort_class = zexy_new("sort",
-    sort_new, 0, t_sort, 0, "F");
+                        sort_new, 0, t_sort, 0, "F");
 
   class_addlist    (sort_class, sort_list);
   zexy_addmethod(sort_class, (t_method)sort_dir, "direction", "F");

@@ -272,12 +272,13 @@ static void *lifop_new(void)
 }
 static void lifop_help(t_lifop*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " lifop\t\t:: a Last-In-First-Out queue with priorities");
+  post("\n"HEARTSYMBOL
+       " lifop\t\t:: a Last-In-First-Out queue with priorities");
 }
 ZEXY_SETUP void lifop_setup(void)
 {
   lifop_class = zexy_new("lifop",
-    lifop_new, lifop_free, t_lifop, 0, "");
+                         lifop_new, lifop_free, t_lifop, 0, "");
 
   class_addbang    (lifop_class, lifop_bang);
   class_addlist    (lifop_class, lifop_list);

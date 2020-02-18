@@ -78,7 +78,7 @@ static void mypdlist_free(t_mypdlist *x)
 static t_class* zclass_setup(const char*name)
 {
   t_class *c = zexy_new(name,
-    list2int_new, mypdlist_free, t_mypdlist, 0, "*");
+                        list2int_new, mypdlist_free, t_mypdlist, 0, "*");
   class_addanything(c, list2int_any);
   class_addlist(c, list2int_any);
   class_addbang(c, list2int_bang);

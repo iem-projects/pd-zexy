@@ -164,12 +164,13 @@ static void symbol2list_free(t_symbol2list *UNUSED(x))
 
 static void symbol2list_help(t_symbol2list*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " symbol2list\t:: split a symbol into a list of atoms");
+  post("\n"HEARTSYMBOL
+       " symbol2list\t:: split a symbol into a list of atoms");
 }
 static t_class* zclass_setup(const char*name)
 {
   t_class*c = zexy_new(name,
-    symbol2list_new, symbol2list_free, t_symbol2list, 0, "*");
+                       symbol2list_new, symbol2list_free, t_symbol2list, 0, "*");
   class_addsymbol (c, symbol2list_symbol);
   class_addbang   (c, symbol2list_bang);
   zexy_addmethod(c, (t_method)symbol2list_delimiter, "", "s");

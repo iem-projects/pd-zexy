@@ -122,7 +122,8 @@ static void pdf_free(t_pdf *x)
 
 static void pdf_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL " pdf~\t:: get the probability density function of a signal (-1.0 to +1.0)");
+  post("\n"HEARTSYMBOL
+       " pdf~\t:: get the probability density function of a signal (-1.0 to +1.0)");
   post("'bang'\t  : output a list of the probabilities of 'n' function values"
        "\n'clear'\t  : clear the buffer (set all probabilities to zero)"
        "\n<1/0>\t  : short for 'bang' and 'clear'"
@@ -133,7 +134,7 @@ static void pdf_tilde_helper(void)
 ZEXY_SETUP void pdf_tilde_setup(void)
 {
   pdf_class = zexy_new("pdf~",
-    pdf_new, pdf_free, t_pdf, 0, "F");
+                       pdf_new, pdf_free, t_pdf, 0, "F");
 
   zexy_addmethod(pdf_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(pdf_class, (t_method)pdf_dsp, "dsp", "!");

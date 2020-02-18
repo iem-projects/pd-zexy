@@ -395,7 +395,7 @@ static void *liststorage_new(t_floatarg f)
 ZEXY_SETUP void liststorage_setup(void)
 {
   liststorage_class = zexy_new("liststorage",
-    liststorage_new, liststorage_free, t_liststorage, 0, "F");
+                               liststorage_new, liststorage_free, t_liststorage, 0, "F");
 
   /* recall all lists from the current slot */
   class_addbang(liststorage_class, (t_method)liststorage_bang);
@@ -403,9 +403,11 @@ ZEXY_SETUP void liststorage_setup(void)
   /* add a new list to the current slot */
   zexy_addmethod(liststorage_class, (t_method)liststorage_add, "add", "*");
   /* clear the current slot */
-  zexy_addmethod(liststorage_class, (t_method)liststorage_clear, "clear", "");
+  zexy_addmethod(liststorage_class, (t_method)liststorage_clear, "clear",
+                 "");
   /* clear all slots */
-  zexy_addmethod(liststorage_class, (t_method)liststorage_clearall, "clearall", "");
+  zexy_addmethod(liststorage_class, (t_method)liststorage_clearall,
+                 "clearall", "");
 
 
   /* add a new list to the current slot */
@@ -413,10 +415,12 @@ ZEXY_SETUP void liststorage_setup(void)
 
 
   /* insert an empty slot at (before) given position */
-  zexy_addmethod(liststorage_class, (t_method)liststorage_insert, "insert", "F");
+  zexy_addmethod(liststorage_class, (t_method)liststorage_insert, "insert",
+                 "F");
 
   /* remove empty slots */
-  zexy_addmethod(liststorage_class, (t_method)liststorage_compress, "compress", "");
+  zexy_addmethod(liststorage_class, (t_method)liststorage_compress,
+                 "compress", "");
 
 
   /* get the number of slots */

@@ -68,12 +68,12 @@ static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
       for(j=0; j<4; j++) {
         if(fabsf(out1[i].f[j]-out2[i].f[j])>1e-17) {
           verbose(2,
-                    "generic and optimized routines return different results: skipping optimization");
+                  "generic and optimized routines return different results: skipping optimization");
           verbose(2, "[%d,%d]: ((%f->%f)!=(%f->%f))",
-                    i, j,
-                    in1[i].f[j], out1[i].f[j],
-                    in2[i].f[j], out2[i].f[j]
-                   );
+                  i, j,
+                  in1[i].f[j], out1[i].f[j],
+                  in2[i].f[j], out2[i].f[j]
+                 );
           return 0;
         }
       }

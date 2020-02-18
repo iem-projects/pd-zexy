@@ -81,7 +81,8 @@ static void blockswap_dsp(t_blockswap *x, t_signal **sp)
 
 static void blockswap_helper(t_blockswap* UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " blockswap~-object for blockwise-swapping of a signal ");
+  post("\n"HEARTSYMBOL
+       " blockswap~-object for blockwise-swapping of a signal ");
   post("'help' : view this\n"
        "signal~");
   post("outlet : signal~");
@@ -107,7 +108,7 @@ static void *blockswap_new(void)
 ZEXY_SETUP void blockswap_tilde_setup(void)
 {
   blockswap_class = zexy_new("blockswap~",
-    blockswap_new, blockswap_free, t_blockswap, 0, "");
+                             blockswap_new, blockswap_free, t_blockswap, 0, "");
   zexy_addmethod(blockswap_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(blockswap_class, (t_method)blockswap_dsp, "dsp", "!");
 

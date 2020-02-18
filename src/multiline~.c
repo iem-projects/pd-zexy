@@ -287,13 +287,14 @@ static void *mline_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 static void mline_help(t_mline*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " multiline~\t:: ramped multiplication of multiple signals");
+  post("\n"HEARTSYMBOL
+       " multiline~\t:: ramped multiplication of multiple signals");
 }
 
 ZEXY_SETUP void multiline_tilde_setup(void)
 {
   mline_class = zexy_new("multiline~",
-    mline_new, mline_free, t_mline, 0, "*");
+                         mline_new, mline_free, t_mline, 0, "*");
 
   zexy_addmethod(mline_class, (t_method)mline_dsp, "dsp", "!");
   zexy_addmethod(mline_class, (t_method)nullfn, "signal", "");

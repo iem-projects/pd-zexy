@@ -61,7 +61,7 @@ static void *repeat_new(t_symbol* UNUSED(s), int argc, t_atom*argv)
 ZEXY_SETUP void repeat_setup(void)
 {
   repeat_class = zexy_new("repeat",
-    repeat_new, 0, t_repeat, 0, "*");
+                          repeat_new, 0, t_repeat, 0, "*");
   class_addanything(repeat_class, repeat_anything);
 
   zexy_register("repeat");

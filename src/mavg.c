@@ -44,8 +44,9 @@ static void mavg_resize(t_mavg *x, t_float f)
     pd_error(x, "unable to allocate memory for %d elements", i);
     return;
   }
-  if(x->buf)
+  if(x->buf) {
     freebytes(x->buf, sizeof(t_float)*x->size);
+  }
   x->buf = x->wp = dumbuf;
   x->size = i;
   x->n_inv = 1.0/(t_float)i;
@@ -61,8 +62,9 @@ static void mavg_set(t_mavg *x, t_symbol* UNUSED(s), int argc,
   int i = x->size;
   t_float *dummy = x->buf;
   t_float f=(argc)?atom_getfloat(argv):x->avg;
-  if(!x->buf)
+  if(!x->buf) {
     return;
+  }
 
   while (i--) {
     *dummy++=f;
@@ -76,8 +78,9 @@ static void mavg_float(t_mavg *x, t_float f)
   int i = x->size;
   t_float dummy = 0;
   t_float *dumb = x->buf;
-  if(!x->buf)
+  if(!x->buf) {
     return;
+  }
 
   *x->wp++ = f;
   if (x->wp == x->buf + x->size) {
@@ -118,7 +121,7 @@ static void mavg_help(void)
 ZEXY_SETUP void mavg_setup(void)
 {
   mavg_class = zexy_new("mavg",
-    mavg_new, 0, t_mavg, 0, "F");
+                        mavg_new, 0, t_mavg, 0, "F");
 
   class_addfloat(mavg_class, (t_method)mavg_float);
 
