@@ -106,7 +106,7 @@ static void *blockswap_new(void)
 
 ZEXY_SETUP void blockswap_tilde_setup(void)
 {
-  blockswap_class = class_new(gensym("blockswap~"), (t_newmethod)blockswap_new, (t_method)blockswap_free, sizeof(t_blockswap), 0, A_NULL);
+  blockswap_class = zexy_new("blockswap~", blockswap_new, blockswap_free, t_blockswap, 0, "");
   zexy_addmethod(blockswap_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(blockswap_class, (t_method)blockswap_dsp, "dsp", "!");
 

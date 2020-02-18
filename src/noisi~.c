@@ -176,7 +176,7 @@ static void *noisi_new(t_floatarg f)
 
 ZEXY_SETUP void noisi_tilde_setup(void)
 {
-  noisi_class = class_new(gensym("noisi~"), (t_newmethod)noisi_new, 0, sizeof(t_nois), 0, A_DEFFLOAT, A_NULL);
+  noisi_class = zexy_new("noisi~", noisi_new, 0, t_nois, 0, "F");
 
   class_addfloat(noisi_class, set_noisfreq);
   zexy_addmethod(noisi_class, (t_method)noisi_dsp, "dsp", "!");

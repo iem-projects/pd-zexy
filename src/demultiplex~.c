@@ -115,7 +115,7 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 }
 static t_class* zclass_setup(const char*name)
 {
-  t_class *c = class_new(gensym(name), (t_newmethod)demux_new, (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
+  t_class *c = zexy_new(name, demux_new, demux_free, t_demux, 0, "*");
   class_addfloat(c, demux_output);
   zexy_addmethod(c, (t_method)demux_dsp, "dsp", "!");
   zexy_addmethod(c, (t_method)nullfn, "signal", "");

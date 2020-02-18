@@ -92,7 +92,7 @@ static void sigpack_help(void)
 
 ZEXY_SETUP void pack_tilde_setup(void)
 {
-  sigpack_class = class_new(gensym("pack~"), (t_newmethod)sigpack_new, (t_method)sigpack_free, sizeof(t_sigpack), 0, A_NULL);
+  sigpack_class = zexy_new("pack~", sigpack_new, sigpack_free, t_sigpack, 0, "");
   zexy_addmethod(sigpack_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sigpack_class, (t_method)sigpack_dsp, "dsp", "!");
 

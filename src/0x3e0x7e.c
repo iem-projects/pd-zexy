@@ -244,13 +244,13 @@ static void gt_tilde_help(t_object* UNUSED(x))
 
 ZEXY_SETUP void setup_0x3e0x7e(void)
 {
-  gt_tilde_class = class_new(gensym(">~"), (t_newmethod)gt_tilde_new, 0, sizeof(t_gt_tilde), 0, A_GIMME, 0);
+  gt_tilde_class = zexy_new(">~", gt_tilde_new, 0, t_gt_tilde, 0, "*");
   zexy_addmethod(gt_tilde_class, (t_method)gt_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(gt_tilde_class, t_gt_tilde, x_f);
   zexy_addmethod(gt_tilde_class, (t_method)gt_tilde_help, "help", "");
   class_sethelpsymbol(gt_tilde_class, gensym("zigbinops"));
 
-  scalargt_tilde_class = class_new(gensym(">~"), 0, 0, sizeof(t_scalargt_tilde), 0, 0);
+  scalargt_tilde_class = zexy_new(">~", 0, 0, t_scalargt_tilde, 0, "");
   CLASS_MAINSIGNALIN(scalargt_tilde_class, t_scalargt_tilde, x_f);
   zexy_addmethod(scalargt_tilde_class, (t_method)scalargt_tilde_dsp, "dsp", "!");
   zexy_addmethod(scalargt_tilde_class, (t_method)gt_tilde_help, "help", "");

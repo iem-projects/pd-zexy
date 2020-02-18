@@ -139,7 +139,7 @@ static void zexy_help(void)
   endpost();
 }
 
-static void *zexy_new(void)
+static void *zexy_ctor(void)
 {
   t_zexy *x = (t_zexy *)pd_new(zexy_class);
   return (x);
@@ -167,7 +167,7 @@ void zexy_setup(void)
   endpost();
   endpost();
 
-  zexy_class = class_new(gensym("zexy"), (t_newmethod)zexy_new, 0, sizeof(t_zexy), 0, 0);
+  zexy_class = zexy_new("zexy", zexy_ctor, 0, t_zexy, 0, "");
   zexy_addmethod(zexy_class, (t_method)zexy_help, "help", "");
 
   zexy_register("zexy");

@@ -75,7 +75,7 @@ static void tavg_help(void)
 
 ZEXY_SETUP void tavg_tilde_setup(void)
 {
-  tavg_class = class_new(gensym("tavg~"), (t_newmethod)tavg_new, 0, sizeof(t_tavgtilde), 0, A_NULL);
+  tavg_class = zexy_new("tavg~", tavg_new, 0, t_tavgtilde, 0, "");
   zexy_addmethod(tavg_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(tavg_class, (t_method)tavg_dsp, "dsp", "!");
 

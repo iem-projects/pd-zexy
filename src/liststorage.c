@@ -394,7 +394,7 @@ static void *liststorage_new(t_floatarg f)
 
 ZEXY_SETUP void liststorage_setup(void)
 {
-  liststorage_class = class_new(gensym("liststorage"), (t_newmethod)liststorage_new, (t_method)liststorage_free, sizeof(t_liststorage), 0, A_DEFFLOAT, 0);
+  liststorage_class = zexy_new("liststorage", liststorage_new, liststorage_free, t_liststorage, 0, "F");
 
   /* recall all lists from the current slot */
   class_addbang(liststorage_class, (t_method)liststorage_bang);

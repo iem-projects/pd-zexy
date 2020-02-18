@@ -224,7 +224,7 @@ static void listfind_help(t_listfind*UNUSED(x))
 
 ZEXY_SETUP void listfind_setup(void)
 {
-  listfind_class = class_new(gensym("listfind"), (t_newmethod)listfind_new, (t_method)listfind_free, sizeof(t_listfind), 0, A_GIMME, 0);
+  listfind_class = zexy_new("listfind", listfind_new, listfind_free, t_listfind, 0, "*");
   class_addlist    (listfind_class, listfind_list);
   zexy_addmethod(listfind_class, (t_method)listfind_list2, "lst2", "*");
 
