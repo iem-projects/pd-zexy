@@ -56,7 +56,7 @@ void  niagara_setup(void);               /*  niagara.c           */
 void  noish_tilde_setup(void);           /*  noish~.c            */
 void  noisi_tilde_setup(void);           /*  noisi~.c            */
 void  operating_system_setup(void);      /*  operating_system.c  */
-void  pack_setup(void);                  /*  pack.c              */
+void  zpack_setup(void);                 /*  pack.c              */
 void  packel_setup(void);                /*  packel.c            */
 void  pack_tilde_setup(void);            /*  pack~.c             */
 void  pdf_tilde_setup(void);             /*  pdf~.c              */
@@ -73,6 +73,7 @@ void  sfrecord_setup(void);              /*  sfrecord.c          */
 void  sgn_tilde_setup(void);             /*  sgn~.c              */
 void  sigzero_tilde_setup(void);         /*  sigzero~.c          */
 void  sleepgrain_setup(void);            /*  sleepgrain.c        */
+void  zexy_sort_setup(void);             /*  sort.c              */
 void  step_tilde_setup(void);            /*  step~.c             */
 void  strcmp_setup(void);                /*  strcmp.c            */
 void  sum_setup(void);                   /*  sum.c               */
@@ -84,7 +85,7 @@ void  tabread4_tilde_tilde_setup(void);  /*  tabread4~~.c        */
 void  tabset_setup(void);                /*  tabset.c            */
 void  tavg_tilde_setup(void);            /*  tavg~.c             */
 void  time_setup(void);                  /*  time.c              */
-void  unpack_setup(void);                /*  unpack.c            */
+void  zunpack_setup(void);               /*  unpack.c            */
 void  unpack_tilde_setup(void);          /*  unpack~.c           */
 void  urn_setup(void);                   /*  urn.c               */
 void  wrap_setup(void);                  /*  wrap.c              */
@@ -144,7 +145,7 @@ void z_zexy_setup(void)
   noish_tilde_setup();
   noisi_tilde_setup();
   operating_system_setup();
-  pack_setup();
+  zpack_setup();
   packel_setup();
   pack_tilde_setup();
   pdf_tilde_setup();
@@ -161,6 +162,7 @@ void z_zexy_setup(void)
   sgn_tilde_setup();
   sigzero_tilde_setup();
   sleepgrain_setup();
+  zexy_sort_setup();
   step_tilde_setup();
   strcmp_setup();
   sum_setup();
@@ -172,7 +174,7 @@ void z_zexy_setup(void)
   tabset_setup();
   tavg_tilde_setup();
   time_setup();
-  unpack_setup();
+  zunpack_setup();
   unpack_tilde_setup();
   urn_setup();
   wrap_setup();
