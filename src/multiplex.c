@@ -131,7 +131,7 @@ static void dosetup()
   zexy_register("multiplex");
   mux_class=zclass_setup("multiplex");
   zclass_setup("mux");
-  muxproxy_class = class_new(0, 0, 0,
+  muxproxy_class = class_new(gensym("multiplex proxy"), 0, 0,
                              sizeof(t_muxproxy),
                              CLASS_PD | CLASS_NOINLET, 0);
   class_addanything(muxproxy_class, mux_anything);
