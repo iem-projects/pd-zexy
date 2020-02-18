@@ -30,7 +30,7 @@ typedef struct _eq_tilde {
 typedef struct _scalareq_tilde {
   t_object x_obj;
   t_float x_f;
-  t_float x_g;    	    /* inlet value */
+  t_float x_g;              /* inlet value */
 } t_scalareq_tilde;
 
 static void *eq_tilde_new(t_symbol* UNUSED(s), int argc, t_atom *argv)

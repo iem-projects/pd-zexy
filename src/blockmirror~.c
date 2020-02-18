@@ -42,7 +42,7 @@ static void blockmirror_float(t_blockmirror *x, t_floatarg f)
 
 static t_int *blockmirror_perform(t_int *w)
 {
-  t_blockmirror	*x = (t_blockmirror *)(w[1]);
+  t_blockmirror *x = (t_blockmirror *)(w[1]);
   t_sample *in = (t_sample *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);

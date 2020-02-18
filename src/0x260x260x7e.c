@@ -33,7 +33,7 @@ typedef struct _andand_tilde {
 typedef struct _scalarandand_tilde {
   t_object x_obj;
   t_float x_f;
-  t_float x_g;    	    /* inlet value */
+  t_float x_g;              /* inlet value */
 } t_scalarandand_tilde;
 
 static void *andand_tilde_new(t_symbol * UNUSED(s), int argc, t_atom *argv)

@@ -38,7 +38,7 @@ static t_int *sgnTilde_perform(t_int *w)
     x=*in++;
     if (x>0.) {
       *out++=1.;
-    } else if	(x<0.) {
+    } else if (x<0.) {
       *out++=-1.;
     } else {
       *out++=0.;
@@ -197,14 +197,14 @@ static void *sgnTilde_new(void)
 
 ZEXY_SETUP void sgn_tilde_setup(void)
 {
-  sgnTilde_class = class_new(gensym("sgn~"), (t_newmethod)sgnTilde_new, 0,
-                             sizeof(t_sgnTilde), 0, A_NULL);
+  sgnTilde_class = class_new(gensym("sgn~"),
+                             (t_newmethod)sgnTilde_new, 0,
+                             sizeof(t_sgnTilde), 0,
+                             A_NULL);
   class_addmethod(sgnTilde_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sgnTilde_class, (t_method)sgnTilde_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  class_addmethod(sgnTilde_class, (t_method)sgnTilde_dsp, gensym("dsp"), A_CANT, 0);
 
-  class_addmethod(sgnTilde_class, (t_method)sgnTilde_helper, gensym("help"),
-                  0);
+  class_addmethod(sgnTilde_class, (t_method)sgnTilde_helper, gensym("help"), 0);
   class_sethelpsymbol(sgnTilde_class, gensym("zigbinops"));
   zexy_register("sgn~");
 }

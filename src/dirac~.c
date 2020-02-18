@@ -24,12 +24,12 @@
 /*
  * This external makes the two main test-functions available :
  * dirac~: will make a single peak (eg: a 1 in all the 0s) at
- *	   a desired position in the signal-vector
- *	   the position can be passed as an argument when creating the object
+ *         a desired position in the signal-vector
+ *         the position can be passed as an argument when creating the object
  *
  * NOTE : the inlets do NOT specify any times but sample-NUMBERS;
- *	  there are 64 samples in a "standard" signal-vector,
- *	  each "lasting" for 1/44100 secs.
+ *        there are 64 samples in a "standard" signal-vector,
+ *        each "lasting" for 1/44100 secs.
  */
 
 #include "zexy.h"

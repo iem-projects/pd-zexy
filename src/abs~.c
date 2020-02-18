@@ -73,39 +73,39 @@ static t_int *sigABS_performSSE(t_int *w)
    * assembler
    */
   asm(
-    ".section	.rodata             \n"
-    ".align 16                    \n"
-    "2:                           \n"
-    ".long	2147483647          \n" /* bitmask */
-    ".long	2147483647          \n" /* 0x7fffffff */
-    ".long	2147483647          \n"
-    ".long	2147483647          \n"
+    ".section .rodata         \n"
+    ".align   16              \n"
+    "2:                       \n"
+    ".long    2147483647      \n" /* bitmask */
+    ".long    2147483647      \n" /* 0x7fffffff */
+    ".long    2147483647      \n"
+    ".long    2147483647      \n"
 
-    ".text                        \n"
+    ".text                    \n"
 
-    "movaps    (2b), %%xmm0       \n" /* xmm0 = bitmask */
-    "shrl      $4, %2             \n"
+    "movaps  (2b), %%xmm0     \n" /* xmm0 = bitmask */
+    "shrl    $4, %2           \n"
 
     /* loop: *dest = abs(*src) */
-    "1:                           \n"
-    "movaps    (%0,%3), %%xmm1    \n"
-    "andps     %%xmm0, %%xmm1     \n"
-    "movaps    %%xmm1, (%1,%3)    \n"
+    "1:                       \n"
+    "movaps  (%0,%3), %%xmm1  \n"
+    "andps   %%xmm0, %%xmm1   \n"
+    "movaps  %%xmm1, (%1,%3)  \n"
 
-    "movaps    16(%0,%3), %%xmm2  \n"
-    "andps     %%xmm0, %%xmm2     \n"
-    "movaps    %%xmm2, 16(%1,%3)  \n"
+    "movaps  16(%0,%3), %%xmm2\n"
+    "andps   %%xmm0, %%xmm2   \n"
+    "movaps  %%xmm2, 16(%1,%3)\n"
 
-    "movaps    32(%0,%3), %%xmm3  \n"
-    "andps     %%xmm0, %%xmm3     \n"
-    "movaps    %%xmm3, 32(%1,%3)  \n"
+    "movaps  32(%0,%3), %%xmm3\n"
+    "andps   %%xmm0, %%xmm3   \n"
+    "movaps  %%xmm3, 32(%1,%3)\n"
 
-    "movaps    48(%0,%3), %%xmm4  \n"
-    "andps     %%xmm0, %%xmm4     \n"
-    "movaps    %%xmm4, 48(%1,%3)  \n"
+    "movaps  48(%0,%3), %%xmm4\n"
+    "andps   %%xmm0, %%xmm4   \n"
+    "movaps  %%xmm4, 48(%1,%3)\n"
 
-    "addl      $64, %3            \n"
-    "loop      1b                 \n"
+    "addl    $64, %3          \n"
+    "loop    1b               \n"
     :
     :"r"(in), "r"(out), "c"(n), "r"(0)
     :"%xmm0", "%xmm1", "%xmm2", "%xmm3", "%xmm4"
@@ -155,8 +155,7 @@ ZEXY_SETUP void abs_tilde_setup(void)
   sigABS_class = class_new(gensym("abs~"), (t_newmethod)sigABS_new, 0,
                            sizeof(t_abs), 0, A_NULL);
   CLASS_MAINSIGNALIN(sigABS_class, t_abs, x_f);
-  class_addmethod(sigABS_class, (t_method)sigABS_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  class_addmethod(sigABS_class, (t_method)sigABS_dsp, gensym("dsp"), A_CANT, 0);
 
   class_addmethod(sigABS_class, (t_method)sigABS_helper, gensym("help"), 0);
   class_sethelpsymbol(sigABS_class, gensym("zigbinops"));

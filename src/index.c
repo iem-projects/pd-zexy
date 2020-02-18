@@ -385,23 +385,17 @@ ZEXY_SETUP void index_setup(void)
 
   class_addsymbol(index_class, index_symbol);
 
-  class_addmethod(index_class, (t_method)index_reset,  gensym("reset"), 0);
-  class_addmethod(index_class, (t_method)index_delete, gensym("delete"),
-                  A_GIMME, 0);
-  /*  class_addmethod(index_class, (t_method)index_add,	 gensym("add"), A_SYMBOL, 0); */
-  class_addmethod(index_class, (t_method)index_add,	 gensym("add"), A_SYMBOL,
-                  A_DEFFLOAT, 0);
+  class_addmethod(index_class, (t_method)index_reset, gensym("reset"), 0);
+  class_addmethod(index_class, (t_method)index_delete, gensym("delete"), A_GIMME, 0);
+  class_addmethod(index_class, (t_method)index_add, gensym("add"), A_SYMBOL, A_DEFFLOAT, 0);
 
-  class_addmethod(index_class, (t_method)index_auto,	 gensym("auto"),
-                  A_FLOAT, 0);
-  class_addmethod(index_class, (t_method)index_resize,	 gensym("resize"),
-                  A_FLOAT, 0);
+  class_addmethod(index_class, (t_method)index_auto, gensym("auto"), A_FLOAT, 0);
+  class_addmethod(index_class, (t_method)index_resize, gensym("resize"), A_FLOAT, 0);
 
   class_addfloat(index_class,  (t_method)index_float);
   class_addbang(index_class,   (t_method)index_bang);
   class_addmethod(index_class, (t_method)index_sort,  gensym("sort"), 0);
-  class_addmethod(index_class, (t_method)index_compact,  gensym("compact"),
-                  0);
+  class_addmethod(index_class, (t_method)index_compact,  gensym("compact"), 0);
   class_addmethod(index_class, (t_method)index_dump,  gensym("dump"), 0);
 
   class_addmethod(index_class, (t_method)index_helper, gensym("help"), 0);

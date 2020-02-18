@@ -29,16 +29,16 @@
 t_class *sigenvrms_class=NULL;
 
 typedef struct sigenvrms {
-  t_object x_obj; 	    	    /* header */
-  void *x_outlet;		    /* a "float" outlet */
-  void *x_clock;		    /* a "clock" object */
-  t_sample *x_buf;		    /* a Hanning window */
-  int x_phase;		    /* number of points since last output */
-  int x_period;		    /* requested period of output */
-  int x_realperiod;		    /* period rounded up to vecsize multiple */
-  int x_npoints;		    /* analysis window size in samples */
-  t_float x_result;		    /* result to output */
-  t_sample x_sumbuf[MAXOVERLAP];	    /* summing buffer */
+  t_object x_obj;                /* header */
+  void *x_outlet;                /* a "float" outlet */
+  void *x_clock;                 /* a "clock" object */
+  t_sample *x_buf;               /* a Hanning window */
+  int x_phase;                   /* number of points since last output */
+  int x_period;                  /* requested period of output */
+  int x_realperiod;              /* period rounded up to vecsize multiple */
+  int x_npoints;                 /* analysis window size in samples */
+  t_float x_result;              /* result to output */
+  t_sample x_sumbuf[MAXOVERLAP]; /* summing buffer */
 } t_sigenvrms;
 
 static void sigenvrms_tick(t_sigenvrms *x);
@@ -132,13 +132,14 @@ static void sigenvrms_dsp(t_sigenvrms *x, t_signal **sp)
   }
 }
 
-static void sigenvrms_tick(t_sigenvrms
-                           *x)	/* callback function for the clock */
+    /* callback function for the clock */
+static void sigenvrms_tick(t_sigenvrms *x)
 {
   outlet_float(x->x_outlet, sqrtf(x->x_result));
 }
 
-static void sigenvrms_ff(t_sigenvrms *x)		/* cleanup on free */
+    /* cleanup on free */
+static void sigenvrms_ff(t_sigenvrms *x)
 {
   clock_free(x->x_clock);
   freebytes(x->x_buf, (x->x_npoints + MAXVSTAKEN) * sizeof(*x->x_buf));
@@ -153,12 +154,11 @@ static void sigenvrms_help(void)
 ZEXY_SETUP void envrms_tilde_setup(void)
 {
   sigenvrms_class = class_new(gensym("envrms~"), (t_newmethod)sigenvrms_new,
-                              (t_method)sigenvrms_ff, sizeof(t_sigenvrms), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+                              (t_method)sigenvrms_ff, sizeof(t_sigenvrms),
+                              0, A_DEFFLOAT, A_DEFFLOAT, 0);
   class_addmethod(sigenvrms_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sigenvrms_class, (t_method)sigenvrms_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  class_addmethod(sigenvrms_class, (t_method)sigenvrms_dsp, gensym("dsp"), A_CANT, 0);
 
-  class_addmethod(sigenvrms_class, (t_method)sigenvrms_help, gensym("help"),
-                  0);
+  class_addmethod(sigenvrms_class, (t_method)sigenvrms_help, gensym("help"), 0);
   zexy_register("envrms~");
 }

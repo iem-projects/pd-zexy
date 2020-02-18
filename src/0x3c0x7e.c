@@ -33,7 +33,7 @@ typedef struct _lt_tilde {
 typedef struct _scalarlt_tilde {
   t_object x_obj;
   t_float x_f;
-  t_float x_g;    	    /* inlet value */
+  t_float x_g;              /* inlet value */
 } t_scalarlt_tilde;
 
 static void *lt_tilde_new(t_symbol *UNUSED(s), int argc, t_atom *argv)

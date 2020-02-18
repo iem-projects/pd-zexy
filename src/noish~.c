@@ -118,7 +118,7 @@ static t_int *noish_perform(t_int *w)
   } else {
     /* anything else */
     while (n--) {
-      if (still_to_go-- <= 0) {	/* update only if all time has elapsed */
+      if (still_to_go-- <= 0) { /* update only if all time has elapsed */
         still_to_go += all_to_go;
 
         i_value *= 435898247;

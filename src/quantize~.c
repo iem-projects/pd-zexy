@@ -55,7 +55,7 @@ static void quantize_8bit(t_quantize *x)
 
 static t_int *quantize_perform(t_int *w)
 {
-  t_quantize	*x = (t_quantize *)(w[1]);
+  t_quantize *x = (t_quantize *)(w[1]);
   t_sample *in = (t_sample *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
@@ -110,16 +110,12 @@ ZEXY_SETUP void quantize_tilde_setup(void)
                              0,
                              sizeof(t_quantize), 0, A_DEFFLOAT, 0);
   class_addmethod(quantize_class, nullfn, gensym("signal"), 0);
-  class_addmethod(quantize_class, (t_method)quantize_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  class_addmethod(quantize_class, (t_method)quantize_dsp, gensym("dsp"), A_CANT, 0);
 
   class_addfloat(quantize_class, quantize_float);
-  class_addmethod(quantize_class, (t_method)quantize_8bit, gensym("8bit"),
-                  0);
-  class_addmethod(quantize_class, (t_method)quantize_16bit, gensym("16bit"),
-                  0);
+  class_addmethod(quantize_class, (t_method)quantize_8bit, gensym("8bit"), 0);
+  class_addmethod(quantize_class, (t_method)quantize_16bit, gensym("16bit"), 0);
 
-  class_addmethod(quantize_class, (t_method)quantize_tilde_helper,
-                  gensym("help"), 0);
+  class_addmethod(quantize_class, (t_method)quantize_tilde_helper, gensym("help"), 0);
   zexy_register("quantize~");
 }

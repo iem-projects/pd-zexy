@@ -258,7 +258,7 @@ static void lpt_bang(t_lpt *x)
     outlet_float(x->x_obj.ob_outlet, (t_float)b);
   } else
 #endif
-    if (x->port)	{
+    if (x->port) {
       outlet_float(x->x_obj.ob_outlet, (t_float)sys_inb(x->port+1));
     }
 }
@@ -430,8 +430,7 @@ ZEXY_SETUP void lpt_setup(void)
   //class_addcreator((t_newmethod)lpt_new, gensym("lp"), A_GIMME, 0);
 
   class_addfloat(lpt_class, (t_method)lpt_float);
-  class_addmethod(lpt_class, (t_method)lpt_control, gensym("control"),
-                  A_FLOAT, 0);
+  class_addmethod(lpt_class, (t_method)lpt_control, gensym("control"), A_FLOAT, 0);
   class_addbang(lpt_class, (t_method)lpt_bang);
 
   class_addmethod(lpt_class, (t_method)lpt_helper, gensym("help"), 0);

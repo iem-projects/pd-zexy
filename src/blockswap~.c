@@ -41,7 +41,7 @@ static void blockswap_float(t_blockswap *x, t_floatarg f)
 
 static t_int *blockswap_perform(t_int *w)
 {
-  t_blockswap	*x = (t_blockswap *)(w[1]);
+  t_blockswap *x = (t_blockswap *)(w[1]);
   t_sample *in = (t_sample *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int N = (int)(w[4]);

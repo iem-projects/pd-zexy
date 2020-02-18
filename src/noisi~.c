@@ -95,12 +95,12 @@ static t_int *noisi_perform(t_int *w)
   t_sample all_to_go = x->updater;
   t_sample still_to_go = x->to_go;
 
-  if (all_to_go == 1)	{
+  if (all_to_go == 1) {
     /* this is "pure white" noise, so we have to calculate each sample */
     while (n--) {
       *out++ = int2sample(i_value=update_intNoise(i_value));
     }
-  }  else if (n < still_to_go)   {
+  }  else if (n < still_to_go) {
     /* signal won't change for the next 64 samples */
     still_to_go -= n;
     while (n--) {
@@ -108,7 +108,7 @@ static t_int *noisi_perform(t_int *w)
     }
   }  else if (all_to_go + still_to_go > n) {
     /* only one update calculation necessary for 64 samples !!! */
-    while (still_to_go-- > 0)	{
+    while (still_to_go-- > 0) {
       n--;
       *out++ = (f_value -= decrement);
     }
@@ -117,14 +117,14 @@ static t_int *noisi_perform(t_int *w)
     still_to_go += all_to_go + 1;
     decrement = (f_value - int2sample(i_value))  / all_to_go;
 
-    while (n--)	{
+    while (n--) {
       still_to_go--;
       *out++ = (f_value -= decrement);
     }
   }  else {
     /* anything else */
-    while (n--)	{
-      if (still_to_go-- <= 0) {		/* update only if all time has elapsed */
+    while (n--) {
+      if (still_to_go-- <= 0) {  /* update only if all time has elapsed */
         still_to_go += all_to_go;
         f_value=int2sample(i_value);
         i_value=update_intNoise(i_value);

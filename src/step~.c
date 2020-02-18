@@ -18,15 +18,16 @@
  */
 
 /*
-  step~  : will make a unity step at a desired point in the signal-vector; the second input specifies a
-  length:	after the so-specified time has elapsed, the step will toggle back to the previous
-  value;
-  the length can be passed as an argument when creating the object
-  with length==1 you might do the dirac~ thing a little bit more complicated
-  with length==0 the output just toggles between 0 and 1 every time you bang the object
+  step~ : will make a unity step at a desired point in the signal-vector;
+           the second input specifies a
+  length: after the so-specified time has elapsed,
+          the step will toggle back to the previous value;
+          the length can be passed as an argument when creating the object
+          with length==1 you might do the dirac~ thing a little bit more complicated
+          with length==0 the output just toggles between 0 and 1 every time you bang the object
 
-  NOTE : the inlets do NOT specify any times but sample-NUMBERS; there are 64 samples in a signal-vector,
-  each "lasting" for 1/44100 secs.
+  NOTE  : the inlets do NOT specify any times but sample-NUMBERS;
+          there are 64 samples in a signal-vector, each "lasting" for 1/44100 secs.
 */
 
 #include "zexy.h"
@@ -136,10 +137,8 @@ ZEXY_SETUP void step_tilde_setup(void)
 
   class_addfloat(step_class, step_float);
   class_addbang(step_class, step_bang);
-  class_addmethod(step_class, (t_method)step_setlength, gensym("ft1"),
-                  A_FLOAT, 0);
-  class_addmethod(step_class, (t_method)step_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  class_addmethod(step_class, (t_method)step_setlength, gensym("ft1"), A_FLOAT, 0);
+  class_addmethod(step_class, (t_method)step_dsp, gensym("dsp"), A_CANT, 0);
 
   class_addmethod(step_class, (t_method)step_helper, gensym("help"), 0);
 

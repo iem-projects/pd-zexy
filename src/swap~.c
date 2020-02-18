@@ -49,11 +49,10 @@ static void swap_bang(t_swap *x)
 
 static t_int *swap_perform(t_int *w)
 {
-  t_swap	*x = (t_swap *)(w[1]);
+  t_swap *x = (t_swap *)(w[1]);
   t_sample *in = (t_sample *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
-
 
   if (x->swapper)
     while (n--) {
@@ -96,8 +95,7 @@ ZEXY_SETUP void swap_tilde_setup(void)
   swap_class = class_new(gensym("swap~"), (t_newmethod)swap_new, 0,
                          sizeof(t_swap), 0, A_NULL);
   class_addmethod(swap_class, nullfn, gensym("signal"), 0);
-  class_addmethod(swap_class, (t_method)swap_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  class_addmethod(swap_class, (t_method)swap_dsp, gensym("dsp"), A_CANT, 0);
 
   class_addfloat(swap_class, swap_float);
   class_addbang(swap_class, swap_bang);

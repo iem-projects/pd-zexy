@@ -36,14 +36,14 @@ zmoelnig@iem.kug.ac.at
 
 /* #include "m_imp.h" */
 
-#define DACBLKSIZE 64	/* in m_imp.h, but error if it is included it here*/
+#define DACBLKSIZE 64   /* in m_imp.h, but error if it is included it here*/
 
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
 
 /* ------------------------ sfrecord ----------------------------- */
-#define MAX_CHANS 8		/* channels for soundfiles 1,2,4,8 */
+#define MAX_CHANS 8             /* channels for soundfiles 1,2,4,8 */
 
 #ifdef __WIN32__
 # define BINWRITEMODE "wb"
@@ -62,36 +62,36 @@ typedef struct _sfrecord {
   t_symbol* filename; /* filename */
 
   /*
-  	because there is no command queue,
-  	flags are used instead
+        because there is no command queue,
+        flags are used instead
   */
-  t_int write;		/* write: 1, stop: 0 */
-  t_int please_stop;	/* can be reset only by stop-state itself */
-  t_int please_close;	/* can be reset only by close-state */
-  t_int x_channels;	/* channels to write */
-  t_float x_offset;	/* offset to start writing */
-  t_float offset;		/* inlet value offset in secs */
-  t_float x_skip;		/* skip bytes because header */
-  t_int skip;			/* pending skip if 1 */
-  t_float x_speed;	/* write speed, not supported in this version */
-  t_int size;			/* size of file (if memory mapped) */
-  t_int swap;			/* swap bytes from l->b or b->m */
-  FILE *fp;			/* file oper non-NULL of open */
-  t_int state;		/* which state is writer in */
-  t_int count;		/* count for ticks before next step */
+  t_int write;         /* write: 1, stop: 0 */
+  t_int please_stop;   /* can be reset only by stop-state itself */
+  t_int please_close;  /* can be reset only by close-state */
+  t_int x_channels;    /* channels to write */
+  t_float x_offset;    /* offset to start writing */
+  t_float offset;      /* inlet value offset in secs */
+  t_float x_skip;      /* skip bytes because header */
+  t_int skip;          /* pending skip if 1 */
+  t_float x_speed;     /* write speed, not supported in this version */
+  t_int size;          /* size of file (if memory mapped) */
+  t_int swap;          /* swap bytes from l->b or b->m */
+  FILE *fp;            /* file oper non-NULL of open */
+  t_int state;         /* which state is writer in */
+  t_int count;         /* count for ticks before next step */
 
 } t_sfrecord;
 
 /* states of statemachine */
-#define SFRECORD_WAIT	0		/* wait for open */
-#define SFRECORD_OPEN	1
-#define SFRECORD_CLOSE	2
-#define SFRECORD_SKIP	3
-#define SFRECORD_WRITE	4
-#define SFRECORD_STOP	5
-#define SFRECORD_ERROR	-1
+#define SFRECORD_WAIT   0  /* wait for open */
+#define SFRECORD_OPEN   1
+#define SFRECORD_CLOSE  2
+#define SFRECORD_SKIP   3
+#define SFRECORD_WRITE  4
+#define SFRECORD_STOP   5
+#define SFRECORD_ERROR -1
 
-#define SFRECORD_WAITTICKS 10	/* 1 tick of 64 Samples is ca.1.5ms on 441000 */
+#define SFRECORD_WAITTICKS 10   /* 1 tick of 64 Samples is ca.1.5ms on 441000 */
 
 /* split the os-calls in as many steps as possible
 to split them on different ticks in steps of SFRECORD_WAITTICKS
@@ -309,7 +309,7 @@ static t_int *sfrecord_perform(t_int *w)
     };
     break;
 
-  case SFRECORD_STOP:		/* in stop state mainly waits for write */
+  case SFRECORD_STOP: /* in stop state mainly waits for write */
 
     x->please_stop = 0;
 
@@ -337,11 +337,11 @@ static t_int *sfrecord_perform(t_int *w)
     }
     break;
 
-  case SFRECORD_WRITE:				/* yes write now */
+  case SFRECORD_WRITE:  /* yes write now */
 
     if(!x->write || x->please_stop) {
       /* if closing don't need to go to stop */
-      if(x->please_close)	{
+      if(x->please_close)       {
         x->state = SFRECORD_CLOSE;
         x->count = SFRECORD_WAITTICKS;
 #ifdef DEBUG_ME
@@ -349,7 +349,7 @@ static t_int *sfrecord_perform(t_int *w)
 #endif
         state_out(x, 0);
 
-      } else	{
+      } else    {
         x->state = SFRECORD_STOP;
 #ifdef DEBUG_ME
         post("write -> stop");
@@ -365,7 +365,8 @@ static t_int *sfrecord_perform(t_int *w)
       return (w+4+c);
     }
 
-    /* copy float to 16 Bit and swap if neccesairy */ /* LATER treat overflows */
+    /* copy float to 16 Bit and swap if neccesairy */
+    /* LATER treat overflows */
     while (n--) {
       for (i=0; i<c; i++) {
         s = *in[i]++ * 32768.;
@@ -392,7 +393,7 @@ static t_int *sfrecord_perform(t_int *w)
       if(feof(x->fp)) {
 
         while (n--) {
-          for (i=0; i<c; i++)	{
+          for (i=0; i<c; i++)   {
             if(--j > 0) {
               s = *buf++;
               if(swap) {
@@ -425,7 +426,7 @@ static t_int *sfrecord_perform(t_int *w)
   /* ok :?: write error, please close */
 case SFRECORD_ERROR:
 
-  if(!(x->count--))	{
+  if(!(x->count--))     {
     x->state = SFRECORD_CLOSE;
     sfrecord_close(x);
 #ifdef DEBUG_ME
@@ -605,19 +606,14 @@ ZEXY_SETUP void sfrecord_setup(void)
                              sizeof(t_sfrecord), 0,
                              A_DEFFLOAT, A_NULL);
   class_addmethod(sfrecord_class, nullfn, gensym("signal"), 0);
-  class_addmethod(sfrecord_class, (t_method)sfrecord_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  class_addmethod(sfrecord_class, (t_method)sfrecord_dsp, gensym("dsp"), A_CANT, 0);
 
   /* method open with filename */
-  class_addmethod(sfrecord_class, (t_method)sfrecord_open, gensym("open"),
-                  A_SYMBOL,A_SYMBOL,A_NULL);
-  class_addmethod(sfrecord_class, (t_method)sfrecord_close, gensym("close"),
-                  A_NULL);
+  class_addmethod(sfrecord_class, (t_method)sfrecord_open, gensym("open"), A_SYMBOL, A_SYMBOL, A_NULL);
+  class_addmethod(sfrecord_class, (t_method)sfrecord_close, gensym("close"), A_NULL);
 
-  class_addmethod(sfrecord_class, (t_method)sfrecord_start, gensym("start"),
-                  A_NULL);
-  class_addmethod(sfrecord_class, (t_method)sfrecord_stop,  gensym("stop"),
-                  A_NULL);
+  class_addmethod(sfrecord_class, (t_method)sfrecord_start, gensym("start"), A_NULL);
+  class_addmethod(sfrecord_class, (t_method)sfrecord_stop, gensym("stop"), A_NULL);
 
   /* start/stop with 0/1 */
   class_addfloat(sfrecord_class, sfrecord_float);
@@ -626,8 +622,7 @@ ZEXY_SETUP void sfrecord_setup(void)
   class_addbang(sfrecord_class,sfrecord_bang);
 
   /* some help */
-  class_addmethod(sfrecord_class, (t_method)sfrecord_helper,  gensym("help"),
-                  A_NULL);
+  class_addmethod(sfrecord_class, (t_method)sfrecord_helper, gensym("help"), A_NULL);
   class_sethelpsymbol(sfrecord_class, gensym("sf-play_record"));
   zexy_register("sfrecord");
 }
