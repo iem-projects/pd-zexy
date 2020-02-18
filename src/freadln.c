@@ -277,4 +277,3 @@ ZEXY_SETUP void freadln_setup(void)
 
   zexy_register("freadln");
 }
-
