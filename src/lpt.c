@@ -82,7 +82,8 @@ static HINSTANCE hInpOutDll;
 /* reference count for the DLL-handle */
 static int z_inpout32_refcount = 0;
 
-static int z_getWinErr(char*outstr, size_t len) {
+static int z_getWinErr(char*outstr, size_t len)
+{
   wchar_t*errstr;
   size_t i;
   DWORD err = GetLastError();
@@ -96,8 +97,9 @@ static int z_getWinErr(char*outstr, size_t len) {
   for(i=0; i<len; i++) {
     wchar_t wc = errstr[i];
     char c = ((wc>=0) && (wc<128))?((char)(wc)):'?';
-    if((10 == c) || (13 == c))
+    if((10 == c) || (13 == c)) {
       c = ' ';
+    }
 
     outstr[i] = c;
   }
@@ -105,7 +107,8 @@ static int z_getWinErr(char*outstr, size_t len) {
   outstr[len-1] = 0;
   return err;
 }
-static void z_findfile(const char*filename, char*buf, size_t bufsize) {
+static void z_findfile(const char*filename, char*buf, size_t bufsize)
+{
   char *bufptr;
   int fd = open_via_path(".", filename, "", buf, &bufptr, bufsize, 0);
 
@@ -119,7 +122,8 @@ static void z_findfile(const char*filename, char*buf, size_t bufsize) {
 
 }
 
-static int z_inpout32_ctor() {
+static int z_inpout32_ctor()
+{
   if(!z_inpout32_refcount) {
     char filename[MAXPDSTRING];
     z_findfile(INPOUT_DLL, filename, MAXPDSTRING);
@@ -137,7 +141,8 @@ static int z_inpout32_ctor() {
     }
     gfpOut32 = (lpOut32)GetProcAddress(hInpOutDll, "Out32");
     gfpInp32 = (lpInp32)GetProcAddress(hInpOutDll, "Inp32");
-    gfpIsInpOutDriverOpen = (lpIsInpOutDriverOpen)GetProcAddress(hInpOutDll, "IsInpOutDriverOpen");
+    gfpIsInpOutDriverOpen = (lpIsInpOutDriverOpen)GetProcAddress(hInpOutDll,
+                            "IsInpOutDriverOpen");
     gfpIsXP64Bit = (lpIsXP64Bit)GetProcAddress(hInpOutDll, "IsXP64Bit");
   }
   z_inpout32_refcount++;
@@ -148,7 +153,8 @@ static int z_inpout32_ctor() {
   }
   return z_inpout32_refcount;
 }
-static void z_inpout32_dtor() {
+static void z_inpout32_dtor()
+{
   z_inpout32_refcount--;
   if(!z_inpout32_refcount) {
     gfpOut32 = NULL;
@@ -160,13 +166,15 @@ static void z_inpout32_dtor() {
 }
 static void sys_outb(unsigned char byte, unsigned short int port)
 {
-  if(gfpOut32)
+  if(gfpOut32) {
     gfpOut32(port, byte);
+  }
 }
 static int sys_inb(unsigned short int port)
 {
-  if(gfpInp32)
+  if(gfpInp32) {
     return gfpInp32(port);
+  }
   return 0;
 }
 
@@ -202,10 +210,13 @@ static int sys_inb(unsigned short int port)
 }
 
 # else
-static void sys_outb(unsigned char UNUSED(byte), unsigned short int UNUSED(port))
+static void sys_outb(unsigned char UNUSED(byte),
+                     unsigned short int UNUSED(port))
 {}
 static int sys_inb(unsigned short int UNUSED(port))
-{ return 0; }
+{
+  return 0;
+}
 # endif /* OS */
 #endif /* Z_WANT_LPT */
 
@@ -258,7 +269,7 @@ static void lpt_bang(t_lpt *x)
     outlet_float(x->x_obj.ob_outlet, (t_float)b);
   } else
 #endif
-    if (x->port)	{
+    if (x->port) {
       outlet_float(x->x_obj.ob_outlet, (t_float)sys_inb(x->port+1));
     }
 }
@@ -335,8 +346,9 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     devname=atom_getsymbol(argv)->s_name;
     x->device=-1;
     hexport=strtol(devname, 0, 16);
-    if((hexport >= 0) && (hexport <= 0xFFFF))
+    if((hexport >= 0) && (hexport <= 0xFFFF)) {
       x->port = hexport;
+    }
     if(0==x->port) {
 #ifdef __linux__
       x->device = sys_open(devname, O_RDWR);
@@ -422,18 +434,16 @@ static void lpt_helper(t_lpt*UNUSED(x))
   post("\t\t\"lpt <portaddr>\": connect to port @ <portaddr> (hex)");
 }
 
-void lpt_setup(void)
+ZEXY_SETUP void lpt_setup(void)
 {
-  lpt_class = class_new(gensym("lpt"),
-                        (t_newmethod)lpt_new, (t_method)lpt_free,
-                        sizeof(t_lpt), 0, A_GIMME, 0);
+  lpt_class = zexy_new("lpt",
+                       lpt_new, lpt_free, t_lpt, 0, "*");
   //class_addcreator((t_newmethod)lpt_new, gensym("lp"), A_GIMME, 0);
 
   class_addfloat(lpt_class, (t_method)lpt_float);
-  class_addmethod(lpt_class, (t_method)lpt_control, gensym("control"),
-                  A_FLOAT, 0);
+  zexy_addmethod(lpt_class, (t_method)lpt_control, "control", "f");
   class_addbang(lpt_class, (t_method)lpt_bang);
 
-  class_addmethod(lpt_class, (t_method)lpt_helper, gensym("help"), 0);
+  zexy_addmethod(lpt_class, (t_method)lpt_helper, "help", "");
   zexy_register("lpt");
 }

@@ -77,11 +77,10 @@ static void *atof_new(void)
   return (x);
 }
 
-void atof_setup(void)
+ZEXY_SETUP void atof_setup(void)
 {
-  atof_class = class_new(gensym("atof"), (t_newmethod)atof_new,
-                         (t_method)atof_free,
-                         sizeof(t_atof), 0, A_NULL);
+  atof_class = zexy_new("atof",
+                        atof_new, atof_free, t_atof, 0, "");
 
   class_addbang(atof_class, (t_method)atof_bang);
   class_addfloat(atof_class, (t_method)atof_float);

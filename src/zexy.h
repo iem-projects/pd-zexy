@@ -71,11 +71,16 @@
 #endif
 
 #ifdef __GNUC__
-#  define UNUSED(x) ZUNUSED_ ## x __attribute__((__unused__))
-#  define UNUSED_FUNCTION(x) __attribute__((__unused__)) ZUNUSEDFUN_ ## x
+# define UNUSED(x) ZUNUSED_ ## x __attribute__((__unused__))
+# define UNUSED_FUNCTION(x) __attribute__((__unused__)) ZUNUSEDFUN_ ## x
+# define MAYBE_USED_FUNCTION(x) __attribute__((__unused__)) x
+# if __GNUC__ >= 9
+#  pragma GCC diagnostic ignored "-Wcast-function-type"
+# endif
 #else
-#  define UNUSED(x) ZUNUSED_ ## x
-#  define UNUSED_FUNCTION(x) ZUNUSEDFUN_ ## x
+# define UNUSED(x) ZUNUSED_ ## x
+# define UNUSED_FUNCTION(x) ZUNUSEDFUN_ ## x
+# define MAYBE_USED_FUNCTION(x) x
 #endif
 
 #define ZEXY_TYPE_EQUAL(type1, type2) (sizeof(type1) == sizeof(type2))
@@ -91,6 +96,74 @@ typedef struct _mypdlist {
 # define BUILD_DATE  __DATE__
 #endif
 
+/* marker for setup-functions to be called by zexy_setup() */
+#define ZEXY_SETUP
+
+/* convenience functions */
+static int zexy_argparse(const char*argstring, int argc, t_atomtype*argv)
+{
+  const char*args = argstring;
+  int i;
+  for(i=0; i<argc; i++) {
+    argv[i]=A_NULL;
+  }
+  for(i=0; i<argc && *args; i++, args++) {
+    switch(*args) {
+    case 'f':
+      argv[i] = A_FLOAT;
+      break;
+    case 'F':
+      argv[i] = A_DEFFLOAT;
+      break;
+    case 's':
+      argv[i] = A_SYMBOL;
+      break;
+    case 'S':
+      argv[i] = A_DEFSYM;
+      break;
+    case 'p':
+      argv[i] = A_POINTER;
+      break;
+    case '!':
+      argv[i] = A_CANT;
+      break;
+    case '*':
+      argv[i] = A_GIMME;
+      break;
+    default:
+      error("ZEXYERROR: unknown argument specifier '%s'", argstring);
+      return -1;
+    }
+  }
+  return i;
+}
+
+static t_class MAYBE_USED_FUNCTION(*zexy_classnew) (const char*name,
+    t_newmethod newmethod, t_method freemethod, size_t size, int flags,
+    const char*args)
+{
+  t_atomtype at[5];
+  if(zexy_argparse(args, 5, at) < 0) {
+    return 0;
+  }
+  return class_new(gensym(name), newmethod, freemethod, size, flags, at[0],
+                   at[1], at[2], at[3], at[4], A_NULL);
+}
+#define zexy_new(name, ctor, dtor, memberstruct, flags, args) \
+  zexy_classnew(name, (t_newmethod)ctor, (t_method)dtor, sizeof(memberstruct), flags, args)
+
+
+static void MAYBE_USED_FUNCTION(zexy_addmethod) (t_class*c, t_method fn,
+    const char*s, const char*args)
+{
+  /* wrapper around 'class_addmethod' that is a bit more terse... */
+  t_atomtype at[5];
+  if(zexy_argparse(args, 5, at) < 0) {
+    return;
+  }
+  class_addmethod(c, fn, gensym(s), at[0], at[1], at[2], at[3], at[4],
+                  A_NULL);
+}
 
 #ifndef ZEXY_LIBRARY
 static void zexy_register(char*object)

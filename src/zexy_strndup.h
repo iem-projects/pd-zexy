@@ -33,14 +33,18 @@
 
 #include <stdlib.h>
 #include <string.h>
-static char *zexy_strndup(const char *s, size_t n) {
+static char *zexy_strndup(const char *s, size_t n)
+{
   char *result=0;
   size_t len = strlen(s) + 1;
-  if(len>n) len=n+1;
+  if(len>n) {
+    len=n+1;
+  }
 
   result = malloc(len);
-  if(!result)
+  if(!result) {
     return result;
+  }
   memcpy(result, s, len);
   result[len-1] = 0;
   return result;

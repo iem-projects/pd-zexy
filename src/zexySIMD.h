@@ -17,6 +17,10 @@ typedef union {
  * runs a check whether the SSE-optimized perform routine returns the same result as the generic routine
  * if the results differ, the SSE-code is probably broken, so we should fallback to the generic code
  */
+#ifdef __GNUC__
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wunused-function"
+#endif
 static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
                         unsigned int numinchannels, unsigned int numoutchannels)
 {
@@ -64,12 +68,12 @@ static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
       for(j=0; j<4; j++) {
         if(fabsf(out1[i].f[j]-out2[i].f[j])>1e-17) {
           verbose(2,
-                    "generic and optimized routines return different results: skipping optimization");
+                  "generic and optimized routines return different results: skipping optimization");
           verbose(2, "[%d,%d]: ((%f->%f)!=(%f->%f))",
-                    i, j,
-                    in1[i].f[j], out1[i].f[j],
-                    in2[i].f[j], out2[i].f[j]
-                   );
+                  i, j,
+                  in1[i].f[j], out1[i].f[j],
+                  in2[i].f[j], out2[i].f[j]
+                 );
           return 0;
         }
       }
@@ -80,6 +84,9 @@ static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
   verbose(2, "using SSE optimization");
   return 1;
 }
+#ifdef __GNUC__
+# pragma GCC diagnostic pop
+#endif
 
 #endif /* __SSE__ */
 

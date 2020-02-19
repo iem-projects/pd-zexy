@@ -97,7 +97,8 @@ static void *tabdump_new(t_symbol *s)
 
 static void tabdump_helper(void)
 {
-  post("\n"HEARTSYMBOL " tabdump - object : dumps a table as a package of floats");
+  post("\n"HEARTSYMBOL
+       " tabdump - object : dumps a table as a package of floats");
   post("'set <table>'\t: read out another table\n"
        "'bang'\t\t: dump the table\n"
        "outlet\t\t: table-data as package of floats");
@@ -105,17 +106,15 @@ static void tabdump_helper(void)
 
 }
 
-void tabdump_setup(void)
+ZEXY_SETUP void tabdump_setup(void)
 {
-  tabdump_class = class_new(gensym("tabdump"), (t_newmethod)tabdump_new,
-                            0, sizeof(t_tabdump), 0, A_DEFSYM, 0);
+  tabdump_class = zexy_new("tabdump",
+                           tabdump_new, 0, t_tabdump, 0, "S");
   class_addbang(tabdump_class, (t_method)tabdump_bang);
   class_addlist(tabdump_class, (t_method)tabdump_list);
 
-  class_addmethod(tabdump_class, (t_method)tabdump_set, gensym("set"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(tabdump_class, (t_method)tabdump_set, "set", "s");
 
-  class_addmethod(tabdump_class, (t_method)tabdump_helper, gensym("help"),
-                  0);
+  zexy_addmethod(tabdump_class, (t_method)tabdump_helper, "help", "");
   zexy_register("tabdump");
 }

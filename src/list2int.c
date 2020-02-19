@@ -77,9 +77,8 @@ static void mypdlist_free(t_mypdlist *x)
 }
 static t_class* zclass_setup(const char*name)
 {
-  t_class *c = class_new(gensym(name),
-                         (t_newmethod)list2int_new, (t_method)mypdlist_free,
-                         sizeof(t_mypdlist), 0, A_GIMME, 0);
+  t_class *c = zexy_new(name,
+                        list2int_new, mypdlist_free, t_mypdlist, 0, "*");
   class_addanything(c, list2int_any);
   class_addlist(c, list2int_any);
   class_addbang(c, list2int_bang);
@@ -94,7 +93,7 @@ static void dosetup()
   list2int_class=zclass_setup("list2int");
   zclass_setup("l2i");
 }
-void list2int_setup(void)
+ZEXY_SETUP void list2int_setup(void)
 {
   dosetup();
 }

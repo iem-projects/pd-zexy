@@ -69,7 +69,8 @@ static void mux_tilde_dsp(t_mux *x, t_signal **sp)
 
 static void mux_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL " multiplex~\t:: multiplex a one of various signals to one outlet");
+  post("\n"HEARTSYMBOL
+       " multiplex~\t:: multiplex a one of various signals to one outlet");
   post("<#out>\t : the inlet-number (counting from 0) witch is routed to the outlet"
        "'help'\t : view this");
   post("creation : \"mux~ [arg1 [arg2...]]\"\t: the number of arguments equals the number of inlets\n");
@@ -108,19 +109,16 @@ static void *mux_tilde_new(t_symbol* UNUSED(s), int argc,
 }
 static t_class* zclass_setup(const char*name)
 {
-  t_class*c =  class_new(gensym(name),
-                         (t_newmethod)mux_tilde_new, (t_method)mux_tilde_free,
-                         sizeof(t_mux), 0, A_GIMME, 0);
+  t_class*c = zexy_new(name,
+                       mux_tilde_new, mux_tilde_free, t_mux, 0, "*");
 
   /* ouch, that hurts... */
   class_addfloat(c, mux_tilde_input);
 
-  class_addmethod(c, (t_method)mux_tilde_dsp, gensym("dsp"),
-                  A_CANT, 0);
-  class_addmethod(c, nullfn, gensym("signal"), 0);
+  zexy_addmethod(c, (t_method)mux_tilde_dsp, "dsp", "!");
+  zexy_addmethod(c, (t_method)nullfn, "signal", "");
 
-  class_addmethod(c, (t_method)mux_tilde_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(c, (t_method)mux_tilde_helper, "help", "");
   return c;
 }
 static void dosetup()
@@ -129,7 +127,7 @@ static void dosetup()
   mux_tilde_class=zclass_setup("multiplex~");
   zclass_setup("mux~");
 }
-void multiplex_tilde_setup(void)
+ZEXY_SETUP void multiplex_tilde_setup(void)
 {
   dosetup();
 }

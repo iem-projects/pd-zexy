@@ -41,7 +41,8 @@ static void mypdlist_storelist(t_mypdlist *x, int argc, t_atom *argv)
 
   atoms_copy(argc, argv, x->x_list);
 }
-static void mypdlist_secondlist(t_mypdlist *x, t_symbol *UNUSED(s), int argc,
+static void mypdlist_secondlist(t_mypdlist *x, t_symbol *UNUSED(s),
+                                int argc,
                                 t_atom *argv)
 {
   mypdlist_storelist(x, argc, argv);
@@ -90,18 +91,18 @@ static void *mypdlist_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 
 static void mypdlist_help(t_mypdlist*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " lister\t\t:: basic list storage (use pd>=0.39 for real [list] objects)");
+  post("\n"HEARTSYMBOL
+       " lister\t\t:: basic list storage (use pd>=0.39 for real [list] objects)");
 }
 
-static t_class* zclass_setup(const char*name) {
-  t_class *c = class_new(gensym(name), (t_newmethod)mypdlist_new,
-                         (t_method)mypdlist_free, sizeof(t_mypdlist), 0, A_GIMME, 0);
+static t_class* zclass_setup(const char*name)
+{
+  t_class *c = zexy_new(name,
+                        mypdlist_new, mypdlist_free, t_mypdlist, 0, "*");
   class_addbang    (c, mypdlist_bang);
   class_addlist    (c, mypdlist_list);
-  class_addmethod  (c, (t_method)mypdlist_secondlist,
-                    gensym("lst2"), A_GIMME, 0);
-  class_addmethod(c, (t_method)mypdlist_help, gensym("help"),
-                  A_NULL);
+  zexy_addmethod(c, (t_method)mypdlist_secondlist, "lst2", "*");
+  zexy_addmethod(c, (t_method)mypdlist_help, "help", "");
   return c;
 }
 static void dosetup()
@@ -110,7 +111,7 @@ static void dosetup()
   lister_class = zclass_setup("lister");
   zclass_setup("l");
 }
-void lister_setup(void)
+ZEXY_SETUP void lister_setup(void)
 {
   dosetup();
 }

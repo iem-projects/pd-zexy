@@ -122,8 +122,8 @@ static void mux_free(t_mux*x)
 }
 static t_class* zclass_setup(const char*name)
 {
-  t_class*c = class_new(gensym(name), (t_newmethod)mux_new,
-                        (t_method)mux_free, sizeof(t_mux), CLASS_NOINLET, A_GIMME, 0);
+  t_class*c = zexy_new(name,
+                       mux_new, mux_free, t_mux, CLASS_NOINLET, "*");
   return c;
 }
 static void dosetup()
@@ -131,12 +131,11 @@ static void dosetup()
   zexy_register("multiplex");
   mux_class=zclass_setup("multiplex");
   zclass_setup("mux");
-  muxproxy_class = class_new(0, 0, 0,
-                             sizeof(t_muxproxy),
-                             CLASS_PD | CLASS_NOINLET, 0);
+  muxproxy_class = zexy_new("multiplex proxy",
+                            0, 0, t_muxproxy, CLASS_PD | CLASS_NOINLET, "");
   class_addanything(muxproxy_class, mux_anything);
 }
-void multiplex_setup(void)
+ZEXY_SETUP void multiplex_setup(void)
 {
   dosetup();
 }

@@ -146,19 +146,16 @@ static void makesymbol_helper(t_makesymbol* UNUSED(x))
        "%s");
 }
 
-void makesymbol_setup(void)
+ZEXY_SETUP void makesymbol_setup(void)
 {
-  makesymbol_class = class_new(gensym("makesymbol"),
-                               (t_newmethod)makesymbol_new, (t_method)makesymbol_free,
-                               sizeof(t_makesymbol), 0, A_GIMME, 0);
+  makesymbol_class = zexy_new("makesymbol",
+                              makesymbol_new, makesymbol_free, t_makesymbol, 0, "*");
 
   class_addlist(makesymbol_class, makesymbol_list);
   class_addbang(makesymbol_class, makesymbol_bang);
 
-  class_addmethod(makesymbol_class, (t_method)reset_mask, gensym("sym1"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(makesymbol_class, (t_method)reset_mask, "sym1", "s");
 
-  class_addmethod(makesymbol_class, (t_method)makesymbol_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(makesymbol_class, (t_method)makesymbol_helper, "help", "");
   zexy_register("makesymbol");
 }

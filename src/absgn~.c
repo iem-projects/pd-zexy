@@ -132,16 +132,14 @@ static void *sigABSGN_new(void)
   return (x);
 }
 
-void absgn_tilde_setup(void)
+ZEXY_SETUP void absgn_tilde_setup(void)
 {
-  sigABSGN_class = class_new(gensym("absgn~"), (t_newmethod)sigABSGN_new, 0,
-                             sizeof(t_absgn), 0, A_NULL);
+  sigABSGN_class = zexy_new("absgn~",
+                            sigABSGN_new, 0, t_absgn, 0, "");
   CLASS_MAINSIGNALIN(sigABSGN_class, t_absgn, x_f);
-  class_addmethod(sigABSGN_class, (t_method)sigABSGN_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  zexy_addmethod(sigABSGN_class, (t_method)sigABSGN_dsp, "dsp", "!");
 
-  class_addmethod(sigABSGN_class, (t_method)sigABSGN_helper, gensym("help"),
-                  0);
+  zexy_addmethod(sigABSGN_class, (t_method)sigABSGN_helper, "help", "");
   class_sethelpsymbol(sigABSGN_class, gensym("zigbinops"));
 
   zexy_register("absgn~");

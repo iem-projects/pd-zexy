@@ -131,14 +131,13 @@ static void help_date(t_date* UNUSED(x))
   post("\ncreation\t::'date [GMT]': show local date or GMT");
 }
 
-void date_setup(void)
+ZEXY_SETUP void date_setup(void)
 {
-  date_class = class_new(gensym("date"),
-                         (t_newmethod)date_new, 0,
-                         sizeof(t_date), 0, A_GIMME, 0);
+  date_class = zexy_new("date",
+                        date_new, 0, t_date, 0, "*");
 
   class_addbang(date_class, date_bang);
 
-  class_addmethod(date_class, (t_method)help_date, gensym("help"), 0);
+  zexy_addmethod(date_class, (t_method)help_date, "help", "");
   zexy_register("date");
 }

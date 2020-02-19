@@ -135,7 +135,8 @@ static void list2symbol_anything(t_list2symbol *x, t_symbol *s, int argc,
   list2symbol_bang(x);
 }
 
-static void list2symbol_list(t_list2symbol *x, t_symbol *UNUSED(s), int argc,
+static void list2symbol_list(t_list2symbol *x, t_symbol *UNUSED(s),
+                             int argc,
                              t_atom *argv)
 {
   list2symbol_anything(x, 0, argc, argv);
@@ -165,10 +166,8 @@ static void list2symbol_free(t_list2symbol *x)
 
 static t_class* zclass_setup(const char*name)
 {
-  t_class*c = class_new(gensym(name),
-                                (t_newmethod)list2symbol_new,
-                                (t_method)list2symbol_free, sizeof(t_list2symbol), 0,
-                                A_GIMME, 0);
+  t_class*c = zexy_new(name,
+                       list2symbol_new, list2symbol_free, t_list2symbol, 0, "*");
   class_addbang    (c, list2symbol_bang);
   class_addlist    (c, list2symbol_list);
   class_addanything(c, list2symbol_anything);
@@ -180,7 +179,7 @@ static void dosetup()
   list2symbol_class=zclass_setup("list2symbol");
   zclass_setup("l2s");
 }
-void list2symbol_setup(void)
+ZEXY_SETUP void list2symbol_setup(void)
 {
   dosetup();
 }

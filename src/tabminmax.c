@@ -121,7 +121,8 @@ static void *tabminmax_new(t_symbol *s)
 
 static void tabminmax_helper(void)
 {
-  post("\n"HEARTSYMBOL " tabminmax - object : dumps a table as a package of floats");
+  post("\n"HEARTSYMBOL
+       " tabminmax - object : dumps a table as a package of floats");
   post("'set <table>'\t: read out another table\n"
        "'bang'\t\t: get min and max of the table\n"
        "outlet\t\t: table-data as package of floats");
@@ -129,18 +130,15 @@ static void tabminmax_helper(void)
 
 }
 
-void tabminmax_setup(void)
+ZEXY_SETUP void tabminmax_setup(void)
 {
-  tabminmax_class = class_new(gensym("tabminmax"),
-                              (t_newmethod)tabminmax_new,
-                              0, sizeof(t_tabminmax), 0, A_DEFSYM, 0);
+  tabminmax_class = zexy_new("tabminmax",
+                             tabminmax_new, 0, t_tabminmax, 0, "S");
   class_addbang(tabminmax_class, (t_method)tabminmax_bang);
   class_addlist(tabminmax_class, (t_method)tabminmax_list);
 
-  class_addmethod(tabminmax_class, (t_method)tabminmax_set, gensym("set"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(tabminmax_class, (t_method)tabminmax_set, "set", "s");
 
-  class_addmethod(tabminmax_class, (t_method)tabminmax_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(tabminmax_class, (t_method)tabminmax_helper, "help", "");
   zexy_register("tabminmax");
 }

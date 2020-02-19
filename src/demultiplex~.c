@@ -79,7 +79,8 @@ static void demux_dsp(t_demux *x, t_signal **sp)
 
 static void demux_helper(void)
 {
-  post("\n"HEARTSYMBOL " demux~\t:: demultiplex a signal to one of various outlets");
+  post("\n"HEARTSYMBOL
+       " demux~\t:: demultiplex a signal to one of various outlets");
   post("<#out>\t : the outlet-number (counting from 0) to witch the inlet is routed"
        "'help'\t : view this");
   post("creation : \"demux~ [arg1 [arg2...]]\"\t: the number of arguments equals the number of outlets\n");
@@ -115,13 +116,13 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 }
 static t_class* zclass_setup(const char*name)
 {
-  t_class *c = class_new(gensym(name), (t_newmethod)demux_new,
-                         (t_method)demux_free, sizeof(t_demux), 0, A_GIMME, 0);
+  t_class *c = zexy_new(name,
+                        demux_new, demux_free, t_demux, 0, "*");
   class_addfloat(c, demux_output);
-  class_addmethod(c, (t_method)demux_dsp, gensym("dsp"), A_CANT, 0);
-  class_addmethod(c, nullfn, gensym("signal"), 0);
+  zexy_addmethod(c, (t_method)demux_dsp, "dsp", "!");
+  zexy_addmethod(c, (t_method)nullfn, "signal", "");
 
-  class_addmethod(c, (t_method)demux_helper, gensym("help"), 0);
+  zexy_addmethod(c, (t_method)demux_helper, "help", "");
   return c;
 }
 static void dosetup()
@@ -130,7 +131,7 @@ static void dosetup()
   demux_tilde_class=zclass_setup("demultiplex~");
   zclass_setup("demux~");
 }
-void demultiplex_tilde_setup(void)
+ZEXY_SETUP void demultiplex_tilde_setup(void)
 {
   dosetup();
 }

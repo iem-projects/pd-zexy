@@ -124,18 +124,14 @@ static void sigunpack_help(void)
   post("unpack~\t:: outputs a sequence of floats as a signal");
 }
 
-void unpack_tilde_setup(void)
+ZEXY_SETUP void unpack_tilde_setup(void)
 {
-  sigunpack_class = class_new(gensym("unpack~"), (t_newmethod)sigunpack_new,
-                              0,
-                              sizeof(t_sigunpack), 0, A_DEFFLOAT, 0);
-  class_addmethod(sigunpack_class, (t_method)sigunpack_dsp, gensym("dsp"),
-                  A_CANT, 0);
+  sigunpack_class = zexy_new("unpack~",
+                             sigunpack_new, 0, t_sigunpack, 0, "F");
+  zexy_addmethod(sigunpack_class, (t_method)sigunpack_dsp, "dsp", "!");
   class_addfloat(sigunpack_class, (t_method)sigunpack_float);
   class_addlist (sigunpack_class, (t_method)sigunpack_list);
 
-
-  class_addmethod(sigunpack_class, (t_method)sigunpack_help, gensym("help"),
-                  0);
+  zexy_addmethod(sigunpack_class, (t_method)sigunpack_help, "help", "");
   zexy_register("unpack~");
 }

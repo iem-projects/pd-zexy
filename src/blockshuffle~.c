@@ -68,8 +68,8 @@ static void blockshuffle_buildindex(t_blockshuffle *x, int blocksize)
   }
 }
 
-static void blockshuffle_list(t_blockshuffle *x, t_symbol*s, int argc,
-                              t_atom*argv)
+static void blockshuffle_list(t_blockshuffle *x, t_symbol* UNUSED(s),
+                              int argc, t_atom*argv)
 {
   int i;
   if(x->shuffle) {
@@ -119,9 +119,10 @@ static void blockshuffle_dsp(t_blockshuffle *x, t_signal **sp)
           sp[0]->s_n);
 }
 
-static void blockshuffle_helper(void)
+static void blockshuffle_helper(t_blockshuffle* UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " blockshuffle~-object for shuffling the samples within a signal-block");
+  post("\n"HEARTSYMBOL
+       " blockshuffle~-object for shuffling the samples within a signal-block");
   post("'help' : view this\n"
        "signal~");
   post("outlet : signal~");
@@ -151,19 +152,16 @@ static void *blockshuffle_new(void)
   return (x);
 }
 
-void blockshuffle_tilde_setup(void)
+ZEXY_SETUP void blockshuffle_tilde_setup(void)
 {
-  blockshuffle_class = class_new(gensym("blockshuffle~"),
-                                 (t_newmethod)blockshuffle_new,
-                                 (t_method)blockshuffle_free,
-                                 sizeof(t_blockshuffle), 0, A_NULL);
-  class_addmethod(blockshuffle_class, nullfn, gensym("signal"), 0);
-  class_addmethod(blockshuffle_class, (t_method)blockshuffle_dsp,
-                  gensym("dsp"), A_CANT, 0);
+  blockshuffle_class = zexy_new("blockshuffle~",
+                                blockshuffle_new, blockshuffle_free, t_blockshuffle, 0, "");
+  zexy_addmethod(blockshuffle_class, (t_method)nullfn, "signal", "");
+  zexy_addmethod(blockshuffle_class, (t_method)blockshuffle_dsp, "dsp", "!");
 
   class_addlist(blockshuffle_class, blockshuffle_list);
 
-  class_addmethod(blockshuffle_class, (t_method)blockshuffle_helper,
-                  gensym("help"), 0);
+  zexy_addmethod(blockshuffle_class, (t_method)blockshuffle_helper, "help",
+                 "");
   zexy_register("blockshuffle~");
 }

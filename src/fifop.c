@@ -264,9 +264,10 @@ static void fifop_dump(t_fifop*x)
   }
 }
 
-static void fifop_help(t_fifop*x)
+static void fifop_help(t_fifop* UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " fifop\t\t:: a First-In-First-Out queue with priorities");
+  post("\n"HEARTSYMBOL
+       " fifop\t\t:: a First-In-First-Out queue with priorities");
 }
 
 
@@ -292,23 +293,19 @@ static void *fifop_new(void)
   return (x);
 }
 
-void fifop_setup(void)
+ZEXY_SETUP void fifop_setup(void)
 {
-  fifop_class = class_new(gensym("fifop"), (t_newmethod)fifop_new,
-                          (t_method)fifop_free, sizeof(t_fifop), 0, A_NULL);
+  fifop_class = zexy_new("fifop",
+                         fifop_new, fifop_free, t_fifop, 0, "");
 
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);
 
-  class_addmethod  (fifop_class, (t_method)fifop_clear, gensym("clear"),
-                    A_NULL);
-  class_addmethod  (fifop_class, (t_method)fifop_dump, gensym("dump"),
-                    A_NULL);
+  zexy_addmethod(fifop_class, (t_method)fifop_clear, "clear", "");
+  zexy_addmethod(fifop_class, (t_method)fifop_dump, "dump", "");
 
-  class_addmethod  (fifop_class, (t_method)fifop_query, gensym("info"),
-                    A_NULL);
-  class_addmethod  (fifop_class, (t_method)fifop_help, gensym("help"),
-                    A_NULL);
+  zexy_addmethod(fifop_class, (t_method)fifop_query, "info", "");
+  zexy_addmethod(fifop_class, (t_method)fifop_help, "help", "");
 
   zexy_register("fifop");
 }

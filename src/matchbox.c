@@ -214,7 +214,7 @@ static int OSC_PatternMatch (const char *  pattern, const char * test,
   case ']'    :
   case '}'    :
     verbose(1, "[matchbox]: spurious %c in OSC-pattern \".../%s/...\"",
-              pattern[0], theWholePattern);
+            pattern[0], theWholePattern);
     return FALSE;
   case '['    :
     return OSC_MatchBrackets (pattern,test, theWholePattern);
@@ -248,7 +248,7 @@ static int OSC_MatchBrackets (const char *pattern, const char *test,
 
   if (pattern[1] == 0) {
     verbose(1, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
-              theWholePattern);
+            theWholePattern);
     return FALSE;
   }
 
@@ -260,7 +260,7 @@ static int OSC_MatchBrackets (const char *pattern, const char *test,
   while (*p != ']') {
     if (*p == 0) {
       verbose(1, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
-                theWholePattern);
+              theWholePattern);
       return FALSE;
     }
     if (p[1] == '-' && p[2] != 0) {
@@ -287,7 +287,7 @@ advance:
   while (*p != ']') {
     if (*p == 0) {
       verbose(1, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
-                theWholePattern);
+              theWholePattern);
       return FALSE;
     }
     p++;
@@ -305,7 +305,7 @@ static int OSC_MatchList (const char *pattern, const char *test,
   for(restOfPattern = pattern; *restOfPattern != '}'; restOfPattern++) {
     if (*restOfPattern == 0) {
       verbose(1, "[matchbox]: unterminated { in OSC-pattern \".../%s/...\"",
-                theWholePattern);
+              theWholePattern);
       return FALSE;
     }
   }
@@ -598,7 +598,8 @@ static t_listlist*matchlistlist(unsigned int*numresults,
 }
 
 
-static void matchbox_list(t_matchbox*x, t_symbol*UNUSED(s), int argc, t_atom*argv)
+static void matchbox_list(t_matchbox*x, t_symbol*UNUSED(s), int argc,
+                          t_atom*argv)
 {
   unsigned int results=0;
   int mode=x->x_mode;
@@ -614,13 +615,14 @@ static void matchbox_list(t_matchbox*x, t_symbol*UNUSED(s), int argc, t_atom*arg
   }
 }
 
-static void matchbox_add(t_matchbox*x, t_symbol*UNUSED(s), int argc, t_atom*argv)
+static void matchbox_add(t_matchbox*x, t_symbol*UNUSED(s), int argc,
+                         t_atom*argv)
 {
   /* 1st match, whether we already have this entry */
   if(matchlistlist(0, x->x_lists, argc, argv, MATCHBOX_EXACT, FALSE)) {
     /* already there, skip the rest */
     verbose(1,
-              "[matchbox]: refusing to add already existing list to buffer...");
+            "[matchbox]: refusing to add already existing list to buffer...");
     return;
   }
 
@@ -734,31 +736,25 @@ static void matchbox_help(t_matchbox*UNUSED(x))
   post("\n"HEARTSYMBOL " matchbox\t\t:: find a list in a pool of lists");
 }
 
-void matchbox_setup(void)
+ZEXY_SETUP void matchbox_setup(void)
 {
 #ifdef MATCHBOX_OSC
   post("matchbox: OSC-pattern matching code (c) Matt Wright, CNMAT");
 #endif /* MATCHBOX_OSC */
 
 
-  matchbox_class = class_new(gensym("matchbox"), (t_newmethod)matchbox_new,
-                             (t_method)matchbox_free, sizeof(t_matchbox), 0, A_GIMME, 0);
+  matchbox_class = zexy_new("matchbox",
+                            matchbox_new, matchbox_free, t_matchbox, 0, "*");
 
   class_addlist  (matchbox_class, matchbox_list);
 
-  class_addmethod(matchbox_class, (t_method)matchbox_add, gensym("add"),
-                  A_GIMME, 0);
-  class_addmethod(matchbox_class, (t_method)matchbox_delete,
-                  gensym("delete"), A_GIMME, 0);
-  class_addmethod(matchbox_class, (t_method)matchbox_clear, gensym("clear"),
-                  A_NULL, 0);
-  class_addmethod(matchbox_class, (t_method)matchbox_dump, gensym("dump"),
-                  A_NULL);
+  zexy_addmethod(matchbox_class, (t_method)matchbox_add, "add", "*");
+  zexy_addmethod(matchbox_class, (t_method)matchbox_delete, "delete", "*");
+  zexy_addmethod(matchbox_class, (t_method)matchbox_clear, "clear", "");
+  zexy_addmethod(matchbox_class, (t_method)matchbox_dump, "dump", "");
 
-  class_addmethod(matchbox_class, (t_method)matchbox_mode, gensym("mode"),
-                  A_SYMBOL, 0);
+  zexy_addmethod(matchbox_class, (t_method)matchbox_mode, "mode", "s");
 
-  class_addmethod(matchbox_class, (t_method)matchbox_help, gensym("help"),
-                  A_NULL);
+  zexy_addmethod(matchbox_class, (t_method)matchbox_help, "help", "");
   zexy_register("matchbox");
 }

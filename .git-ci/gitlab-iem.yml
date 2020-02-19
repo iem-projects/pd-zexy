@@ -4,6 +4,15 @@ variables:
   PDVERSION: 0.49-0
   LANG: C
 
+#######################################################################
+### script snippets
+.script:fetch_localdeps: &script_fetch_localdeps
+  - test -e .git-ci/localdeps.win.sh || (wget -q -O .git-ci/localdeps.win.sh "https://git.iem.at/pd/iem-ci/raw/master/pd-lib-builder/localdeps.win.sh" && chmod +x .git-ci/localdeps.win.sh) || true
+  - test -e .git-ci/localdeps.macos.sh || (wget -q -O .git-ci/localdeps.macos.sh "https://git.iem.at/pd/iem-ci/raw/master/pd-lib-builder/localdeps.macos.sh" && chmod +x .git-ci/localdeps.macos.sh) || true
+
+
+#######################################################################
+### configuration templates (to be used for snapshot and release builds)
 .build:snapshot: &snapshot
   except:
     - tags
@@ -26,6 +35,8 @@ variables:
   stage: build
   before_script:
     - apt-get update && apt-get install -y --no-install-recommends make puredata-dev puredata-core
+    - if [ -e .git-ci/requirements.apt ]; then apt-get install -y --no-install-recommends $(cat .git-ci/requirements.apt | sed -e '/^#/d'); fi
+    - export PD=/usr/bin/pd
   script:
     - make check
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
@@ -35,6 +46,7 @@ variables:
      - osx10.14
   stage: build
   before_script:
+    - if [ -e .git-ci/requirements.brew ]; then brew bundle --no-upgrade --file=.git-ci/requirements.brew; fi
     - wget -q -O Pd.tgz http://msp.ucsd.edu/Software/pd-${PDVERSION}.mac.tar.gz
     - rm -rf /Applications/Pd*.app/
     - tar xvf Pd.tgz -C /Applications/
@@ -51,6 +63,7 @@ variables:
   variables:
     IEMCI_CONFIGURATIONS: mingw32
   before_script:
+    - if [ -e .git-ci/requirements.msys2 ]; then pacman --noconfirm -S --needed $(cat .git-ci/requirements.msys2  | sed -e 's|#.*||' -e "s|@MINGW@|${MINGW_PACKAGE_PREFIX}-|"); fi
     - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}-i386.msw.zip
     - rm -rf "${PROGRAMFILESX86}/pd" && mkdir -p "${PROGRAMFILESX86}/pd"
     - unzip -q Pd.zip -d "${PROGRAMFILESX86}/pd"
@@ -69,6 +82,7 @@ variables:
   variables:
     IEMCI_CONFIGURATIONS: mingw64
   before_script:
+    - if [ -e .git-ci/requirements.msys2 ]; then pacman --noconfirm -S --needed $(cat .git-ci/requirements.msys2  | sed -e 's|#.*||' -e "s|@MINGW@|${MINGW_PACKAGE_PREFIX}-|"); fi
     - wget -q -O Pd.zip http://msp.ucsd.edu/Software/pd-${PDVERSION}.msw.zip
     - rm -rf "${PROGRAMFILES}/pd" && mkdir -p "${PROGRAMFILES}/pd"
     - unzip -q Pd.zip -d "${PROGRAMFILES}/pd"
@@ -80,36 +94,42 @@ variables:
     - make install DESTDIR=$(pwd)/artifacts/${CI_JOB_NAME%_*} pkglibdir=/
     - .git-ci/localdeps.win.sh artifacts/${CI_JOB_NAME%_*}/zexy/*.dll || true
 
-###################################################
+#######################################################################
 ### the actual jobs: (linux,macos,windows)*(release,snapshot)
 
+### release jobs
 Linux:
   <<: *build_linux
   <<: *release
 Darwin:
   <<: *build_macos
   <<: *release
-W32:
+w32:
   <<: *build_w32
   <<: *release
-W64:
+w64:
   <<: *build_w64
   <<: *release
 
-
+### snapshot jobs
 Linux_snapshot:
   <<: *build_linux
   <<: *snapshot
 Darwin_snapshot:
   <<: *build_macos
   <<: *snapshot
-W32_snapshot:
+w32_snapshot:
   <<: *build_w32
   <<: *snapshot
-W64_snapshot:
+w64_snapshot:
   <<: *build_w64
   <<: *snapshot
 
+#######################################################################
+### create deken packages and (optionally) upload them;
+### if you want to automatically upload a package, you need to
+### set DEKEN_USERNAME/DEKEN_PASSWORD in the CI-project settings.
+### (https://git.iem.at/help/ci/variables/README#variables)
 deken:
   stage: deploy
   image: debian:buster
@@ -120,12 +140,12 @@ deken:
   before_script:
     - apt-get update && apt-get --no-install-recommends -y install deken git
   script:
-    - chmod -R go-w artifacts/
+    - chmod -R go-w .
 # remove ltlib leftovers
     - find artifacts/ "(" -name "*.la" -or -name "*.a" ")" -delete
-# create a source package
+# create source package
     - git archive --format=tar --prefix=artifacts/src/${CI_PROJECT_NAME}/ HEAD | tar xf -
-# create deken packages
+# create binary packages
     - for d in artifacts/*/${CI_PROJECT_NAME}/; do deken package --version="${CI_COMMIT_TAG#v}" "${d}"; done
 # upload deken packages
     - test -z "${DEKEN_USERNAME}" || test -z "${DEKEN_PASSWORD}" || deken upload --no-source-error ./*.dek

@@ -43,7 +43,7 @@ STATIC_INLINE void string2atom(t_atom *ap, const char* cp, int clen)
   char *buffer=getbytes(sizeof(char)*(clen+1));
   char *endptr[1];
   t_float ftest;
-  strncpy(buffer, cp, clen);
+  strncpy(buffer, cp, clen+1);
   buffer[clen]=0;
   ftest=strtod(buffer, endptr);
   /* what should we do with the special cases of hexadecimal values, "INF" and "NAN" ???
@@ -164,20 +164,17 @@ static void symbol2list_free(t_symbol2list *UNUSED(x))
 
 static void symbol2list_help(t_symbol2list*UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " symbol2list\t:: split a symbol into a list of atoms");
+  post("\n"HEARTSYMBOL
+       " symbol2list\t:: split a symbol into a list of atoms");
 }
 static t_class* zclass_setup(const char*name)
 {
-  t_class*c = class_new(gensym(name),
-                        (t_newmethod)symbol2list_new,
-                        (t_method)symbol2list_free,
-                        sizeof(t_symbol2list), 0, A_GIMME, 0);
+  t_class*c = zexy_new(name,
+                       symbol2list_new, symbol2list_free, t_symbol2list, 0, "*");
   class_addsymbol (c, symbol2list_symbol);
   class_addbang   (c, symbol2list_bang);
-  class_addmethod  (c, (t_method)symbol2list_delimiter,
-                    gensym(""), A_SYMBOL, 0);
-  class_addmethod(c, (t_method)symbol2list_help,
-                  gensym("help"), A_NULL);
+  zexy_addmethod(c, (t_method)symbol2list_delimiter, "", "s");
+  zexy_addmethod(c, (t_method)symbol2list_help, "help", "");
   return c;
 }
 static void dosetup()
@@ -186,7 +183,7 @@ static void dosetup()
   symbol2list_class=zclass_setup("symbol2list");
   zclass_setup("s2l");
 }
-void symbol2list_setup(void)
+ZEXY_SETUP void symbol2list_setup(void)
 {
   dosetup();
 }

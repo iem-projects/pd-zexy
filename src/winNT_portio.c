@@ -116,12 +116,12 @@ static int IsWinNT(void)
 /* open parport */
 int open_port(unsigned short int port)
 {
-  if(IsWinNT()) {	/* we are under NT and need kernel driver */
+  if(IsWinNT()) { /* we are under NT and need kernel driver */
     if(StartUpIoPorts(port, 1, 0)) {
       return(0);
     }
     return(-1);
-  } else {	/* no need to use kernel driver */
+  } else { /* no need to use kernel driver */
     return(0);
   }
 }
