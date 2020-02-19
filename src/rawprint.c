@@ -112,7 +112,7 @@ static void *rawprint_new(t_symbol*s)
 ZEXY_SETUP void rawprint_setup(void)
 {
   rawprint_class = zexy_new("rawprint",
-                            rawprint_new, 0, t_rawprint, CLASS_DEFAULT, "SBOL");
+                            rawprint_new, 0, t_rawprint, CLASS_DEFAULT, "S");
 
   class_addanything(rawprint_class, rawprint_any);
   zexy_register("rawprint");
