@@ -24,7 +24,19 @@ list_deps() {
 	| sed -e 's|\\|/|g'
 }
 
+file2arch() {
+  if file "$1" | grep -w "PE32+" >/dev/null; then
+    echo "x64"
+    return
+  fi
+  if file "$1" | grep -w "PE32" >/dev/null; then
+    echo "x32"
+    return
+  fi
+}
+
 install_deps () {
+local archext
 outdir=$2
 if [ "x${outdir}" = "x" ]; then
   outdir=${1%/*}
@@ -34,12 +46,18 @@ if [ "x${outdir}" = "x" ]; then
 fi
 
 list_deps "$1" | while read dep; do
-  depfile=$(basename "${dep}")
-  if [ -e "${outdir}/${depfile}" ]; then
+  idepfile=$(basename "${dep}")
+  archext=$(file2arch "${idepfile}")
+  odepfile=$idepfile
+  if [ "x${archext}" != "x" ]; then
+    odepfile=$(echo ${idepfile} | sed -e "s|\.dll|.${archext}")
+  fi
+  if [ -e "${outdir}/${odepfile}" ]; then
     error "skipping already localized depdendency ${dep}"
   else
-    cp -v "${dep}" "${outdir}"
+    cp -v "${dep}" "${outdir}/${odepfile}"
   fi
+  sed -e "s|${idepfile}|${odepfile}|g" -i "$1" "${odepfile}"
 done
 
 }
