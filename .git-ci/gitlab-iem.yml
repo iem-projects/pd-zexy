@@ -126,9 +126,9 @@ w64_snapshot:
   <<: *snapshot
 
 #######################################################################
-### create deken packages and (optionally) upload them
+### create deken packages and (optionally) upload them;
 ### if you want to automatically upload a package, you need to
-### set your DEKEN_USERNAME resp DEKEN_PASSWORD in te CI-project settings
+### set DEKEN_USERNAME/DEKEN_PASSWORD in the CI-project settings.
 ### (https://git.iem.at/help/ci/variables/README#variables)
 deken:
   stage: deploy
