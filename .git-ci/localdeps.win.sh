@@ -4,6 +4,9 @@
 
 ## usage: $0 <binary> [<binary2>...]
 
+CP="cp -v"
+#CP=cp
+
 error() {
    echo "$@" 1>&2
 }
@@ -55,7 +58,7 @@ list_deps "$1" | while read dep; do
   if [ -e "${outdir}/${odepfile}" ]; then
     error "skipping already localized depdendency ${dep}"
   else
-    cp -v "${dep}" "${outdir}/${odepfile}"
+    ${CP} "${dep}" "${outdir}/${odepfile}"
   fi
   sed -e "s|${idepfile}|${odepfile}|g" -i "$1" "${odepfile}"
 done
