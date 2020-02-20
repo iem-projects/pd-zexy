@@ -4,6 +4,17 @@
 
 ## usage: $0 <binary> [<binary2>...]
 
+
+###########################################
+# WARNING
+#
+# this uses an ugly hack to allow side-by-side installation of 32bit and 64bit
+# dependencies:
+# embedded dependencies are renamed from "libfoo.dll" to "libfoo.x32" resp.
+# "libfoo.x64", and the files are modified (using 'sed') to reflext this
+# renaming.
+# this is somewhat brittle and likely to break!
+
 CP="cp -v"
 #CP=cp
 
