@@ -4,6 +4,20 @@
 
 ## usage: $0 <binary> [<binary2>...]
 
+
+###########################################
+# WARNING
+#
+# this uses an ugly hack to allow side-by-side installation of 32bit and 64bit
+# dependencies:
+# embedded dependencies are renamed from "libfoo.dll" to "libfoo.x32" resp.
+# "libfoo.x64", and the files are modified (using 'sed') to reflext this
+# renaming.
+# this is somewhat brittle and likely to break!
+
+CP="cp -v"
+#CP=cp
+
 error() {
    echo "$@" 1>&2
 }
@@ -24,8 +38,23 @@ list_deps() {
 	| sed -e 's|\\|/|g'
 }
 
+file2arch() {
+  if file "$1" | grep -w "PE32+" >/dev/null; then
+    echo "x64"
+    return
+  fi
+  if file "$1" | grep -w "PE32" >/dev/null; then
+    echo "x32"
+    return
+  fi
+}
+
 install_deps () {
-outdir=$2
+local outdir=$2
+local idepfile
+local odepfile
+local archext
+local dep
 if [ "x${outdir}" = "x" ]; then
   outdir=${1%/*}
 fi
@@ -34,14 +63,26 @@ if [ "x${outdir}" = "x" ]; then
 fi
 
 list_deps "$1" | while read dep; do
-  depfile=$(basename "${dep}")
-  if [ -e "${outdir}/${depfile}" ]; then
+  idepfile=$(basename "${dep}")
+  odepfile=${idepfile}
+  archext=$(file2arch "${dep}")
+  if [ "x${archext}" != "x" ]; then
+    odepfile=$(echo ${idepfile} | sed -e "s|\.dll|.${archext}|")
+  fi
+  if [ "x${idepfile}" = "x${odepfile}" ]; then
+	archext=""
+  fi
+  if [ -e "${outdir}/${odepfile}" ]; then
     error "skipping already localized depdendency ${dep}"
   else
-    cp -v "${dep}" "${outdir}"
+    ${CP} "${dep}" "${outdir}/${odepfile}"
+  fi
+
+
+  if [ "x${archext}" != "x" ]; then
+    sed -b -e "s|${idepfile}|${odepfile}|g" -i "${outdir}/${odepfile}" "${outdir}"/*."${archext}" "$1"
   fi
 done
-
 }
 
 
