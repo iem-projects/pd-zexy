@@ -5,10 +5,9 @@ the zexy external
 outline of this file::
 ==============================================================================
  +  general
- +  installation
-   +  linux, irix, OSX,... (autoconf)
-   +  w32
  +  using
+ +  bugs
+ +  compilation/installation
  +  license
 
 
@@ -20,11 +19,32 @@ this zexy external will be of no use, if you don't have a running version of
 pd on your system.
 check out for http://pd.iem.at to learn more about pd and how to get it
 
-note: the zexy external is published under the Gnu General Public License
-that is included (GnuGPL.txt). some parts of the code are taken directly
+note: the zexy external is published under the GNU General Public License
+that is included (LICENSE.txt). some parts of the code are taken directly
 from the pd source-code, they, of course, fall under the license pd is
 published under.
 
+making pd run with the zexy external::
+==============================================================================
+make sure, that pd will be looking at the location you installed zexy to.
+ideally install zexy to some place, where pd already searches for libraries,
+e.g. "~/.local/lib/pd/extra/" (linux), "~/Library/Pd/extra/" (macOS) or
+"%AppData%\Pd\extra\" (Windows).
+if this is not an option, either add the path to your "Path..." settings in pd,
+or start pd with the cmdline option "-path /path/where/zexy/lives" (you can omit
+the trailing "/zexy" component of the path)
+
+make sure, that you somehow load the zexy external, either by adding "zexy" to
+the "Startup..." libraries (or by starting pd with "-lib zexy"), or (and this is
+the preferred method) by adding something like the following to your patches:
+
+    [declare -path zexy -lib zexy]
+
+
+bugs::
+==============================================================================
+if you happen to find any bugs, please report them at
+   https://git.iem.at/pd/zexy
 
 
 installation::
@@ -41,19 +61,6 @@ on windows, you also need MSYS2/MinGW installed.
 #1> make
 #2> make install
 
-making pd run with the zexy external::
-==============================================================================
-make sure, that pd will be looking at the location you installed zexy to.
-ideally install zexy to some place, where pd already searches for libraries,
-e.g. "~/.local/lib/pd/extra/" (linux), "~/Library/Pd/extra/" (macOS) or
-"%AppData%\Pd\extra\" (Windows).
-if this is not an option, either add the path to your "Path..." settings in pd,
-or start pd with the cmdline option "-path /path/where/zexy/lives" (you can omit
-the trailing "/zexy" component of the path)
-
-make sure, that you somehow load the zexy external, either by adding something
-like [declare -path zexy -lib zexy] to your patches that use zexy, or by adding
-"zexy" to the "Startup..." libraries (or by starting pd with "-lib zexy").
 
 license::
 ==============================================================================
