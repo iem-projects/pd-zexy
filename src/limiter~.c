@@ -1,7 +1,8 @@
 /*
  * limiter~: limit/compress signals
  *
- * (c) 1999-2011 IOhannes m zmÃ¶lnig, forum::fÃŒr::umlÃ€ute, institute of electronic music and acoustics (iem)
+ * (c) 1999-2011 IOhannes m zmölnig, forum::für::umläute,
+ *               institute of electronic music and acoustics (iem)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,7 +34,7 @@
    the limiter is based on Falkner's thesis
    "Entwicklung eines digitalen Stereo-limiters mit Hilfe des Signalprozessors DSP56001" pp.14
 
-   2108:forum::fÃŒr::umlÃ€ute:1999              all rights reserved and no warranties...
+   2108:forum::für::umläute:1999              all rights reserved and no warranties...
 
    see GNU-license for details
 */
@@ -399,7 +400,7 @@ static void limiter_tilde_helper(t_limiter *x)
                "\n'set2 <limit2><htime2><rtime2>'\t: set crack-limiter");
     break;
   case COMPRESS:
-    poststring("\n'ratio <compressratio>'\t\t: set compressratio (Åœ0.5Åœ instead of Åœ1:2Åœ)"
+    poststring("\n'ratio <compressratio>'\t\t: set compressratio ('0.5' instead of '1:2')"
                "\n'threshold <threshold>'\t\t: set threshold of the compressor"
                "\n'compress <limit><threshold><ratio>'\t: set compressor"
                "\n..........note that <limit> is the same for COMPRESSOR and LIMITER..........");
