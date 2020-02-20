@@ -39,8 +39,11 @@ file2arch() {
 }
 
 install_deps () {
+local outdir=$2
+local idepfile
+local odepfile
 local archext
-outdir=$2
+local dep
 if [ "x${outdir}" = "x" ]; then
   outdir=${1%/*}
 fi
