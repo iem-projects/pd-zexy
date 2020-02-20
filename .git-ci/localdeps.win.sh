@@ -53,19 +53,25 @@ fi
 
 list_deps "$1" | while read dep; do
   idepfile=$(basename "${dep}")
-  archext=$(file2arch "${idepfile}")
-  odepfile=$idepfile
+  odepfile=${idepfile}
+  archext=$(file2arch "${dep}")
   if [ "x${archext}" != "x" ]; then
-    odepfile=$(echo ${idepfile} | sed -e "s|\.dll|.${archext}")
+    odepfile=$(echo ${idepfile} | sed -e "s|\.dll|.${archext}|")
+  fi
+  if [ "x${idepfile}" = "x${odepfile}" ]; then
+	archext=""
   fi
   if [ -e "${outdir}/${odepfile}" ]; then
     error "skipping already localized depdendency ${dep}"
   else
     ${CP} "${dep}" "${outdir}/${odepfile}"
   fi
-  sed -e "s|${idepfile}|${odepfile}|g" -i "$1" "${odepfile}"
-done
 
+
+  if [ "x${archext}" != "x" ]; then
+    sed -b -e "s|${idepfile}|${odepfile}|g" -i "${outdir}/${odepfile}" "${outdir}"/*."${archext}" "$1"
+  fi
+done
 }
 
 
