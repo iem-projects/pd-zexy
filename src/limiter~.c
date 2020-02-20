@@ -23,10 +23,10 @@
 /*
   --------------------------------- limiter/compressor ---------------------------------
 
-  for details on how it works watch out for "http://iem.kug.ac.at/~zmoelnig/pd"
+  for details on how it works watch out for "http://users.iem.at/zmoelnig/pd"
   ...and search for "limiter"
 
-  mail2me4more!n4m8ion : zmoelnig@iem.kug.ac.at
+  mail2me4more!n4m8ion : zmoelnig@iem.at
 */
 
 /*

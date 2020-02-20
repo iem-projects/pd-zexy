@@ -58,7 +58,7 @@ Todo:
   then players and to enable glueless switching between soundfiles.
 
 please mail problems and ideas for improvements to
-ritsch@iem.kug.ac.at */
+ritsch@iem.at */
 
 /*#define DEBUG_ME // for debugging messages */
 

@@ -23,8 +23,8 @@ Modified:
 sfrecord.c - hacked from sfplay ::: 2308:forum::für::umläute:1999 @ iem
 
 please mail problems and ideas for improvements to
-ritsch@iem.kug.ac.at
-zmoelnig@iem.kug.ac.at
+ritsch@iem.at
+zmoelnig@iem.at
 */
 
 /* TODO: deprecate this in favour of [writesf~] */
