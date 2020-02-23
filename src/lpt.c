@@ -42,13 +42,19 @@
 #define MODE_NONE   -1
 
 #if defined __linux__
-# define Z_WANT_LPT 1
+# ifndef Z_WANT_LPT
+#  define Z_WANT_LPT 1
+# endif
 #elif defined __WIN32__
 # if defined __i386__
-#  define Z_WANT_LPT 1
+#  ifndef Z_WANT_LPT
+#   define Z_WANT_LPT 1
+#  endif
 #  define INPOUT_DLL "inpout32.dll"
 # elif defined __x86_64__
-#  define Z_WANT_LPT 1
+#  ifndef Z_WANT_LPT
+#   define Z_WANT_LPT 1
+#  endif
 #  define INPOUT_DLL "inpoutx64.dll"
 # else
 #  warning lpt-support on Windows requires InpOut32, which is only available for i386/amd64
@@ -57,11 +63,15 @@
 # warning no lpt-support for this OS
 #endif
 
+#ifndef Z_WANT_LPT
+# define Z_WANT_LPT 0
+#endif
+
 #include "zexy.h"
 
 /* ----------------------- lpt --------------------- */
 
-#ifdef Z_WANT_LPT
+#if Z_WANT_LPT
 # include <stdlib.h>
 # include <errno.h>
 
@@ -233,7 +243,7 @@ typedef struct _lpt {
   int mode; /* MODE_IOPERM, MODE_IOPL */
 } t_lpt;
 
-#ifdef Z_WANT_LPT
+#if Z_WANT_LPT
 static void lpt_float(t_lpt *x, t_floatarg f)
 {
   unsigned char b = f;
@@ -320,7 +330,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
   x->port = 0;
   x->device = -1;
 
-#ifdef Z_WANT_LPT
+#if Z_WANT_LPT
   if ((argc==0)||(argv->a_type==A_FLOAT)) {
     /* FLOAT specifies a parallel port */
     switch ((int)((argc)?atom_getfloat(argv):0)) {
