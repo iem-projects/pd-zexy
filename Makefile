@@ -189,6 +189,7 @@ zexyaliases = \
 	l2i.pd l2i-help.pd \
 	l2s-help.pd s2l-help.pd l-help.pd \
 	$(empty)
+datafiles += $(zexyaliases)
 
 # create aliases
 $(zexyaliases):
@@ -200,6 +201,7 @@ clean_zexyalias:
 	-rm -f $(zexyaliases)
 clean: clean_zexyalias
 
+# alias dependencies
 any2list.pd: a2l.pd
 any2list-help.pd: a2l-help.pd
 l2i.pd: list2int.pd
@@ -221,5 +223,3 @@ style:
 
 check: all
 	LIBDIR=$(CURDIR) find tests/*/ -type f -name "*.pd" -exec tests/testrunner.sh -v -Xls {} "+"
-
-datafiles += $(zexyaliases)
