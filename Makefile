@@ -195,8 +195,10 @@ $(zexyaliases):
 	test -e $< && $(COPY) $< $@
 
 # delete aliases
+.PHONY: clean_zexyalias
 clean_zexyalias:
 	-rm -f $(zexyaliases)
+clean: clean_zexyalias
 
 any2list.pd: a2l.pd
 any2list-help.pd: a2l-help.pd
