@@ -81,7 +81,7 @@ evaluate_tests() {
 
 run_nogui() {
  debug "running test without gui"
- ${PD} ${LIBFLAGS} -nogui runtests_nogui.pd > ${RUNTESTS_LOG} 2>&1 
+ ${PD} ${LIBFLAGS} -nrt -noprefs -nostdpath -batch runtests_nogui.pd > ${RUNTESTS_LOG} 2>&1
  SUCCESS=$?
  debug "testing done"
  evaluate_tests ${RUNTESTS_TXT} ${RUNTESTS_LOG}
