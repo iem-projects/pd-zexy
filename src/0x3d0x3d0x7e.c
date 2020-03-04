@@ -159,7 +159,7 @@ static t_int *scalareq_tilde_performSSE(t_int *w)
 {
   __m128 *in = (__m128 *)(w[1]);
   __m128 *out = (__m128 *)(w[3]);
-  float f = *(float *)(w[2]);
+  t_float f = *(t_float *)(w[2]);
   __m128 scalar = _mm_set1_ps(f);
   int n = (int)(w[4])>>4;
   const __m128 one    = _mm_set1_ps(1.f);

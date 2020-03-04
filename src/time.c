@@ -84,7 +84,7 @@ static void *time_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 static void time_bang(t_time *x)
 {
   struct tm *resolvetime;
-  float  ms = 0.f;
+  t_float  ms = 0.f;
 #ifdef USE_TIMEB
   struct timeb mytime;
   ftime(&mytime);

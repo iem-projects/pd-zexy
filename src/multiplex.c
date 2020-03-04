@@ -52,7 +52,7 @@ typedef struct _mux {
   struct _muxproxy  **x_proxy;
 
   int i_count;
-  float f_selected;
+  t_float f_selected;
   t_inlet **in;
 } t_mux;
 
