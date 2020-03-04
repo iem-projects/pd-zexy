@@ -53,8 +53,8 @@ installation::
 linux, irix, osx, mingw,... :
 ------------------------------------------------------------------------------
 
-you will need to have Pd installed, and a C-compiler (preferably gcc) as well as
-some a GNUmake compatible implementation of 'make'.
+you will need to have Pd installed, and a C-compiler (preferably gcc)
+as well as a GNUmake compatible implementation of 'make'.
 
 on windows, you also need MSYS2/MinGW installed.
 
