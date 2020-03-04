@@ -38,7 +38,7 @@ static t_int *sigABSGN_perform(t_int *w)
 
   while (n--) {
     t_sample val = *in++;
-    *out++ = fabsf(val);
+    *out++ = Z_FABS(val);
 
     if (val>0.) {
       *out2++=1.;

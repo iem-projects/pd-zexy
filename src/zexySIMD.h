@@ -66,7 +66,7 @@ static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
 
     for(i=0; i<4; i++) {
       for(j=0; j<4; j++) {
-        if(fabsf(out1[i].f[j]-out2[i].f[j])>1e-17) {
+        if(Z_FABS(out1[i].f[j]-out2[i].f[j])>1e-17) {
           verbose(2,
                   "generic and optimized routines return different results: skipping optimization");
           verbose(2, "[%d,%d]: ((%f->%f)!=(%f->%f))",

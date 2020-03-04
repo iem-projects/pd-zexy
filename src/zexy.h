@@ -96,6 +96,12 @@ typedef struct _mypdlist {
 # define BUILD_DATE  __DATE__
 #endif
 
+#if PD_FLOATSIZE == 32
+# define Z_FABS(f) fabsf(f)
+#else
+# define Z_FABS(f) fabs(f)
+#endif
+
 /* marker for setup-functions to be called by zexy_setup() */
 #define ZEXY_SETUP
 

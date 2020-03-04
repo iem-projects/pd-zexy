@@ -37,7 +37,7 @@ static t_int *sigABS_perform(t_int *w)
   int n = (int)(w[3]);
 
   while (n--) {
-    *out++ = fabsf(*in++);
+    *out++ = Z_FABS(*in++);
   }
 
   return (w+4);
