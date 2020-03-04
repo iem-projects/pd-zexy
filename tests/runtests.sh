@@ -36,7 +36,7 @@ fi
 LIBFLAGS="-path ../src/.libs/:../src/:../ -lib zexy -path ../abs/:${TESTDIR}:."
 
 list_tests() {
-#  find . -mindepth 2  -name "*.pd" | sed 's|\.pd$|;|' 
+#  find . -mindepth 2  -name "*.pd" | sed 's|\.pd$|;|'
  ls -1 ${TESTDIR}/*/*.pd | sed 's|\.pd$|;|'
 }
 
