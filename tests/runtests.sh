@@ -33,7 +33,7 @@ else
   RUNTESTS_LOG=tmp$$.log
 fi
 
-LIBFLAGS="-path ../src/.libs/:../src/:../ -lib zexy -path ../abs/:${TESTDIR}:."
+LIBFLAGS="-path ../ -lib zexy -path ../abs/:${TESTDIR}:."
 
 list_tests() {
 #  find . -mindepth 2  -name "*.pd" | sed 's|\.pd$|;|'
