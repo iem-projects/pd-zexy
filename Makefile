@@ -143,15 +143,15 @@ endif
 
 
 ifeq ($(make-lib-executable),yes)
- CPPFLAGS+=-DZEXY_LIBRARY
+ cflags += -DZEXY_LIBRARY
 endif
 
 ifeq ($(with-regex),yes)
- CPPFLAGS+=-DHAVE_REGEX_H
+ cflags += -DHAVE_REGEX_H
 endif
 
 ifneq ($(with-lpt),yes)
- CPPFLAGS+=-DZ_WANT_LPT=0
+ cflags += -DZ_WANT_LPT=0
 endif
 
 define forWindows
@@ -168,7 +168,7 @@ define forLinux
  # on linux we need <sys/io.h> for the [lpt] object, so check if it is there...
  ifeq ($(with-lpt),yes)
   ifeq ($(shell $(CPP) -x c -include "sys/io.h" /dev/null >/dev/null 2>&1 || echo no), no)
-    CPPFLAGS+=-DZ_WANT_LPT=0
+    cflags += -DZ_WANT_LPT=0
   endif
  endif
 endef
