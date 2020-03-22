@@ -124,7 +124,8 @@ datafiles = \
 	README.txt \
 	LICENSE.txt \
 	ChangeLog \
-	zexy-meta.pd
+	zexy-meta.pd \
+	$(empty)
 
 datafiles += \
 	$(wildcard abs/*.pd) \
