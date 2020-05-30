@@ -626,6 +626,10 @@ static void msgfile_addbinbuf(t_msgfile *x, t_binbuf*bbuf)
     if(next>1) {
       add_currentnode(x);
       write_currentnode(x, next-1, argv);
+    } else if (next<1) {
+      add_currentnode(x);
+      write_currentnode(x, argc, argv);
+      break;
     }
     argv+=next;
     argc-=next;
