@@ -1,6 +1,6 @@
 ---
 include:
-  - https://git.iem.at/pd/iem-ci/raw/master/pd-lib-builder/gitlab-iem.yml
+  - https://git.iem.at/pd/iem-ci/raw/main/pd-lib-builder/gitlab-iem.yml
 
 pages:
   stage: build
