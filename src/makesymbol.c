@@ -132,74 +132,74 @@ static t_formatspec*parse_formatstring(const char*str) {
   return result;
 }
 
-static char* format_float(char*buf, t_formatspec*fs, t_floatarg f)
+static char* format_float(char*buf, ssize_t buflen, t_formatspec*fs, t_floatarg f)
 {
     if(!fs->fs_format) {
       return NULL;
     }
     switch(fs->fs_accept) {
     case NONE:
-        sprintf(buf, "%s",  fs->fs_format);
+        snprintf(buf, buflen, "%s",  fs->fs_format);
         break;
     case INT: case POINTER:
-        sprintf(buf, fs->fs_format, (int)f);
+        snprintf(buf, buflen, fs->fs_format, (int)f);
         break;
     case FLOAT:
-        sprintf(buf, fs->fs_format, f);
+        snprintf(buf, buflen, fs->fs_format, f);
         break;
     case STRING: {
         char buf2[MAXPDSTRING];
         sprintf(buf2, "%g", f);
-        sprintf(buf, fs->fs_format, buf2);
+        snprintf(buf, buflen, fs->fs_format, buf2);
         break;
     }
     default:
-        sprintf(buf, "%s", fs->fs_format);
+        snprintf(buf, buflen, "%s", fs->fs_format);
     }
     return buf;
 }
 
-static char* format_symbol(char*buf, t_formatspec*fs, t_symbol *s)
+static char* format_symbol(char*buf, ssize_t buflen, t_formatspec*fs, t_symbol *s)
 {
     if(!fs->fs_format) {
       return NULL;
     }
     switch(fs->fs_accept) {
     case STRING: case POINTER:
-        sprintf(buf, fs->fs_format, s->s_name);
+        snprintf(buf, buflen, fs->fs_format, s->s_name);
         break;
     case INT:
-        sprintf(buf, fs->fs_format, 0);
+        snprintf(buf, buflen, fs->fs_format, 0);
         break;
     case FLOAT:
-        sprintf(buf, fs->fs_format, 0.);
+        snprintf(buf, buflen, fs->fs_format, 0.);
         break;
     case NONE:
-        sprintf(buf, "%s", fs->fs_format);
+        snprintf(buf, buflen, "%s", fs->fs_format);
         break;
     default:
-        sprintf(buf, "%s", fs->fs_format);
+        snprintf(buf, buflen, "%s", fs->fs_format);
     }
     return buf;
 }
 
-static char* format_bang(char*buf, t_formatspec*fs)
+static char* format_bang(char*buf, ssize_t buflen, t_formatspec*fs)
 {
     if(!fs->fs_format) {
       return NULL;
     }
     switch(fs->fs_accept) {
     case INT:
-        sprintf(buf, fs->fs_format, 0);
+        snprintf(buf, buflen, fs->fs_format, 0);
         break;
     case FLOAT:
-        sprintf(buf, fs->fs_format, 0.);
+        snprintf(buf, buflen, fs->fs_format, 0.);
         break;
     case NONE:
-        sprintf(buf, "%s", fs->fs_format);
+        snprintf(buf, buflen, "%s", fs->fs_format);
         break;
     default:
-        sprintf(buf, "%s", fs->fs_format);
+        snprintf(buf, buflen, "%s", fs->fs_format);
     }
     return buf;
 }
@@ -226,27 +226,29 @@ static void reset_mask(t_makesymbol *x, t_symbol *s)
 static t_symbol* list2symbol(t_formatspec*fs, int argc, t_atom *argv)
 {
   char buf[MAXPDSTRING];
-  char argbuf[MAXPDSTRING];
-  buf[0] = argbuf[0] = 0;
+  char*argbuf=buf;
+  int len = 0;
+  buf[0] = 0;
   int i=0;
-  while(fs) {
+  while(fs && (len<MAXPDSTRING)) {
     t_atom*a = (i >= argc)?0:argv+i;
     t_atomtype typ = a?a->a_type:A_NULL;
+    char*argbuf = buf+len;
     const char*b = NULL;
     switch(typ) {
     case A_SYMBOL:
-      b=format_symbol(argbuf, fs, a->a_w.w_symbol);
+      b=format_symbol(argbuf, MAXPDSTRING-len, fs, a->a_w.w_symbol);
       break;
     case A_FLOAT:
-      b=format_float(argbuf, fs, a->a_w.w_float);
+      b=format_float(argbuf, MAXPDSTRING-len, fs, a->a_w.w_float);
       break;
     default:
-      b=format_bang(argbuf, fs);
+      b=format_bang(argbuf, MAXPDSTRING-len, fs);
       break;
     }
     if(!b)
       return NULL;
-    strncat(buf, argbuf, MAXPDSTRING);
+    len += strlen(argbuf);
     fs=fs->fs_next;
     i++;
   }
@@ -269,7 +271,7 @@ static void makesymbol_list(t_makesymbol *x, t_symbol* UNUSED(s), int argc,
       argbuf[MAXPDSTRING-1] = 0;
       strncat(buf, argbuf, MAXPDSTRING);
     }
-    s = gensym(buf+1);
+    s = gensym(buf+1); /* +1 to drop the leading space */
   }
   if(!s) {
     pd_error(x, "illegal format specifier '%s'", x->x_format);
