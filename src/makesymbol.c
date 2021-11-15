@@ -41,62 +41,241 @@
 
 #include <string.h>
 #include <stdio.h>
-
-#define MAXSTRINGARGS 10
-#define MAXSTRINGLENG MAXPDSTRING
+#include <stdlib.h>
 
 /* ----------------------- makesymbol --------------------- */
 
 static t_class *makesymbol_class=NULL;
 
+typedef enum {
+    NONE = 0,
+    INT,
+    FLOAT,
+    STRING,
+    POINTER,
+} t_printtype;
+
+typedef struct _formatspec {
+  char*fs_format;
+  t_printtype fs_accept;
+  struct _formatspec*fs_next;
+} t_formatspec;
+
+
+static const char* _formatscan(const char*str, t_printtype*typ) {
+    int infmt=0;
+    for (; *str; str++) {
+        if (!infmt && *str=='%') {
+            infmt=1;
+            continue;
+        }
+        if (infmt) {
+            if (*str=='%') {
+                infmt=0;
+                continue;
+            }
+            if (strchr("-.#0123456789",*str)!=0)
+                continue;
+            if (*str=='s') {
+                *typ = STRING;
+                return str+1;
+            }
+            if (strchr("fgGeE",*str)!=0) {
+                *typ = FLOAT;
+                return str+1;
+            }
+            if (strchr("xXdiouc",*str)!=0) {
+                *typ = INT;
+                return str+1;
+            }
+           if (strchr("p",*str)!=0) {
+                *typ = POINTER;
+                return str+1;
+            }
+        }
+    }
+    *typ = NONE;
+    return str;
+}
+static void print_formatspecs(t_formatspec*fs) {
+  int i=0;
+  while(fs) {
+    post("[%d] '%s'[%d]", i, fs->fs_format, fs->fs_accept);
+    i++;
+    fs=fs->fs_next;
+  }
+}
+static void delete_formatspecs(t_formatspec*fs) {
+  while(fs) {
+    t_formatspec*ptr=fs;
+    fs=fs->fs_next;
+    free(ptr->fs_format);
+    freebytes(ptr, sizeof(*ptr));
+  }
+}
+static t_formatspec*parse_formatstring(const char*str) {
+  t_formatspec*result=NULL, *last=NULL;
+  while(*str) {
+    t_printtype typ=NONE;
+    const char*nextstr = _formatscan(str, &typ);
+    t_formatspec *fs = getbytes(sizeof(*fs));
+    int len=nextstr - str;
+    fs->fs_format = malloc(len+1);
+    strncpy(fs->fs_format, str, len);
+    fs->fs_format[len] = 0;
+    fs->fs_accept = typ;
+    if(!result) result = fs;
+    if(last) last->fs_next = fs;
+    last = fs;
+    str = nextstr;
+  }
+  return result;
+}
+
+static char* format_float(char*buf, t_formatspec*fs, t_floatarg f)
+{
+    if(!fs->fs_format) {
+      return NULL;
+    }
+    switch(fs->fs_accept) {
+    case NONE:
+        sprintf(buf, "%s",  fs->fs_format);
+        break;
+    case INT: case POINTER:
+        sprintf(buf, fs->fs_format, (int)f);
+        break;
+    case FLOAT:
+        sprintf(buf, fs->fs_format, f);
+        break;
+    case STRING: {
+        char buf2[MAXPDSTRING];
+        sprintf(buf2, "%g", f);
+        sprintf(buf, fs->fs_format, buf2);
+        break;
+    }
+    default:
+        sprintf(buf, "%s", fs->fs_format);
+    }
+    return buf;
+}
+
+static char* format_symbol(char*buf, t_formatspec*fs, t_symbol *s)
+{
+    if(!fs->fs_format) {
+      return NULL;
+    }
+    switch(fs->fs_accept) {
+    case STRING: case POINTER:
+        sprintf(buf, fs->fs_format, s->s_name);
+        break;
+    case INT:
+        sprintf(buf, fs->fs_format, 0);
+        break;
+    case FLOAT:
+        sprintf(buf, fs->fs_format, 0.);
+        break;
+    case NONE:
+        sprintf(buf, "%s", fs->fs_format);
+        break;
+    default:
+        sprintf(buf, "%s", fs->fs_format);
+    }
+    return buf;
+}
+
+static char* format_bang(char*buf, t_formatspec*fs)
+{
+    if(!fs->fs_format) {
+      return NULL;
+    }
+    switch(fs->fs_accept) {
+    case INT:
+        sprintf(buf, fs->fs_format, 0);
+        break;
+    case FLOAT:
+        sprintf(buf, fs->fs_format, 0.);
+        break;
+    case NONE:
+        sprintf(buf, "%s", fs->fs_format);
+        break;
+    default:
+        sprintf(buf, "%s", fs->fs_format);
+    }
+    return buf;
+}
+
+
+
 typedef struct _makesymbol {
   t_object x_obj;
   t_symbol *x_sym;
 
-  const char* mask;
-  char* buf;
+
+  t_formatspec*x_fs;
+  t_symbol *x_format;
 } t_makesymbol;
 
 static void reset_mask(t_makesymbol *x, t_symbol *s)
 {
-  if (*s->s_name) {
-    x->mask = s->s_name;
-    x->x_sym = s;
-  } else {
-    x->mask = "%s%s%s%s%s%s%s%s%s%s";
-    x->x_sym = gensym("");
-  }
+  delete_formatspecs(x->x_fs);
+  x->x_fs = parse_formatstring(s->s_name);
+  x->x_format = s;
+  x->x_sym = s;
 }
 
-typedef char cstring[MAXSTRINGLENG];
-
-static t_symbol* list2symbol(const char *masque, int argc, t_atom *argv)
+static t_symbol* list2symbol(t_formatspec*fs, int argc, t_atom *argv)
 {
-  cstring*buf=(cstring*)getbytes(MAXSTRINGARGS*sizeof(cstring));
-  cstring buffer;
-  int i;
-
-  for(i=0; i<MAXSTRINGARGS; i++) {
-    *buf[i]=0;
+  char buf[MAXPDSTRING];
+  char argbuf[MAXPDSTRING];
+  buf[0] = argbuf[0] = 0;
+  int i=0;
+  while(fs) {
+    t_atom*a = (i >= argc)?0:argv+i;
+    t_atomtype typ = a?a->a_type:A_NULL;
+    const char*b = NULL;
+    switch(typ) {
+    case A_SYMBOL:
+      b=format_symbol(argbuf, fs, a->a_w.w_symbol);
+      break;
+    case A_FLOAT:
+      b=format_float(argbuf, fs, a->a_w.w_float);
+      break;
+    default:
+      b=format_bang(argbuf, fs);
+      break;
+    }
+    if(!b)
+      return NULL;
+    strncat(buf, argbuf, MAXPDSTRING);
+    fs=fs->fs_next;
+    i++;
   }
-
-  for (i=0; i<argc; i++) {
-    atom_string(argv+i, buf[i], MAXSTRINGLENG);
-  }
-
-  sprintf(buffer,
-          masque,
-          buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7], buf[8],
-          buf[9]);
-
-  freebytes(buf, MAXSTRINGARGS*sizeof(cstring));
-  return (gensym(buffer));
+  return (gensym(buf));
 }
 
 static void makesymbol_list(t_makesymbol *x, t_symbol* UNUSED(s), int argc,
                             t_atom *argv)
 {
-  x->x_sym = list2symbol(x->mask, argc, argv);
+  t_symbol*s = 0;
+  if (x->x_fs)
+    s = list2symbol(x->x_fs, argc, argv);
+  else {
+    char buf[MAXPDSTRING];
+    buf[0]=buf[1]=0;
+    while(argc--) {
+      char argbuf[MAXPDSTRING];
+      argbuf[0] = ' ';
+      atom_string(argv++, argbuf+1, MAXPDSTRING-1);
+      argbuf[MAXPDSTRING-1] = 0;
+      strncat(buf, argbuf, MAXPDSTRING);
+    }
+    s = gensym(buf+1);
+  }
+  if(!s) {
+    pd_error(x, "illegal format specifier '%s'", x->x_format);
+    return;
+  }
+  x->x_sym = s;
   outlet_symbol(x->x_obj.ob_outlet, x->x_sym);
 }
 
@@ -110,16 +289,14 @@ static void *makesymbol_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 {
   t_makesymbol *x = (t_makesymbol *)pd_new(makesymbol_class);
 
-  x->buf = (char *)getbytes(MAXSTRINGLENG * sizeof(char));
-
-  x->mask  = x->buf;
-
+  x->x_sym = gensym("");
   if (argc) {
-    atom_string(argv, x->buf, MAXSTRINGLENG);
-    x->x_sym = gensym(x->buf);
-  } else {
-    x->mask = "%s%s%s%s%s%s%s%s%s%s";
-    x->x_sym = gensym("");
+    char buf[MAXPDSTRING];
+    atom_string(argv, buf, MAXPDSTRING);
+    buf[MAXPDSTRING-1] = 0;
+    x->x_sym = gensym(buf);
+    x->x_format = x->x_sym;
+    x->x_fs = parse_formatstring(buf);
   }
 
   outlet_new(&x->x_obj, gensym("symbol"));
@@ -130,14 +307,14 @@ static void *makesymbol_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 static void makesymbol_free(t_makesymbol *x)
 {
-  freebytes(x->buf, MAXSTRINGLENG*sizeof(char));
+  delete_formatspecs(x->x_fs);
 }
 
 
 static void makesymbol_helper(t_makesymbol* UNUSED(x))
 {
   post("\n"HEARTSYMBOL " makesymbol :: create a formatted symbol");
-  post("<list of anything>\t: glue up to 10 list-elements to 1 formatted symbol\n"
+  post("<list of anything>\t: format list into a symbol\n"
        "'bang'\t\t\t: re-output\n"
        "'help'\t\t\t: view this"
        "\ninlet2 : <format-string>: new format-string (symbol !)"
