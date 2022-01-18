@@ -1,3 +1,19 @@
+zexy (2.4.0) RELEASED; urgency=medium
+
+  * [makefilename] now takes a list of any format specifier
+  * Pd-0.52 compat (use pd_error() instead of error())
+  * Fix buffer handling with [sfrecord]
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Sat, 30 May 2020 23:18:01 +0200
+
+zexy (2.3.1) RELEASED; urgency=medium
+
+  * Fix crasher bug in [msgfile]
+  * [lpt] build fixes
+  * Various other build fixes
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Sat, 30 May 2020 23:18:01 +0200
+
 zexy (2.3.0) RELEASED; urgency=medium
 
   * [msgfile] new formats:
@@ -13,6 +29,7 @@ zexy (2.3.0) RELEASED; urgency=medium
   * Fix older ChangeLog entries
 
  -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Thu, 20 Feb 2020 22:02:20 +0200
+
 
 zexy (2.2.8) RELEASED; urgency=medium
 
