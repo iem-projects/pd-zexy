@@ -155,7 +155,7 @@ static void sfrecord_open(t_sfrecord *x,t_symbol *filename,
   }
 
   if (!(x->fp = sys_fopen(x->filename->s_name,BINWRITEMODE))) {
-    error("sfrecord: can't open %s", x->filename->s_name);
+    pd_error(x, "sfrecord: can't open %s", x->filename->s_name);
   }
 }
 
@@ -360,7 +360,7 @@ static t_int *sfrecord_perform(t_int *w)
     /* should never happen */
     if(!x->data) {
       x->state = SFRECORD_ERROR;
-      error("sfrecord: writing but no buffer ???? write");
+      pd_error(x, "sfrecord: writing but no buffer ???? write");
       return (w+4+c);
     }
 

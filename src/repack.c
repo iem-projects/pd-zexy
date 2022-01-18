@@ -59,7 +59,7 @@ static void repack_set(t_repack *x, t_float f)
     }
 
     if (dumcur < 0) {
-      error("this should never happen :: dumcur = %d < 0", dumcur);
+      pd_error(x, "this should never happen :: dumcur = %d < 0", dumcur);
     } else {
       memcpy(x->buffer, dumbuf, dumcur * sizeof(t_atom));
       x->current = dumcur;

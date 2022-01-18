@@ -101,22 +101,22 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x,
   return result;
 }
 
-static int add2fifo(t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
+static int add2fifo(t_fifop *x, t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
 {
   t_fifop_list*entry=0;
 
   if(fifoprio==0) {
-    error("pfifo: no fifos available");
+    pd_error(x, "pfifo: no fifos available");
     return -1;
   }
 
   /* create an entry for the fifo */
   if(!(entry = (t_fifop_list*)getbytes(sizeof(t_fifop_list)))) {
-    error("pfifo: couldn't add entry to end of fifo");
+    pd_error(x, "pfifo: couldn't add entry to end of fifo");
     return -1;
   }
   if(!(entry->argv=(t_atom*)getbytes(argc*sizeof(t_atom)))) {
-    error("pfifo: couldn't add list to fifo!");
+    pd_error(x, "pfifo: couldn't add list to fifo!");
     return -1;
   }
   memcpy(entry->argv, argv, argc*sizeof(t_atom));
@@ -156,10 +156,10 @@ static void fifop_list(t_fifop *x, t_symbol* UNUSED(s), int argc,
 {
   t_fifop_prioritylist*pfifo=0;
   if(!(pfifo=fifop_genprioritylist(x, x->priority))) {
-    error("[fifop]: couldn't get priority fifo");
+    pd_error(x, "[fifop]: couldn't get priority fifo");
     return;
   }
-  if(!add2fifo(pfifo, argc, argv)) {
+  if(!add2fifo(x, pfifo, argc, argv)) {
     x->counter++;
   }
 }

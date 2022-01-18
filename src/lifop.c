@@ -98,22 +98,22 @@ static t_lifop_prioritylist*lifop_genprioritylist(t_lifop*x,
   return result;
 }
 
-static int add2lifo(t_lifop_prioritylist*lifoprio, int argc, t_atom *argv)
+static int add2lifo(t_lifop *x, t_lifop_prioritylist*lifoprio, int argc, t_atom *argv)
 {
   t_lifop_list*entry=0;
 
   if(lifoprio==0) {
-    error("plifo: no lifos available");
+    pd_error(x, "plifo: no lifos available");
     return -1;
   }
 
   /* create an entry for the lifo */
   if(!(entry = (t_lifop_list*)getbytes(sizeof(t_lifop_list)))) {
-    error("plifo: couldn't add entry to end of lifo");
+    pd_error(x, "plifo: couldn't add entry to end of lifo");
     return -1;
   }
   if(!(entry->argv=(t_atom*)getbytes(argc*sizeof(t_atom)))) {
-    error("plifo: couldn't add list to lifo!");
+    pd_error(x, "plifo: couldn't add list to lifo!");
     return -1;
   }
   memcpy(entry->argv, argv, argc*sizeof(t_atom));
@@ -142,10 +142,10 @@ static void lifop_list(t_lifop *x, t_symbol* UNUSED(s), int argc,
 {
   t_lifop_prioritylist*plifo=0;
   if(!(plifo=lifop_genprioritylist(x, x->priority))) {
-    error("[lifop]: couldn't get priority lifo");
+    pd_error(x, "[lifop]: couldn't get priority lifo");
     return;
   }
-  if(!add2lifo(plifo, argc, argv)) {
+  if(!add2lifo(x, plifo, argc, argv)) {
     x->counter++;
   }
 

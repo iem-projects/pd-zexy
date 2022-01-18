@@ -178,10 +178,10 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
         return;
 
       } else {
-        error("index :: couldn't find any place for new entry");
+        pd_error(x, "index :: couldn't find any place for new entry");
       }
     } else {
-      error("index :: max number of elements (%d) reached !", x->maxentries);
+      pd_error(x, "index :: max number of elements (%d) reached !", x->maxentries);
     }
   } else {
     verbose(1, "index :: element '%s' already exists", s->s_name);
@@ -195,7 +195,7 @@ static void index_delete(t_index *x, t_symbol* UNUSED(s), int argc,
 {
   int idx=-1;
   if(argc!=1) {
-    error("index :: delete what ?");
+    pd_error(x, "index :: delete what ?");
     return;
   } else {
     if(argv->a_type==A_FLOAT) {
@@ -203,7 +203,7 @@ static void index_delete(t_index *x, t_symbol* UNUSED(s), int argc,
     } else if (argv->a_type==A_SYMBOL) {
       idx=find_item(atom_getsymbol(argv),x->names, x->maxentries);
     } else {
-      error("index :: delete what ?");
+      pd_error(x, "index :: delete what ?");
       return;
     }
   }

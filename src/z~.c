@@ -109,7 +109,7 @@ static void *zNdelay_new(t_symbol*UNUSED(s), int argc, t_atom*argv)
     }
   /* fallthrough */
   default:
-    error("Bad arguments for [z~]: must be nought or initial delay [in samples]");
+    pd_error(0, "Bad arguments for [z~]: must be nought or initial delay [in samples]");
     return 0;
   }
 

@@ -137,7 +137,7 @@ static int zexy_argparse(const char*argstring, int argc, t_atomtype*argv)
       argv[i] = A_GIMME;
       break;
     default:
-      error("ZEXYERROR: unknown argument specifier '%s'", argstring);
+      pd_error(0, "ZEXYERROR: unknown argument specifier '%s'", argstring);
       return -1;
     }
   }

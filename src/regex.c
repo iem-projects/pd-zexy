@@ -309,7 +309,7 @@ static void *regex_new(t_symbol *UNUSED(s), int argc, t_atom*argv)
     regex_regex(x, 0, 1, &a);
   }
 #else
-  error("[regex] non-functional: compiled without regex-support!");
+  pd_error(x, "[regex] non-functional: compiled without regex-support!");
 #endif
 
   return (x);

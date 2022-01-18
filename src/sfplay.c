@@ -188,7 +188,7 @@ static void sfplay_open(t_sfplay *x,t_symbol *filename,t_symbol *endian)
   }
 
   if (!(x->fp = sys_fopen(x->filename->s_name,BINREADMODE))) {
-    error("sfplay: can't open %s", x->filename->s_name);
+    pd_error(x, "sfplay: can't open %s", x->filename->s_name);
   }
 }
 
@@ -225,7 +225,7 @@ static int sfplay_skip(t_sfplay *x)
   x->skip = 0;
 
   if(fseek(x->fp, (long) x->x_offset, SEEK_SET) < 0) {
-    error(" sfplay can't seek to byte %ld",(long) x->x_offset);
+    pd_error(x, " sfplay can't seek to byte %ld",(long) x->x_offset);
     x->x_offset = x->x_skip;
     x->skip = 1;
     return 0;
@@ -445,7 +445,7 @@ static t_int *sfplay_perform(t_int *w)
     /* should never happen */
     if(!x->filep) {
       x->state = SFPLAY_ERROR;
-      error("sfplay: playing but no buffer ???? play");
+      pd_error(x, "sfplay: playing but no buffer ???? play");
       return (w+4+c);
     }
 

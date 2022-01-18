@@ -61,7 +61,7 @@ static void *sigenvrms_new(t_floatarg fnpoints, t_floatarg fperiod)
     period = npoints / MAXOVERLAP + 1;
   }
   if (!(buf = getbytes(sizeof(*buf) * (npoints + MAXVSTAKEN)))) {
-    error("env: couldn't allocate buffer");
+    pd_error(0, "envrms~: couldn't allocate buffer");
     return (0);
   }
   x = (t_sigenvrms *)pd_new(sigenvrms_class);

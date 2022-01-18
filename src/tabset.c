@@ -38,9 +38,9 @@ static void tabset_float(t_tabset *x, t_floatarg f)
   t_word *vec;
 
   if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class))) {
-    error("%s: no such array", x->x_arrayname->s_name);
+    pd_error(x, "%s: no such array", x->x_arrayname->s_name);
   } else if (!garray_getfloatwords(A, &npoints, &vec)) {
-    error("%s: bad template for tabset", x->x_arrayname->s_name);
+    pd_error(x, "%s: bad template for tabset", x->x_arrayname->s_name);
   } else {
     while(npoints--) {
       vec->w_float = f;
@@ -58,9 +58,9 @@ static void tabset_list(t_tabset *x, t_symbol* UNUSED(s), int argc,
   t_word *vec;
 
   if (!(A = (t_garray *)pd_findbyclass(x->x_arrayname, garray_class))) {
-    error("%s: no such array", x->x_arrayname->s_name);
+    pd_error(x, "%s: no such array", x->x_arrayname->s_name);
   } else if (!garray_getfloatwords(A, &npoints, &vec)) {
-    error("%s: bad template for tabset", x->x_arrayname->s_name);
+    pd_error(x, "%s: bad template for tabset", x->x_arrayname->s_name);
   } else {
     if (argc>=npoints)
       while(npoints--) {

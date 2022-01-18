@@ -35,7 +35,7 @@ static void mux_tilde_input(t_mux *x, t_floatarg f)
   if ((f>=0)&&(f<x->n_in)) {
     x->input=f;
   } else {
-    error("multiplex~: %d is channel out of range (0..%d)", (int)f, x->n_in);
+    pd_error(x, "multiplex~: %d is channel out of range (0..%d)", (int)f, x->n_in);
   }
 
 }

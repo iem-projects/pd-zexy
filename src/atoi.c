@@ -74,7 +74,7 @@ static void atoi_list(t_atoi *x, t_symbol* s, int argc, t_atom *argv)
   if (argc>1) {
     base=atom_getfloat(argv+1);
     if (base<2) {
-      error("atoi: setting base to 10");
+      pd_error(x, "atoi: setting base to 10");
       base=10;
     }
   }

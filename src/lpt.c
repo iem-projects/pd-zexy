@@ -143,10 +143,10 @@ static int z_inpout32_ctor()
     if ( hInpOutDll == NULL )  {
       char errstring[MAXPDSTRING];
       int err = z_getWinErr(errstring, MAXPDSTRING);
-      error("unable to open %s for accessing the parallel-port!", INPOUT_DLL);
-      error("error[%d]: %s", err, errstring);
-      error("make sure you have InpOut32 installed");
-      error("--> http://www.highrez.co.uk/downloads/inpout32/");
+      pd_error(0, "unable to open %s for accessing the parallel-port!", INPOUT_DLL);
+      pd_error(0, "error[%d]: %s", err, errstring);
+      pd_error(0, "make sure you have InpOut32 installed");
+      pd_error(0, "--> http://www.highrez.co.uk/downloads/inpout32/");
       return 0;
     }
     gfpOut32 = (lpOut32)GetProcAddress(hInpOutDll, "Out32");
@@ -158,7 +158,7 @@ static int z_inpout32_ctor()
   z_inpout32_refcount++;
 
   if (!gfpIsInpOutDriverOpen()) {
-    error("unable to start InpOut32 driver!");
+    pd_error(0, "unable to start InpOut32 driver!");
     return 0;
   }
   return z_inpout32_refcount;
@@ -295,9 +295,9 @@ static void lpt_free(t_lpt *x)
 #endif
     if (x->port) {
       if (x->mode==MODE_IOPERM && ioperm(x->port, 8, 0)) {
-        error("lpt: couldn't clean up device");
+        pd_error(x, "lpt: couldn't clean up device");
       } else if (x->mode==MODE_IOPL && (!--count_iopl) && iopl(0)) {
-        error("lpt: couldn't clean up device");
+        pd_error(x, "lpt: couldn't clean up device");
       }
     }
 #ifdef __WIN32__
@@ -320,7 +320,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
   long int hexport = 0;
 
   if(s==gensym("lp")) {
-    error("lpt: the use of 'lp' has been deprecated; use 'lpt' instead");
+    pd_error(x, "lpt: the use of 'lp' has been deprecated; use 'lpt' instead");
   }
 
 
@@ -347,7 +347,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
       devname="lpt2";
       break;
     default:
-      error("lpt : only lpt0, lpt1 and lpt2 are accessible");
+      pd_error(x, "lpt : only lpt0, lpt1 and lpt2 are accessible");
       x->port = 0;
       return (x);
     }
@@ -363,7 +363,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
 #ifdef __linux__
       x->device = sys_open(devname, O_RDWR);
       if(x->device<=0) {
-        error("lpt: bad device %s", devname);
+        pd_error(x, "lpt: bad device %s", devname);
         return(x);
       } else {
         if (ioctl (x->device, PPCLAIM)) {
@@ -377,7 +377,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
   }
 
   if ((x->device<0) && (!x->port)) {
-    error("lpt : bad port %x", x->port);
+    pd_error(x, "lpt : bad port %x", x->port);
     x->port = 0;
     return (x);
   }
@@ -407,7 +407,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
     }
 
     if(x->mode==MODE_NONE) {
-      error("lpt : couldn't get write permissions");
+      pd_error(x, "lpt : couldn't get write permissions");
       x->port = 0;
       return (x);
     }
@@ -427,7 +427,7 @@ static void *lpt_new(t_symbol *s, int argc, t_atom *argv)
   }
 
 #else
-  error("zexy has been compiled without [lpt]!");
+  pd_error(0, "zexy has been compiled without [lpt]!");
   count_iopl=0;
 #endif /* Z_WANT_LPT */
 
