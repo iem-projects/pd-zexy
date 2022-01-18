@@ -36,8 +36,6 @@ zmoelnig@iem.at
 
 /* #include "m_imp.h" */
 
-#define DACBLKSIZE 64   /* in m_imp.h, but error if it is included it here*/
-
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -59,6 +57,7 @@ typedef struct _sfrecord {
   t_object x_obj;
 
   void*   data;      /* pointer to file data read in mem */
+  size_t  datasize;  /* sizeof(data) */
   t_symbol* filename; /* filename */
 
   /*
@@ -471,6 +470,20 @@ return(w+c+3);
 
 static void sfrecord_dsp(t_sfrecord *x, t_signal **sp)
 {
+  size_t datasize =  sp[0]->s_n * sizeof(short) * x->x_channels;
+  if(x->datasize < datasize) {
+    void*data = resizebytes(x->data, x->datasize, datasize);
+    if(!data) {
+      freebytes(x->data, x->datasize);
+      datasize = 0;
+    }
+    x->data = data;
+    x->datasize = datasize;
+  }
+  if(!x->data) {
+    pd_error(x, "failed to allocate databuffer...skipping");
+    return;
+  }
 
 #ifdef DEBUG_ME
   post("sfrecord: dsp");
@@ -544,17 +557,9 @@ static void *sfrecord_new(t_floatarg chan)
   outlet_new(&x->x_obj, gensym("float"));
 
   x->x_channels = c;
-  x->x_skip = x->x_offset = 0;
   x->skip = 1;
-  x->offset = 0.;
   x->x_speed = 1.0;
-  x->write = 0;
-  x->please_stop = 0;
-  x->please_close = 0;
   x->state = SFRECORD_WAIT;
-  x->count = 0;
-  x->filename = NULL;
-  x->fp = NULL;
   x->swap = 1;
 
   c--;
@@ -567,11 +572,8 @@ static void *sfrecord_new(t_floatarg chan)
               gensym("signal")); /* channels inlet */
   }
 
-  x->data = t_getbytes(DACBLKSIZE*sizeof(short)*x->x_channels);
-
 #ifdef DEBUG_ME
-  post("get_bytes DACBLKSIZE*%d*%d->%ld",sizeof(short),x->x_channels,
-       x->data);
+  post("get_bytes(%d)->%ld", x->datasize, x->data);
   post("sfrecord: x_channels = %d, x_speed = %f, x_skip = %f",x->x_channels,
        x->x_speed,x->x_skip);
 #endif
@@ -596,7 +598,8 @@ static void sfrecord_helper(void)
 
 static void sfrecord_free(t_sfrecord *x)
 {
-  freebytes(x->data, DACBLKSIZE*sizeof(short)*x->x_channels);
+  if(x->data)
+    freebytes(x->data, x->datasize);
 }
 
 ZEXY_SETUP void sfrecord_setup(void)
