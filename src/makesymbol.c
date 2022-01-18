@@ -226,7 +226,6 @@ static void reset_mask(t_makesymbol *x, t_symbol *s)
 static t_symbol* list2symbol(t_formatspec*fs, int argc, t_atom *argv)
 {
   char buf[MAXPDSTRING];
-  char*argbuf=buf;
   int len = 0;
   buf[0] = 0;
   int i=0;
@@ -262,19 +261,32 @@ static void makesymbol_list(t_makesymbol *x, t_symbol* UNUSED(s), int argc,
   if (x->x_fs)
     s = list2symbol(x->x_fs, argc, argv);
   else {
+    size_t bufpos=0;
     char buf[MAXPDSTRING];
+    memset(buf, 0, sizeof(buf));
     buf[0]=buf[1]=0;
     while(argc--) {
       char argbuf[MAXPDSTRING];
+      size_t len;
+      atom_string(argv++, argbuf+1, sizeof(argbuf)-1);
       argbuf[0] = ' ';
-      atom_string(argv++, argbuf+1, MAXPDSTRING-1);
-      argbuf[MAXPDSTRING-1] = 0;
-      strncat(buf, argbuf, MAXPDSTRING);
+      argbuf[sizeof(argbuf)-1] = 0;
+
+      len = strlen(argbuf);
+      if((bufpos+len)>=sizeof(buf)) {
+        len = sizeof(buf) - bufpos;
+      }
+      strncat(buf+bufpos, argbuf, sizeof(buf)-bufpos);
+      bufpos+=len;
+      if(bufpos>=sizeof(buf)) {
+        break;
+      }
     }
+    //buf[sizeof(buf)-1] = 0;
     s = gensym(buf+1); /* +1 to drop the leading space */
   }
   if(!s) {
-    pd_error(x, "illegal format specifier '%s'", x->x_format);
+    pd_error(x, "illegal format specifier '%s'", x->x_format->s_name);
     return;
   }
   x->x_sym = s;
