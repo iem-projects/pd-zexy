@@ -58,7 +58,7 @@ static t_class *sfrecord_class=NULL;
 typedef struct _sfrecord {
   t_object x_obj;
 
-  void*   filep;      /* pointer to file data read in mem */
+  void*   data;      /* pointer to file data read in mem */
   t_symbol* filename; /* filename */
 
   /*
@@ -241,7 +241,7 @@ static void sfrecord_bang(t_sfrecord* x)
 static t_int *sfrecord_perform(t_int *w)
 {
   t_sfrecord* x = (t_sfrecord*)(w[1]);
-  short* buf = x->filep;
+  short* buf = x->data;
   short* bufstart = buf;
   int c = x->x_channels;
 
@@ -359,7 +359,7 @@ static t_int *sfrecord_perform(t_int *w)
     }
 
     /* should never happen */
-    if(!x->filep) {
+    if(!x->data) {
       x->state = SFRECORD_ERROR;
       error("sfrecord: writing but no buffer ???? write");
       return (w+4+c);
@@ -382,7 +382,7 @@ static t_int *sfrecord_perform(t_int *w)
       x->state = SFRECORD_ERROR;
       x->count = SFRECORD_WAITTICKS;
 #ifdef DEBUG_ME
-      post("write -> write error\t %xd\t%xd\t%d\t%d", x->filep, buf,
+      post("write -> write error\t %xd\t%xd\t%d\t%d", x->data, buf,
            c*s_n*sizeof(short), j);
 #endif
       break;
@@ -567,11 +567,11 @@ static void *sfrecord_new(t_floatarg chan)
               gensym("signal")); /* channels inlet */
   }
 
-  x->filep = t_getbytes(DACBLKSIZE*sizeof(short)*x->x_channels);
+  x->data = t_getbytes(DACBLKSIZE*sizeof(short)*x->x_channels);
 
 #ifdef DEBUG_ME
   post("get_bytes DACBLKSIZE*%d*%d->%ld",sizeof(short),x->x_channels,
-       x->filep);
+       x->data);
   post("sfrecord: x_channels = %d, x_speed = %f, x_skip = %f",x->x_channels,
        x->x_speed,x->x_skip);
 #endif
@@ -596,7 +596,7 @@ static void sfrecord_helper(void)
 
 static void sfrecord_free(t_sfrecord *x)
 {
-  freebytes(x->filep, DACBLKSIZE*sizeof(short)*x->x_channels);
+  freebytes(x->data, DACBLKSIZE*sizeof(short)*x->x_channels);
 }
 
 ZEXY_SETUP void sfrecord_setup(void)
