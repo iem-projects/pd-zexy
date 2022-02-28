@@ -37,7 +37,7 @@ static void demux_output(t_demux *x, t_floatarg f)
     x->output=f;
   } else {
     pd_error(x, "demultiplex: %d is channel out of range (0..%d)", (int)f,
-          x->n_out);
+             x->n_out);
   }
 }
 

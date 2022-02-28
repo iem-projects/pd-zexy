@@ -598,8 +598,9 @@ static void sfrecord_helper(void)
 
 static void sfrecord_free(t_sfrecord *x)
 {
-  if(x->data)
+  if(x->data) {
     freebytes(x->data, x->datasize);
+  }
 }
 
 ZEXY_SETUP void sfrecord_setup(void)

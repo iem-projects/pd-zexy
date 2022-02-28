@@ -48,11 +48,11 @@
 static t_class *makesymbol_class=NULL;
 
 typedef enum {
-    NONE = 0,
-    INT,
-    FLOAT,
-    STRING,
-    POINTER,
+  NONE = 0,
+  INT,
+  FLOAT,
+  STRING,
+  POINTER,
 } t_printtype;
 
 typedef struct _formatspec {
@@ -62,42 +62,45 @@ typedef struct _formatspec {
 } t_formatspec;
 
 
-static const char* _formatscan(const char*str, t_printtype*typ) {
-    int infmt=0;
-    for (; *str; str++) {
-        if (!infmt && *str=='%') {
-            infmt=1;
-            continue;
-        }
-        if (infmt) {
-            if (*str=='%') {
-                infmt=0;
-                continue;
-            }
-            if (strchr("-.#0123456789",*str)!=0)
-                continue;
-            if (*str=='s') {
-                *typ = STRING;
-                return str+1;
-            }
-            if (strchr("fgGeE",*str)!=0) {
-                *typ = FLOAT;
-                return str+1;
-            }
-            if (strchr("xXdiouc",*str)!=0) {
-                *typ = INT;
-                return str+1;
-            }
-           if (strchr("p",*str)!=0) {
-                *typ = POINTER;
-                return str+1;
-            }
-        }
+static const char* _formatscan(const char*str, t_printtype*typ)
+{
+  int infmt=0;
+  for (; *str; str++) {
+    if (!infmt && *str=='%') {
+      infmt=1;
+      continue;
     }
-    *typ = NONE;
-    return str;
+    if (infmt) {
+      if (*str=='%') {
+        infmt=0;
+        continue;
+      }
+      if (strchr("-.#0123456789",*str)!=0) {
+        continue;
+      }
+      if (*str=='s') {
+        *typ = STRING;
+        return str+1;
+      }
+      if (strchr("fgGeE",*str)!=0) {
+        *typ = FLOAT;
+        return str+1;
+      }
+      if (strchr("xXdiouc",*str)!=0) {
+        *typ = INT;
+        return str+1;
+      }
+      if (strchr("p",*str)!=0) {
+        *typ = POINTER;
+        return str+1;
+      }
+    }
+  }
+  *typ = NONE;
+  return str;
 }
-static void print_formatspecs(t_formatspec*fs) {
+static void print_formatspecs(t_formatspec*fs)
+{
   int i=0;
   while(fs) {
     post("[%d] '%s'[%d]", i, fs->fs_format, fs->fs_accept);
@@ -105,7 +108,8 @@ static void print_formatspecs(t_formatspec*fs) {
     fs=fs->fs_next;
   }
 }
-static void delete_formatspecs(t_formatspec*fs) {
+static void delete_formatspecs(t_formatspec*fs)
+{
   while(fs) {
     t_formatspec*ptr=fs;
     fs=fs->fs_next;
@@ -113,7 +117,8 @@ static void delete_formatspecs(t_formatspec*fs) {
     freebytes(ptr, sizeof(*ptr));
   }
 }
-static t_formatspec*parse_formatstring(const char*str) {
+static t_formatspec*parse_formatstring(const char*str)
+{
   t_formatspec*result=NULL, *last=NULL;
   while(*str) {
     t_printtype typ=NONE;
@@ -124,84 +129,92 @@ static t_formatspec*parse_formatstring(const char*str) {
     strncpy(fs->fs_format, str, len);
     fs->fs_format[len] = 0;
     fs->fs_accept = typ;
-    if(!result) result = fs;
-    if(last) last->fs_next = fs;
+    if(!result) {
+      result = fs;
+    }
+    if(last) {
+      last->fs_next = fs;
+    }
     last = fs;
     str = nextstr;
   }
   return result;
 }
 
-static char* format_float(char*buf, ssize_t buflen, t_formatspec*fs, t_floatarg f)
+static char* format_float(char*buf, ssize_t buflen, t_formatspec*fs,
+                          t_floatarg f)
 {
-    if(!fs->fs_format) {
-      return NULL;
-    }
-    switch(fs->fs_accept) {
-    case NONE:
-        snprintf(buf, buflen, "%s",  fs->fs_format);
-        break;
-    case INT: case POINTER:
-        snprintf(buf, buflen, fs->fs_format, (int)f);
-        break;
-    case FLOAT:
-        snprintf(buf, buflen, fs->fs_format, f);
-        break;
-    case STRING: {
-        char buf2[MAXPDSTRING];
-        sprintf(buf2, "%g", f);
-        snprintf(buf, buflen, fs->fs_format, buf2);
-        break;
-    }
-    default:
-        snprintf(buf, buflen, "%s", fs->fs_format);
-    }
-    return buf;
+  if(!fs->fs_format) {
+    return NULL;
+  }
+  switch(fs->fs_accept) {
+  case NONE:
+    snprintf(buf, buflen, "%s",  fs->fs_format);
+    break;
+  case INT:
+  case POINTER:
+    snprintf(buf, buflen, fs->fs_format, (int)f);
+    break;
+  case FLOAT:
+    snprintf(buf, buflen, fs->fs_format, f);
+    break;
+  case STRING: {
+    char buf2[MAXPDSTRING];
+    sprintf(buf2, "%g", f);
+    snprintf(buf, buflen, fs->fs_format, buf2);
+    break;
+  }
+  default:
+    snprintf(buf, buflen, "%s", fs->fs_format);
+  }
+  return buf;
 }
 
-static char* format_symbol(char*buf, ssize_t buflen, t_formatspec*fs, t_symbol *s)
+static char* format_symbol(char*buf, ssize_t buflen, t_formatspec*fs,
+                           t_symbol *s)
 {
-    if(!fs->fs_format) {
-      return NULL;
-    }
-    switch(fs->fs_accept) {
-    case STRING: case POINTER:
-        snprintf(buf, buflen, fs->fs_format, s->s_name);
-        break;
-    case INT:
-        snprintf(buf, buflen, fs->fs_format, 0);
-        break;
-    case FLOAT:
-        snprintf(buf, buflen, fs->fs_format, 0.);
-        break;
-    case NONE:
-        snprintf(buf, buflen, "%s", fs->fs_format);
-        break;
-    default:
-        snprintf(buf, buflen, "%s", fs->fs_format);
-    }
-    return buf;
+  if(!fs->fs_format) {
+    return NULL;
+  }
+  switch(fs->fs_accept) {
+  case STRING:
+  case POINTER:
+    snprintf(buf, buflen, fs->fs_format, s->s_name);
+    break;
+  case INT:
+    snprintf(buf, buflen, fs->fs_format, 0);
+    break;
+  case FLOAT:
+    snprintf(buf, buflen, fs->fs_format, 0.);
+    break;
+  case NONE:
+    snprintf(buf, buflen, "%s", fs->fs_format);
+    break;
+  default:
+    snprintf(buf, buflen, "%s", fs->fs_format);
+  }
+  return buf;
 }
 
 static char* format_bang(char*buf, ssize_t buflen, t_formatspec*fs)
 {
-    if(!fs->fs_format) {
-      return NULL;
-    }
-    switch(fs->fs_accept) {
-    case INT:
-        snprintf(buf, buflen, fs->fs_format, 0);
-        break;
-    case FLOAT:
-        snprintf(buf, buflen, fs->fs_format, 0.);
-        break;
-    case NONE:
-        snprintf(buf, buflen, "%s", fs->fs_format);
-        break;
-    default:
-        snprintf(buf, buflen, "%s", fs->fs_format);
-    }
-    return buf;
+  if(!fs->fs_format) {
+    return NULL;
+  }
+  switch(fs->fs_accept) {
+  case INT:
+    snprintf(buf, buflen, fs->fs_format, 0);
+    break;
+  case FLOAT:
+    snprintf(buf, buflen, fs->fs_format, 0.);
+    break;
+  case NONE:
+    snprintf(buf, buflen, "%s", fs->fs_format);
+    break;
+  default:
+    snprintf(buf, buflen, "%s", fs->fs_format);
+  }
+  return buf;
 }
 
 
@@ -245,8 +258,9 @@ static t_symbol* list2symbol(t_formatspec*fs, int argc, t_atom *argv)
       b=format_bang(argbuf, MAXPDSTRING-len, fs);
       break;
     }
-    if(!b)
+    if(!b) {
       return NULL;
+    }
     len += strlen(argbuf);
     fs=fs->fs_next;
     i++;
@@ -258,9 +272,9 @@ static void makesymbol_list(t_makesymbol *x, t_symbol* UNUSED(s), int argc,
                             t_atom *argv)
 {
   t_symbol*s = 0;
-  if (x->x_fs)
+  if (x->x_fs) {
     s = list2symbol(x->x_fs, argc, argv);
-  else {
+  } else {
     size_t bufpos=0;
     char buf[MAXPDSTRING];
     memset(buf, 0, sizeof(buf));

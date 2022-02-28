@@ -143,7 +143,8 @@ static int z_inpout32_ctor()
     if ( hInpOutDll == NULL )  {
       char errstring[MAXPDSTRING];
       int err = z_getWinErr(errstring, MAXPDSTRING);
-      pd_error(0, "unable to open %s for accessing the parallel-port!", INPOUT_DLL);
+      pd_error(0, "unable to open %s for accessing the parallel-port!",
+               INPOUT_DLL);
       pd_error(0, "error[%d]: %s", err, errstring);
       pd_error(0, "make sure you have InpOut32 installed");
       pd_error(0, "--> http://www.highrez.co.uk/downloads/inpout32/");

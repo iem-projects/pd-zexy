@@ -101,7 +101,8 @@ static t_fifop_prioritylist*fifop_genprioritylist(t_fifop*x,
   return result;
 }
 
-static int add2fifo(t_fifop *x, t_fifop_prioritylist*fifoprio, int argc, t_atom *argv)
+static int add2fifo(t_fifop *x, t_fifop_prioritylist*fifoprio, int argc,
+                    t_atom *argv)
 {
   t_fifop_list*entry=0;
 

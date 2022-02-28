@@ -181,7 +181,8 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
         pd_error(x, "index :: couldn't find any place for new entry");
       }
     } else {
-      pd_error(x, "index :: max number of elements (%d) reached !", x->maxentries);
+      pd_error(x, "index :: max number of elements (%d) reached !",
+               x->maxentries);
     }
   } else {
     verbose(1, "index :: element '%s' already exists", s->s_name);

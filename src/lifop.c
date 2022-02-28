@@ -98,7 +98,8 @@ static t_lifop_prioritylist*lifop_genprioritylist(t_lifop*x,
   return result;
 }
 
-static int add2lifo(t_lifop *x, t_lifop_prioritylist*lifoprio, int argc, t_atom *argv)
+static int add2lifo(t_lifop *x, t_lifop_prioritylist*lifoprio, int argc,
+                    t_atom *argv)
 {
   t_lifop_list*entry=0;
 

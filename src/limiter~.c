@@ -470,24 +470,24 @@ static t_int *oversampling_maxima(t_int *w)
     sinccurrent = SINC[4] * current;
 
     os1= Z_FABS(SINC[0] * last4 +
-               SINC[1] * last3 +
-               SINC[2] * last2 +
-               SINC[3] * last1 +
-               sinccurrent +
-               SINC[5] * next1 +
-               SINC[6] * next2 +
-               SINC[7] * next3 +
-               SINC[8] * next4);
+                SINC[1] * last3 +
+                SINC[2] * last2 +
+                SINC[3] * last1 +
+                sinccurrent +
+                SINC[5] * next1 +
+                SINC[6] * next2 +
+                SINC[7] * next3 +
+                SINC[8] * next4);
 
     os2= Z_FABS(SINC[0] * next4 +
-               SINC[1] * next3 +
-               SINC[2] * next2 +
-               SINC[3] * next1 +
-               sinccurrent +
-               SINC[5] * last1 +
-               SINC[6] * last2 +
-               SINC[7] * last3 +
-               SINC[8] * last4);
+                SINC[1] * next3 +
+                SINC[2] * next2 +
+                SINC[3] * next1 +
+                sinccurrent +
+                SINC[5] * last1 +
+                SINC[6] * last2 +
+                SINC[7] * last3 +
+                SINC[8] * last4);
 
     max = Z_FABS(current);
 
