@@ -109,7 +109,7 @@ static void tabdump_helper(void)
 ZEXY_SETUP void tabdump_setup(void)
 {
   tabdump_class = zexy_new("tabdump",
-                           tabdump_new, 0, t_tabdump, 0, "S");
+                           tabdump_new, 0, t_tabdump, CLASS_DEFAULT, "S");
   class_addbang(tabdump_class, (t_method)tabdump_bang);
   class_addlist(tabdump_class, (t_method)tabdump_list);
 

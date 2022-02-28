@@ -108,7 +108,7 @@ static void tabset_helper(void)
 ZEXY_SETUP void tabset_setup(void)
 {
   tabset_class = zexy_new("tabset",
-                          tabset_new, 0, t_tabset, 0, "S");
+                          tabset_new, 0, t_tabset, CLASS_DEFAULT, "S");
   class_addfloat(tabset_class, (t_method)tabset_float);
   class_addlist (tabset_class, (t_method)tabset_list);
   zexy_addmethod(tabset_class, (t_method)tabset_set, "set", "s");

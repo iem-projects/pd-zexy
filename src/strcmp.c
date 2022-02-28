@@ -178,7 +178,7 @@ static void strcmp_help(t_strcmp*UNUSED(x))
 ZEXY_SETUP void strcmp_setup(void)
 {
   strcmp_class = zexy_new("strcmp",
-                          strcmp_new, strcmp_free, t_strcmp, 0, "*");
+                          strcmp_new, strcmp_free, t_strcmp, CLASS_DEFAULT, "*");
 
   class_addbang    (strcmp_class, strcmp_bang);
   class_addsymbol  (strcmp_class, strcmp_symbol);

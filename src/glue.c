@@ -114,7 +114,7 @@ static void glue_help(t_glue* UNUSED(x))
 ZEXY_SETUP void glue_setup(void)
 {
   glue_class = zexy_new("glue",
-                        glue_new, glue_free, t_glue, 0, "*");
+                        glue_new, glue_free, t_glue, CLASS_DEFAULT, "*");
   class_addlist(glue_class, glue_lst);
   zexy_addmethod(glue_class, (t_method)glue_lst2, "", "*");
   class_addbang(glue_class, glue_bang);

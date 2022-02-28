@@ -98,7 +98,7 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 static t_class* zclass_setup(const char*name)
 {
   t_class*c = zexy_new(name,
-                       demux_new, 0, t_demux, 0, "*");
+                       demux_new, 0, t_demux, CLASS_DEFAULT, "*");
   class_addanything (c, demux_any);
   class_addlist     (c, demux_list);
   return c;

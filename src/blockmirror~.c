@@ -107,7 +107,7 @@ static void *blockmirror_new(void)
 ZEXY_SETUP void blockmirror_tilde_setup(void)
 {
   blockmirror_class = zexy_new("blockmirror~",
-                               blockmirror_new, blockmirror_free, t_blockmirror, 0, "");
+                               blockmirror_new, blockmirror_free, t_blockmirror, CLASS_DEFAULT, "");
   zexy_addmethod(blockmirror_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(blockmirror_class, (t_method)blockmirror_dsp, "dsp", "!");
 

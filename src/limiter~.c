@@ -770,7 +770,7 @@ ZEXY_SETUP void limiter_tilde_setup(void)
   init_sinc();
 
   limiter_class = zexy_new("limiter~",
-                           limiter_new, limiter_free, t_limiter, 0, "*");
+                           limiter_new, limiter_free, t_limiter, CLASS_DEFAULT, "*");
 
   zexy_addmethod(limiter_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(limiter_class, (t_method)limiter_dsp, "dsp", "!");

@@ -98,7 +98,7 @@ static void mypdlist_help(t_mypdlist*UNUSED(x))
 static t_class* zclass_setup(const char*name)
 {
   t_class *c = zexy_new(name,
-                        mypdlist_new, mypdlist_free, t_mypdlist, 0, "*");
+                        mypdlist_new, mypdlist_free, t_mypdlist, CLASS_DEFAULT, "*");
   class_addbang    (c, mypdlist_bang);
   class_addlist    (c, mypdlist_list);
   zexy_addmethod(c, (t_method)mypdlist_secondlist, "lst2", "*");

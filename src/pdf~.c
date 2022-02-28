@@ -134,7 +134,7 @@ static void pdf_tilde_helper(void)
 ZEXY_SETUP void pdf_tilde_setup(void)
 {
   pdf_class = zexy_new("pdf~",
-                       pdf_new, pdf_free, t_pdf, 0, "F");
+                       pdf_new, pdf_free, t_pdf, CLASS_DEFAULT, "F");
 
   zexy_addmethod(pdf_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(pdf_class, (t_method)pdf_dsp, "dsp", "!");

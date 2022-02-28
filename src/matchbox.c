@@ -744,7 +744,7 @@ ZEXY_SETUP void matchbox_setup(void)
 
 
   matchbox_class = zexy_new("matchbox",
-                            matchbox_new, matchbox_free, t_matchbox, 0, "*");
+                            matchbox_new, matchbox_free, t_matchbox, CLASS_DEFAULT, "*");
 
   class_addlist  (matchbox_class, matchbox_list);
 

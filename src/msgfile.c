@@ -1396,7 +1396,7 @@ static void *msgfile_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 ZEXY_SETUP void msgfile_setup(void)
 {
   msgfile_class = zexy_new("msgfile",
-                           msgfile_new, msgfile_free, t_msgfile, 0, "*");
+                           msgfile_new, msgfile_free, t_msgfile, CLASS_DEFAULT, "*");
   zexy_addmethod(msgfile_class, (t_method)msgfile_goto, "goto", "F");
   zexy_addmethod(msgfile_class, (t_method)msgfile_rewind, "rewind", "");
   zexy_addmethod(msgfile_class, (t_method)msgfile_rewind, "begin", "");

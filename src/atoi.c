@@ -98,7 +98,7 @@ static void *atoi_new(void)
 ZEXY_SETUP void atoi_setup(void)
 {
   atoi_class = zexy_new("atoi",
-                        atoi_new, atoi_free, t_atoi, 0, "");
+                        atoi_new, atoi_free, t_atoi, CLASS_DEFAULT, "");
 
   class_addbang(atoi_class, (t_method)atoi_bang);
   class_addfloat(atoi_class, (t_method)atoi_float);

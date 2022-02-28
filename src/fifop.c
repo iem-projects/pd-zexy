@@ -296,7 +296,7 @@ static void *fifop_new(void)
 ZEXY_SETUP void fifop_setup(void)
 {
   fifop_class = zexy_new("fifop",
-                         fifop_new, fifop_free, t_fifop, 0, "");
+                         fifop_new, fifop_free, t_fifop, CLASS_DEFAULT, "");
 
   class_addbang    (fifop_class, fifop_bang);
   class_addlist    (fifop_class, fifop_list);

@@ -164,13 +164,13 @@ static void scalmul_help(t_scalmul* UNUSED(x))
 ZEXY_SETUP void setup_0x2e(void)
 {
   scalmul_class = zexy_new(".",
-                           scalmul_new, scalmul_free, t_scalmul, 0, "*");
+                           scalmul_new, scalmul_free, t_scalmul, CLASS_DEFAULT, "*");
   class_addlist(scalmul_class, scalmul_lst);
   zexy_addmethod(scalmul_class, (t_method)scalmul_lst2, "", "*");
   zexy_addmethod(scalmul_class, (t_method)scalmul_help, "help", "");
 
   scalmul_scal_class = zexy_new(".",
-                                0, scalmul_free, t_scalmul, 0, "");
+                                0, scalmul_free, t_scalmul, CLASS_DEFAULT, "");
   class_addlist(scalmul_scal_class, scalmul_lst);
   zexy_addmethod(scalmul_scal_class, (t_method)scalmul_help, "help", "");
 

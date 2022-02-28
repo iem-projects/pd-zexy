@@ -286,7 +286,7 @@ static void andand_tilde_help(t_object* UNUSED(x))
 ZEXY_SETUP void setup_0x260x260x7e(void)
 {
   andand_tilde_class = zexy_new("&&~",
-                                andand_tilde_new, 0, t_andand_tilde, 0, "*");
+                                andand_tilde_new, 0, t_andand_tilde, CLASS_DEFAULT, "*");
   zexy_addmethod(andand_tilde_class, (t_method)andand_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(andand_tilde_class, t_andand_tilde, x_f);
   zexy_addmethod(andand_tilde_class, (t_method)andand_tilde_help, "help",
@@ -295,7 +295,7 @@ ZEXY_SETUP void setup_0x260x260x7e(void)
 
 
   scalarandand_tilde_class = zexy_new("&&~",
-                                      0, 0, t_scalarandand_tilde, 0, "");
+                                      0, 0, t_scalarandand_tilde, CLASS_DEFAULT, "");
   CLASS_MAINSIGNALIN(scalarandand_tilde_class, t_scalarandand_tilde, x_f);
   zexy_addmethod(scalarandand_tilde_class, (t_method)scalarandand_tilde_dsp,
                  "dsp", "!");

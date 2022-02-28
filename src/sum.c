@@ -53,7 +53,7 @@ static void sum_help(void)
 ZEXY_SETUP void sum_setup(void)
 {
   sum_class = zexy_new("sum",
-                       sum_new, 0, t_sum, 0, "");
+                       sum_new, 0, t_sum, CLASS_DEFAULT, "");
 
   class_addlist(sum_class, (t_method)sum_list);
   zexy_addmethod(sum_class, (t_method)sum_help, "help", "");

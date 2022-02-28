@@ -112,7 +112,7 @@ static void sigdoublepole_dsp(t_sigdoublepole *x, t_signal **sp)
 ZEXY_SETUP void doublepole_tilde_setup(void)
 {
   sigdoublepole_class = zexy_new("doublepole~",
-                                 sigdoublepole_new, 0, t_sigdoublepole, 0, "*");
+                                 sigdoublepole_new, 0, t_sigdoublepole, CLASS_DEFAULT, "*");
   CLASS_MAINSIGNALIN(sigdoublepole_class, t_sigdoublepole, x_f);
   zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_dsp, "dsp",
                  "!");

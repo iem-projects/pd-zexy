@@ -154,7 +154,7 @@ static void sigenvrms_help(void)
 ZEXY_SETUP void envrms_tilde_setup(void)
 {
   sigenvrms_class = zexy_new("envrms~",
-                             sigenvrms_new, sigenvrms_ff, t_sigenvrms, 0, "FF");
+                             sigenvrms_new, sigenvrms_ff, t_sigenvrms, CLASS_DEFAULT, "FF");
   zexy_addmethod(sigenvrms_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sigenvrms_class, (t_method)sigenvrms_dsp, "dsp", "!");
 

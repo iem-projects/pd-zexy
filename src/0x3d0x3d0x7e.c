@@ -241,14 +241,14 @@ static void eq_tilde_help(t_object* UNUSED(x))
 ZEXY_SETUP void setup_0x3d0x3d0x7e(void)
 {
   eq_tilde_class = zexy_new("==~",
-                            eq_tilde_new, 0, t_eq_tilde, 0, "*");
+                            eq_tilde_new, 0, t_eq_tilde, CLASS_DEFAULT, "*");
   zexy_addmethod(eq_tilde_class, (t_method)eq_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(eq_tilde_class, t_eq_tilde, x_f);
   zexy_addmethod(eq_tilde_class, (t_method)eq_tilde_help, "help", "");
   class_sethelpsymbol(eq_tilde_class, gensym("zigbinops"));
 
   scalareq_tilde_class = zexy_new("==~",
-                                  0, 0, t_scalareq_tilde, 0, "");
+                                  0, 0, t_scalareq_tilde, CLASS_DEFAULT, "");
   CLASS_MAINSIGNALIN(scalareq_tilde_class, t_scalareq_tilde, x_f);
   zexy_addmethod(scalareq_tilde_class, (t_method)scalareq_tilde_dsp, "dsp",
                  "!");

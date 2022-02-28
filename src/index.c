@@ -380,7 +380,7 @@ static void index_helper(t_index* UNUSED(x))
 ZEXY_SETUP void index_setup(void)
 {
   index_class = zexy_new("index",
-                         index_new, index_free, t_index, 0, "*");
+                         index_new, index_free, t_index, CLASS_DEFAULT, "*");
 
   class_addsymbol(index_class, index_symbol);
 

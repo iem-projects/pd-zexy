@@ -165,7 +165,7 @@ ZEXY_SETUP void multireceive_setup(void)
   unsigned long long uid=unique();
 
   multireceive_class = zexy_new("multireceive",
-                                multireceive_new, multireceive_free, t_multireceive, 0, "*");
+                                multireceive_new, multireceive_free, t_multireceive, CLASS_DEFAULT, "*");
   zexy_addmethod(multireceive_class, (t_method)multireceive_set, "set", "*");
 
   zexy_addmethod(multireceive_class, (t_method)multireceive_add, "add", "s");

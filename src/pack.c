@@ -175,7 +175,7 @@ static void zpack_free(t_zpack*x)
 ZEXY_SETUP void zpack_setup(void)
 {
   zpack_class = zexy_new("zexy/pack",
-                         zpack_new, zpack_free, t_zpack, 0, "*");
+                         zpack_new, zpack_free, t_zpack, CLASS_DEFAULT, "*");
 #if 0
   /* oops Pd>=0.42 allows us to override built-ins
    * this is bad as long as the 2 objects are not compatible */

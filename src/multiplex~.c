@@ -110,7 +110,7 @@ static void *mux_tilde_new(t_symbol* UNUSED(s), int argc,
 static t_class* zclass_setup(const char*name)
 {
   t_class*c = zexy_new(name,
-                       mux_tilde_new, mux_tilde_free, t_mux, 0, "*");
+                       mux_tilde_new, mux_tilde_free, t_mux, CLASS_DEFAULT, "*");
 
   /* ouch, that hurts... */
   class_addfloat(c, mux_tilde_input);

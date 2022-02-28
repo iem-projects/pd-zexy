@@ -133,7 +133,7 @@ static void tabminmax_helper(void)
 ZEXY_SETUP void tabminmax_setup(void)
 {
   tabminmax_class = zexy_new("tabminmax",
-                             tabminmax_new, 0, t_tabminmax, 0, "S");
+                             tabminmax_new, 0, t_tabminmax, CLASS_DEFAULT, "S");
   class_addbang(tabminmax_class, (t_method)tabminmax_bang);
   class_addlist(tabminmax_class, (t_method)tabminmax_list);
 
