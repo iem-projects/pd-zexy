@@ -10,8 +10,8 @@
 #X text 32 16 To get it running under WinNT/2000/XP a special kernel
 driver is needed. These systems do not allow direct access to I/O ports.
 ;
-#X text 53 207 If you ever whish to remove the kernel driver start
-the programm again and click 'Stop'.;
+#X text 53 207 If you ever wish to remove the kernel driver start
+the program again and click 'Stop'.;
 #X text 54 242 Under Win95/98/Me all this is not needed!!!;
 #X text 52 272 Good Luck!;
 #X text 54 141 The subfolder 'UserPort' contains a kernel driver that
@@ -43,7 +43,7 @@ gain raw access to the port.;
 #X text 63 308 another port (directly specifying the port address)
 ;
 #X restore 460 150 pd raw access;
-#X text 78 86 w32 users shoud read this:;
+#X text 78 86 w32 users should read this:;
 #X text 81 153 linux users can use the deprecated RAW access method
 ;
 #X text 80 219 you can access your parallel ports by accessing /dev/parport0

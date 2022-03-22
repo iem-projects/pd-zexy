@@ -230,7 +230,7 @@ quite fast (since the crack would disturb the sensation anyhow \, we
 do not care much about the distortion caused by a fast limiter). The
 treshold for the 2nd limiter must be greater than the ouput-limit (if
 not \, the limiter will be reset to MODE 0);
-#X text 13 298 all levels (limts/tresholds) should be given in dB to
+#X text 13 298 all levels (limits/tresholds) should be given in dB to
 produce satisfying results (following pd's agreement on the deziBel-scale
 \, 100dB are equal to 1 \, 0dB equals 0 \, ...);
 #X text 624 123 context(!) help;

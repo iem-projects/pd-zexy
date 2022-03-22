@@ -10,7 +10,7 @@
 #X symbolatom 169 215 10 0 0 0 - - -;
 #X text 46 58 this object is quite the same as pd's built-in [pack]
 \, but it does not have fixed types;
-#X text 48 88 an atom can be intialized as a number \, then become
+#X text 48 88 an atom can be initialized as a number \, then become
 a symbol \, later become a number again \, ....;
 #X floatatom 319 181 5 0 0 0 - - -;
 #X floatatom 382 198 5 0 0 0 - - -;

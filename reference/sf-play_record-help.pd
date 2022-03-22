@@ -108,7 +108,7 @@ Wilkes for Pd version 0.42.;
 #X floatatom 514 272 5 0 0 2 undocumented - -;
 #X text 212 164 open <name> <endianity>;
 #X text 54 106 you might be able to change the <skip.bytes> via the
-2nd inlet of sfplay \, but thats a hidden feature.;
+2nd inlet of sfplay \, but that's a hidden feature.;
 #X connect 0 0 31 0;
 #X connect 0 1 31 1;
 #X connect 0 2 11 0;

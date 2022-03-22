@@ -1,6 +1,6 @@
 #N canvas 0 31 618 378 10;
 #X text 511 26 part of zexy;
-#X text 68 98 an atom can be intialized as a number \, then become
+#X text 68 98 an atom can be initialized as a number \, then become
 a symbol \, later become a number again \, ....;
 #X obj 121 268 zexy/unpack;
 #X msg 121 192 1 2;

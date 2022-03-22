@@ -91,7 +91,7 @@ static BOOL StartUpIoPorts(UINT PortToAccess, BOOL bShowMessageBox,
     if (bShowMessageBox) {
 #if 0
       MessageBox(hParentWnd,
-                 "Privileged instruction exception has occured!\r\n\r\n"
+                 "Privileged instruction exception has occurred!\r\n\r\n"
                  "To use this external under Windows NT, 2000 or XP\r\n"
                  "you need to install the driver 'UserPort.sys' and grant\r\n"
                  "access to the ports used by this program.\r\n\r\n"

@@ -27,10 +27,10 @@ Modified:
   (Made for "3 Farben Schwarz" - exhibition in Graz 99 )
 
   Filename must have the path or actual directory, since pathname
-  search ist not supported to garantuee a fast open call.
+  search is not supported to garantuee a fast open call.
 
   They idea is a state machine which handles open, skip, play, close, error
-  so that a minimum intervall between OS-calls are made, to avoid peak load.
+  so that a minimum interval between OS-calls are made, to avoid peak load.
 
   It has shown, that the open call is slow if there are a lot of files
   to search for, then with the first skip the first part of a
@@ -166,7 +166,7 @@ static void sfplay_open(t_sfplay *x,t_symbol *filename,t_symbol *endian)
     return;
   }
 
-  /* test if big endian else asume little endian
+  /* test if big endian else assume little endian
      should be 'l' but could be anything*/
 
   if(sfplay_am_i_big_endian()) {

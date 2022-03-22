@@ -31,7 +31,7 @@
 # define vsnprintf _vsnprintf
 #endif
 
-/* foward declarations */
+/* forward declarations */
 void  z_zexy_setup(void);
 
 /* do a little help thing */

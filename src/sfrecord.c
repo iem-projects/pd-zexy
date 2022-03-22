@@ -130,7 +130,7 @@ static void sfrecord_open(t_sfrecord *x,t_symbol *filename,
     return;
   }
 
-  /* test if big endian else asume little endian
+  /* test if big endian else assume little endian
    * should be 'l' but could be anything
    */
   if(sfrecord_am_i_big_endian()) {

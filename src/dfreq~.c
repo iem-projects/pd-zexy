@@ -1,5 +1,5 @@
 /*
- * dfreq~: cound zero-crossings as a simple fequency estimation
+ * dfreq~: count zero-crossings as a simple frequency estimation
  *
  * (c) 1999-2011 IOhannes m zmölnig, forum::für::umläute, institute of electronic music and acoustics (iem)
  *
