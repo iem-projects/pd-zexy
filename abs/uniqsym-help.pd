@@ -1,4 +1,4 @@
-#N canvas 145 -43 722 431 10;
+#N canvas 145 -43 709 438 10;
 #X text 564 24 part of zexy;
 #X text 97 30 remove duplicate symbols from a list or a stream;
 #X obj 45 268 uniqsym;
@@ -13,13 +13,25 @@ output it;
 #X msg 56 126 symbol trigger \, symbol pang \, symbol pang;
 #X msg 100 188 list chitty chitty pang pang;
 #X msg 117 243 mode \$1;
-#X obj 117 223 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
-1;
+#X obj 117 223 tgl 15 0 empty empty empty 0 -6 0 8 #fcfcfc #000000
+#000000 0 1;
 #X text 187 244 output as list (0=default) \, or as stream of single
 symbols (1);
-#X text 529 411 updated for zexy-2.2;
+#X text 489 411 updated for zexy-2.2;
 #X obj 44 369 uniqsym 1;
 #X text 131 368 you can specify the mode with a creation argument;
+#N canvas 730 320 494 198 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS symbol set;
+#X text 12 45 DESCRIPTION remove duplicate symbols from a list or a
+stream;
+#X text 12 102 INLET_0 reset;
+#X text 12 85 INLET_0 bang;
+#X text 12 65 INLET_0 symbol|list;
+#X text 12 118 INLET_0 mode <m>;
+#X text 12 135 OUTLET_0 list|symbol;
+#X restore 618 410 pd META;
 #X connect 2 0 4 0;
 #X connect 5 0 2 0;
 #X connect 6 0 2 0;

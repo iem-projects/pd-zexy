@@ -4,3 +4,9 @@
 #X text 30 119 the optional argument specifies the time (in ms) \,
 this object takes to instantiate.;
 #X text 36 158 the default is 1000ms.;
+#N canvas 828 294 494 174 META 0;
+#X text 12 65 LICENSE GPL v2;
+#X text 12 85 AUTHOR IOhannes m zmoelnig;
+#X text 12 15 DESCRIPTION takes long to load;
+#X text 12 45 KEYWORDS experimental;
+#X restore 373 257 pd META;

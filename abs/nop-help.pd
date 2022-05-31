@@ -1,8 +1,8 @@
 #N canvas 456 395 450 428 10;
 #X obj 121 331 nop;
 #X msg 155 157 bang;
-#X floatatom 155 175 0 0 0 0 - - -;
-#X symbolatom 156 196 0 0 0 0 - - -;
+#X floatatom 155 175 0 0 0 0 - - - 0;
+#X symbolatom 156 196 0 0 0 0 - - - 0;
 #X obj 121 350 print;
 #X msg 156 240 set mummy;
 #X obj 132 26 nop;
@@ -11,6 +11,14 @@
 #X msg 157 218 1 to 3 for 5;
 #X text 328 11 part of zexy;
 #X text 265 389 updated for zexy-2.0;
+#N canvas 498 241 494 174 META 0;
+#X text 12 95 LICENSE GPL v2;
+#X text 12 115 AUTHOR IOhannes m zmoelnig;
+#X text 12 15 DESCRIPTION do nothing (pass messages unaltered);
+#X text 12 75 KEYWORDS control;
+#X text 12 35 INLET_0 anything;
+#X text 12 55 OUTLET_0 anything;
+#X restore 333 357 pd META;
 #X connect 0 0 4 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
