@@ -43,7 +43,7 @@ static void list2symbol_bang(t_list2symbol *x)
   int i= argc;
   const char *connector=0;
   char connlen=0;
-  char*buffer = (char*)getbytes(MAXPDSTRING*sizeof(char));
+  char buffer[MAXPDSTRING];
   if(x->connector) {
     connector=x->connector->s_name;
     connlen=strlen(connector);
@@ -72,7 +72,7 @@ static void list2symbol_bang(t_list2symbol *x)
 
   if (length<=0) {
     outlet_symbol(x->x_obj.ob_outlet, gensym(""));
-    return;
+    goto cleanup;
   }
 
   result = (char*)getbytes((length+1)*sizeof(char));
@@ -105,10 +105,10 @@ static void list2symbol_bang(t_list2symbol *x)
       len += connlen;
     }
   }
-  freebytes(buffer, MAXPDSTRING*sizeof(char));
 
   result[length]=0;
   outlet_symbol(x->x_obj.ob_outlet, gensym(result));
+ cleanup:
   freebytes(result, (length+1)*sizeof(char));
 }
 
