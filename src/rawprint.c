@@ -74,11 +74,10 @@ static void rawprint_any(t_rawprint *x, t_symbol*s, int argc, t_atom*argv)
       snprintf(buf, MAXPDSTRING-1, "DEFSYM['%s']", atom_getsymbol(argv)->s_name);
       break;
     case A_DOLLAR:
-      snprintf(buf, MAXPDSTRING-1, "DOLLAR['%s']", atom_getsymbol(argv)->s_name);
+      snprintf(buf, MAXPDSTRING-1, "DOLLAR[$%d]", argv->a_w.w_index);
       break;
     case A_DOLLSYM:
-      snprintf(buf, MAXPDSTRING-1, "DOLLSYM['%s']",
-               atom_getsymbol(argv)->s_name);
+      snprintf(buf, MAXPDSTRING-1, "DOLLSYM['%s']", argv->a_w.w_symbol->s_name);
       break;
     case A_GIMME:
       snprintf(buf, MAXPDSTRING-1, "GIMME");
