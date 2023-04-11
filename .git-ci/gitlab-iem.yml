@@ -1,3 +1,4 @@
 ---
+# use common pipeline
 include:
   - https://git.iem.at/pd/iem-ci/raw/split-sign/pd-lib-builder/gitlab-iem.yml
