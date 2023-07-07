@@ -132,7 +132,8 @@ datafiles += \
 	$(wildcard reference/*.pd) \
 	$(empty)
 
-cflags = -DVERSION='"$(lib.version)"'
+cflags =
+cflags += -DVERSION='"2.4.2"'
 
 DATE_FMT = %Y/%m/%d at %H:%M:%S UTC
 ifdef SOURCE_DATE_EPOCH

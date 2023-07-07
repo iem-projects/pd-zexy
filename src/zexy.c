@@ -155,7 +155,7 @@ void zexy_setup(void)
   }
   endpost();
   post("\t"HEARTSYMBOL " the zexy external  "VERSION);
-  post("\t"HEARTSYMBOL " (c) 1999-2022 IOhannes m zmölnig");
+  post("\t"HEARTSYMBOL " (c) 1999-2023 IOhannes m zmölnig");
   post("\t"HEARTSYMBOL "       forum::für::umläute");
   post("\t"HEARTSYMBOL "       iem  @  kug");
   post("\t"HEARTSYMBOL "  compiled  "BUILD_DATE);

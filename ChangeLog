@@ -1,3 +1,14 @@
+zexy (2.4.2) RELEASED; urgency=medium
+
+  * Fix memory leaks in [list2symbol]
+  * Fix output of [rawprint] with dollsyms
+  * Add [pd META] to helppatches (for automatic objectlist generation)
+  * Update to pd-lib-builder 0.7.0
+  * Single and double precision builds
+  * Fix spelling mistakes
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org>  Fri, 07 Jul 2023 14:43:06 +0200
+
 zexy (2.4.1) RELEASED; urgency=medium
 
   * Bump version-number in zexy-meta.pd
