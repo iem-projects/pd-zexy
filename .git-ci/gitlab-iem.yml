@@ -1,3 +1,6 @@
 ---
 include:
-  - https://git.iem.at/pd/iem-ci/raw/grouping/pd-lib-builder/gitlab-iem.yml
+  # define job-templates:
+  - https://git.iem.at/pd/iem-ci/-/raw/grouping/pd-lib-builder/iem-ci.yml
+  # turn templates into real jobs:
+  - https://git.iem.at/pd/iem-ci/-/raw/grouping/pd-lib-builder/pipeline-jobs.yml
