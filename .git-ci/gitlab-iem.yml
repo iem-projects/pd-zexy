@@ -1,14 +1,6 @@
 ---
 include:
-  - https://git.iem.at/pd/iem-ci/raw/main/pd-lib-builder/gitlab-iem.yml
-
-pages:
-  stage: build
-  script:
-    - mkdir public
-    - cp .git-ci/index.html public/
-  artifacts:
-    paths:
-    - public
-  only:
-  - master
+  # define job-templates:
+  - https://git.iem.at/pd/iem-ci/-/raw/codesign/pd-lib-builder/iem-ci.yml
+  # turn templates into real jobs:
+  - https://git.iem.at/pd/iem-ci/-/raw/codesign/pd-lib-builder/pipeline-jobs.yml
