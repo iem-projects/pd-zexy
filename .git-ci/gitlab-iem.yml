@@ -1,14 +1,15 @@
 ---
 include:
-  - https://git.iem.at/pd/iem-ci/raw/main/pd-lib-builder/gitlab-iem.yml
+  - https://git.iem.at/pd/iem-ci/raw/main/pd-lib-builder/iem-ci.yml
 
-pages:
-  stage: build
-  script:
-    - mkdir public
-    - cp .git-ci/index.html public/
-  artifacts:
-    paths:
-    - public
-  only:
-  - master
+Linux:
+  extends:
+    - .Linux-amd64
+    - .snapshot
+  image: registry.git.iem.at/devtools/docker/debiancross:${arch}
+  parallel:
+    matrix:
+      - arch: amd64
+        pd_extension: l_amd64
+      - arch: arm64
+        pd_extension: l_arm64
