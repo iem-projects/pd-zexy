@@ -15,3 +15,14 @@ Linux:
         pd_extension: l_arm64
       - arch: armhf
         pd_extension: l_arm
+
+
+Darwin-fat:
+  extends:
+    - .Darwin
+    - .snapshot
+
+deken:
+  extends:
+    - .deken
+    - .snapshot
