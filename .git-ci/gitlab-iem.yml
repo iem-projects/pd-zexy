@@ -13,8 +13,8 @@ Linux:
         pd_extension: l_amd64
       - arch: arm64
         pd_extension: l_arm64
-      - arch: armhf
-        pd_extension: l_arm
+#      - arch: armhf
+#        pd_extension: l_arm
 
 
 Darwin-fat:
