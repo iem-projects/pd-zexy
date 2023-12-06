@@ -1,3 +1,10 @@
+zexy (2.4.3) RELEASED; urgency=medium
+
+  * Group deken packages by Operating System,
+    rather than by floatsize
+
+ -- IOhannes m zmölnig (Debian/GNU) <umlaeute@debian.org> Wed, 6 Dec 2023 11:29:06 +0100
+
 zexy (2.4.2) RELEASED; urgency=medium
 
   * Fix memory leaks in [list2symbol]
