@@ -605,8 +605,8 @@ static void matchbox_add(
   /* 1st match, whether we already have this entry */
   if (matchlistlist(0, x->x_lists, argc, argv, MATCHBOX_EXACT, FALSE)) {
     /* already there, skip the rest */
-    verbose(
-        1, "[matchbox]: refusing to add already existing list to buffer...");
+    pd_error(
+        x, "[matchbox]: refusing to add already existing list to buffer...");
     return;
   }
 

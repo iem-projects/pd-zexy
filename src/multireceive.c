@@ -126,7 +126,7 @@ static void multireceive_set(
     if (A_SYMBOL == argv->a_type) {
       multireceive_add(x, s);
     } else {
-      verbose(1, "[multireceive]: ignoring non-symbol receive name");
+      pd_error(x, "[multireceive]: ignoring non-symbol receive name");
     }
     argv++;
   }

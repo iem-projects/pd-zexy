@@ -204,7 +204,7 @@ static void fifop_bang(t_fifop *x)
 }
 static void fifop_query(t_fifop *x)
 {
-  verbose(1, "%d elements in fifo", (int)x->counter);
+  logpost(x, PD_DEBUG, "%d elements in fifo", (int)x->counter);
 
   outlet_float(x->x_infout, (t_float)x->counter);
 }

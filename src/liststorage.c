@@ -143,7 +143,7 @@ static int _liststorage_resize(t_liststorage *x, int size)
   }
 
   if (size == x->x_numslots) {
-    verbose(1, "[liststorate] no need to resize array");
+    logpost(x, PD_VERBOSE, "[liststorate] no need to resize array");
     return size;
   }
 

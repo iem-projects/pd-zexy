@@ -186,7 +186,7 @@ static void lifop_bang(t_lifop *x)
 }
 static void lifop_query(t_lifop *x)
 {
-  verbose(1, "%d elements in lifo", (int)x->counter);
+  logpost(x, PD_DEBUG, "%d elements in lifo", (int)x->counter);
 
   outlet_float(x->x_infout, (t_float)x->counter);
 }

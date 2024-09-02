@@ -31,7 +31,7 @@ static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
     t_sample4 in, in1[4], in2[4], out1[4], out2[4];
     int i, j;
 
-    verbose(2, "checking for SSE compatibility");
+    logpost(0, PD_VERBOSE, "checking for SSE compatibility");
 
     in.f[0] = 0.;
     in.f[1] = -0.5;
@@ -66,10 +66,11 @@ static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
     for (i = 0; i < 4; i++) {
       for (j = 0; j < 4; j++) {
         if (Z_FABS(out1[i].f[j] - out2[i].f[j]) > 1e-17) {
-          verbose(2, "generic and optimized routines return different results: "
-                     "skipping optimization");
-          verbose(2, "[%d,%d]: ((%f->%f)!=(%f->%f))", i, j, in1[i].f[j],
-              out1[i].f[j], in2[i].f[j], out2[i].f[j]);
+          logpost(0, PD_VERBOSE,
+              "generic and optimized routines return different results: "
+              "skipping optimization");
+          logpost(0, PD_VERBOSE, "[%d,%d]: ((%f->%f)!=(%f->%f))", i, j,
+              in1[i].f[j], out1[i].f[j], in2[i].f[j], out2[i].f[j]);
           return 0;
         }
       }
@@ -77,7 +78,7 @@ static int zexy_testSSE(t_perfroutine genericperf, t_perfroutine sseperf,
   } else {
     /* no tests yet */
   }
-  verbose(2, "using SSE optimization");
+  logpost(0, PD_VERBOSE, "using SSE optimization");
   return 1;
 }
 #  ifdef __GNUC__
