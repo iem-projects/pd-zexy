@@ -125,7 +125,7 @@ static void clearlistlist(t_listlist *list)
 
 /* -------------- here comes the matching algorithms ----------- */
 
-static int atommatch_exact(t_atom *pattern, t_atom *atom)
+static int atommatch_exact(void *UNUSED(x), t_atom *pattern, t_atom *atom)
 {
   if (pattern->a_type == atom->a_type) {
     switch (pattern->a_type) {
@@ -173,13 +173,13 @@ The OSC webpage is http://cnmat.cnmat.berkeley.edu/OpenSoundControl
 */
 
 #  define OSCWarning post
-static int OSC_MatchBrackets(
-    const char *pattern, const char *test, const char *theWholePattern);
-static int OSC_MatchList(
-    const char *pattern, const char *test, const char *theWholePattern);
+static int OSC_MatchBrackets(void *x, const char *pattern, const char *test,
+    const char *theWholePattern);
+static int OSC_MatchList(void *x, const char *pattern, const char *test,
+    const char *theWholePattern);
 
 static int OSC_PatternMatch(
-    const char *pattern, const char *test, const char *theWholePattern)
+    void *x, const char *pattern, const char *test, const char *theWholePattern)
 {
   if (pattern == 0 || pattern[0] == 0) {
     return test[0] == 0;
@@ -187,7 +187,7 @@ static int OSC_PatternMatch(
 
   if (test[0] == 0) {
     if (pattern[0] == '*') {
-      return OSC_PatternMatch(pattern + 1, test, theWholePattern);
+      return OSC_PatternMatch(x, pattern + 1, test, theWholePattern);
     } else {
       return FALSE;
     }
@@ -197,33 +197,33 @@ static int OSC_PatternMatch(
   case 0:
     return test[0] == 0;
   case '?':
-    return OSC_PatternMatch(pattern + 1, test + 1, theWholePattern);
+    return OSC_PatternMatch(x, pattern + 1, test + 1, theWholePattern);
   case '*':
-    if (OSC_PatternMatch(pattern + 1, test, theWholePattern)) {
+    if (OSC_PatternMatch(x, pattern + 1, test, theWholePattern)) {
       return TRUE;
     } else {
-      return OSC_PatternMatch(pattern, test + 1, theWholePattern);
+      return OSC_PatternMatch(x, pattern, test + 1, theWholePattern);
     }
   case ']':
   case '}':
-    verbose(1, "[matchbox]: spurious %c in OSC-pattern \".../%s/...\"",
+    pd_error(x, "[matchbox]: spurious %c in OSC-pattern \".../%s/...\"",
         pattern[0], theWholePattern);
     return FALSE;
   case '[':
-    return OSC_MatchBrackets(pattern, test, theWholePattern);
+    return OSC_MatchBrackets(x, pattern, test, theWholePattern);
   case '{':
-    return OSC_MatchList(pattern, test, theWholePattern);
+    return OSC_MatchList(x, pattern, test, theWholePattern);
   case '\\':
     if (pattern[1] == 0) {
       return test[0] == 0;
     } else if (pattern[1] == test[0]) {
-      return OSC_PatternMatch(pattern + 2, test + 1, theWholePattern);
+      return OSC_PatternMatch(x, pattern + 2, test + 1, theWholePattern);
     } else {
       return FALSE;
     }
   default:
     if (pattern[0] == test[0]) {
-      return OSC_PatternMatch(pattern + 1, test + 1, theWholePattern);
+      return OSC_PatternMatch(x, pattern + 1, test + 1, theWholePattern);
     } else {
       return FALSE;
     }
@@ -233,14 +233,14 @@ static int OSC_PatternMatch(
 /* we know that pattern[0] == '[' and test[0] != 0 */
 
 static int OSC_MatchBrackets(
-    const char *pattern, const char *test, const char *theWholePattern)
+    void *x, const char *pattern, const char *test, const char *theWholePattern)
 {
   int result;
   int negated = FALSE;
   const char *p = pattern;
 
   if (pattern[1] == 0) {
-    verbose(1, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
+    pd_error(x, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
         theWholePattern);
     return FALSE;
   }
@@ -252,7 +252,7 @@ static int OSC_MatchBrackets(
 
   while (*p != ']') {
     if (*p == 0) {
-      verbose(1, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
+      pd_error(x, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
           theWholePattern);
       return FALSE;
     }
@@ -279,25 +279,25 @@ advance:
 
   while (*p != ']') {
     if (*p == 0) {
-      verbose(1, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
+      pd_error(x, "[matchbox]: unterminated [ in OSC-pattern \".../%s/...\"",
           theWholePattern);
       return FALSE;
     }
     p++;
   }
 
-  return OSC_PatternMatch(p + 1, test + 1, theWholePattern);
+  return OSC_PatternMatch(x, p + 1, test + 1, theWholePattern);
 }
 
 static int OSC_MatchList(
-    const char *pattern, const char *test, const char *theWholePattern)
+    void *x, const char *pattern, const char *test, const char *theWholePattern)
 {
 
   const char *restOfPattern, *tp = test;
 
   for (restOfPattern = pattern; *restOfPattern != '}'; restOfPattern++) {
     if (*restOfPattern == 0) {
-      verbose(1, "[matchbox]: unterminated { in OSC-pattern \".../%s/...\"",
+      pd_error(x, "[matchbox]: unterminated { in OSC-pattern \".../%s/...\"",
           theWholePattern);
       return FALSE;
     }
@@ -310,14 +310,14 @@ static int OSC_MatchList(
   while (1) {
 
     if (*pattern == ',') {
-      if (OSC_PatternMatch(restOfPattern, tp, theWholePattern)) {
+      if (OSC_PatternMatch(x, restOfPattern, tp, theWholePattern)) {
         return TRUE;
       } else {
         tp = test;
         ++pattern;
       }
     } else if (*pattern == '}') {
-      return OSC_PatternMatch(restOfPattern, tp, theWholePattern);
+      return OSC_PatternMatch(x, restOfPattern, tp, theWholePattern);
     } else if (*pattern == *tp) {
       ++pattern;
       ++tp;
@@ -333,7 +333,7 @@ static int OSC_MatchList(
   }
 }
 
-static int atommatch_osc(t_atom *pattern, t_atom *test)
+static int atommatch_osc(void *x, t_atom *pattern, t_atom *test)
 {
   char *s_pattern = 0;
   char *s_test = 0;
@@ -358,7 +358,7 @@ static int atommatch_osc(t_atom *pattern, t_atom *test)
     atom_string(test, s_test, test_size);
   }
 
-  result = OSC_PatternMatch(s_pattern, s_test, s_pattern);
+  result = OSC_PatternMatch(x, s_pattern, s_test, s_pattern);
 
   if (pattern_size > 0) {
     freebytes(s_pattern, pattern_size);
@@ -427,7 +427,7 @@ static int listmatch_regex(
   return TRUE;
 }
 
-static t_listlist *matchlistlist_regex(unsigned int *numresults,
+static t_listlist *matchlistlist_regex(void *x, unsigned int *numresults,
     t_listlist *searchlist, int p_argc, t_atom *p_argv, int flags,
     int delete_results)
 {
@@ -454,7 +454,7 @@ static t_listlist *matchlistlist_regex(unsigned int *numresults,
     }
     regexpressions[i] = (regex_t *)getbytes(sizeof(regex_t));
     if (regcomp(regexpressions[i], s_pattern, flags)) {
-      verbose(1, "[matchbox]: invalid regular expression: %s", s_pattern);
+      pd_error(x, "[matchbox]: invalid regular expression: %s", s_pattern);
       if (regexpressions[i]) {
         freebytes(regexpressions[i], sizeof(regex_t));
       }
@@ -507,22 +507,22 @@ static t_listlist *matchlistlist_regex(unsigned int *numresults,
 }
 #endif /* MATCHBOX_REGEX */
 
-static int matchbox_atommatch(t_atom *pattern, t_atom *atom, int mode)
+static int matchbox_atommatch(void *x, t_atom *pattern, t_atom *atom, int mode)
 {
   switch (mode) {
   default:
   case MATCHBOX_EXACT:
-    return atommatch_exact(pattern, atom);
+    return atommatch_exact(x, pattern, atom);
 #ifdef MATCHBOX_OSC
   case MATCHBOX_OSC:
-    return atommatch_osc(pattern, atom);
+    return atommatch_osc(x, pattern, atom);
 #endif /* OSC */
   }
-  return atommatch_exact(pattern, atom);
+  return atommatch_exact(x, pattern, atom);
 }
 
-static int matchlist(
-    int argc_pattern, t_atom *argv_pattern, int argc, t_atom *argv, int mode)
+static int matchlist(void *x, int argc_pattern, t_atom *argv_pattern, int argc,
+    t_atom *argv, int mode)
 {
   int i = 0;
 
@@ -531,7 +531,7 @@ static int matchlist(
   }
 
   for (i = 0; i < argc; i++) {
-    if (0 == matchbox_atommatch(argv_pattern + i, argv + i, mode)) {
+    if (0 == matchbox_atommatch(x, argv_pattern + i, argv + i, mode)) {
       return FALSE;
     }
   }
@@ -539,7 +539,7 @@ static int matchlist(
   return TRUE;
 }
 
-static t_listlist *matchlistlist(unsigned int *numresults,
+static t_listlist *matchlistlist(void *x, unsigned int *numresults,
     t_listlist *searchlist, int p_argc, t_atom *p_argv, int mode,
     int delete_results)
 {
@@ -550,13 +550,13 @@ static t_listlist *matchlistlist(unsigned int *numresults,
 #ifdef MATCHBOX_REGEX
   if (MATCHBOX_REGEX == mode) {
     matchinglist = matchlistlist_regex(
-        &num, searchlist, p_argc, p_argv, 0, delete_results);
+        x, &num, searchlist, p_argc, p_argv, 0, delete_results);
   } else
 #endif /* MATCHBOX_REGEX */
     /* normal matching */
     if (FALSE == delete_results) {
       for (sl = searchlist->next; 0 != sl; sl = sl->next) {
-        if (matchlist(p_argc, p_argv, sl->argc, sl->argv, mode)) {
+        if (matchlist(x, p_argc, p_argv, sl->argc, sl->argv, mode)) {
           matchinglist = addlistlist(matchinglist, sl->argc, sl->argv);
           num++;
         }
@@ -565,7 +565,7 @@ static t_listlist *matchlistlist(unsigned int *numresults,
       /* yummy: delete matching lists! */
       t_listlist *lastgood = searchlist;
       for (sl = searchlist->next; 0 != sl; sl = sl->next) {
-        if (matchlist(p_argc, p_argv, sl->argc, sl->argv, mode)) {
+        if (matchlist(x, p_argc, p_argv, sl->argc, sl->argv, mode)) {
           matchinglist = addlistlist(matchinglist, sl->argc, sl->argv);
           num++;
 
@@ -588,7 +588,7 @@ static void matchbox_list(
   unsigned int results = 0;
   int mode = x->x_mode;
   t_listlist *resultlist =
-      matchlistlist(&results, x->x_lists, argc, argv, mode, FALSE);
+      matchlistlist(x, &results, x->x_lists, argc, argv, mode, FALSE);
   t_listlist *dummylist;
 
   outlet_float(x->x_outNumResults, (t_float)results);
@@ -603,7 +603,7 @@ static void matchbox_add(
     t_matchbox *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   /* 1st match, whether we already have this entry */
-  if (matchlistlist(0, x->x_lists, argc, argv, MATCHBOX_EXACT, FALSE)) {
+  if (matchlistlist(x, 0, x->x_lists, argc, argv, MATCHBOX_EXACT, FALSE)) {
     /* already there, skip the rest */
     pd_error(
         x, "[matchbox]: refusing to add already existing list to buffer...");
@@ -621,7 +621,7 @@ static void matchbox_delete(
   unsigned int results = 0;
   int mode = x->x_mode;
   t_listlist *resultlist =
-      matchlistlist(&results, x->x_lists, argc, argv, mode, TRUE);
+      matchlistlist(x, &results, x->x_lists, argc, argv, mode, TRUE);
   t_listlist *dummylist;
   t_symbol *delsym = gensym("deleted");
 
