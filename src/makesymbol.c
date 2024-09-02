@@ -96,6 +96,10 @@ static const char *_formatscan(const char *str, t_printtype *typ)
   *typ = NONE;
   return str;
 }
+#ifdef __GNUC__
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wunused-function"
+#endif
 static void print_formatspecs(t_formatspec *fs)
 {
   int i = 0;
@@ -105,6 +109,9 @@ static void print_formatspecs(t_formatspec *fs)
     fs = fs->fs_next;
   }
 }
+#ifdef __GNUC__
+#  pragma GCC diagnostic pop
+#endif
 static void delete_formatspecs(t_formatspec *fs)
 {
   while (fs) {
