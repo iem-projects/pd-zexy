@@ -1,0 +1,10 @@
+Language: Cpp
+AlignAfterOpenBracket: DontAlign
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+BreakBeforeBraces: Linux
+IndentCaseLabels: false
+IndentPPDirectives: AfterHash
+ReflowComments: no
+TabWidth: 4
+UseTab: Never
