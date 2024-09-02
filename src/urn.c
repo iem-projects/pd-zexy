@@ -21,16 +21,15 @@
 
 /* ------------------------- urn ------------------------------- */
 
-static t_class *urn_class=NULL;
+static t_class *urn_class = NULL;
 
 typedef struct _urn {
   t_object x_obj;
-  unsigned int x_seed;       /* the seed of the generator */
+  unsigned int x_seed; /* the seed of the generator */
 
-  unsigned int x_range;      /* max. random-number + 1 */
-  unsigned int
-  x_count;      /* how many random numbers have we generated ? */
-  char  *x_state;            /* has this number been generated already ? */
+  unsigned int x_range; /* max. random-number + 1 */
+  unsigned int x_count; /* how many random numbers have we generated ? */
+  char *x_state;        /* has this number been generated already ? */
 
   t_outlet *x_floatout, *x_bangout;
   char x_noauto;
@@ -50,34 +49,34 @@ static void makestate(t_urn *x, unsigned int newrange)
   }
 
   if (x->x_range && x->x_state) {
-    freebytes(x->x_state, sizeof(char)*x->x_range);
-    x->x_state=0;
+    freebytes(x->x_state, sizeof(char) * x->x_range);
+    x->x_state = 0;
   }
 
-  x->x_range=newrange;
-  x->x_state=getbytes(sizeof(char)*x->x_range);
+  x->x_range = newrange;
+  x->x_state = getbytes(sizeof(char) * x->x_range);
 }
 
 static void urn_clear(t_urn *x)
 {
-  unsigned int i=x->x_range;
-  char *dummy=x->x_state;
+  unsigned int i = x->x_range;
+  char *dummy = x->x_state;
   if (!dummy || !i) {
     return;
   }
-  while(i--) {
-    *dummy++=0;
+  while (i--) {
+    *dummy++ = 0;
   }
-  x->x_count=0;
+  x->x_count = 0;
 }
 static void urn_bang(t_urn *x)
 {
-  unsigned int range = (x->x_range<1?1:x->x_range);
+  unsigned int range = (x->x_range < 1 ? 1 : x->x_range);
   unsigned int randval = x->x_seed;
 
-  unsigned int nval=0, used=1;
+  unsigned int nval = 0, used = 1;
 
-  if (x->x_count>=range) {
+  if (x->x_count >= range) {
     outlet_bang(x->x_bangout);
     if (x->x_noauto) {
       return;
@@ -87,49 +86,47 @@ static void urn_bang(t_urn *x)
 
   while (used) {
     randval = randval * 472940017 + 832416023;
-    nval = ((double)range) * ((double)randval)
-           * (1./4294967296.);
+    nval = ((double)range) * ((double)randval) * (1. / 4294967296.);
     if (nval >= range) {
-      nval = range-1;
+      nval = range - 1;
     }
-    used=x->x_state[nval];
+    used = x->x_state[nval];
   }
 
   x->x_count++;
-  x->x_state[nval]=1;
+  x->x_state[nval] = 1;
   x->x_seed = randval;
   outlet_float(x->x_floatout, nval);
 }
 
 static void urn_flt2(t_urn *x, t_float f)
 {
-  unsigned int range = (f<1)?1:f;
+  unsigned int range = (f < 1) ? 1 : f;
   makestate(x, range);
   urn_clear(x);
 }
-
 
 static void urn_seed(t_urn *x, t_float f)
 {
   x->x_seed = f;
 }
 
-static void *urn_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *urn_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_urn *x = (t_urn *)pd_new(urn_class);
-  t_float f=0.;
+  t_float f = 0.;
 
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
-  x->x_floatout=outlet_new(&x->x_obj, gensym("float"));
-  x->x_bangout =outlet_new(&x->x_obj, gensym("bang"));
+  x->x_floatout = outlet_new(&x->x_obj, gensym("float"));
+  x->x_bangout = outlet_new(&x->x_obj, gensym("bang"));
 
   x->x_seed = makeseed();
   x->x_noauto = 0;
 
-  while(argc--) {
-    if (argv->a_type==A_SYMBOL) {
-      if (atom_getsymbol(argv)==gensym("no_auto")) {
-        x->x_noauto=1;
+  while (argc--) {
+    if (argv->a_type == A_SYMBOL) {
+      if (atom_getsymbol(argv) == gensym("no_auto")) {
+        x->x_noauto = 1;
       }
     } else {
       f = atom_getfloat(argv);
@@ -137,8 +134,8 @@ static void *urn_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
     argv++;
   }
 
-  if (f<1.0) {
-    f=1.0;
+  if (f < 1.0) {
+    f = 1.0;
   }
   makestate(x, f);
   x->x_range = f;
@@ -147,18 +144,17 @@ static void *urn_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-static void urn_help(t_urn*UNUSED(x))
+static void urn_help(t_urn *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL
-       " urn\t\t:: generate randum numbers without repetition");
+  post(
+      "\n" HEARTSYMBOL " urn\t\t:: generate randum numbers without repetition");
 }
 
 ZEXY_SETUP void urn_setup(void)
 {
-  urn_class = zexy_new("urn",
-                       urn_new, 0, t_urn, CLASS_DEFAULT, "*");
+  urn_class = zexy_new("urn", urn_new, 0, t_urn, CLASS_DEFAULT, "*");
 
-  class_addbang (urn_class, urn_bang);
+  class_addbang(urn_class, urn_bang);
   zexy_addmethod(urn_class, (t_method)urn_clear, "clear", "");
   zexy_addmethod(urn_class, (t_method)urn_flt2, "", "F");
   zexy_addmethod(urn_class, (t_method)urn_seed, "seed", "F");

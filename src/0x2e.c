@@ -17,11 +17,10 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "zexy.h"
 
-static t_class *scalmul_class=NULL;
-static t_class *scalmul_scal_class=NULL;
+static t_class *scalmul_class = NULL;
+static t_class *scalmul_scal_class = NULL;
 
 typedef struct _scalmul {
   t_object x_obj;
@@ -33,102 +32,101 @@ typedef struct _scalmul {
   t_float f;
 } t_scalmul;
 
-
-static void scalmul_lst2(t_scalmul *x, t_symbol *UNUSED(s), int argc,
-                         t_atom *argv)
+static void scalmul_lst2(
+    t_scalmul *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_float *fp;
   if (x->n2 != argc) {
     freebytes(x->buf2, x->n2 * sizeof(t_float));
     x->n2 = argc;
-    x->buf2=(t_float *)getbytes(sizeof(t_float)*x->n2);
+    x->buf2 = (t_float *)getbytes(sizeof(t_float) * x->n2);
   };
   fp = x->buf2;
-  while(argc--) {
-    *fp++=atom_getfloat(argv++);
+  while (argc--) {
+    *fp++ = atom_getfloat(argv++);
   }
 }
 
-static void scalmul_lst(t_scalmul *x, t_symbol* UNUSED(s), int argc,
-                        t_atom *argv)
+static void scalmul_lst(
+    t_scalmul *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_float *fp;
-  t_atom  *ap;
+  t_atom *ap;
   int n;
 
   if (argc) {
     if (x->n1 != argc) {
       freebytes(x->buf1, x->n1 * sizeof(t_float));
       x->n1 = argc;
-      x->buf1=(t_float *)getbytes(sizeof(t_float)*x->n1);
+      x->buf1 = (t_float *)getbytes(sizeof(t_float) * x->n1);
     };
     fp = x->buf1;
-    while(argc--) {
-      *fp++=atom_getfloat(argv++);
+    while (argc--) {
+      *fp++ = atom_getfloat(argv++);
     }
   }
 
-  if (x->n1*x->n2==1) {
-    outlet_float(x->x_obj.ob_outlet, *x->buf1**x->buf2);
+  if (x->n1 * x->n2 == 1) {
+    outlet_float(x->x_obj.ob_outlet, *x->buf1 * *x->buf2);
     return;
   }
-  if (x->n1==1) {
+  if (x->n1 == 1) {
     t_atom *a;
     int i = x->n2;
     t_float f = *x->buf1;
     fp = x->buf2;
     n = x->n2;
-    ap = (t_atom *)getbytes(sizeof(t_atom)*n);
+    ap = (t_atom *)getbytes(sizeof(t_atom) * n);
     a = ap;
-    while(i--) {
-      SETFLOAT(a, *fp++*f);
+    while (i--) {
+      SETFLOAT(a, *fp++ * f);
       a++;
     }
-  } else if (x->n2==1) {
+  } else if (x->n2 == 1) {
     t_float f = *x->buf2;
     t_atom *a;
     int i = x->n1;
     n = x->n1;
-    ap = (t_atom *)getbytes(sizeof(t_atom)*n);
+    ap = (t_atom *)getbytes(sizeof(t_atom) * n);
     a = ap;
     fp = x->buf1;
-    while(i--) {
-      SETFLOAT(a, *fp++*f);
+    while (i--) {
+      SETFLOAT(a, *fp++ * f);
       a++;
     }
   } else {
     t_atom *a;
     int i;
-    t_float *fp2=x->buf2;
+    t_float *fp2 = x->buf2;
     fp = x->buf1;
     n = x->n1;
-    if (x->n1!=x->n2) {
+    if (x->n1 != x->n2) {
       post("scalar multiplication: truncating vectors to the same length");
-      if (x->n2<x->n1) {
-        n=x->n2;
+      if (x->n2 < x->n1) {
+        n = x->n2;
       }
     }
-    ap = (t_atom *)getbytes(sizeof(t_atom)*n);
+    ap = (t_atom *)getbytes(sizeof(t_atom) * n);
     a = ap;
-    i=n;
-    while(i--) {
-      SETFLOAT(a, *fp++**fp2++);
+    i = n;
+    while (i--) {
+      SETFLOAT(a, *fp++ * *fp2++);
       a++;
     }
   }
   outlet_list(x->x_obj.ob_outlet, gensym("list"), n, ap);
-  freebytes(ap, sizeof(t_atom)*n);
+  freebytes(ap, sizeof(t_atom) * n);
 }
 static void scalmul_free(t_scalmul *x)
 {
-  freebytes(x->buf1, sizeof(t_float)*x->n1);
-  freebytes(x->buf2, sizeof(t_float)*x->n2);
+  freebytes(x->buf1, sizeof(t_float) * x->n1);
+  freebytes(x->buf2, sizeof(t_float) * x->n2);
 }
 
-static void *scalmul_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *scalmul_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_scalmul *x;
-  if (argc-1) {
+  if (argc - 1) {
     x = (t_scalmul *)pd_new(scalmul_class);
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym(""));
   } else {
@@ -137,40 +135,40 @@ static void *scalmul_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
   outlet_new(&x->x_obj, 0);
 
-  x->n1   =1;
-  x->buf1 =(t_float*)getbytes(sizeof(t_float));
-  *x->buf1=0;
+  x->n1 = 1;
+  x->buf1 = (t_float *)getbytes(sizeof(t_float));
+  *x->buf1 = 0;
 
   if (argc) {
     scalmul_lst2(x, gensym("list"), argc, argv);
   } else {
-    x->n2   =1;
-    x->buf2 =(t_float*)getbytes(sizeof(t_float));
-    *x->buf2=0;
+    x->n2 = 1;
+    x->buf2 = (t_float *)getbytes(sizeof(t_float));
+    *x->buf2 = 0;
   }
 
-  if (argc==1) {
+  if (argc == 1) {
     floatinlet_new(&x->x_obj, x->buf2);
   }
 
   return (x);
 }
 
-static void scalmul_help(t_scalmul* UNUSED(x))
+static void scalmul_help(t_scalmul *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " .\t\t:: scalar multiplication (in-product)");
+  post("\n" HEARTSYMBOL " .\t\t:: scalar multiplication (in-product)");
 }
 
 ZEXY_SETUP void setup_0x2e(void)
 {
-  scalmul_class = zexy_new(".",
-                           scalmul_new, scalmul_free, t_scalmul, CLASS_DEFAULT, "*");
+  scalmul_class =
+      zexy_new(".", scalmul_new, scalmul_free, t_scalmul, CLASS_DEFAULT, "*");
   class_addlist(scalmul_class, scalmul_lst);
   zexy_addmethod(scalmul_class, (t_method)scalmul_lst2, "", "*");
   zexy_addmethod(scalmul_class, (t_method)scalmul_help, "help", "");
 
-  scalmul_scal_class = zexy_new(".",
-                                0, scalmul_free, t_scalmul, CLASS_DEFAULT, "");
+  scalmul_scal_class =
+      zexy_new(".", 0, scalmul_free, t_scalmul, CLASS_DEFAULT, "");
   class_addlist(scalmul_scal_class, scalmul_lst);
   zexy_addmethod(scalmul_scal_class, (t_method)scalmul_help, "help", "");
 

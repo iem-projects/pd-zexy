@@ -21,7 +21,7 @@
 
 /* ------------------------ pdf~ ----------------------------- */
 
-static t_class *pdf_class=NULL;
+static t_class *pdf_class = NULL;
 
 typedef struct _pdf {
   t_object x_obj;
@@ -37,7 +37,7 @@ static void clear_pdfbuf(t_pdf *x)
   t_float *buf = x->buf;
 
   while (n--) {
-    *buf++=0.;
+    *buf++ = 0.;
   }
 }
 
@@ -47,22 +47,23 @@ static void pdf_bang(t_pdf *x)
   t_float *buf = x->buf, max = 0;
   t_atom a[2];
 
-  while (n--) if (max < *buf++) {
+  while (n--)
+    if (max < *buf++) {
       max = buf[-1];
     }
 
-  n=x->size;
+  n = x->size;
   buf = x->buf;
 
-  if (max==0.) {
-    max=1.;
+  if (max == 0.) {
+    max = 1.;
   }
-  max = 1./max;
+  max = 1. / max;
 
   while (n--) {
-    SETFLOAT(a, *buf++*max);
-    SETFLOAT(a+1,x->size-n-1);
-    outlet_list(x->x_obj.ob_outlet, gensym("list"), 2, (t_atom*)&a);
+    SETFLOAT(a, *buf++ * max);
+    SETFLOAT(a + 1, x->size - n - 1);
+    outlet_list(x->x_obj.ob_outlet, gensym("list"), 2, (t_atom *)&a);
   }
 }
 
@@ -86,10 +87,10 @@ static t_int *pdf_perform(t_int *w)
 
   while (n--) {
     t_sample f = *in++;
-    int iindex = ((f + 1.0) * halfsize)+0.5;
-    buf[(iindex<0)?0:((iindex>=x->size)?x->size-1:iindex)]+=1.;
+    int iindex = ((f + 1.0) * halfsize) + 0.5;
+    buf[(iindex < 0) ? 0 : ((iindex >= x->size) ? x->size - 1 : iindex)] += 1.;
   }
-  return (w+4);
+  return (w + 4);
 }
 
 static void pdf_dsp(t_pdf *x, t_signal **sp)
@@ -104,7 +105,7 @@ static void *pdf_new(t_floatarg f)
   int i = f;
   t_pdf *x = (t_pdf *)pd_new(pdf_class);
 
-  x->size = (i)?i:64;
+  x->size = (i) ? i : 64;
   x->buf = (t_float *)getbytes(x->size * sizeof(*x->buf));
   clear_pdfbuf(x);
 
@@ -115,15 +116,15 @@ static void *pdf_new(t_floatarg f)
 
 static void pdf_free(t_pdf *x)
 {
-  if(x->buf) {
-    freebytes(x->buf, x->size*sizeof(*x->buf));
+  if (x->buf) {
+    freebytes(x->buf, x->size * sizeof(*x->buf));
   }
 }
 
 static void pdf_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL
-       " pdf~\t:: get the probability density function of a signal (-1.0 to +1.0)");
+  post("\n" HEARTSYMBOL " pdf~\t:: get the probability density function of a "
+       "signal (-1.0 to +1.0)");
   post("'bang'\t  : output a list of the probabilities of 'n' function values"
        "\n'clear'\t  : clear the buffer (set all probabilities to zero)"
        "\n<1/0>\t  : short for 'bang' and 'clear'"
@@ -133,8 +134,7 @@ static void pdf_tilde_helper(void)
 
 ZEXY_SETUP void pdf_tilde_setup(void)
 {
-  pdf_class = zexy_new("pdf~",
-                       pdf_new, pdf_free, t_pdf, CLASS_DEFAULT, "F");
+  pdf_class = zexy_new("pdf~", pdf_new, pdf_free, t_pdf, CLASS_DEFAULT, "F");
 
   zexy_addmethod(pdf_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(pdf_class, (t_method)pdf_dsp, "dsp", "!");

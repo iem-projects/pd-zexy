@@ -34,7 +34,7 @@
 
 /* ------------------------ step~ ----------------------------- */
 
-static t_class *step_class=NULL;
+static t_class *step_class = NULL;
 
 typedef struct _step {
   t_object x_obj;
@@ -54,18 +54,14 @@ static void step_bang(t_step *x)
 
 static void step_float(t_step *x, t_float where)
 {
-  x->wait4stop = x->length +
-                 (x->wait4start =
-                    (x->position = (where>0)*where)
-                 );
+  x->wait4stop =
+      x->length + (x->wait4start = (x->position = (where > 0) * where));
 }
 
 static void step_setlength(t_step *x, t_float arg)
 {
-  x->length = 1 + (arg>0)*arg;
+  x->length = 1 + (arg > 0) * arg;
 }
-
-
 
 static t_int *step_perform(t_int *w)
 {
@@ -92,7 +88,7 @@ static t_int *step_perform(t_int *w)
   x->wait4stop = wait4stop;
 
   x->toggle = toggle;
-  return (w+4);
+  return (w + 4);
 }
 
 static void step_dsp(t_step *x, t_signal **sp)
@@ -100,19 +96,19 @@ static void step_dsp(t_step *x, t_signal **sp)
   dsp_add(step_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
 
-
 static void step_helper(void)
 {
-  post(""HEARTSYMBOL " step~-object :: generates a unity-step");
-  post("creation : \"dirac~ [<position> [<length>]]\" : create a rectangular window\n"
+  post("" HEARTSYMBOL " step~-object :: generates a unity-step");
+  post("creation : \"dirac~ [<position> [<length>]]\" : create a rectangular "
+       "window\n"
        "\t\t\tat specified position and with specified length (in samples)\n"
        "inlet1\t: <position>\t: create a rectangular window at new position\n"
        "\t  'bang'\t: create a rectangular window at specified position\n"
        "\t  'help'\t: view this\n"
-       "inlet2\t: <length>\t: define new window length ('0' will make a unity-step)\n"
+       "inlet2\t: <length>\t: define new window length ('0' will make a "
+       "unity-step)\n"
        "outlet\t: signal~");
 }
-
 
 static void *step_new(t_floatarg farg)
 {
@@ -132,8 +128,7 @@ static void *step_new(t_floatarg farg)
 
 ZEXY_SETUP void step_tilde_setup(void)
 {
-  step_class = zexy_new("step~",
-                        step_new, 0, t_step, CLASS_DEFAULT, "F");
+  step_class = zexy_new("step~", step_new, 0, t_step, CLASS_DEFAULT, "F");
 
   class_addfloat(step_class, step_float);
   class_addbang(step_class, step_bang);

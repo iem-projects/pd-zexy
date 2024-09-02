@@ -23,31 +23,29 @@
 #include "zexy.h"
 
 #if (defined __WIN32__)
-# if (defined __i386__) && (defined __MINGW32__)
+#  if (defined __i386__) && (defined __MINGW32__)
 /* unless compiling under mingw/32bit, we want USE_TIMEB in redmond-land */
-# else
-#  define USE_TIMEB
-# endif
+#  else
+#    define USE_TIMEB
+#  endif
 #endif
 
 #ifdef __APPLE__
-#include <sys/types.h>
+#  include <sys/types.h>
 /* typedef     _BSD_TIME_T_    time_t;                */
 #endif
-
 
 #include <time.h>
 
 #ifdef USE_TIMEB
-#include <sys/timeb.h>
+#  include <sys/timeb.h>
 #else
-#include <sys/time.h>
+#  include <sys/time.h>
 #endif
-
 
 /* ----------------------- time --------------------- */
 
-static t_class *time_class=NULL;
+static t_class *time_class = NULL;
 
 typedef struct _time {
   t_object x_obj;
@@ -60,15 +58,15 @@ typedef struct _time {
   t_outlet *x_outlet4;
 } t_time;
 
-static void *time_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *time_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_time *x = (t_time *)pd_new(time_class);
 
-  x->GMT=0;
+  x->GMT = 0;
   if (argc) {
     char buf[5];
     atom_string(argv, buf, 5);
-    if (buf[0]=='G' && buf[1]=='M' && buf[2]=='T') {
+    if (buf[0] == 'G' && buf[1] == 'M' && buf[2] == 'T') {
       x->GMT = 1;
     }
   }
@@ -84,17 +82,17 @@ static void *time_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 static void time_bang(t_time *x)
 {
   struct tm *resolvetime;
-  t_float  ms = 0.f;
+  t_float ms = 0.f;
 #ifdef USE_TIMEB
   struct timeb mytime;
   ftime(&mytime);
-  resolvetime = (x->GMT)?gmtime(&mytime.time):localtime(&mytime.time);
-  ms=mytime.millitm;
+  resolvetime = (x->GMT) ? gmtime(&mytime.time) : localtime(&mytime.time);
+  ms = mytime.millitm;
 #else
   struct timeval tv;
   gettimeofday(&tv, 0);
-  resolvetime = (x->GMT)?gmtime(&tv.tv_sec):localtime(&tv.tv_sec);
-  ms = tv.tv_usec*0.001;
+  resolvetime = (x->GMT) ? gmtime(&tv.tv_sec) : localtime(&tv.tv_sec);
+  ms = tv.tv_usec * 0.001;
 #endif
   outlet_float(x->x_outlet4, (t_float)(ms));
   outlet_float(x->x_outlet3, (t_float)resolvetime->tm_sec);
@@ -102,17 +100,16 @@ static void time_bang(t_time *x)
   outlet_float(x->x_outlet1, (t_float)resolvetime->tm_hour);
 }
 
-static void help_time(t_time* UNUSED(x))
+static void help_time(t_time *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " time\t\t:: get the current system time");
+  post("\n" HEARTSYMBOL " time\t\t:: get the current system time");
   post("\noutputs are\t:  hour / minute / sec / msec");
   post("\ncreation\t:: 'time [GMT]': show local time or GMT");
 }
 
 ZEXY_SETUP void time_setup(void)
 {
-  time_class = zexy_new("time",
-                        time_new, 0, t_time, CLASS_DEFAULT, "*");
+  time_class = zexy_new("time", time_new, 0, t_time, CLASS_DEFAULT, "*");
 
   class_addbang(time_class, time_bang);
 

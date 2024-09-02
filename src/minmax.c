@@ -17,10 +17,9 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "zexy.h"
 
-static t_class *minmax_class=NULL;
+static t_class *minmax_class = NULL;
 
 typedef struct _minmax {
   t_object x_obj;
@@ -32,29 +31,29 @@ typedef struct _minmax {
 
 static void minmax_bang(t_minmax *x)
 {
-  outlet_float(x->maxo,x->max);
-  outlet_float(x->mino,x->min);
+  outlet_float(x->maxo, x->max);
+  outlet_float(x->mino, x->min);
 }
 
-static void minmax_list(t_minmax *x, t_symbol* UNUSED(s), int argc,
-                        t_atom *argv)
+static void minmax_list(
+    t_minmax *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
-  if(argc) {
+  if (argc) {
     t_float min = atom_getfloat(argv++);
-    t_float max=min;
+    t_float max = min;
     argc--;
 
-    while(argc--) {
+    while (argc--) {
       t_float f = atom_getfloat(argv++);
-      if (f<min) {
-        min=f;
-      } else if (f>max) {
-        max=f;
+      if (f < min) {
+        min = f;
+      } else if (f > max) {
+        max = f;
       }
     }
 
-    x->min=min;
-    x->max=max;
+    x->min = min;
+    x->max = max;
   }
   minmax_bang(x);
 }
@@ -63,8 +62,8 @@ static void *minmax_new(void)
 {
   t_minmax *x = (t_minmax *)pd_new(minmax_class);
 
-  x->mino=outlet_new(&x->x_obj, gensym("float"));
-  x->maxo=outlet_new(&x->x_obj, gensym("float"));
+  x->mino = outlet_new(&x->x_obj, gensym("float"));
+  x->maxo = outlet_new(&x->x_obj, gensym("float"));
 
   x->min = x->max = 0;
 
@@ -78,8 +77,7 @@ static void minmax_help(void)
 
 ZEXY_SETUP void minmax_setup(void)
 {
-  minmax_class = zexy_new("minmax",
-                          minmax_new, 0, t_minmax, CLASS_DEFAULT, "");
+  minmax_class = zexy_new("minmax", minmax_new, 0, t_minmax, CLASS_DEFAULT, "");
 
   class_addlist(minmax_class, (t_method)minmax_list);
   class_addbang(minmax_class, (t_method)minmax_bang);

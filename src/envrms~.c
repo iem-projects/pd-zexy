@@ -26,7 +26,7 @@
 #define MAXOVERLAP 10
 #define MAXVSTAKEN 64
 
-t_class *sigenvrms_class=NULL;
+t_class *sigenvrms_class = NULL;
 
 typedef struct sigenvrms {
   t_object x_obj;                /* header */
@@ -55,7 +55,7 @@ static void *sigenvrms_new(t_floatarg fnpoints, t_floatarg fperiod)
     npoints = 1024;
   }
   if (period < 1) {
-    period = npoints/2;
+    period = npoints / 2;
   }
   if (period < npoints / MAXOVERLAP + 1) {
     period = npoints / MAXOVERLAP + 1;
@@ -73,9 +73,9 @@ static void *sigenvrms_new(t_floatarg fnpoints, t_floatarg fperiod)
     x->x_sumbuf[i] = 0;
   }
   for (i = 0; i < npoints; i++) {
-    buf[i] = (1. - cos((2 * 3.141592654 * i) / npoints))/npoints;
+    buf[i] = (1. - cos((2 * 3.141592654 * i) / npoints)) / npoints;
   }
-  for (; i < npoints+MAXVSTAKEN; i++) {
+  for (; i < npoints + MAXVSTAKEN; i++) {
     buf[i] = 0;
   }
   x->x_clock = clock_new(x, (t_method)sigenvrms_tick);
@@ -91,8 +91,8 @@ static t_int *sigenvrms_perform(t_int *w)
   int count;
   t_sample *sump;
   in += n;
-  for (count = x->x_phase, sump = x->x_sumbuf;
-       count < x->x_npoints; count += x->x_realperiod, sump++) {
+  for (count = x->x_phase, sump = x->x_sumbuf; count < x->x_npoints;
+       count += x->x_realperiod, sump++) {
     t_sample *hp = x->x_buf + count;
     t_sample *fp = in;
     t_sample sum = *sump;
@@ -100,7 +100,7 @@ static t_int *sigenvrms_perform(t_int *w)
 
     for (i = 0; i < n; i++) {
       fp--;
-      sum += *hp++ * (*fp **fp);
+      sum += *hp++ * (*fp * *fp);
     }
     *sump = sum;
   }
@@ -108,21 +108,21 @@ static t_int *sigenvrms_perform(t_int *w)
   x->x_phase -= n;
   if (x->x_phase < 0) {
     x->x_result = x->x_sumbuf[0];
-    for (count = x->x_realperiod, sump = x->x_sumbuf;
-         count < x->x_npoints; count += x->x_realperiod, sump++) {
+    for (count = x->x_realperiod, sump = x->x_sumbuf; count < x->x_npoints;
+         count += x->x_realperiod, sump++) {
       sump[0] = sump[1];
     }
     sump[0] = 0;
     x->x_phase = x->x_realperiod - n;
     clock_delay(x->x_clock, 0L);
   }
-  return (w+4);
+  return (w + 4);
 }
 
 static void sigenvrms_dsp(t_sigenvrms *x, t_signal **sp)
 {
-  if (x->x_period % sp[0]->s_n) x->x_realperiod =
-      x->x_period + sp[0]->s_n - (x->x_period % sp[0]->s_n);
+  if (x->x_period % sp[0]->s_n)
+    x->x_realperiod = x->x_period + sp[0]->s_n - (x->x_period % sp[0]->s_n);
   else {
     x->x_realperiod = x->x_period;
   }
@@ -150,11 +150,10 @@ static void sigenvrms_help(void)
   post("envrms~\t:: envelope follower that does output rms instead of dB");
 }
 
-
 ZEXY_SETUP void envrms_tilde_setup(void)
 {
-  sigenvrms_class = zexy_new("envrms~",
-                             sigenvrms_new, sigenvrms_ff, t_sigenvrms, CLASS_DEFAULT, "FF");
+  sigenvrms_class = zexy_new(
+      "envrms~", sigenvrms_new, sigenvrms_ff, t_sigenvrms, CLASS_DEFAULT, "FF");
   zexy_addmethod(sigenvrms_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sigenvrms_class, (t_method)sigenvrms_dsp, "dsp", "!");
 

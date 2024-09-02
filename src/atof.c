@@ -21,12 +21,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-static t_class *atof_class=NULL;
+static t_class *atof_class = NULL;
 
 typedef struct _atof {
   t_object x_obj;
   t_float x_f;
-  t_outlet*x_reject;
+  t_outlet *x_reject;
 } t_atof;
 static void atof_bang(t_atof *x)
 {
@@ -39,48 +39,46 @@ static void atof_float(t_atof *x, t_floatarg f)
 }
 static void atof_symbol(t_atof *x, t_symbol *sym)
 {
-  const char* s = sym->s_name;
-  char*endptr=NULL;
-  double d=strtod(s, &endptr);
-  size_t len=strlen(s);
-  if(endptr && ((s+len)==endptr)) {
+  const char *s = sym->s_name;
+  char *endptr = NULL;
+  double d = strtod(s, &endptr);
+  size_t len = strlen(s);
+  if (endptr && ((s + len) == endptr)) {
     atof_float(x, d);
   } else {
     outlet_symbol(x->x_reject, sym);
   }
 }
-static void atof_list(t_atof *x, t_symbol* UNUSED(s), int argc,
-                      t_atom *argv)
+static void atof_list(t_atof *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
-  if(!argc) {
+  if (!argc) {
     atof_bang(x);
     return;
   }
 
-  if (argv->a_type==A_FLOAT) {
+  if (argv->a_type == A_FLOAT) {
     atof_float(x, atom_getfloat(argv));
     return;
   }
   atof_symbol(x, atom_getsymbol(argv));
 }
-static void atof_free(t_atof*x)
+static void atof_free(t_atof *x)
 {
   outlet_free(x->x_reject);
-  x->x_reject=NULL;
+  x->x_reject = NULL;
 }
 static void *atof_new(void)
 {
   t_atof *x = (t_atof *)pd_new(atof_class);
   outlet_new(&x->x_obj, gensym("float"));
-  x->x_reject=outlet_new(&x->x_obj, gensym("symbol"));
+  x->x_reject = outlet_new(&x->x_obj, gensym("symbol"));
   x->x_f = 0.;
   return (x);
 }
 
 ZEXY_SETUP void atof_setup(void)
 {
-  atof_class = zexy_new("atof",
-                        atof_new, atof_free, t_atof, CLASS_DEFAULT, "");
+  atof_class = zexy_new("atof", atof_new, atof_free, t_atof, CLASS_DEFAULT, "");
 
   class_addbang(atof_class, (t_method)atof_bang);
   class_addfloat(atof_class, (t_method)atof_float);

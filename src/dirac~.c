@@ -20,7 +20,6 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /*
  * This external makes the two main test-functions available :
  * dirac~: will make a single peak (eg: a 1 in all the 0s) at
@@ -36,8 +35,7 @@
 
 /* ------------------------ dirac~ ----------------------------- */
 
-
-static t_class *dirac_class=NULL;
+static t_class *dirac_class = NULL;
 
 typedef struct _dirac {
   t_object x_obj;
@@ -63,16 +61,16 @@ static t_int *dirac_perform(t_int *w)
 
   t_int do_it = x->do_it;
 
-  zero_perform(w+1);
+  zero_perform(w + 1);
 
   if (do_it >= n) {
     x->do_it -= n;
-  } else if(do_it >= 0) {
+  } else if (do_it >= 0) {
     out[do_it] = 1.f;
     x->do_it = -1;
   }
 
-  return (w+4);
+  return (w + 4);
 }
 
 #ifndef __WIN32__
@@ -85,7 +83,7 @@ static t_int *dirac_perform(t_int *w)
 t_int *zero_perf8(t_int *w);
 #else
 /* on w32 we have no access to this hidden function anyhow... */
-# define zero_perf8 zero_perform
+#  define zero_perf8 zero_perform
 #endif
 
 static t_int *dirac_perf8(t_int *w)
@@ -95,16 +93,16 @@ static t_int *dirac_perf8(t_int *w)
   int n = (int)(w[3]);
 
   t_int do_it = x->do_it;
-  zero_perf8(w+1);
+  zero_perf8(w + 1);
 
   if (do_it >= n) {
     x->do_it -= n;
-  } else if(do_it >= 0) {
+  } else if (do_it >= 0) {
     out[do_it] = 1.f;
     x->do_it = -1;
   }
 
-  return (w+4);
+  return (w + 4);
 }
 
 static void dirac_dsp(t_dirac *x, t_signal **sp)
@@ -118,15 +116,14 @@ static void dirac_dsp(t_dirac *x, t_signal **sp)
 
 static void dirac_helper(void)
 {
-  post(""HEARTSYMBOL " dirac~-object :: generates a dirac (unity-pulse)");
-  post("creation : \"dirac~ [<position>]\" : create a dirac at specified position (in samples)\n"
+  post("" HEARTSYMBOL " dirac~-object :: generates a dirac (unity-pulse)");
+  post("creation : \"dirac~ [<position>]\" : create a dirac at specified "
+       "position (in samples)\n"
        "inlet\t: <position>\t: create a dirac at new position\n"
        "\t  'bang'\t: create a dirac at specified position\n"
        "\t  'help'\t: view this\n"
        "outlet\t: signal~");
 }
-
-
 
 static void *dirac_new(t_floatarg where)
 {
@@ -147,8 +144,7 @@ static void *dirac_new(t_floatarg where)
 
 ZEXY_SETUP void dirac_tilde_setup(void)
 {
-  dirac_class = zexy_new("dirac~",
-                         dirac_new, 0, t_dirac, CLASS_DEFAULT, "F");
+  dirac_class = zexy_new("dirac~", dirac_new, 0, t_dirac, CLASS_DEFAULT, "F");
   class_addfloat(dirac_class, dirac_float);
   class_addbang(dirac_class, dirac_bang);
   zexy_addmethod(dirac_class, (t_method)dirac_dsp, "dsp", "!");

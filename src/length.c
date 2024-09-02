@@ -19,20 +19,20 @@
 
 #include "zexy.h"
 
-static t_class *length_class=NULL;
+static t_class *length_class = NULL;
 typedef struct _length {
   t_object x_obj;
 } t_length;
 
-static void length_list(t_length *x, t_symbol* UNUSED(s), int argc,
-                        t_atom* UNUSED(argv))
+static void length_list(
+    t_length *x, t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
 {
   outlet_float(x->x_obj.ob_outlet, (t_float)argc);
 }
-static void length_any(t_length *x, t_symbol* UNUSED(s), int argc,
-                       t_atom* UNUSED(argv))
+static void length_any(
+    t_length *x, t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
 {
-  outlet_float(x->x_obj.ob_outlet, (t_float)argc+1);
+  outlet_float(x->x_obj.ob_outlet, (t_float)argc + 1);
 }
 
 static void *length_new(void)
@@ -44,8 +44,7 @@ static void *length_new(void)
 
 ZEXY_SETUP void length_setup(void)
 {
-  length_class = zexy_new("length",
-                          length_new, 0, t_length, CLASS_DEFAULT, "");
+  length_class = zexy_new("length", length_new, 0, t_length, CLASS_DEFAULT, "");
 
   class_addlist(length_class, (t_method)length_list);
   class_addanything(length_class, (t_method)length_any);

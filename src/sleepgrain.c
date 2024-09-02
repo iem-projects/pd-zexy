@@ -19,37 +19,35 @@
 
 #include "zexy.h"
 
-EXTERN int* get_sys_sleepgrain(void ) ;
+EXTERN int *get_sys_sleepgrain(void);
 
 /* ------------------------- sleepgrain ------------------------------- */
 
-
-static t_class *sleepgrain_class=NULL;
+static t_class *sleepgrain_class = NULL;
 
 typedef struct _sleepgrain {
   t_object x_obj;
 
 } t_sleepgrain;
 
-
 static void sleepgrain_bang(t_sleepgrain *x)
 {
-  int*current=get_sys_sleepgrain();
-  t_float f=*current;
+  int *current = get_sys_sleepgrain();
+  t_float f = *current;
   outlet_float(x->x_obj.ob_outlet, f);
 }
 
 static void sleepgrain_float(t_sleepgrain *x, t_float f)
 {
-  int value=(int)f;
-  int*current=get_sys_sleepgrain();
+  int value = (int)f;
+  int *current = get_sys_sleepgrain();
 
-  if(value<=0) {
+  if (value <= 0) {
     pd_error(x, "[sleepgrain]: sleepgrain cannot be <= 0");
     return;
   }
 
-  *current=value;
+  *current = value;
 
   //  outlet_float(x->x_obj.ob_outlet, f);
 }
@@ -63,10 +61,10 @@ static void *sleepgrain_new(void)
 
 ZEXY_SETUP void sleepgrain_setup(void)
 {
-  sleepgrain_class = zexy_new("sleepgrain",
-                              sleepgrain_new, 0, t_sleepgrain, CLASS_DEFAULT, "");
+  sleepgrain_class = zexy_new(
+      "sleepgrain", sleepgrain_new, 0, t_sleepgrain, CLASS_DEFAULT, "");
 
-  class_addbang  (sleepgrain_class, sleepgrain_bang);
-  class_addfloat (sleepgrain_class, sleepgrain_float);
+  class_addbang(sleepgrain_class, sleepgrain_bang);
+  class_addfloat(sleepgrain_class, sleepgrain_float);
   zexy_register("sleepgrain");
 }

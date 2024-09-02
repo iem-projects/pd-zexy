@@ -20,7 +20,7 @@
 #include "zexySIMD.h"
 
 /* ----------------------------- eq_tilde ----------------------------- */
-static t_class *eq_tilde_class=NULL, *scalareq_tilde_class=NULL;
+static t_class *eq_tilde_class = NULL, *scalareq_tilde_class = NULL;
 
 typedef struct _eq_tilde {
   t_object x_obj;
@@ -30,10 +30,10 @@ typedef struct _eq_tilde {
 typedef struct _scalareq_tilde {
   t_object x_obj;
   t_float x_f;
-  t_float x_g;              /* inlet value */
+  t_float x_g; /* inlet value */
 } t_scalareq_tilde;
 
-static void *eq_tilde_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *eq_tilde_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   if (argc > 1) {
     post("==~: extra arguments ignored");
@@ -63,7 +63,7 @@ static t_int *eq_tilde_perform(t_int *w)
   while (n--) {
     *out++ = (*in1++ == *in2++);
   }
-  return (w+5);
+  return (w + 5);
 }
 
 static t_int *eq_tilde_perf8(t_int *w)
@@ -88,25 +88,25 @@ static t_int *eq_tilde_perf8(t_int *w)
     out[6] = f6 == g6;
     out[7] = f7 == g7;
   }
-  return (w+5);
+  return (w + 5);
 }
 
 static t_int *scalareq_tilde_perform(t_int *w)
 {
-  t_sample *in  = (t_sample *)(w[1]);
-  t_sample f    = *(t_float *)(w[2]);
+  t_sample *in = (t_sample *)(w[1]);
+  t_sample f = *(t_float *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   while (n--) {
     *out++ = (*in++ == f);
   }
-  return (w+5);
+  return (w + 5);
 }
 
 static t_int *scalareq_tilde_perf8(t_int *w)
 {
-  t_sample *in  = (t_sample *)(w[1]);
-  t_sample  g   = *(t_float *)(w[2]);
+  t_sample *in = (t_sample *)(w[1]);
+  t_sample g = *(t_float *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   for (; n; n -= 8, in += 8, out += 8) {
@@ -122,7 +122,7 @@ static t_int *scalareq_tilde_perf8(t_int *w)
     out[6] = (f6 == g);
     out[7] = (f7 == g);
   }
-  return (w+5);
+  return (w + 5);
 }
 
 #ifdef __SSE__
@@ -131,29 +131,29 @@ static t_int *eq_tilde_performSSE(t_int *w)
   __m128 *in1 = (__m128 *)(w[1]);
   __m128 *in2 = (__m128 *)(w[2]);
   __m128 *out = (__m128 *)(w[3]);
-  int n = (int)(w[4])>>4;
-  const __m128 one    = _mm_set1_ps(1.f);
+  int n = (int)(w[4]) >> 4;
+  const __m128 one = _mm_set1_ps(1.f);
 
   while (n--) {
     __m128 xmm0, xmm1;
-    xmm0   = _mm_cmpeq_ps(in1[0], in2[0]);
-    out[0] = _mm_and_ps  (xmm0, one);
+    xmm0 = _mm_cmpeq_ps(in1[0], in2[0]);
+    out[0] = _mm_and_ps(xmm0, one);
 
-    xmm1   = _mm_cmpeq_ps(in1[1], in2[1]);
-    out[1] = _mm_and_ps  (xmm1, one);
+    xmm1 = _mm_cmpeq_ps(in1[1], in2[1]);
+    out[1] = _mm_and_ps(xmm1, one);
 
-    xmm0   = _mm_cmpeq_ps(in1[2], in2[2]);
-    out[2] = _mm_and_ps  (xmm0, one);
+    xmm0 = _mm_cmpeq_ps(in1[2], in2[2]);
+    out[2] = _mm_and_ps(xmm0, one);
 
-    xmm1   = _mm_cmpeq_ps(in1[3], in2[3]);
-    out[3] = _mm_and_ps  (xmm1, one);
+    xmm1 = _mm_cmpeq_ps(in1[3], in2[3]);
+    out[3] = _mm_and_ps(xmm1, one);
 
-    in1+=4;
-    in2+=4;
-    out+=4;
+    in1 += 4;
+    in2 += 4;
+    out += 4;
   }
 
-  return (w+5);
+  return (w + 5);
 }
 static t_int *scalareq_tilde_performSSE(t_int *w)
 {
@@ -161,97 +161,88 @@ static t_int *scalareq_tilde_performSSE(t_int *w)
   __m128 *out = (__m128 *)(w[3]);
   t_float f = *(t_float *)(w[2]);
   __m128 scalar = _mm_set1_ps(f);
-  int n = (int)(w[4])>>4;
-  const __m128 one    = _mm_set1_ps(1.f);
+  int n = (int)(w[4]) >> 4;
+  const __m128 one = _mm_set1_ps(1.f);
 
   while (n--) {
     __m128 xmm0, xmm1;
-    xmm0   = _mm_cmpeq_ps (in[0], scalar);
-    out[0] = _mm_and_ps   (xmm0,  one);
+    xmm0 = _mm_cmpeq_ps(in[0], scalar);
+    out[0] = _mm_and_ps(xmm0, one);
 
-    xmm1   = _mm_cmpeq_ps (in[1], scalar);
-    out[1] = _mm_and_ps   (xmm1,  one);
+    xmm1 = _mm_cmpeq_ps(in[1], scalar);
+    out[1] = _mm_and_ps(xmm1, one);
 
-    xmm0   = _mm_cmpeq_ps (in[2], scalar);
-    out[2] = _mm_and_ps   (xmm0,  one);
+    xmm0 = _mm_cmpeq_ps(in[2], scalar);
+    out[2] = _mm_and_ps(xmm0, one);
 
-    xmm1   = _mm_cmpeq_ps (in[3], scalar);
-    out[3] = _mm_and_ps   (xmm1,  one);
+    xmm1 = _mm_cmpeq_ps(in[3], scalar);
+    out[3] = _mm_and_ps(xmm1, one);
 
-    in +=4;
-    out+=4;
+    in += 4;
+    out += 4;
   }
-  return (w+5);
+  return (w + 5);
 }
 #endif /* __SSE__ */
 
-static void eq_tilde_dsp(t_eq_tilde* UNUSED(x), t_signal **sp)
+static void eq_tilde_dsp(t_eq_tilde *UNUSED(x), t_signal **sp)
 {
-  t_sample*in1=sp[0]->s_vec;
-  t_sample*in2=sp[1]->s_vec;
-  t_sample*out=sp[2]->s_vec;
+  t_sample *in1 = sp[0]->s_vec;
+  t_sample *in2 = sp[1]->s_vec;
+  t_sample *out = sp[2]->s_vec;
 
-  int n=sp[0]->s_n;
+  int n = sp[0]->s_n;
 
 #ifdef __SSE__
-  if(
-    Z_SIMD_CHKBLOCKSIZE(n)&&
-    Z_SIMD_CHKALIGN(in1)&&
-    Z_SIMD_CHKALIGN(in2)&&
-    Z_SIMD_CHKALIGN(out)&&
-    ZEXY_TYPE_EQUAL(t_sample, float)
-  ) {
+  if (Z_SIMD_CHKBLOCKSIZE(n) && Z_SIMD_CHKALIGN(in1) && Z_SIMD_CHKALIGN(in2) &&
+      Z_SIMD_CHKALIGN(out) && ZEXY_TYPE_EQUAL(t_sample, float)) {
     dsp_add(eq_tilde_performSSE, 4, in1, in2, out, n);
   } else
 #endif
-    if (n&7) {
-      dsp_add(eq_tilde_perform, 4, in1, in2, out, n);
-    } else {
-      dsp_add(eq_tilde_perf8, 4, in1, in2, out, n);
-    }
+      if (n & 7) {
+    dsp_add(eq_tilde_perform, 4, in1, in2, out, n);
+  } else {
+    dsp_add(eq_tilde_perf8, 4, in1, in2, out, n);
+  }
 }
 
 static void scalareq_tilde_dsp(t_scalareq_tilde *x, t_signal **sp)
 {
-  t_sample*in =sp[0]->s_vec;
-  t_sample*out=sp[1]->s_vec;
-  int n       =sp[0]->s_n;
+  t_sample *in = sp[0]->s_vec;
+  t_sample *out = sp[1]->s_vec;
+  int n = sp[0]->s_n;
 
 #ifdef __SSE__
-  if(
-    Z_SIMD_CHKBLOCKSIZE(n)&&
-    Z_SIMD_CHKALIGN(in)&&
-    Z_SIMD_CHKALIGN(out) &&
-    ZEXY_TYPE_EQUAL(t_sample, float)
-  ) {
+  if (Z_SIMD_CHKBLOCKSIZE(n) && Z_SIMD_CHKALIGN(in) && Z_SIMD_CHKALIGN(out) &&
+      ZEXY_TYPE_EQUAL(t_sample, float)) {
     dsp_add(scalareq_tilde_performSSE, 4, in, &x->x_g, out, n);
   } else
 #endif
-    if (n&7) {
-      dsp_add(scalareq_tilde_perform, 4, in, &x->x_g, out, n);
-    } else {
-      dsp_add(scalareq_tilde_perf8,   4, in, &x->x_g, out, n);
-    }
+      if (n & 7) {
+    dsp_add(scalareq_tilde_perform, 4, in, &x->x_g, out, n);
+  } else {
+    dsp_add(scalareq_tilde_perf8, 4, in, &x->x_g, out, n);
+  }
 }
 
-static void eq_tilde_help(t_object* UNUSED(x))
+static void eq_tilde_help(t_object *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " &&~\t\t:: test 2 signals for equality");
+  post("\n" HEARTSYMBOL " &&~\t\t:: test 2 signals for equality");
 }
 ZEXY_SETUP void setup_0x3d0x3d0x7e(void)
 {
-  eq_tilde_class = zexy_new("==~",
-                            eq_tilde_new, 0, t_eq_tilde, CLASS_DEFAULT, "*");
+  eq_tilde_class =
+      zexy_new("==~", eq_tilde_new, 0, t_eq_tilde, CLASS_DEFAULT, "*");
   zexy_addmethod(eq_tilde_class, (t_method)eq_tilde_dsp, "dsp", "!");
   CLASS_MAINSIGNALIN(eq_tilde_class, t_eq_tilde, x_f);
   zexy_addmethod(eq_tilde_class, (t_method)eq_tilde_help, "help", "");
   class_sethelpsymbol(eq_tilde_class, gensym("zigbinops"));
 
-  scalareq_tilde_class = zexy_new("==~",
-                                  0, 0, t_scalareq_tilde, CLASS_DEFAULT, "");
+  scalareq_tilde_class =
+      zexy_new("==~", 0, 0, t_scalareq_tilde, CLASS_DEFAULT, "");
   CLASS_MAINSIGNALIN(scalareq_tilde_class, t_scalareq_tilde, x_f);
-  zexy_addmethod(scalareq_tilde_class, (t_method)scalareq_tilde_dsp, "dsp",
-                 "!");
+  zexy_addmethod(
+      scalareq_tilde_class, (t_method)scalareq_tilde_dsp, "dsp", "!");
   zexy_addmethod(scalareq_tilde_class, (t_method)eq_tilde_help, "help", "");
   class_sethelpsymbol(scalareq_tilde_class, gensym("zigbinops"));
 

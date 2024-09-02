@@ -23,7 +23,7 @@
 
 /* tilde object to take absolute value. */
 
-static t_class *avg_class=NULL;
+static t_class *avg_class = NULL;
 
 typedef struct _avg {
   t_object x_obj;
@@ -31,7 +31,6 @@ typedef struct _avg {
   t_float n_inv;
   int blocks;
 } t_avg;
-
 
 /* average :: arithmetic mean of one signal-vector */
 
@@ -47,14 +46,14 @@ static t_int *avg_perform(t_int *w)
   while (n--) {
     buf += *in++;
   }
-  outlet_float(x->x_obj.ob_outlet, buf*x->n_inv);
+  outlet_float(x->x_obj.ob_outlet, buf * x->n_inv);
 
-  return (w+4);
+  return (w + 4);
 }
 
 static void avg_dsp(t_avg *x, t_signal **sp)
 {
-  x->n_inv=1./sp[0]->s_n;
+  x->n_inv = 1. / sp[0]->s_n;
   dsp_add(avg_perform, 3, sp[0]->s_vec, x, sp[0]->s_n);
 }
 
@@ -70,11 +69,9 @@ static void avg_help(void)
   post("avg~\t:: outputs the arithmetic mean of each signal-vector");
 }
 
-
 ZEXY_SETUP void avg_tilde_setup(void)
 {
-  avg_class = zexy_new("avg~",
-                       avg_new, 0, t_avg, CLASS_DEFAULT, "");
+  avg_class = zexy_new("avg~", avg_new, 0, t_avg, CLASS_DEFAULT, "");
   zexy_addmethod(avg_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(avg_class, (t_method)avg_dsp, "dsp", "!");
 

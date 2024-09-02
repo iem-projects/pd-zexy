@@ -25,7 +25,7 @@
    {x[0], x[1], ... x[n-1]} --> {x[n-1], x[n-2], ... x[0]}
 */
 
-static t_class *blockswap_class=NULL;
+static t_class *blockswap_class = NULL;
 
 typedef struct _blockswap {
   t_object x_obj;
@@ -45,43 +45,44 @@ static t_int *blockswap_perform(t_int *w)
   t_sample *in = (t_sample *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int N = (int)(w[4]);
-  int N2=N/2;
+  int N2 = N / 2;
   if (x->doit) {
-    int n=N2;
-    t_sample *dummy=x->blockbuffer;
-    while(n--) {
-      *dummy++=*in++;
+    int n = N2;
+    t_sample *dummy = x->blockbuffer;
+    while (n--) {
+      *dummy++ = *in++;
     }
-    n=N-N2;
-    while(n--) {
-      *out++=*in++;
+    n = N - N2;
+    while (n--) {
+      *out++ = *in++;
     }
-    dummy=x->blockbuffer;
-    n=N2;
-    while(n--) {
-      *out++=*dummy++;
+    dummy = x->blockbuffer;
+    n = N2;
+    while (n--) {
+      *out++ = *dummy++;
     }
-  } else while (N--) {
-      *out++=*in++;
+  } else
+    while (N--) {
+      *out++ = *in++;
     }
-  return (w+5);
+  return (w + 5);
 }
 
 static void blockswap_dsp(t_blockswap *x, t_signal **sp)
 {
-  if (x->blocksize*2<sp[0]->s_n) {
-    if(x->blockbuffer) {
-      freebytes(x->blockbuffer, sizeof(*x->blockbuffer)*x->blocksize);
+  if (x->blocksize * 2 < sp[0]->s_n) {
+    if (x->blockbuffer) {
+      freebytes(x->blockbuffer, sizeof(*x->blockbuffer) * x->blocksize);
     }
-    x->blocksize = sp[0]->s_n/2;
-    x->blockbuffer = getbytes(sizeof(*x->blockbuffer)*x->blocksize);
+    x->blocksize = sp[0]->s_n / 2;
+    x->blockbuffer = getbytes(sizeof(*x->blockbuffer) * x->blocksize);
   }
   dsp_add(blockswap_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void blockswap_helper(t_blockswap* UNUSED(x))
+static void blockswap_helper(t_blockswap *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL
+  post("\n" HEARTSYMBOL
        " blockswap~-object for blockwise-swapping of a signal ");
   post("'help' : view this\n"
        "signal~");
@@ -90,10 +91,10 @@ static void blockswap_helper(t_blockswap* UNUSED(x))
 
 static void blockswap_free(t_blockswap *x)
 {
-  if(x->blockbuffer) {
-    freebytes(x->blockbuffer, sizeof(*x->blockbuffer)*x->blocksize);
+  if (x->blockbuffer) {
+    freebytes(x->blockbuffer, sizeof(*x->blockbuffer) * x->blocksize);
   }
-  x->blockbuffer=0;
+  x->blockbuffer = 0;
 }
 
 static void *blockswap_new(void)
@@ -101,14 +102,14 @@ static void *blockswap_new(void)
   t_blockswap *x = (t_blockswap *)pd_new(blockswap_class);
   outlet_new(&x->x_obj, gensym("signal"));
   x->doit = 1;
-  x->blocksize=0;
+  x->blocksize = 0;
   return (x);
 }
 
 ZEXY_SETUP void blockswap_tilde_setup(void)
 {
-  blockswap_class = zexy_new("blockswap~",
-                             blockswap_new, blockswap_free, t_blockswap, CLASS_DEFAULT, "");
+  blockswap_class = zexy_new("blockswap~", blockswap_new, blockswap_free,
+      t_blockswap, CLASS_DEFAULT, "");
   zexy_addmethod(blockswap_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(blockswap_class, (t_method)blockswap_dsp, "dsp", "!");
 

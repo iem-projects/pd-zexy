@@ -23,16 +23,15 @@
 
 #include "zexy.h"
 
-#include <stdio.h>
 #include <stdarg.h>
-
+#include <stdio.h>
 
 #ifdef __WIN32__
-# define vsnprintf _vsnprintf
+#  define vsnprintf _vsnprintf
 #endif
 
 /* forward declarations */
-void  z_zexy_setup(void);
+void z_zexy_setup(void);
 
 /* do a little help thing */
 
@@ -40,15 +39,15 @@ typedef struct zexy {
   t_object t_ob;
 } t_zexy;
 
-t_class *zexy_class=NULL;
+t_class *zexy_class = NULL;
 
 static void zexy_help(void)
 {
   endpost();
   endpost();
-  post("...this is the zexy external "VERSION"...");
+  post("...this is the zexy external " VERSION "...");
   endpost();
-  post(""HEARTSYMBOL " handling signals");
+  post("" HEARTSYMBOL " handling signals");
 #if 0
   post("streamout~\t:: stream signals via a LAN : (%c) gige 1999");
   post("streamin~\t:: catch signals from a LAN : based on gige");
@@ -57,15 +56,16 @@ static void zexy_help(void)
   post("sfrecord\t:: record a (multichannel) soundfile : based on ritsch");
 
   endpost();
-  post(""HEARTSYMBOL " generating signals");
+  post("" HEARTSYMBOL " generating signals");
   post("noish~\t\t:: generate bandlimited noise");
   post("noisi~\t\t:: generate bandlimited noise");
   post("dirac~\t\t:: generate a dirac-pulse");
   post("step~\t\t:: generate a unity-step");
-  post("dfreq~\t\t:: detect frequency by counting zero-crossings : (c) ritsch 1998");
+  post("dfreq~\t\t:: detect frequency by counting zero-crossings : (c) ritsch "
+       "1998");
 
   endpost();
-  post(""HEARTSYMBOL " manipulating signals");
+  post("" HEARTSYMBOL " manipulating signals");
   post("limiter~\t:: limit/compress one or more signals");
   post("nop~\t\t:: pass through a signal (delay 1 block)");
   post("z~\t\t:: samplewise delay");
@@ -73,17 +73,17 @@ static void zexy_help(void)
   post("quantize~\t:: quantize a signal");
 
   endpost();
-  post(""HEARTSYMBOL " binary operations on signals");
+  post("" HEARTSYMBOL " binary operations on signals");
   post("abs~, sgn~, >~, <~, ==~, &&~, ||~");
 
   endpost();
-  post(""HEARTSYMBOL " multary operations on signals");
+  post("" HEARTSYMBOL " multary operations on signals");
   post("multiline~\t:: multiple line~ multiplication");
   post("multiplex~\t:: multiplex 1 inlet~ to 1-of-various outlet~s");
   post("demultiplex~\t:: demultiplex 1-of-various inlet~s to 1 outlet~");
 
   endpost();
-  post(""HEARTSYMBOL " investigating signals in message-domain");
+  post("" HEARTSYMBOL " investigating signals in message-domain");
   post("pack~\t\t:: convert a signal into a list of floats");
   post("unpack~\t\t:: convert packages of floats into a signal");
 
@@ -94,7 +94,7 @@ static void zexy_help(void)
   post("pdf~\t\t:: power density function");
 
   endpost();
-  post(""HEARTSYMBOL " basic message objects");
+  post("" HEARTSYMBOL " basic message objects");
   post("nop\t\t:: a no-operation");
   post("lister\t\t:: stores lists");
   post("any2list\t\t:: converts \"anything\" to lists");
@@ -113,7 +113,7 @@ static void zexy_help(void)
   post(".\t\t:: scalar multiplication of vectors (lists of floats)");
 
   endpost();
-  post(""HEARTSYMBOL " advanced message objects");
+  post("" HEARTSYMBOL " advanced message objects");
   post("tabread4\t:: 4-point interpolating table-read object");
   post("tabdump\t\t:: dump the table as a list");
   post("tabset\t\t:: set a table with a list");
@@ -135,7 +135,8 @@ static void zexy_help(void)
 
   endpost();
   post("\n(l) forum::für::umläute except where indicated");
-  post("this software is released under the GnuGPL that is provided with these files");
+  post("this software is released under the GnuGPL that is provided with these "
+       "files");
   endpost();
 }
 
@@ -150,25 +151,24 @@ void zexy_setup(void)
   int i;
 
   startpost("\n\t");
-  for (i=0; i<3; i++) {
-    startpost(""HEARTSYMBOL "");
+  for (i = 0; i < 3; i++) {
+    startpost("" HEARTSYMBOL "");
   }
   endpost();
-  post("\t"HEARTSYMBOL " the zexy external  "VERSION);
-  post("\t"HEARTSYMBOL " (c) 1999-2023 IOhannes m zmölnig");
-  post("\t"HEARTSYMBOL "       forum::für::umläute");
-  post("\t"HEARTSYMBOL "       iem  @  kug");
-  post("\t"HEARTSYMBOL "  compiled  "BUILD_DATE);
-  post("\t"HEARTSYMBOL " send me a 'help' message");
+  post("\t" HEARTSYMBOL " the zexy external  " VERSION);
+  post("\t" HEARTSYMBOL " (c) 1999-2023 IOhannes m zmölnig");
+  post("\t" HEARTSYMBOL "       forum::für::umläute");
+  post("\t" HEARTSYMBOL "       iem  @  kug");
+  post("\t" HEARTSYMBOL "  compiled  " BUILD_DATE);
+  post("\t" HEARTSYMBOL " send me a 'help' message");
   startpost("\t");
-  for (i=0; i<3; i++) {
-    startpost(""HEARTSYMBOL "");
+  for (i = 0; i < 3; i++) {
+    startpost("" HEARTSYMBOL "");
   }
   endpost();
   endpost();
 
-  zexy_class = zexy_new("zexy",
-                        zexy_ctor, 0, t_zexy, CLASS_DEFAULT, "");
+  zexy_class = zexy_new("zexy", zexy_ctor, 0, t_zexy, CLASS_DEFAULT, "");
   zexy_addmethod(zexy_class, (t_method)zexy_help, "help", "");
 
   zexy_register("zexy");
@@ -184,7 +184,7 @@ void verbose(int level, const char *fmt, ...)
   va_list ap;
 
   va_start(ap, fmt);
-  vsnprintf(buf, MAXPDSTRING-1, fmt, ap);
+  vsnprintf(buf, MAXPDSTRING - 1, fmt, ap);
   va_end(ap);
 
   post("zverbose(%d): %s", level, buf);

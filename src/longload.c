@@ -19,16 +19,14 @@
 
 #include "zexy.h"
 
-
 /* ------------------------- longload ------------------------------- */
 #ifdef _WIN32
-# include <windows.h>
+#  include <windows.h>
 #else
-# include <unistd.h>
+#  include <unistd.h>
 #endif
 
-
-static t_class *longload_class=NULL;
+static t_class *longload_class = NULL;
 
 typedef struct _longload {
   t_object x_obj;
@@ -39,7 +37,7 @@ int millisleep(unsigned int milli)
 #ifdef _WIN32
   Sleep(milli);
 #else
-  usleep(milli*1000);
+  usleep(milli * 1000);
 #endif
   return 0;
 }
@@ -47,7 +45,7 @@ int millisleep(unsigned int milli)
 static void *longload_new(t_float f)
 {
   t_longload *x = (t_longload *)pd_new(longload_class);
-  if(f>0.f) {
+  if (f > 0.f) {
     millisleep(f);
   } else {
     millisleep(1000);
@@ -57,7 +55,7 @@ static void *longload_new(t_float f)
 
 ZEXY_SETUP void longload_setup(void)
 {
-  longload_class = zexy_new("longload",
-                            longload_new, 0, t_longload, CLASS_NOINLET, "F");
+  longload_class =
+      zexy_new("longload", longload_new, 0, t_longload, CLASS_NOINLET, "F");
   zexy_register("longload");
 }

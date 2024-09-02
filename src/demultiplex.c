@@ -26,7 +26,7 @@
   a demultiplexer
 */
 
-static t_class *demux_class=NULL;
+static t_class *demux_class = NULL;
 
 typedef struct _demux {
   t_object x_obj;
@@ -40,7 +40,7 @@ typedef struct _demux {
 static void demux_select(t_demux *x)
 {
   t_float f = x->findex;
-  int n = ( (f<0) || (f>x->n_out) ) ? 0 : f;
+  int n = ((f < 0) || (f > x->n_out)) ? 0 : f;
   x->selected = x->out[n];
 }
 
@@ -76,10 +76,10 @@ static void demux_any(t_demux *x, t_symbol *s, int argc, t_atom *argv)
   outlet_anything(x->selected, s, argc, argv);
 }
 
-static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
+static void *demux_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
 {
   t_demux *x = (t_demux *)pd_new(demux_class);
-  int n = (argc < 2)?2:argc;
+  int n = (argc < 2) ? 2 : argc;
 
   x->n_out = n - 1;
 
@@ -87,7 +87,7 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
   floatinlet_new(&x->x_obj, &x->findex);
   x->out = (t_outlet **)getbytes(n * sizeof(t_outlet *));
 
-  for (n=0; n<=x->n_out; n++) {
+  for (n = 0; n <= x->n_out; n++) {
     x->out[n] = outlet_new(&x->x_obj, 0);
   }
 
@@ -95,18 +95,17 @@ static void *demux_new(t_symbol* UNUSED(s), int argc, t_atom* UNUSED(argv))
 
   return (x);
 }
-static t_class* zclass_setup(const char*name)
+static t_class *zclass_setup(const char *name)
 {
-  t_class*c = zexy_new(name,
-                       demux_new, 0, t_demux, CLASS_DEFAULT, "*");
-  class_addanything (c, demux_any);
-  class_addlist     (c, demux_list);
+  t_class *c = zexy_new(name, demux_new, 0, t_demux, CLASS_DEFAULT, "*");
+  class_addanything(c, demux_any);
+  class_addlist(c, demux_list);
   return c;
 }
 static void dosetup()
 {
   zexy_register("demultiplex");
-  demux_class=zclass_setup("demultiplex");
+  demux_class = zclass_setup("demultiplex");
   zclass_setup("demux");
 }
 ZEXY_SETUP void demultiplex_setup(void)

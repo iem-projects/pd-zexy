@@ -49,7 +49,6 @@ typedef struct _nois {
   t_sample to_go;
 } t_nois;
 
-
 static void set_noisfreq(t_nois *x, t_floatarg freq)
 {
   x->updater = (freq > 0) ? sys_getsr() / freq : 1;
@@ -59,22 +58,19 @@ static void set_noisfreq(t_nois *x, t_floatarg freq)
   x->to_go = 0;
 }
 
-
 static void set_noisseed(t_nois *x, t_floatarg seed)
 {
   x->val = seed;
 }
 
-
-
 /* ------------------------ noisi~ ----------------------------- */
 
-static t_class *noisi_class=NULL;
+static t_class *noisi_class = NULL;
 
 static inline t_sample int2sample(int i)
 {
-  return ((t_sample)(i & 0x7fffffff) - 0x40000000) * (t_sample)(
-           1.0 / 0x40000000);
+  return ((t_sample)(i & 0x7fffffff) - 0x40000000) *
+         (t_sample)(1.0 / 0x40000000);
 }
 static inline int update_intNoise(int i)
 {
@@ -98,15 +94,15 @@ static t_int *noisi_perform(t_int *w)
   if (all_to_go == 1) {
     /* this is "pure white" noise, so we have to calculate each sample */
     while (n--) {
-      *out++ = int2sample(i_value=update_intNoise(i_value));
+      *out++ = int2sample(i_value = update_intNoise(i_value));
     }
-  }  else if (n < still_to_go) {
+  } else if (n < still_to_go) {
     /* signal won't change for the next 64 samples */
     still_to_go -= n;
     while (n--) {
       *out++ = (f_value -= decrement);
     }
-  }  else if (all_to_go + still_to_go > n) {
+  } else if (all_to_go + still_to_go > n) {
     /* only one update calculation necessary for 64 samples !!! */
     while (still_to_go-- > 0) {
       n--;
@@ -115,19 +111,19 @@ static t_int *noisi_perform(t_int *w)
     f_value = int2sample(i_value);
     i_value = update_intNoise(i_value);
     still_to_go += all_to_go + 1;
-    decrement = (f_value - int2sample(i_value))  / all_to_go;
+    decrement = (f_value - int2sample(i_value)) / all_to_go;
 
     while (n--) {
       still_to_go--;
       *out++ = (f_value -= decrement);
     }
-  }  else {
+  } else {
     /* anything else */
     while (n--) {
-      if (still_to_go-- <= 0) {  /* update only if all time has elapsed */
+      if (still_to_go-- <= 0) { /* update only if all time has elapsed */
         still_to_go += all_to_go;
-        f_value=int2sample(i_value);
-        i_value=update_intNoise(i_value);
+        f_value = int2sample(i_value);
+        i_value = update_intNoise(i_value);
         decrement = (f_value - int2sample(i_value)) / all_to_go;
       }
       *out++ = (f_value -= decrement);
@@ -139,7 +135,7 @@ static t_int *noisi_perform(t_int *w)
   x->decrement = decrement;
   x->to_go = still_to_go;
 
-  return (w+4);
+  return (w + 4);
 }
 
 static void noisi_dsp(t_nois *x, t_signal **sp)
@@ -147,17 +143,18 @@ static void noisi_dsp(t_nois *x, t_signal **sp)
   dsp_add(noisi_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
 
-
 static void noisi_helper(void)
 {
-  post("\n"HEARTSYMBOL
+  post("\n" HEARTSYMBOL
        " noisi~\t:: a bandlimited interpolating pseudo-noise generator");
   post("<freq>\t : sampling-frequency (in Hz)\n"
        "'help'\t : view this");
-  post("creation : \"noisi~ [<freq>]\"\t: ('0'(default) will produce 'white' noise)\n");
+  post("creation : \"noisi~ [<freq>]\"\t: ('0'(default) will produce 'white' "
+       "noise)\n");
   post("note\t : the seed of the pseudo-noise generator changes from\n"
        "\t     instance to instance, so two noisi~-objects created at the\n"
-       "\t     same time will produce different signals, something the original\n"
+       "\t     same time will produce different signals, something the "
+       "original\n"
        "\t     noise~-object misses\n");
   post("for further details see DODGE/JERSE \"computer music\" c3.9\n");
 }
@@ -169,7 +166,7 @@ static void *noisi_new(t_floatarg f)
   static int init = 4259;
   x->val = (init *= 17);
 
-  set_noisfreq (x, f);
+  set_noisfreq(x, f);
 
   outlet_new(&x->x_obj, gensym("signal"));
   return (x);
@@ -177,8 +174,7 @@ static void *noisi_new(t_floatarg f)
 
 ZEXY_SETUP void noisi_tilde_setup(void)
 {
-  noisi_class = zexy_new("noisi~",
-                         noisi_new, 0, t_nois, CLASS_DEFAULT, "F");
+  noisi_class = zexy_new("noisi~", noisi_new, 0, t_nois, CLASS_DEFAULT, "F");
 
   class_addfloat(noisi_class, set_noisfreq);
   zexy_addmethod(noisi_class, (t_method)noisi_dsp, "dsp", "!");

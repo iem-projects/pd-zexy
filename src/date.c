@@ -41,32 +41,29 @@
 #include "zexy.h"
 
 #if (defined __WIN32__)
-# if (defined __i386__) && (defined __MINGW32__)
+#  if (defined __i386__) && (defined __MINGW32__)
 /* unless compiling under mingw/32bit, we want USE_TIMEB in redmond-land */
-# else
-#  define USE_TIMEB
-# endif
+#  else
+#    define USE_TIMEB
+#  endif
 #endif
-
 
 #ifdef __APPLE__
-# include <sys/types.h>
+#  include <sys/types.h>
 /* typedef     _BSD_TIME_T_    time_t;                */
 #endif
-
 
 #include <time.h>
 
 #ifdef USE_TIMEB
-# include <sys/timeb.h>
+#  include <sys/timeb.h>
 #else
-# include <sys/time.h>
+#  include <sys/time.h>
 #endif
-
 
 /* ----------------------- date --------------------- */
 
-static t_class *date_class=NULL;
+static t_class *date_class = NULL;
 
 typedef struct _date {
   t_object x_obj;
@@ -81,15 +78,15 @@ typedef struct _date {
   t_outlet *x_outlet6;
 } t_date;
 
-static void *date_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *date_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_date *x = (t_date *)pd_new(date_class);
 
-  x->GMT=0;
+  x->GMT = 0;
   if (argc) {
     char buf[5];
     atom_string(argv, buf, 5);
-    if (buf[0]=='G' && buf[1]=='M' && buf[2]=='T') {
+    if (buf[0] == 'G' && buf[1] == 'M' && buf[2] == 'T') {
       x->GMT = 1;
     }
   }
@@ -110,11 +107,11 @@ static void date_bang(t_date *x)
 #ifdef USE_TIMEB
   struct timeb mytime;
   ftime(&mytime);
-  resolvetime=(x->GMT)?gmtime(&mytime.time):localtime(&mytime.time);
+  resolvetime = (x->GMT) ? gmtime(&mytime.time) : localtime(&mytime.time);
 #else
   struct timeval tv;
   gettimeofday(&tv, 0);
-  resolvetime = (x->GMT)?gmtime(&tv.tv_sec):localtime(&tv.tv_sec);
+  resolvetime = (x->GMT) ? gmtime(&tv.tv_sec) : localtime(&tv.tv_sec);
 #endif
   outlet_float(x->x_outlet6, (t_float)resolvetime->tm_isdst);
   outlet_float(x->x_outlet5, (t_float)resolvetime->tm_yday);
@@ -124,17 +121,17 @@ static void date_bang(t_date *x)
   outlet_float(x->x_outlet1, (t_float)resolvetime->tm_year + 1900);
 }
 
-static void help_date(t_date* UNUSED(x))
+static void help_date(t_date *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " date\t\t:: get the current system date");
-  post("\noutputs are\t: year / month / day / day of week /day of year / daylightsaving (1/0)");
+  post("\n" HEARTSYMBOL " date\t\t:: get the current system date");
+  post("\noutputs are\t: year / month / day / day of week /day of year / "
+       "daylightsaving (1/0)");
   post("\ncreation\t::'date [GMT]': show local date or GMT");
 }
 
 ZEXY_SETUP void date_setup(void)
 {
-  date_class = zexy_new("date",
-                        date_new, 0, t_date, CLASS_DEFAULT, "*");
+  date_class = zexy_new("date", date_new, 0, t_date, CLASS_DEFAULT, "*");
 
   class_addbang(date_class, date_bang);
 

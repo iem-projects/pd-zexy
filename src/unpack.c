@@ -25,37 +25,37 @@
  * for know this object is named [zexy/unpack], as there might be some issues with compatibility with the original [unpack]
  */
 
-
 #include "zexy.h"
 
 /* ------------------------- zunpack ------------------------------- */
 
 /* like pack, but does no type-checking */
 
-static t_class *zunpack_class=NULL;
+static t_class *zunpack_class = NULL;
 
 typedef struct _zunpack {
   t_object x_obj;
-  t_outlet**x_out;
+  t_outlet **x_out;
   t_int x_numouts;
 } t_zunpack;
 
 static void zunpack_any(t_zunpack *x, t_symbol *s, int argc, t_atom *argv)
 {
-  int offset=(s!=NULL)?1:0;
-  int count=((argc+offset)<(x->x_numouts))?(argc+offset):x->x_numouts;
+  int offset = (s != NULL) ? 1 : 0;
+  int count =
+      ((argc + offset) < (x->x_numouts)) ? (argc + offset) : x->x_numouts;
 
-  while(count-->offset) {
-    outlet_list(x->x_out[count], gensym("list"), 1, argv+count-offset);
+  while (count-- > offset) {
+    outlet_list(x->x_out[count], gensym("list"), 1, argv + count - offset);
   }
 
-  if(s!=NULL) {
+  if (s != NULL) {
     outlet_symbol(x->x_out[0], s);
   }
 }
 
-static void zunpack_list(t_zunpack *x, t_symbol *UNUSED(s), int argc,
-                         t_atom *argv)
+static void zunpack_list(
+    t_zunpack *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   zunpack_any(x, 0, argc, argv);
 }
@@ -67,27 +67,27 @@ static void zunpack_bang(t_zunpack *x)
 
 static void zunpack_free(t_zunpack *x)
 {
-  int i=0;
-  for(i=0; i<x->x_numouts; i++) {
+  int i = 0;
+  for (i = 0; i < x->x_numouts; i++) {
     outlet_free(x->x_out[i]);
   }
-  freebytes(x->x_out, x->x_numouts*sizeof(t_outlet*));
+  freebytes(x->x_out, x->x_numouts * sizeof(t_outlet *));
 
-  x->x_numouts=0;
-  x->x_out=0;
+  x->x_numouts = 0;
+  x->x_out = 0;
 }
 
-static void *zunpack_new(t_symbol*UNUSED(s), int argc, t_atom*UNUSED(argv))
+static void *zunpack_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
 {
   t_zunpack *x = (t_zunpack *)pd_new(zunpack_class);
-  int count=(argc>0)?argc:2;
-  int i=0;
+  int count = (argc > 0) ? argc : 2;
+  int i = 0;
 
-  x->x_numouts=count;
-  x->x_out=(t_outlet**)getbytes(count*sizeof(t_outlet*));
+  x->x_numouts = count;
+  x->x_out = (t_outlet **)getbytes(count * sizeof(t_outlet *));
 
-  for(i=0; i<count; i++) {
-    x->x_out[i]  =outlet_new(&x->x_obj, 0);
+  for (i = 0; i < count; i++) {
+    x->x_out[i] = outlet_new(&x->x_obj, 0);
   }
 
   return (x);
@@ -96,8 +96,8 @@ static void *zunpack_new(t_symbol*UNUSED(s), int argc, t_atom*UNUSED(argv))
 ZEXY_SETUP void zunpack_setup(void)
 {
 
-  zunpack_class = zexy_new("zexy/unpack",
-                           zunpack_new, zunpack_free, t_zunpack, CLASS_DEFAULT, "*");
+  zunpack_class = zexy_new(
+      "zexy/unpack", zunpack_new, zunpack_free, t_zunpack, CLASS_DEFAULT, "*");
 #if 0
   /* oops Pd-0.42 allows us to override built-ins
    * this is bad as long as the 2 objects are not compatible */

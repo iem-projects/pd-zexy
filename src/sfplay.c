@@ -66,30 +66,30 @@ ritsch@iem.at */
 
 #define DACBLKSIZE 64 /* in m_imp.h, but error if it is included it here*/
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
-#include <fcntl.h>
 
 /* ------------------------ sfplay ----------------------------- */
 #define MAX_CHANS 8 /* channels for soundfiles 1,2,4,8 */
 
 #ifdef __WIN32__
-# define BINREADMODE "rb"
+#  define BINREADMODE "rb"
 #else
-# include <unistd.h>
-# include <sys/mman.h>
-# define BINREADMODE "r"
+#  include <sys/mman.h>
+#  include <unistd.h>
+#  define BINREADMODE "r"
 #endif
 
-static t_class *sfplay_class=NULL;
+static t_class *sfplay_class = NULL;
 
 typedef struct _sfplay {
   t_object x_obj;
 
-  t_outlet *bangout;  /* end of file */
+  t_outlet *bangout; /* end of file */
 
-  void*   filep;      /* pointer to file data read in mem */
-  t_symbol* filename; /* filename */
+  void *filep;        /* pointer to file data read in mem */
+  t_symbol *filename; /* filename */
   /*
      because there is no command queue,
      flags are used instead
@@ -103,8 +103,8 @@ typedef struct _sfplay {
   t_float x_skip;     /* skip bytes because header */
   t_int skip;         /* pending skip if 1 */
   t_float x_speed;    /* play speed, not supported in this version */
-  t_int  size;        /* size of file (if memory mapped) */
-  t_int  swap;        /* swap bytes from l->b or b->m */
+  t_int size;         /* size of file (if memory mapped) */
+  t_int swap;         /* swap bytes from l->b or b->m */
   FILE *fp;           /* file oper non-NULL of open */
   t_int state;        /* which state is player in */
   t_int count;        /* count for ticks before next step */
@@ -112,13 +112,13 @@ typedef struct _sfplay {
 } t_sfplay;
 
 /* states of statemachine */
-#define SFPLAY_WAIT    0     /* wait for open */
-#define SFPLAY_OPEN    1
-#define SFPLAY_CLOSE   2
-#define SFPLAY_SKIP    3
-#define SFPLAY_PLAY    4
-#define SFPLAY_STOP    5
-#define SFPLAY_ERROR  -1
+#define SFPLAY_WAIT 0 /* wait for open */
+#define SFPLAY_OPEN 1
+#define SFPLAY_CLOSE 2
+#define SFPLAY_SKIP 3
+#define SFPLAY_PLAY 4
+#define SFPLAY_STOP 5
+#define SFPLAY_ERROR -1
 
 #define SFPLAY_WAITTICKS 10 /* 1 tick of 64 Samples is ca. 1.5ms on 441000 */
 
@@ -130,26 +130,27 @@ to avoid peak performance */
 static int sfplay_am_i_big_endian(void)
 {
   unsigned short s = 1;
-  unsigned char c = *(char *) (&s);
-  return(c==0);
+  unsigned char c = *(char *)(&s);
+  return (c == 0);
 }
 
-
-static void sfplay_helper(t_sfplay* UNUSED(x))
+static void sfplay_helper(t_sfplay *UNUSED(x))
 {
   post("\nsfplay :: a soundfile-player (c) winfried ritsch 1999");
-  post("\ncreation :: sfplay <channels> <bytes> : channels set the number of channels, bytes skip fileheader");
-  post("\nopen [<path>]<filename> [<endianity>]\t::open b(ig) or l(ittle) endian file"
+  post("\ncreation :: sfplay <channels> <bytes> : channels set the number of "
+       "channels, bytes skip fileheader");
+  post("\nopen [<path>]<filename> [<endianity>]\t::open b(ig) or l(ittle) "
+       "endian file"
        "\nclose\t\t\t::close file (aka eject)"
        "\nstart\t\t\t::start playing"
        "\nstop\t\t\t::stop playing"
        "\nrewind\t\t\t::rewind tape"
        "\ngoto <n>\t\t::play from byte n");
-  post("\n\nyou can also start playing with a 'bang' or a '1', and stop with a '0'"
-       "\nthe last outlet will do a bang after the last sample has been played");
-
+  post(
+      "\n\nyou can also start playing with a 'bang' or a '1', and stop with a "
+      "'0'"
+      "\nthe last outlet will do a bang after the last sample has been played");
 }
-
 
 /* METHOD: "open" file */
 
@@ -157,19 +158,19 @@ static void sfplay_helper(t_sfplay* UNUSED(x))
 Use of the buffered functions fopen, fseek fread fclose instead the
 non buffered ones open read close */
 
-static void sfplay_open(t_sfplay *x,t_symbol *filename,t_symbol *endian)
+static void sfplay_open(t_sfplay *x, t_symbol *filename, t_symbol *endian)
 {
 
-  if(x->state != SFPLAY_WAIT) {
-    post("sfplay: first close %s before open %s",x->filename->s_name,
-         filename->s_name);
+  if (x->state != SFPLAY_WAIT) {
+    post("sfplay: first close %s before open %s", x->filename->s_name,
+        filename->s_name);
     return;
   }
 
   /* test if big endian else assume little endian
      should be 'l' but could be anything*/
 
-  if(sfplay_am_i_big_endian()) {
+  if (sfplay_am_i_big_endian()) {
     x->swap = !(endian->s_name[0] == 'b');
   } else {
     x->swap = (endian->s_name[0] == 'b');
@@ -180,19 +181,17 @@ static void sfplay_open(t_sfplay *x,t_symbol *filename,t_symbol *endian)
   x->filename = filename;
 
 #ifdef DEBUG_ME
-  post("sfplay: filename = %s",x->filename->s_name);
+  post("sfplay: filename = %s", x->filename->s_name);
 #endif
 
   if (x->fp != NULL) {
-    sys_fclose(x->fp);  /* should not happen */
+    sys_fclose(x->fp); /* should not happen */
   }
 
-  if (!(x->fp = sys_fopen(x->filename->s_name,BINREADMODE))) {
+  if (!(x->fp = sys_fopen(x->filename->s_name, BINREADMODE))) {
     pd_error(x, "sfplay: can't open %s", x->filename->s_name);
   }
 }
-
-
 
 /* METHOD: close */
 static void sfplay_close(t_sfplay *x)
@@ -218,21 +217,21 @@ static void sfplay_close(t_sfplay *x)
 
 static int sfplay_skip(t_sfplay *x)
 {
-  if(!x->skip) {
+  if (!x->skip) {
     return 0;
   }
 
   x->skip = 0;
 
-  if(fseek(x->fp, (long) x->x_offset, SEEK_SET) < 0) {
-    pd_error(x, " sfplay can't seek to byte %ld",(long) x->x_offset);
+  if (fseek(x->fp, (long)x->x_offset, SEEK_SET) < 0) {
+    pd_error(x, " sfplay can't seek to byte %ld", (long)x->x_offset);
     x->x_offset = x->x_skip;
     x->skip = 1;
     return 0;
   }
 
 #ifdef DEBUG_ME
-  post("sfplay:skip to %f",x->x_offset);
+  post("sfplay:skip to %f", x->x_offset);
 #endif
   return 1;
 }
@@ -243,10 +242,10 @@ static void sfplay_start(t_sfplay *x)
 {
   long of = x->offset * sys_getsr() * x->x_channels;
 
-  if(of < 0) {
+  if (of < 0) {
     of = x->x_skip;
   } else {
-    of += x->x_skip;  /* offset in sec */
+    of += x->x_skip; /* offset in sec */
   }
 
   of &= ~0x111l; /* no odds please (8 channels boundary) */
@@ -256,11 +255,11 @@ static void sfplay_start(t_sfplay *x)
 #endif
 
   /* new offset position ? (fom inlet offset) */
-  if( ((t_float) of) != x->x_offset) {
-    x->skip=1;
+  if (((t_float)of) != x->x_offset) {
+    x->skip = 1;
     x->x_offset = of;
   }
-  x->play=1;
+  x->play = 1;
 }
 
 static void sfplay_stop(t_sfplay *x)
@@ -269,7 +268,7 @@ static void sfplay_stop(t_sfplay *x)
   post("sfplay: stop");
 #endif
 
-  x->play=0;
+  x->play = 0;
   x->please_stop = 1;
 }
 
@@ -291,7 +290,7 @@ static void sfplay_offset(t_sfplay *x, t_floatarg f)
   /* correction in sfplay_play() */
 
 #ifdef DEBUG_ME
-  post("sfplay: offset %f",f);
+  post("sfplay: offset %f", f);
 #endif
   return;
 }
@@ -299,20 +298,20 @@ static void sfplay_offset(t_sfplay *x, t_floatarg f)
 static void sfplay_rewind(t_sfplay *x)
 {
 #ifdef DEBUG_ME
-  post("sfplay: rewind to %f",x->x_skip);
+  post("sfplay: rewind to %f", x->x_skip);
 #endif
 
-  if(!x->fp) {
+  if (!x->fp) {
     return;
   }
 
-  x->play=0;
-  fseek(x->fp,(long) x->x_skip,SEEK_SET);
+  x->play = 0;
+  fseek(x->fp, (long)x->x_skip, SEEK_SET);
 }
 
 /* restart with bang */
 
-static void sfplay_bang(t_sfplay* x)
+static void sfplay_bang(t_sfplay *x)
 {
   x->skip = 1;
   sfplay_start(x);
@@ -320,31 +319,30 @@ static void sfplay_bang(t_sfplay* x)
 
 static t_int *sfplay_perform(t_int *w)
 {
-  t_sfplay* x = (t_sfplay*)(w[1]);
-  short* buf = x->filep;
+  t_sfplay *x = (t_sfplay *)(w[1]);
+  short *buf = x->filep;
   int c = x->x_channels;
 
-  int i,j,n;
-  t_float* out[MAX_CHANS];
+  int i, j, n;
+  t_float *out[MAX_CHANS];
 
   short s;
   int swap = x->swap;
 
-  for (i=0; i<c; i++) {
-    out[i] = (t_float *)(w[3+i]);
+  for (i = 0; i < c; i++) {
+    out[i] = (t_float *)(w[3 + i]);
   }
 
-  n = (int)(w[3+c]);
+  n = (int)(w[3 + c]);
 
   /* loop */
 
-
-  switch(x->state) {
+  switch (x->state) {
 
   /* just wait */
   case SFPLAY_WAIT:
 
-    if(x->fp != NULL) {
+    if (x->fp != NULL) {
 #ifdef DEBUG_ME
       post("wait -> open");
 #endif
@@ -356,7 +354,7 @@ static t_int *sfplay_perform(t_int *w)
   /* if in open state, already opened but wait for skip */
   case SFPLAY_OPEN: /* file hase opened wait some time */
 
-    if(!(x->count--)) {
+    if (!(x->count--)) {
 #ifdef DEBUG_ME
       post("open -> skip");
 #endif
@@ -366,15 +364,13 @@ static t_int *sfplay_perform(t_int *w)
 
     break;
 
-
   /* in skipmode wait until ready for stop */
   case SFPLAY_SKIP:
 
-
-    if(x->count == SFPLAY_WAITTICKS) {
-      if(!x->fp) {
+    if (x->count == SFPLAY_WAITTICKS) {
+      if (!x->fp) {
         x->state = SFPLAY_CLOSE;
-        x->count=1;
+        x->count = 1;
 #ifdef DEBUG_ME
         post("skip -> close");
 #endif
@@ -382,7 +378,7 @@ static t_int *sfplay_perform(t_int *w)
       }
       sfplay_skip(x);
     }
-    if(!(x->count--)) {
+    if (!(x->count--)) {
 #ifdef DEBUG_ME
       post("skip -> stop");
 #endif
@@ -391,19 +387,17 @@ static t_int *sfplay_perform(t_int *w)
     };
     break;
 
-
-
-  case SFPLAY_STOP:   /* in stop state mainly waits for play */
+  case SFPLAY_STOP: /* in stop state mainly waits for play */
 
     x->please_stop = 0;
 
-    if(x->please_close) {
+    if (x->please_close) {
       x->state = SFPLAY_CLOSE;
       x->count = SFPLAY_WAITTICKS;
 #ifdef DEBUG_ME
       post("stop -> close");
 #endif
-    } else if(x->skip) {
+    } else if (x->skip) {
       x->state = SFPLAY_SKIP;
       x->count = SFPLAY_WAITTICKS;
 
@@ -411,7 +405,7 @@ static t_int *sfplay_perform(t_int *w)
       post("stop -> skip");
 #endif
 
-    } else if(x->play) {
+    } else if (x->play) {
 
 #ifdef DEBUG_ME
       post("stop -> play");
@@ -420,14 +414,12 @@ static t_int *sfplay_perform(t_int *w)
     }
     break;
 
+  case SFPLAY_PLAY: /* yes play now */
 
-  case SFPLAY_PLAY:             /* yes play now */
-
-
-    if(!x->play || x->please_stop) {
+    if (!x->play || x->please_stop) {
 
       /* if closing don't need o go to stop */
-      if(x->please_close) {
+      if (x->please_close) {
         x->state = SFPLAY_CLOSE;
         x->count = SFPLAY_WAITTICKS;
 #ifdef DEBUG_ME
@@ -443,27 +435,27 @@ static t_int *sfplay_perform(t_int *w)
     }
 
     /* should never happen */
-    if(!x->filep) {
+    if (!x->filep) {
       x->state = SFPLAY_ERROR;
       pd_error(x, "sfplay: playing but no buffer ???? play");
-      return (w+4+c);
+      return (w + 4 + c);
     }
 
     /* first read soundfile 16 bit*/
-    if((j=fread(buf,sizeof(short),c*n,x->fp)) < n) {
+    if ((j = fread(buf, sizeof(short), c * n, x->fp)) < n) {
 
       outlet_bang(x->bangout);
 
-      if(feof(x->fp)) {
+      if (feof(x->fp)) {
 
         while (n--) {
-          for (i=0; i<c; i++)  {
-            if(--j > 0) {
+          for (i = 0; i < c; i++) {
+            if (--j > 0) {
               s = *buf++;
-              if(swap) {
-                s = ((s & 0xFF)<< 8) | ((s& 0xFF00) >> 8);
+              if (swap) {
+                s = ((s & 0xFF) << 8) | ((s & 0xFF00) >> 8);
               }
-              *out[i]++ = s*(1./32768.);
+              *out[i]++ = s * (1. / 32768.);
             } else {
               *out[i]++ = 0;
             }
@@ -472,7 +464,7 @@ static t_int *sfplay_perform(t_int *w)
 
         x->state = SFPLAY_STOP;
         x->play = 0;
-        return(w+c+4);
+        return (w + c + 4);
       }
 
       /* or error if(ferror()) */
@@ -487,20 +479,20 @@ static t_int *sfplay_perform(t_int *w)
 
     /* copy 16 Bit to floats and swap if neccesairy */
     while (n--) {
-      for (i=0; i<c; i++)  {
+      for (i = 0; i < c; i++) {
         s = *buf++;
-        if(swap) {
-          s = ((s & 0xFF)<< 8) | ((s& 0xFF00) >> 8);
+        if (swap) {
+          s = ((s & 0xFF) << 8) | ((s & 0xFF00) >> 8);
         }
-        *out[i]++ = s*(1./32768.);
+        *out[i]++ = s * (1. / 32768.);
       }
     }
-    return (w+c+4); /* don't zero out outs */
+    return (w + c + 4); /* don't zero out outs */
 
   /* ok read error please close */
   case SFPLAY_ERROR:
 
-    if(!(x->count--)) {
+    if (!(x->count--)) {
       x->state = SFPLAY_CLOSE;
       sfplay_close(x);
 #ifdef DEBUG_ME
@@ -516,13 +508,13 @@ static t_int *sfplay_perform(t_int *w)
     x->please_close = 0;
 
     /* wait until ready for close operation */
-    if(!(x->count--)) {
+    if (!(x->count--)) {
 
       x->state = SFPLAY_WAIT;
       x->count = SFPLAY_WAITTICKS;
 
       /* avoid openfiles */
-      if(x->fp) {
+      if (x->fp) {
         sys_fclose(x->fp);
         x->fp = NULL;
       };
@@ -537,14 +529,13 @@ static t_int *sfplay_perform(t_int *w)
 
   /* zero out outs */
   while (n--) {
-    for (i=0; i<c; i++) {
+    for (i = 0; i < c; i++) {
       *out[i]++ = 0.;
     }
   };
 
-  return(w+c+4);
+  return (w + c + 4);
 }
-
 
 /* ---------------------- Setup junk -------------------------- */
 
@@ -557,43 +548,25 @@ static void sfplay_dsp(t_sfplay *x, t_signal **sp)
 
   switch (x->x_channels) {
   case 1:
-    dsp_add(sfplay_perform, 4, x,
-            sp[0]->s_vec,
-            sp[1]->s_vec, /* out 1 */
-            sp[0]->s_n);
+    dsp_add(sfplay_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, /* out 1 */
+        sp[0]->s_n);
     break;
   case 2:
-    dsp_add(sfplay_perform, 5, x,
-            sp[0]->s_vec, /* out 1*/
-            sp[1]->s_vec, /* out 2*/
-            sp[2]->s_vec,
-            sp[0]->s_n);
+    dsp_add(sfplay_perform, 5, x, sp[0]->s_vec, /* out 1*/
+        sp[1]->s_vec,                           /* out 2*/
+        sp[2]->s_vec, sp[0]->s_n);
     break;
   case 4:
-    dsp_add(sfplay_perform, 7, x,
-            sp[0]->s_vec,
-            sp[1]->s_vec,
-            sp[2]->s_vec,
-            sp[3]->s_vec,
-            sp[4]->s_vec,
-            sp[0]->s_n);
+    dsp_add(sfplay_perform, 7, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
+        sp[3]->s_vec, sp[4]->s_vec, sp[0]->s_n);
     break;
   case 8:
-    dsp_add(sfplay_perform, 11, x,
-            sp[0]->s_vec,
-            sp[1]->s_vec,
-            sp[2]->s_vec,
-            sp[3]->s_vec,
-            sp[4]->s_vec,
-            sp[5]->s_vec,
-            sp[6]->s_vec,
-            sp[7]->s_vec,
-            sp[8]->s_vec,
-            sp[0]->s_n);
+    dsp_add(sfplay_perform, 11, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
+        sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec,
+        sp[8]->s_vec, sp[0]->s_n);
     break;
   }
 }
-
 
 /* create sfplay with args <channels> <skip> */
 static void *sfplay_new(t_floatarg chan, t_floatarg skip)
@@ -601,7 +574,7 @@ static void *sfplay_new(t_floatarg chan, t_floatarg skip)
   t_sfplay *x = (t_sfplay *)pd_new(sfplay_class);
   t_int c = chan;
 
-  switch(c) {
+  switch (c) {
   /* ok */
   case 1:
   case 2:
@@ -615,15 +588,15 @@ static void *sfplay_new(t_floatarg chan, t_floatarg skip)
   case 5:
   case 6:
   case 7:
-    c=7;
+    c = 7;
     break;
   default:
-    c=1;
+    c = 1;
     break;
   }
 
-  floatinlet_new(&x->x_obj, &x->offset); /* inlet 2 */
-  /*    floatinlet_new(&x->x_obj, &x->speed);  *//* inlet 3 */
+  floatinlet_new(&x->x_obj, &x->offset);          /* inlet 2 */
+  /*    floatinlet_new(&x->x_obj, &x->speed);  */ /* inlet 3 */
 
   x->x_channels = c;
   x->x_skip = x->x_offset = skip;
@@ -642,30 +615,29 @@ static void *sfplay_new(t_floatarg chan, t_floatarg skip)
   while (c--) {
     outlet_new(&x->x_obj, gensym("signal")); /* channels outlet */
   }
-  x->bangout = outlet_new(&x->x_obj,  gensym("bang"));
+  x->bangout = outlet_new(&x->x_obj, gensym("bang"));
 
-  x->filep = t_getbytes(DACBLKSIZE*sizeof(short)*x->x_channels);
+  x->filep = t_getbytes(DACBLKSIZE * sizeof(short) * x->x_channels);
 
 #ifdef DEBUG_ME
-  post("get_bytes DACBLKSIZE*%d*%d->%ld",sizeof(short),x->x_channels,
-       x->filep);
-  post("sfplay: x_channels = %d, x_speed = %f, x_skip = %f",x->x_channels,
-       x->x_speed,x->x_skip);
+  post("get_bytes DACBLKSIZE*%d*%d->%ld", sizeof(short), x->x_channels,
+      x->filep);
+  post("sfplay: x_channels = %d, x_speed = %f, x_skip = %f", x->x_channels,
+      x->x_speed, x->x_skip);
 #endif
 
   return (x);
 }
 
-
 static void sfplay_free(t_sfplay *x)
 {
-  freebytes(x->filep, DACBLKSIZE*sizeof(short)*x->x_channels);
+  freebytes(x->filep, DACBLKSIZE * sizeof(short) * x->x_channels);
 }
 
 ZEXY_SETUP void sfplay_setup(void)
 {
-  sfplay_class = zexy_new("sfplay",
-                          sfplay_new, sfplay_free, t_sfplay, CLASS_DEFAULT, "FF");
+  sfplay_class = zexy_new(
+      "sfplay", sfplay_new, sfplay_free, t_sfplay, CLASS_DEFAULT, "FF");
   zexy_addmethod(sfplay_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sfplay_class, (t_method)sfplay_dsp, "dsp", "!");
 
@@ -684,6 +656,6 @@ ZEXY_SETUP void sfplay_setup(void)
   /* start stop with 0 and 1 */
   class_addfloat(sfplay_class, sfplay_float);
   /* start with bang */
-  class_addbang(sfplay_class,sfplay_bang);
+  class_addbang(sfplay_class, sfplay_bang);
   zexy_register("sfplay");
 }

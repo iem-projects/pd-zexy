@@ -29,7 +29,7 @@
 
 /* ----------------------------------------------------- */
 
-static t_class *zNdelay_class=NULL;
+static t_class *zNdelay_class = NULL;
 
 typedef struct _zNdelay {
   t_object x_obj;
@@ -41,17 +41,17 @@ typedef struct _zNdelay {
 
 static void zdel_float(t_zNdelay *x, t_floatarg f)
 {
-  int i = f+1;
-  if (i<1) {
-    i=1;
+  int i = f + 1;
+  if (i < 1) {
+    i = 1;
   }
-  if (i==x->bufsize) {
+  if (i == x->bufsize) {
     return;
   }
-  freebytes(x->buf, x->bufsize*sizeof(t_sample));
-  x->bufsize=i;
-  x->buf=(t_sample *)getbytes(x->bufsize*sizeof(t_sample));
-  x->phase=0;
+  freebytes(x->buf, x->bufsize * sizeof(t_sample));
+  x->bufsize = i;
+  x->buf = (t_sample *)getbytes(x->bufsize * sizeof(t_sample));
+  x->phase = 0;
 }
 
 static t_int *zN_perform(t_int *w)
@@ -62,37 +62,37 @@ static t_int *zN_perform(t_int *w)
   int n = (int)(w[4]);
 
   t_sample *buf = x->buf;
-  int bufsize=x->bufsize, ph=x->phase;
+  int bufsize = x->bufsize, ph = x->phase;
 
-  if (bufsize==1) {
-    if (in!=out)while(n--) {
-        *out++=*in++;
+  if (bufsize == 1) {
+    if (in != out)
+      while (n--) {
+        *out++ = *in++;
       }
-  } else if (bufsize==2) {
-    register t_sample f, last=*buf;
-    while(n--) {
-      f=*in++;
-      *out++=last;
-      last=f;
+  } else if (bufsize == 2) {
+    register t_sample f, last = *buf;
+    while (n--) {
+      f = *in++;
+      *out++ = last;
+      last = f;
     }
-    *buf=last;
+    *buf = last;
   } else {
     while (n--) {
-      *(buf+ph++) = *in++;
-      *out++    = buf[ph%=bufsize];
+      *(buf + ph++) = *in++;
+      *out++ = buf[ph %= bufsize];
     }
-    x->phase=ph;
+    x->phase = ph;
   }
-  return (w+5);
+  return (w + 5);
 }
-
 
 static void zNdelay_dsp(t_zNdelay *x, t_signal **sp)
 {
   dsp_add(zN_perform, 4, sp[0]->s_vec, sp[1]->s_vec, x, sp[0]->s_n);
 }
 
-static void *zNdelay_new(t_symbol*UNUSED(s), int argc, t_atom*argv)
+static void *zNdelay_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_zNdelay *x = 0;
   int i = 0;
@@ -100,32 +100,32 @@ static void *zNdelay_new(t_symbol*UNUSED(s), int argc, t_atom*argv)
 
   switch (argc) {
   case 0:
-    i=1;
+    i = 1;
     break;
   case 1:
     if (argv->a_type == A_FLOAT) {
-      i=atom_getint(argv);
+      i = atom_getint(argv);
       break;
     }
   /* fallthrough */
   default:
     pd_error(0,
-             "Bad arguments for [z~]: must be nought or initial delay [in samples]");
+        "Bad arguments for [z~]: must be nought or initial delay [in samples]");
     return 0;
   }
 
-  x=(t_zNdelay *)pd_new(zNdelay_class);
+  x = (t_zNdelay *)pd_new(zNdelay_class);
 
-  if (i<=0) {
-    i=0;
+  if (i <= 0) {
+    i = 0;
   }
   i++;
 
   x->bufsize = i;
   x->buf = (t_sample *)getbytes(sizeof(t_sample) * x->bufsize);
-  b=x->buf;
+  b = x->buf;
   while (i--) {
-    *b++=0;
+    *b++ = 0;
   }
   x->phase = 0;
 
@@ -139,18 +139,16 @@ static void zNdelay_free(t_zNdelay *x)
   freebytes(x->buf, sizeof(t_sample) * x->bufsize);
 }
 
-
 static void zdel_helper(void)
 {
-  post("\n"HEARTSYMBOL " z~\t:: samplewise delay");
+  post("\n" HEARTSYMBOL " z~\t:: samplewise delay");
   post("creation :: 'z~ [<n>]' : creates a <n>-sample delay; default is 1");
 }
 
-
 ZEXY_SETUP void z_tilde_setup(void)
 {
-  zNdelay_class = zexy_new("z~",
-                           zNdelay_new, zNdelay_free, t_zNdelay, CLASS_DEFAULT, "*");
+  zNdelay_class =
+      zexy_new("z~", zNdelay_new, zNdelay_free, t_zNdelay, CLASS_DEFAULT, "*");
   zexy_addmethod(zNdelay_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(zNdelay_class, (t_method)zNdelay_dsp, "dsp", "!");
 

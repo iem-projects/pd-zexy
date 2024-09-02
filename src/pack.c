@@ -27,83 +27,77 @@
 #include "zexy.h"
 #include <stdio.h>
 
-
 /* ------------------------- zexy/pack ------------------------------- */
 
-static t_class *zpack_class=NULL;
-static t_class *zpackproxy_class=NULL;
+static t_class *zpack_class = NULL;
+static t_class *zpackproxy_class = NULL;
 
 typedef struct _zpack {
   t_object x_obj;
-  struct _zpackproxy  **x_proxy;
+  struct _zpackproxy **x_proxy;
 
   t_inlet **in;
 
-  t_atom*x_argv;
-  int    x_argc;
+  t_atom *x_argv;
+  int x_argc;
 } t_zpack;
 
-
 typedef struct _zpackproxy {
-  t_pd  p_pd;
-  t_zpack    *p_master;
+  t_pd p_pd;
+  t_zpack *p_master;
   int id;
 } t_zpackproxy;
 
-
-static void setatom(t_zpack *x, t_atom*from, int to)
+static void setatom(t_zpack *x, t_atom *from, int to)
 {
-  x->x_argv[to].a_type=from->a_type;
-  x->x_argv[to].a_w   =from->a_w;
+  x->x_argv[to].a_type = from->a_type;
+  x->x_argv[to].a_w = from->a_w;
 }
 
-static void zpack_bang(t_zpack*x)
+static void zpack_bang(t_zpack *x)
 {
   outlet_list(x->x_obj.ob_outlet, gensym("list"), x->x_argc, x->x_argv);
 }
 
-
-static void zpack_any(t_zpack*x, t_symbol *s, int argc, t_atom *argv)
+static void zpack_any(t_zpack *x, t_symbol *s, int argc, t_atom *argv)
 {
-  int i=0;
-  int count=x->x_argc;
+  int i = 0;
+  int count = x->x_argc;
 
-  if(NULL!=s && x->x_argc>0) {
+  if (NULL != s && x->x_argc > 0) {
     t_atom a;
     SETSYMBOL(&a, s);
     setatom(x, &a, i++);
     count--;
   }
 
-  if(count>argc) {
-    count=argc;
+  if (count > argc) {
+    count = argc;
   }
 
-  while(count-->0) {
+  while (count-- > 0) {
     setatom(x, argv++, i++);
   }
 
   zpack_bang(x);
 }
 
-static void zpack_list(t_zpack*x, t_symbol *UNUSED(s), int argc,
-                       t_atom *argv)
+static void zpack_list(t_zpack *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   zpack_any(x, 0, argc, argv);
 }
 
-
-static void zpack_proxy_list(t_zpackproxy *y, t_symbol *UNUSED(s),
-                             int argc,
-                             t_atom *argv)
+static void zpack_proxy_list(
+    t_zpackproxy *y, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   /* until we have lists of lists, this only uses the 1st element */
-  if(argc>0) { /* this filters out 'bang', and allows 'list', 'float' and 'symbol' */
+  if (argc >
+      0) { /* this filters out 'bang', and allows 'list', 'float' and 'symbol' */
     setatom(y->p_master, argv, y->id);
   }
 }
-static void zpack_proxy_any(t_zpackproxy *y, t_symbol *s,
-                            int UNUSED(argc), t_atom *UNUSED(argv))
+static void zpack_proxy_any(
+    t_zpackproxy *y, t_symbol *s, int UNUSED(argc), t_atom *UNUSED(argv))
 {
   /* until we have lists of lists, this only uses the selector */
   t_atom a;
@@ -114,68 +108,67 @@ static void zpack_proxy_any(t_zpackproxy *y, t_symbol *s,
 static void *zpack_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_zpack *x = (t_zpack *)pd_new(zpack_class);
-  int n =0;
+  int n = 0;
 
-  x->x_argc = (argc < 1)?2:argc;
+  x->x_argc = (argc < 1) ? 2 : argc;
 
-
-  if(argc<1) {
-    x->x_argv=(t_atom*)getbytes(2*sizeof(t_atom));
-    SETFLOAT(x->x_argv+0, 0.f);
-    SETFLOAT(x->x_argv+1, 0.f);
+  if (argc < 1) {
+    x->x_argv = (t_atom *)getbytes(2 * sizeof(t_atom));
+    SETFLOAT(x->x_argv + 0, 0.f);
+    SETFLOAT(x->x_argv + 1, 0.f);
   } else {
-    int i=0;
-    x->x_argv=(t_atom*)getbytes(x->x_argc*sizeof(t_atom));
-    for(i=0; i<x->x_argc; i++) {
-      setatom(x, argv+i, i);
+    int i = 0;
+    x->x_argv = (t_atom *)getbytes(x->x_argc * sizeof(t_atom));
+    for (i = 0; i < x->x_argc; i++) {
+      setatom(x, argv + i, i);
     }
   }
 
   x->in = (t_inlet **)getbytes(x->x_argc * sizeof(t_inlet *));
-  x->x_proxy = (t_zpackproxy**)getbytes(x->x_argc * sizeof(t_zpackproxy*));
+  x->x_proxy = (t_zpackproxy **)getbytes(x->x_argc * sizeof(t_zpackproxy *));
 
-  x->in[0]     =0;
-  x->x_proxy[0]=0;
+  x->in[0] = 0;
+  x->x_proxy[0] = 0;
 
-  for (n = 1; n<x->x_argc; n++) {
-    x->x_proxy[n]=(t_zpackproxy*)pd_new(zpackproxy_class);
+  for (n = 1; n < x->x_argc; n++) {
+    x->x_proxy[n] = (t_zpackproxy *)pd_new(zpackproxy_class);
     x->x_proxy[n]->p_master = x;
-    x->x_proxy[n]->id=n;
-    x->in[n] = inlet_new ((t_object*)x, (t_pd*)x->x_proxy[n], 0,0);
+    x->x_proxy[n]->id = n;
+    x->in[n] = inlet_new((t_object *)x, (t_pd *)x->x_proxy[n], 0, 0);
   }
 
   outlet_new(&x->x_obj, 0);
   return (x);
 }
 
-static void zpack_free(t_zpack*x)
+static void zpack_free(t_zpack *x)
 {
   const int count = x->x_argc;
 
-  if(x->in && x->x_proxy) {
-    int n=0;
-    for(n=0; n<count; n++) {
-      if(x->in[n]) {
+  if (x->in && x->x_proxy) {
+    int n = 0;
+    for (n = 0; n < count; n++) {
+      if (x->in[n]) {
         inlet_free(x->in[n]);
       }
-      x->in[n]=0;
-      if(x->x_proxy[n]) {
-        t_zpackproxy *y=x->x_proxy[n];
-        y->p_master=0;
-        y->id=0;
+      x->in[n] = 0;
+      if (x->x_proxy[n]) {
+        t_zpackproxy *y = x->x_proxy[n];
+        y->p_master = 0;
+        y->id = 0;
         pd_free(&y->p_pd);
       }
-      x->x_proxy[n]=0;
+      x->x_proxy[n] = 0;
     }
     freebytes(x->in, x->x_argc * sizeof(t_inlet *));
-    freebytes(x->x_proxy, x->x_argc * sizeof(t_zpackproxy*));
+    freebytes(x->x_proxy, x->x_argc * sizeof(t_zpackproxy *));
   }
 }
 
 ZEXY_SETUP void zpack_setup(void)
 {
-  zpack_class = zexy_new("zexy/pack",
-                         zpack_new, zpack_free, t_zpack, CLASS_DEFAULT, "*");
+  zpack_class =
+      zexy_new("zexy/pack", zpack_new, zpack_free, t_zpack, CLASS_DEFAULT, "*");
 #if 0
   /* oops Pd>=0.42 allows us to override built-ins
    * this is bad as long as the 2 objects are not compatible */
@@ -185,8 +178,8 @@ ZEXY_SETUP void zpack_setup(void)
   class_addlist(zpack_class, zpack_list);
   class_addanything(zpack_class, zpack_any);
 
-  zpackproxy_class = zexy_new("zpack proxy",
-                              0, 0, t_zpackproxy, CLASS_PD | CLASS_NOINLET, "");
+  zpackproxy_class =
+      zexy_new("zpack proxy", 0, 0, t_zpackproxy, CLASS_PD | CLASS_NOINLET, "");
   class_addlist(zpackproxy_class, zpack_proxy_list);
   class_addanything(zpackproxy_class, zpack_proxy_any);
 

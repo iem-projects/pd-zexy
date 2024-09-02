@@ -28,7 +28,7 @@
 
 /* ------------------------ quantize~ ----------------------------- */
 
-static t_class *quantize_class=NULL;
+static t_class *quantize_class = NULL;
 
 typedef struct _quantize {
   t_object x_obj;
@@ -37,20 +37,20 @@ typedef struct _quantize {
 
 static void quantize_float(t_quantize *x, t_floatarg f)
 {
-  x->quantiz   = f;
-  x->dequantiz = 1./f;
+  x->quantiz = f;
+  x->dequantiz = 1. / f;
 }
 
 static void quantize_16bit(t_quantize *x)
 {
-  x->quantiz   = 32768.;
-  x->dequantiz = 1./32768.;
+  x->quantiz = 32768.;
+  x->dequantiz = 1. / 32768.;
 }
 
 static void quantize_8bit(t_quantize *x)
 {
-  x->quantiz   = 128.;
-  x->dequantiz = 1./128.;
+  x->quantiz = 128.;
+  x->dequantiz = 1. / 128.;
 }
 
 static t_int *quantize_perform(t_int *w)
@@ -64,12 +64,14 @@ static t_int *quantize_perform(t_int *w)
 
   if (quantiz)
     while (n--) {
-      *out++ = dequantiz*(int)(quantiz**in++);
-    } else while (n--) {
+      *out++ = dequantiz * (int)(quantiz * *in++);
+    }
+  else
+    while (n--) {
       *out++ = *in++;
     }
 
-  return (w+5);
+  return (w + 5);
 }
 
 static void quantize_dsp(t_quantize *x, t_signal **sp)
@@ -77,18 +79,18 @@ static void quantize_dsp(t_quantize *x, t_signal **sp)
   dsp_add(quantize_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void quantize_tilde_helper(t_quantize* UNUSED(x))
+static void quantize_tilde_helper(t_quantize *UNUSED(x))
 {
-  post(""HEARTSYMBOL
+  post("" HEARTSYMBOL
        " quantize~-object\t:: used for quantizing signals by various degrees");
-  post("<quants> : quantize a signal into <quants> steps ('0' turns quantizing off)\n"
+  post("<quants> : quantize a signal into <quants> steps ('0' turns quantizing "
+       "off)\n"
        "'8bit'   : quantize to 8 bit\n"
        "'16bit'  : quantize to 16 bit (default)\n"
        "'float'  : pass-through the signal unchanged\n"
        "'help'   : view this\n"
        "signal~\n");
   post("creation:: \"quantize~ [<quants>]\"");
-
 }
 
 static void *quantize_new(t_floatarg f)
@@ -106,8 +108,8 @@ static void *quantize_new(t_floatarg f)
 
 ZEXY_SETUP void quantize_tilde_setup(void)
 {
-  quantize_class = zexy_new("quantize~",
-                            quantize_new, 0, t_quantize, CLASS_DEFAULT, "F");
+  quantize_class =
+      zexy_new("quantize~", quantize_new, 0, t_quantize, CLASS_DEFAULT, "F");
   zexy_addmethod(quantize_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(quantize_class, (t_method)quantize_dsp, "dsp", "!");
 
@@ -115,7 +117,6 @@ ZEXY_SETUP void quantize_tilde_setup(void)
   zexy_addmethod(quantize_class, (t_method)quantize_8bit, "8bit", "");
   zexy_addmethod(quantize_class, (t_method)quantize_16bit, "16bit", "");
 
-  zexy_addmethod(quantize_class, (t_method)quantize_tilde_helper, "help",
-                 "");
+  zexy_addmethod(quantize_class, (t_method)quantize_tilde_helper, "help", "");
   zexy_register("quantize~");
 }

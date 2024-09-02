@@ -29,17 +29,16 @@
 the second inlet lets you change the default package size
 */
 
-static t_class *repack_class=NULL;
+static t_class *repack_class = NULL;
 
 typedef struct _repack {
   t_object x_obj;
-  t_atom  *buffer;
-  int      bufsize;
+  t_atom *buffer;
+  int bufsize;
 
-  int      outputsize;
-  int      current;
+  int outputsize;
+  int current;
 } t_repack;
-
 
 static void repack_set(t_repack *x, t_float f)
 {
@@ -50,7 +49,7 @@ static void repack_set(t_repack *x, t_float f)
 
     /* flush all the newsized packages that are in the buffer */
     t_atom *dumbuf = x->buffer;
-    int     dumcur = x->current;
+    int dumcur = x->current;
 
     while (n <= dumcur) {
       outlet_list(x->x_obj.ob_outlet, gensym("list"), n, dumbuf);
@@ -69,7 +68,7 @@ static void repack_set(t_repack *x, t_float f)
       dumbuf = (t_atom *)getbytes(n * sizeof(t_atom));
       memcpy(dumbuf, x->buffer, x->current * sizeof(t_atom));
       freebytes(x->buffer, x->bufsize * sizeof(t_atom));
-      x->buffer =  dumbuf;
+      x->buffer = dumbuf;
       x->bufsize = n;
     }
 
@@ -112,15 +111,15 @@ static void repack_pointer(t_repack *x, t_gpointer *p)
     repack_bang(x);
   }
 }
-static void repack_list(t_repack *x, t_symbol* UNUSED(s), int argc,
-                        t_atom *argv)
+static void repack_list(
+    t_repack *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   int remain = x->outputsize - x->current;
   t_atom *ap = argv;
 
   if (argc >= remain) {
-    memcpy(x->buffer+x->current, ap, remain * sizeof(t_atom));
-    ap   += remain;
+    memcpy(x->buffer + x->current, ap, remain * sizeof(t_atom));
+    ap += remain;
     argc -= remain;
     outlet_list(x->x_obj.ob_outlet, gensym("list"), x->outputsize, x->buffer);
     x->current = 0;
@@ -135,8 +134,7 @@ static void repack_list(t_repack *x, t_symbol* UNUSED(s), int argc,
   memcpy(x->buffer + x->current, ap, argc * sizeof(t_atom));
   x->current += argc;
 }
-static void repack_anything(t_repack *x, t_symbol *s, int argc,
-                            t_atom *argv)
+static void repack_anything(t_repack *x, t_symbol *s, int argc, t_atom *argv)
 {
   SETSYMBOL(&x->buffer[x->current], s);
   x->current++;
@@ -151,11 +149,8 @@ static void *repack_new(t_floatarg f)
 {
   t_repack *x = (t_repack *)pd_new(repack_class);
 
-
-
-  x->outputsize = x->bufsize = (f>0.f)?f:2 ;
+  x->outputsize = x->bufsize = (f > 0.f) ? f : 2;
   x->current = 0;
-
 
   x->buffer = (t_atom *)getbytes(x->bufsize * sizeof(t_atom));
 
@@ -167,14 +162,14 @@ static void *repack_new(t_floatarg f)
 
 ZEXY_SETUP void repack_setup(void)
 {
-  repack_class = zexy_new("repack",
-                          repack_new, 0, t_repack, CLASS_DEFAULT, "F");
+  repack_class =
+      zexy_new("repack", repack_new, 0, t_repack, CLASS_DEFAULT, "F");
 
-  class_addbang    (repack_class, repack_bang);
-  class_addfloat   (repack_class, repack_float);
-  class_addsymbol  (repack_class, repack_symbol);
-  class_addpointer (repack_class, repack_pointer);
-  class_addlist    (repack_class, repack_list);
+  class_addbang(repack_class, repack_bang);
+  class_addfloat(repack_class, repack_float);
+  class_addsymbol(repack_class, repack_symbol);
+  class_addpointer(repack_class, repack_pointer);
+  class_addlist(repack_class, repack_list);
   class_addanything(repack_class, repack_anything);
   zexy_addmethod(repack_class, (t_method)repack_set, "", "F");
 

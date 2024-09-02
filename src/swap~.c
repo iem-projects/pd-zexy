@@ -28,9 +28,9 @@
 
 /* ------------------------ swap~ ----------------------------- */
 #define FLOAT2SHORT 32768.
-#define SHORT2FLOAT 1./32768.
+#define SHORT2FLOAT 1. / 32768.
 
-static t_class *swap_class=NULL;
+static t_class *swap_class = NULL;
 
 typedef struct _swap {
   t_object x_obj;
@@ -56,14 +56,16 @@ static t_int *swap_perform(t_int *w)
 
   if (x->swapper)
     while (n--) {
-      short dummy = FLOAT2SHORT **in++;
-      *out++ = SHORT2FLOAT * (short)( ((dummy & 0xFF) << 8) | ((
-                                        dummy & 0xFF00) >> 8) );
-    } else while (n--) {
+      short dummy = FLOAT2SHORT * *in++;
+      *out++ = SHORT2FLOAT *
+               (short)(((dummy & 0xFF) << 8) | ((dummy & 0xFF00) >> 8));
+    }
+  else
+    while (n--) {
       *out++ = *in++;
     }
 
-  return (w+5);
+  return (w + 5);
 }
 
 static void swap_dsp(t_swap *x, t_signal **sp)
@@ -73,7 +75,7 @@ static void swap_dsp(t_swap *x, t_signal **sp)
 
 static void swap_helper(void)
 {
-  post("\n"HEARTSYMBOL " swap~-object for byteswapping a signal");
+  post("\n" HEARTSYMBOL " swap~-object for byteswapping a signal");
   post("<1/0>  : turn the swapper on/off\n"
        "'bang' : toggle the swapper on/off\n"
        "'help' : view this\n"
@@ -91,8 +93,7 @@ static void *swap_new(void)
 
 ZEXY_SETUP void swap_tilde_setup(void)
 {
-  swap_class = zexy_new("swap~",
-                        swap_new, 0, t_swap, CLASS_DEFAULT, "");
+  swap_class = zexy_new("swap~", swap_new, 0, t_swap, CLASS_DEFAULT, "");
   zexy_addmethod(swap_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(swap_class, (t_method)swap_dsp, "dsp", "!");
 

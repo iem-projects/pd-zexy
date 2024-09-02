@@ -25,49 +25,47 @@
 MESSAGE OPERATING_SYSTEM: simple and easy
 */
 
-static t_class *operating_system_class=NULL;
+static t_class *operating_system_class = NULL;
 
 typedef struct _operating_system {
   t_object x_obj;
 
 } t_operating_system;
 
-
 static void operating_system_bang(t_operating_system *x)
 {
   /* LATER think about querying the version of the system at runtime! */
-  t_symbol *s=gensym("unknown");
+  t_symbol *s = gensym("unknown");
 #ifdef __linux__
-  s=gensym("linux");
+  s = gensym("linux");
 #elif defined __APPLE__
-  s=gensym("macos");
+  s = gensym("macos");
 #elif defined __WIN32__
-  s=gensym("windows");
+  s = gensym("windows");
 #endif
   outlet_symbol(x->x_obj.ob_outlet, s);
 }
 
 static void *operating_system_new(void)
 {
-  t_operating_system *x = (t_operating_system *)pd_new(
-                            operating_system_class);
+  t_operating_system *x = (t_operating_system *)pd_new(operating_system_class);
   outlet_new(&x->x_obj, 0);
   return (x);
 }
 
-static void operating_system_help(t_operating_system*UNUSED(x))
+static void operating_system_help(t_operating_system *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL
+  post("\n" HEARTSYMBOL
        " operating_system\t:: get the current operating system");
 }
 
 ZEXY_SETUP void operating_system_setup(void)
 {
-  operating_system_class = zexy_new("operating_system",
-                                    operating_system_new, 0, t_operating_system, CLASS_DEFAULT, "");
+  operating_system_class = zexy_new("operating_system", operating_system_new, 0,
+      t_operating_system, CLASS_DEFAULT, "");
 
-  class_addbang  (operating_system_class, operating_system_bang);
-  zexy_addmethod(operating_system_class, (t_method)operating_system_help,
-                 "help", "");
+  class_addbang(operating_system_class, operating_system_bang);
+  zexy_addmethod(
+      operating_system_class, (t_method)operating_system_help, "help", "");
   zexy_register("operating_system");
 }

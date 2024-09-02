@@ -20,7 +20,7 @@
 #include "zexy.h"
 #include <string.h>
 
-static t_class *glue_class=NULL;
+static t_class *glue_class = NULL;
 
 typedef struct _zglue {
   t_object x_obj;
@@ -31,8 +31,7 @@ typedef struct _zglue {
   t_int changed;
 } t_glue;
 
-static void glue_lst2(t_glue *x, t_symbol* UNUSED(s), int argc,
-                      t_atom *argv)
+static void glue_lst2(t_glue *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   x->changed = 1;
   if (x->n2 != argc) {
@@ -44,23 +43,22 @@ static void glue_lst2(t_glue *x, t_symbol* UNUSED(s), int argc,
   }
 }
 
-static void glue_lst(t_glue *x, t_symbol* UNUSED(s), int argc,
-                     t_atom *argv)
+static void glue_lst(t_glue *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
-  if (x->n != x->n2+argc) {
+  if (x->n != x->n2 + argc) {
     freebytes(x->ap, x->n * sizeof(t_atom));
     x->n1 = argc;
-    x->n  = x->n1+x->n2;
-    x->ap = (t_atom *)getbytes(sizeof(t_atom)*x->n);
-    memcpy(x->ap+argc, x->ap2, x->n2*sizeof(t_atom));
-  } else if ((x->n1 != argc)||x->changed) {
-    memcpy(x->ap+argc, x->ap2, x->n2*sizeof(t_atom));
+    x->n = x->n1 + x->n2;
+    x->ap = (t_atom *)getbytes(sizeof(t_atom) * x->n);
+    memcpy(x->ap + argc, x->ap2, x->n2 * sizeof(t_atom));
+  } else if ((x->n1 != argc) || x->changed) {
+    memcpy(x->ap + argc, x->ap2, x->n2 * sizeof(t_atom));
   }
 
   x->n1 = argc;
-  memcpy(x->ap, argv, x->n1*sizeof(t_atom));
+  memcpy(x->ap, argv, x->n1 * sizeof(t_atom));
 
-  x->changed=0;
+  x->changed = 0;
 
   outlet_list(x->x_obj.ob_outlet, gensym("list"), x->n, x->ap);
 }
@@ -68,15 +66,15 @@ static void glue_lst(t_glue *x, t_symbol* UNUSED(s), int argc,
 static void glue_bang(t_glue *x)
 {
   if (x->changed) {
-    if (x->n1+x->n2 != x->n) {
-      t_atom *ap = (t_atom*)getbytes(sizeof(t_atom)*(x->n1+x->n2));
-      memcpy(ap, x->ap, x->n1*sizeof(t_atom));
-      freebytes(x->ap, sizeof(t_atom)*x->n);
-      x->ap=ap;
-      x->n=x->n1+x->n2;
+    if (x->n1 + x->n2 != x->n) {
+      t_atom *ap = (t_atom *)getbytes(sizeof(t_atom) * (x->n1 + x->n2));
+      memcpy(ap, x->ap, x->n1 * sizeof(t_atom));
+      freebytes(x->ap, sizeof(t_atom) * x->n);
+      x->ap = ap;
+      x->n = x->n1 + x->n2;
     }
-    memcpy(x->ap+x->n1, x->ap2, x->n2*sizeof(t_atom));
-    x->changed=0;
+    memcpy(x->ap + x->n1, x->ap2, x->n2 * sizeof(t_atom));
+    x->changed = 0;
   }
 
   outlet_list(x->x_obj.ob_outlet, gensym("list"), x->n, x->ap);
@@ -84,19 +82,19 @@ static void glue_bang(t_glue *x)
 
 static void glue_free(t_glue *x)
 {
-  freebytes(x->ap,  sizeof(t_atom)*x->n);
-  freebytes(x->ap2, sizeof(t_atom)*x->n2);
+  freebytes(x->ap, sizeof(t_atom) * x->n);
+  freebytes(x->ap2, sizeof(t_atom) * x->n2);
 }
 
-static void *glue_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *glue_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_glue *x = (t_glue *)pd_new(glue_class);
 
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym(""));
   outlet_new(&x->x_obj, 0);
-  x->n =x->n2  = 0;
-  x->ap=x->ap2 = 0;
-  x->changed   = 0;
+  x->n = x->n2 = 0;
+  x->ap = x->ap2 = 0;
+  x->changed = 0;
 
   if (argc) {
     glue_lst2(x, gensym("list"), argc, argv);
@@ -105,16 +103,16 @@ static void *glue_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   return (x);
 }
 
-static void glue_help(t_glue* UNUSED(x))
+static void glue_help(t_glue *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL
+  post("\n" HEARTSYMBOL
        " glue\t\t:: glue together 2 lists (like [list append])");
 }
 
 ZEXY_SETUP void glue_setup(void)
 {
-  glue_class = zexy_new("glue",
-                        glue_new, glue_free, t_glue, CLASS_DEFAULT, "*");
+  glue_class =
+      zexy_new("glue", glue_new, glue_free, t_glue, CLASS_DEFAULT, "*");
   class_addlist(glue_class, glue_lst);
   zexy_addmethod(glue_class, (t_method)glue_lst2, "", "*");
   class_addbang(glue_class, glue_bang);

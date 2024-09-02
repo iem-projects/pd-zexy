@@ -25,8 +25,8 @@ typedef struct sigdoublepole {
 
 static t_class *sigdoublepole_class = NULL;
 
-static void sigdoublepole_list(t_sigdoublepole *x, t_symbol *s, int argc,
-                               t_atom *argv);
+static void sigdoublepole_list(
+    t_sigdoublepole *x, t_symbol *s, int argc, t_atom *argv);
 
 static void *sigdoublepole_new(t_symbol *s, int argc, t_atom *argv)
 {
@@ -51,7 +51,7 @@ static t_int *sigdoublepole_perform(t_int *w)
   t_sample fb1 = c->c_fb1;
   t_sample fb2 = c->c_fb2;
   for (i = 0; i < n; i++) {
-    t_sample output =  *in++ + fb1 * last + fb2 * prev;
+    t_sample output = *in++ + fb1 * last + fb2 * prev;
     if (PD_BIGORSMALL(output)) {
       output = 0;
     }
@@ -61,11 +61,11 @@ static t_int *sigdoublepole_perform(t_int *w)
   }
   c->c_x1 = last;
   c->c_x2 = prev;
-  return (w+5);
+  return (w + 5);
 }
 
-static void sigdoublepole_list(t_sigdoublepole *x, t_symbol* UNUSED(s),
-                               int argc, t_atom *argv)
+static void sigdoublepole_list(
+    t_sigdoublepole *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_float fb1 = atom_getfloatarg(0, argc, argv);
   t_float fb2 = atom_getfloatarg(1, argc, argv);
@@ -81,8 +81,8 @@ static void sigdoublepole_list(t_sigdoublepole *x, t_symbol* UNUSED(s),
     /* check that the parabola 1 - fb1 x - fb2 x^2 has a
         vertex between -1 and 1, and that it's nonnegative
         at both ends, which implies both roots are in [1-,1]. */
-    if (fb1 <= 2.0f && fb1 >= -2.0f &&
-        1.0f - fb1 -fb2 >= 0 && 1.0f + fb1 - fb2 >= 0) {
+    if (fb1 <= 2.0f && fb1 >= -2.0f && 1.0f - fb1 - fb2 >= 0 &&
+        1.0f + fb1 - fb2 >= 0) {
       goto stable;
     }
   }
@@ -93,8 +93,8 @@ stable:
   c->c_fb2 = fb2;
 }
 
-static void sigdoublepole_set(t_sigdoublepole *x, t_symbol* UNUSED(s),
-                              int argc, t_atom *argv)
+static void sigdoublepole_set(
+    t_sigdoublepole *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_doublepolectl *c = x->x_ctl;
   c->c_x1 = atom_getfloatarg(0, argc, argv);
@@ -103,23 +103,19 @@ static void sigdoublepole_set(t_sigdoublepole *x, t_symbol* UNUSED(s),
 
 static void sigdoublepole_dsp(t_sigdoublepole *x, t_signal **sp)
 {
-  dsp_add(sigdoublepole_perform, 4,
-          sp[0]->s_vec, sp[1]->s_vec,
-          x->x_ctl, sp[0]->s_n);
-
+  dsp_add(sigdoublepole_perform, 4, sp[0]->s_vec, sp[1]->s_vec, x->x_ctl,
+      sp[0]->s_n);
 }
 
 ZEXY_SETUP void doublepole_tilde_setup(void)
 {
-  sigdoublepole_class = zexy_new("doublepole~",
-                                 sigdoublepole_new, 0, t_sigdoublepole, CLASS_DEFAULT, "*");
+  sigdoublepole_class = zexy_new(
+      "doublepole~", sigdoublepole_new, 0, t_sigdoublepole, CLASS_DEFAULT, "*");
   CLASS_MAINSIGNALIN(sigdoublepole_class, t_sigdoublepole, x_f);
-  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_dsp, "dsp",
-                 "!");
+  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_dsp, "dsp", "!");
   class_addlist(sigdoublepole_class, sigdoublepole_list);
-  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_set, "set",
-                 "*");
-  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_set, "clear",
-                 "*");
+  zexy_addmethod(sigdoublepole_class, (t_method)sigdoublepole_set, "set", "*");
+  zexy_addmethod(
+      sigdoublepole_class, (t_method)sigdoublepole_set, "clear", "*");
   zexy_register("doublepole~");
 }

@@ -33,12 +33,11 @@
 
 */
 
-
 #include "zexy.h"
 
 /* -------------------------- relay ------------------------------ */
 
-static t_class *relay_class=NULL;
+static t_class *relay_class = NULL;
 
 typedef struct _relayelement {
   t_word e_w;
@@ -53,8 +52,7 @@ typedef struct _relay {
   t_outlet *x_rejectout;
 } t_relay;
 
-static void relay_anything(t_relay *x, t_symbol *sel, int argc,
-                           t_atom *argv)
+static void relay_anything(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
 {
   if (x->x_type == A_SYMBOL) {
     int nelement;
@@ -83,28 +81,28 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
     for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++) {
       if (e->e_w.w_float == f) {
         if (!sel) {
-          sel=(argc==1)?gensym("float"):gensym("list");
+          sel = (argc == 1) ? gensym("float") : gensym("list");
         }
         outlet_anything(e->e_outlet, sel, argc, argv);
         return;
       }
     }
-  } else {    /* symbol arguments */
-    if (argc == 0) {  /* no args: treat as "bang" */
+  } else {           /* symbol arguments */
+    if (argc == 0) { /* no args: treat as "bang" */
       for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++) {
         if (e->e_w.w_symbol == gensym("bang")) {
           outlet_bang(e->e_outlet);
           return;
         }
       }
-    } else if (argc>1) {
+    } else if (argc > 1) {
       for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++) {
         if (e->e_w.w_symbol == gensym("list")) {
           outlet_anything(e->e_outlet, sel, argc, argv);
           return;
         }
       }
-    } else if (argv[0].a_type == A_FLOAT) {    /* one float arg */
+    } else if (argv[0].a_type == A_FLOAT) { /* one float arg */
       for (nelement = x->x_nelement, e = x->x_vec; nelement--; e++) {
         if (e->e_w.w_symbol == gensym("float")) {
           outlet_float(e->e_outlet, argv[0].a_w.w_float);
@@ -123,13 +121,12 @@ static void relay_list(t_relay *x, t_symbol *sel, int argc, t_atom *argv)
   outlet_list(x->x_rejectout, gensym("list"), argc, argv);
 }
 
-
 static void relay_free(t_relay *x)
 {
   freebytes(x->x_vec, x->x_nelement * sizeof(*x->x_vec));
 }
 
-static void *relay_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *relay_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   int n;
   t_relayelement *e;
@@ -157,8 +154,8 @@ static void *relay_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 ZEXY_SETUP void relay_setup(void)
 {
-  relay_class = zexy_new("relay",
-                         relay_new, relay_free, t_relay, CLASS_DEFAULT, "*");
+  relay_class =
+      zexy_new("relay", relay_new, relay_free, t_relay, CLASS_DEFAULT, "*");
   class_addlist(relay_class, relay_list);
   class_addanything(relay_class, relay_anything);
   zexy_register("relay");

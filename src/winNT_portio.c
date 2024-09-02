@@ -8,8 +8,8 @@
  */
 #if defined __WIN32__
 
-#include <stdio.h>
-#include <windows.h>
+#  include <stdio.h>
+#  include <windows.h>
 
 int read_parport(unsigned short int port);
 void write_parport(unsigned short int port, int value);
@@ -20,27 +20,24 @@ static BOOL bPrivException = FALSE;
 int read_parport(unsigned short int port)
 {
   unsigned char value;
-#ifdef _MSC_VER
-  __asm mov edx,port
-  __asm in al,dx
-  __asm mov value,al
-#else
+#  ifdef _MSC_VER
+  __asm mov edx, port __asm in al, dx __asm mov value,
+      al
+#  else
   /* hmm, i should read some documentation about inline assembler */
   post("lpt: cannot read from parport (recompile!)");
   return 0;
-#endif
-  return (int)value;
+#  endif
+      return (int)value;
 }
 
 void write_parport(unsigned short int port, int invalue)
 {
   /* _outp((unsigned short)port, value); */
   BYTE value = (BYTE)invalue;
-#ifdef _MSC_VER
-  __asm mov edx,port
-  __asm mov al,value
-  __asm out dx,al
-#else
+#  ifdef _MSC_VER
+  __asm mov edx, port __asm mov al, value __asm out dx, al
+#  else
   /*
    * hmm, i should read some documentation about inline assembler
    * and probably about assembler in general...
@@ -55,16 +52,15 @@ void write_parport(unsigned short int port, int invalue)
       : "a"(port),"b"(value)
       );
   */
-#endif
+#  endif
 }
 
-static LONG WINAPI HandlerExceptionFilter ( EXCEPTION_POINTERS *pExPtrs )
+static LONG WINAPI HandlerExceptionFilter(EXCEPTION_POINTERS *pExPtrs)
 {
 
-  if (pExPtrs->ExceptionRecord->ExceptionCode ==
-      EXCEPTION_PRIV_INSTRUCTION) {
-    pExPtrs->ContextRecord->Eip
-    ++; /* Skip the OUT or IN instruction that caused the exception */
+  if (pExPtrs->ExceptionRecord->ExceptionCode == EXCEPTION_PRIV_INSTRUCTION) {
+    pExPtrs->ContextRecord
+        ->Eip++; /* Skip the OUT or IN instruction that caused the exception */
     bPrivException = TRUE;
     return EXCEPTION_CONTINUE_EXECUTION;
   } else {
@@ -72,31 +68,31 @@ static LONG WINAPI HandlerExceptionFilter ( EXCEPTION_POINTERS *pExPtrs )
   }
 }
 
-static BOOL StartUpIoPorts(UINT PortToAccess, BOOL bShowMessageBox,
-                           HWND hParentWnd)
+static BOOL StartUpIoPorts(
+    UINT PortToAccess, BOOL bShowMessageBox, HWND hParentWnd)
 {
   HANDLE hUserPort;
 
   hUserPort = CreateFile("\\\\.\\UserPort", GENERIC_READ, 0, NULL,
-                         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+      OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   CloseHandle(hUserPort); /* Activate the driver */
-  Sleep(100); /* We must make a process switch */
+  Sleep(100);             /* We must make a process switch */
 
   SetUnhandledExceptionFilter(HandlerExceptionFilter);
 
   bPrivException = FALSE;
-  read_parport(PortToAccess);  /* Try to access the given port address */
+  read_parport(PortToAccess); /* Try to access the given port address */
 
   if (bPrivException) {
     if (bShowMessageBox) {
-#if 0
+#  if 0
       MessageBox(hParentWnd,
                  "Privileged instruction exception has occurred!\r\n\r\n"
                  "To use this external under Windows NT, 2000 or XP\r\n"
                  "you need to install the driver 'UserPort.sys' and grant\r\n"
                  "access to the ports used by this program.\r\n\r\n"
                  "See the file README for further information!\r\n", NULL, MB_OK);
-#endif
+#  endif
     }
     return FALSE;
   }
@@ -116,13 +112,13 @@ static int IsWinNT(void)
 /* open parport */
 int open_port(unsigned short int port)
 {
-  if(IsWinNT()) { /* we are under NT and need kernel driver */
-    if(StartUpIoPorts(port, 1, 0)) {
-      return(0);
+  if (IsWinNT()) { /* we are under NT and need kernel driver */
+    if (StartUpIoPorts(port, 1, 0)) {
+      return (0);
     }
-    return(-1);
+    return (-1);
   } else { /* no need to use kernel driver */
-    return(0);
+    return (0);
   }
 }
 #endif /* __WIN32__ */

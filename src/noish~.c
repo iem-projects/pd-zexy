@@ -17,7 +17,6 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /*
   30041999
 
@@ -50,7 +49,6 @@ typedef struct _nois {
   t_sample to_go;
 } t_nois;
 
-
 static void set_freq(t_nois *x, t_floatarg freq)
 {
   x->updater = (freq > 0) ? sys_getsr() / freq : 1;
@@ -60,7 +58,6 @@ static void set_freq(t_nois *x, t_floatarg freq)
   x->to_go = 0;
 }
 
-
 static void set_noisseed(t_nois *x, t_floatarg seed)
 {
   x->val = seed;
@@ -68,7 +65,7 @@ static void set_noisseed(t_nois *x, t_floatarg seed)
 
 /* ------------------------ noish~ ----------------------------- */
 
-static t_class *noish_class=NULL;
+static t_class *noish_class = NULL;
 
 static t_int *noish_perform(t_int *w)
 {
@@ -88,8 +85,8 @@ static t_int *noish_perform(t_int *w)
     while (n--) {
       i_value *= 435898247;
       i_value += 382842987;
-      *out++ = ((t_sample)((i_value & 0x7fffffff) - 0x40000000)) * (t_sample)(
-                 1.0 / 0x40000000);
+      *out++ = ((t_sample)((i_value & 0x7fffffff) - 0x40000000)) *
+               (t_sample)(1.0 / 0x40000000);
     }
   } else if (n < still_to_go) {
     /* signal won't change for the next 64 samples */
@@ -108,8 +105,8 @@ static t_int *noish_perform(t_int *w)
 
     i_value *= 435898247;
     i_value += 382842987;
-    f_value = ( (t_sample)((i_value & 0x7fffffff) - 0x40000000) ) * (t_sample)(
-                1.0 / 0x40000000);
+    f_value = ((t_sample)((i_value & 0x7fffffff) - 0x40000000)) *
+              (t_sample)(1.0 / 0x40000000);
 
     while (n--) {
       still_to_go--;
@@ -124,19 +121,18 @@ static t_int *noish_perform(t_int *w)
         i_value *= 435898247;
         i_value += 382842987;
 
-        f_value = ( (t_sample)((i_value & 0x7fffffff) - 0x40000000) ) * (t_sample)(
-                    1.0 / 0x40000000);
+        f_value = ((t_sample)((i_value & 0x7fffffff) - 0x40000000)) *
+                  (t_sample)(1.0 / 0x40000000);
       }
       *out++ = f_value;
     }
   }
 
-
   *vp = i_value;
   x->updater = all_to_go;
   x->to_go = still_to_go;
 
-  return (w+4);
+  return (w + 4);
 }
 
 static void noish_dsp(t_nois *x, t_signal **sp)
@@ -146,13 +142,15 @@ static void noish_dsp(t_nois *x, t_signal **sp)
 
 static void noish_helper(void)
 {
-  post("\n"HEARTSYMBOL " noish~\t:: a bandlimited pseudo-noise generator");
+  post("\n" HEARTSYMBOL " noish~\t:: a bandlimited pseudo-noise generator");
   post("<freq>\t : sampling-frequency (in Hz)\n"
        "'help'\t : view this");
-  post("creation : \"noish~ [<freq>]\"\t: ('0'(default) will produce 'white' noise)\n");
+  post("creation : \"noish~ [<freq>]\"\t: ('0'(default) will produce 'white' "
+       "noise)\n");
   post("note\t : the seed of the pseudo-noise generator changes from\n"
        "\t     instance to instance, so two noish~-objects created at the\n"
-       "\t     same time will produce dífferent signals, something the original\n"
+       "\t     same time will produce dífferent signals, something the "
+       "original\n"
        "\t     noise~-object misses\n");
   post("for further details see DODGE/JERSE \"computer music\" c3.9\n");
 }
@@ -172,8 +170,7 @@ static void *noish_new(t_floatarg f)
 
 ZEXY_SETUP void noish_tilde_setup(void)
 {
-  noish_class = zexy_new("noish~",
-                         noish_new, 0, t_nois, CLASS_DEFAULT, "F");
+  noish_class = zexy_new("noish~", noish_new, 0, t_nois, CLASS_DEFAULT, "F");
 
   class_addfloat(noish_class, set_freq);
   zexy_addmethod(noish_class, (t_method)noish_dsp, "dsp", "!");

@@ -18,10 +18,9 @@
  */
 #include "zexy.h"
 
-
 /* =================== tabdump ====================== */
 
-static t_class *tabdump_class=NULL;
+static t_class *tabdump_class = NULL;
 
 typedef struct _tabdump {
   t_object x_obj;
@@ -43,35 +42,35 @@ static void tabdump_bang(t_tabdump *x)
     int n;
     t_atom *atombuf;
 
-    int start=x->startindex;
-    int stop =x->stopindex;
-    if(start<0||start>stop) {
-      start=0;
+    int start = x->startindex;
+    int stop = x->stopindex;
+    if (start < 0 || start > stop) {
+      start = 0;
     }
-    if(stop<start||stop>npoints) {
-      stop=npoints;
+    if (stop < start || stop > npoints) {
+      stop = npoints;
     }
-    npoints=stop-start;
+    npoints = stop - start;
 
-    atombuf = (t_atom *)getbytes(sizeof(t_atom)*npoints);
+    atombuf = (t_atom *)getbytes(sizeof(t_atom) * npoints);
     for (n = 0; n < npoints; n++) {
-      SETFLOAT(&atombuf[n], vec[start+n].w_float);
+      SETFLOAT(&atombuf[n], vec[start + n].w_float);
     }
     outlet_list(x->x_obj.ob_outlet, gensym("list"), npoints, atombuf);
-    freebytes(atombuf,sizeof(t_atom)*npoints);
+    freebytes(atombuf, sizeof(t_atom) * npoints);
   }
 }
 
-static void tabdump_list(t_tabdump *x, t_symbol* UNUSED(s),int argc,
-                         t_atom*argv)
+static void tabdump_list(
+    t_tabdump *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
-  int a,b;
-  switch(argc) {
+  int a, b;
+  switch (argc) {
   case 2:
-    a=atom_getint(argv);
-    b=atom_getint(argv+1);
-    x->startindex=(a<b)?a:b;
-    x->stopindex =(a>b)?a:b;
+    a = atom_getint(argv);
+    b = atom_getint(argv + 1);
+    x->startindex = (a < b) ? a : b;
+    x->stopindex = (a > b) ? a : b;
     tabdump_bang(x);
     break;
   default:
@@ -88,8 +87,8 @@ static void *tabdump_new(t_symbol *s)
 {
   t_tabdump *x = (t_tabdump *)pd_new(tabdump_class);
   x->x_arrayname = s;
-  x->startindex=0;
-  x->stopindex=-1;
+  x->startindex = 0;
+  x->stopindex = -1;
   outlet_new(&x->x_obj, gensym("list"));
 
   return (x);
@@ -97,19 +96,18 @@ static void *tabdump_new(t_symbol *s)
 
 static void tabdump_helper(void)
 {
-  post("\n"HEARTSYMBOL
+  post("\n" HEARTSYMBOL
        " tabdump - object : dumps a table as a package of floats");
   post("'set <table>'\t: read out another table\n"
        "'bang'\t\t: dump the table\n"
        "outlet\t\t: table-data as package of floats");
   post("creation\t: \"tabdump <table>\"");
-
 }
 
 ZEXY_SETUP void tabdump_setup(void)
 {
-  tabdump_class = zexy_new("tabdump",
-                           tabdump_new, 0, t_tabdump, CLASS_DEFAULT, "S");
+  tabdump_class =
+      zexy_new("tabdump", tabdump_new, 0, t_tabdump, CLASS_DEFAULT, "S");
   class_addbang(tabdump_class, (t_method)tabdump_bang);
   class_addlist(tabdump_class, (t_method)tabdump_list);
 

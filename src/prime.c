@@ -19,35 +19,33 @@
 
 #include "zexy.h"
 
-
-static t_class *prime_class=NULL;
+static t_class *prime_class = NULL;
 
 typedef struct _prime {
-  t_object  x_obj;
+  t_object x_obj;
 } t_prime;
-
 
 static void prime_float(t_prime *x, t_float f)
 {
 
-  unsigned int i=f;
+  unsigned int i = f;
   unsigned int max_divisor;
-  unsigned int divisor=1;
+  unsigned int divisor = 1;
 
-  if (f<2) {
+  if (f < 2) {
     outlet_float(x->x_obj.ob_outlet, 0.0);
     return;
   }
 
-  if (!(i%2)) {
-    outlet_float(x->x_obj.ob_outlet, (t_float)(i==2));
+  if (!(i % 2)) {
+    outlet_float(x->x_obj.ob_outlet, (t_float)(i == 2));
     return;
   }
 
-  max_divisor = sqrt(f)+1;
+  max_divisor = sqrt(f) + 1;
 
-  while ((divisor+=2)<max_divisor)
-    if (!(i%divisor)) {
+  while ((divisor += 2) < max_divisor)
+    if (!(i % divisor)) {
       outlet_float(x->x_obj.ob_outlet, 0.0);
       return;
     }
@@ -64,16 +62,14 @@ static void *prime_new(void)
   return (x);
 }
 
-static void prime_help(t_prime*UNUSED(x))
+static void prime_help(t_prime *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " prime\t\t:: test whether a given number is prime");
+  post("\n" HEARTSYMBOL " prime\t\t:: test whether a given number is prime");
 }
-
 
 ZEXY_SETUP void prime_setup(void)
 {
-  prime_class = zexy_new("prime",
-                         prime_new, 0, t_prime, CLASS_DEFAULT, "");
+  prime_class = zexy_new("prime", prime_new, 0, t_prime, CLASS_DEFAULT, "");
 
   class_addfloat(prime_class, prime_float);
   zexy_addmethod(prime_class, (t_method)prime_help, "help", "");

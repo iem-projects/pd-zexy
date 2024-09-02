@@ -19,21 +19,20 @@
 
 #include "zexy.h"
 
-static t_class *sigpack_class=NULL;
+static t_class *sigpack_class = NULL;
 
 typedef struct _sigpack {
   t_object x_obj;
 
   int vector_length;
   t_atom *buffer;
-  t_clock*x_clock;
+  t_clock *x_clock;
   int x_outputindsp;
 } t_sigpack;
 
-static void sigpack_tick(t_sigpack*x)
+static void sigpack_tick(t_sigpack *x)
 {
-  outlet_list(x->x_obj.ob_outlet, gensym("list"), x->vector_length,
-              x->buffer);
+  outlet_list(x->x_obj.ob_outlet, gensym("list"), x->vector_length, x->buffer);
 }
 
 static t_int *sigpack_perform(t_int *w)
@@ -44,17 +43,17 @@ static t_int *sigpack_perform(t_int *w)
   t_atom *buf = x->buffer;
 
   while (n--) {
-    t_float f=*in++;
+    t_float f = *in++;
     SETFLOAT(&buf[i], f);
     i++;
   }
-  if(x->x_outputindsp) {
+  if (x->x_outputindsp) {
     sigpack_tick(x);
   } else {
     clock_delay(x->x_clock, 0);
   }
 
-  return (w+4);
+  return (w + 4);
 }
 
 static void sigpack_dsp(t_sigpack *x, t_signal **sp)
@@ -67,7 +66,7 @@ static void sigpack_dsp(t_sigpack *x, t_signal **sp)
   dsp_add(sigpack_perform, 3, sp[0]->s_vec, x, sp[0]->s_n);
 }
 
-static void sigpack_free(t_sigpack*x)
+static void sigpack_free(t_sigpack *x)
 {
   clock_free(x->x_clock);
 }
@@ -78,9 +77,9 @@ static void *sigpack_new(void)
   x->vector_length = 0;
   x->buffer = 0;
   outlet_new(&x->x_obj, gensym("list"));
-  x->x_clock=clock_new(x, (t_method)sigpack_tick);
+  x->x_clock = clock_new(x, (t_method)sigpack_tick);
 
-  x->x_outputindsp=0;
+  x->x_outputindsp = 0;
 
   return (x);
 }
@@ -92,8 +91,8 @@ static void sigpack_help(void)
 
 ZEXY_SETUP void pack_tilde_setup(void)
 {
-  sigpack_class = zexy_new("pack~",
-                           sigpack_new, sigpack_free, t_sigpack, CLASS_DEFAULT, "");
+  sigpack_class = zexy_new(
+      "pack~", sigpack_new, sigpack_free, t_sigpack, CLASS_DEFAULT, "");
   zexy_addmethod(sigpack_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(sigpack_class, (t_method)sigpack_dsp, "dsp", "!");
 

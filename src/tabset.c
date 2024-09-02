@@ -21,10 +21,9 @@
 
 #include "zexy.h"
 
-
 /* =================== tabset ====================== */
 
-static t_class *tabset_class=NULL;
+static t_class *tabset_class = NULL;
 
 typedef struct _tabset {
   t_object x_obj;
@@ -42,7 +41,7 @@ static void tabset_float(t_tabset *x, t_floatarg f)
   } else if (!garray_getfloatwords(A, &npoints, &vec)) {
     pd_error(x, "%s: bad template for tabset", x->x_arrayname->s_name);
   } else {
-    while(npoints--) {
+    while (npoints--) {
       vec->w_float = f;
       vec++;
     }
@@ -50,8 +49,8 @@ static void tabset_float(t_tabset *x, t_floatarg f)
   }
 }
 
-static void tabset_list(t_tabset *x, t_symbol* UNUSED(s), int argc,
-                        t_atom* argv)
+static void tabset_list(
+    t_tabset *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_garray *A;
   int npoints;
@@ -62,15 +61,16 @@ static void tabset_list(t_tabset *x, t_symbol* UNUSED(s), int argc,
   } else if (!garray_getfloatwords(A, &npoints, &vec)) {
     pd_error(x, "%s: bad template for tabset", x->x_arrayname->s_name);
   } else {
-    if (argc>=npoints)
-      while(npoints--) {
-        t_float f= atom_getfloat(argv++);
+    if (argc >= npoints)
+      while (npoints--) {
+        t_float f = atom_getfloat(argv++);
         vec->w_float = f;
         vec++;
-      } else {
-      npoints-=argc;
+      }
+    else {
+      npoints -= argc;
       while (argc--) {
-        t_float f= atom_getfloat(argv++);
+        t_float f = atom_getfloat(argv++);
         vec->w_float = f;
         vec++;
       }
@@ -97,7 +97,7 @@ static void *tabset_new(t_symbol *s)
 
 static void tabset_helper(void)
 {
-  post("\n"HEARTSYMBOL
+  post("\n" HEARTSYMBOL
        " tabset - object : set a table with a package of floats");
   post("'set <table>'\t: set another table\n"
        "<list>\t\t: set the table"
@@ -107,10 +107,10 @@ static void tabset_helper(void)
 
 ZEXY_SETUP void tabset_setup(void)
 {
-  tabset_class = zexy_new("tabset",
-                          tabset_new, 0, t_tabset, CLASS_DEFAULT, "S");
+  tabset_class =
+      zexy_new("tabset", tabset_new, 0, t_tabset, CLASS_DEFAULT, "S");
   class_addfloat(tabset_class, (t_method)tabset_float);
-  class_addlist (tabset_class, (t_method)tabset_list);
+  class_addlist(tabset_class, (t_method)tabset_list);
   zexy_addmethod(tabset_class, (t_method)tabset_set, "set", "s");
 
   zexy_addmethod(tabset_class, (t_method)tabset_helper, "help", "");

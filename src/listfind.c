@@ -20,66 +20,63 @@
 #include "zexy.h"
 
 #if 0
-# define DEBUG
+#  define DEBUG
 #endif
 
 #ifdef DEBUG
-# define DEBUGFUN(x) x
+#  define DEBUGFUN(x) x
 #else
-# define DEBUGFUN(x)
+#  define DEBUGFUN(x)
 #endif
 
-static t_class *listfind_class=NULL;
-
+static t_class *listfind_class = NULL;
 
 typedef struct _listfind {
-  t_object       x_obj;
-  t_outlet      *x_outlet;
+  t_object x_obj;
+  t_outlet *x_outlet;
 
   int x_n;
 
-  t_inlet*x_listin;
-  int     x_argc;
+  t_inlet *x_listin;
+  int x_argc;
   t_atom *x_argv;
 } t_listfind;
 
-
-
-static void listfind_list2(t_listfind*x,t_symbol*UNUSED(s), int argc,
-                           t_atom*argv)
+static void listfind_list2(
+    t_listfind *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
-  if(x->x_argv!=0) {
-    freebytes(x->x_argv, sizeof(t_atom)*x->x_argc);
+  if (x->x_argv != 0) {
+    freebytes(x->x_argv, sizeof(t_atom) * x->x_argc);
   }
-  x->x_argc=0;
-  x->x_argv=0;
+  x->x_argc = 0;
+  x->x_argv = 0;
 
   DEBUGFUN(post("list of length %d", argc));
 
-  if(argc>0) {
+  if (argc > 0) {
     int i;
-    x->x_argc=argc;
-    x->x_argv=(t_atom*)getbytes((x->x_argc)*sizeof(t_atom));
-    for(i=0; i<argc; i++) {
-      x->x_argv[i]=argv[i];
+    x->x_argc = argc;
+    x->x_argv = (t_atom *)getbytes((x->x_argc) * sizeof(t_atom));
+    for (i = 0; i < argc; i++) {
+      x->x_argv[i] = argv[i];
     }
   }
 
   DEBUGFUN(post("list2: %d %x", x->x_argc, x->x_argv));
 }
 
-static int UNUSED_FUNCTION(atom_equals) (t_atom*a1, t_atom*a2)
+static int UNUSED_FUNCTION(atom_equals)(t_atom *a1, t_atom *a2)
 {
-  if(a1->a_type!=a2->a_type) {
+  if (a1->a_type != a2->a_type) {
     return 0;
   }
 
-  return(a1->a_w.w_symbol==a2->a_w.w_symbol);
+  return (a1->a_w.w_symbol == a2->a_w.w_symbol);
 }
 
-static int list_equals(int count, t_atom*a1, t_atom*a2)
+static int list_equals(int count, t_atom *a1, t_atom *a2)
 {
-  int i=0;
+  int i = 0;
   DEBUGFUN(post("list(%d) equals?", count));
   DEBUGFUN(postatom(count, a1));
   DEBUGFUN(endpost());
@@ -87,20 +84,18 @@ static int list_equals(int count, t_atom*a1, t_atom*a2)
   DEBUGFUN(endpost());
   DEBUGFUN(endpost());
 
-  for(i=0; i<count; i++, a1++, a2++) {
-    if(a1->a_type!=a2->a_type) {
+  for (i = 0; i < count; i++, a1++, a2++) {
+    if (a1->a_type != a2->a_type) {
       DEBUGFUN(post("atomtypes do not match!"));
       return 0;
     }
-    if(A_FLOAT==a1->a_type) {
-      if(atom_getfloat(a1)!=atom_getfloat(a2)) {
+    if (A_FLOAT == a1->a_type) {
+      if (atom_getfloat(a1) != atom_getfloat(a2)) {
         return 0;
       }
-    } else if(a1->a_w.w_symbol!=a2->a_w.w_symbol) { /* is it that simple? */
-      DEBUGFUN(post("atom values do not match: %x != %x",
-                    a1->a_w.w_symbol,
-                    a2->a_w.w_symbol
-                   ));
+    } else if (a1->a_w.w_symbol != a2->a_w.w_symbol) { /* is it that simple? */
+      DEBUGFUN(post("atom values do not match: %x != %x", a1->a_w.w_symbol,
+          a2->a_w.w_symbol));
       return 0;
     }
   }
@@ -108,53 +103,55 @@ static int list_equals(int count, t_atom*a1, t_atom*a2)
   return 1;
 }
 
-static int listfind_find(int argc, t_atom*argv, int matchc, t_atom*matchv)
+static int listfind_find(int argc, t_atom *argv, int matchc, t_atom *matchv)
 {
-  int i=0;
+  int i = 0;
 
   DEBUGFUN(post("match: %d vs %d elements", argc, matchc));
 
-  if(matchc>argc) {
+  if (matchc > argc) {
     DEBUGFUN(post("list find -1"));
 
     return -1;
   }
-  if(matchc==0) {
+  if (matchc == 0) {
     DEBUGFUN(post("list find 0"));
 
     return 0;
   }
 
-  for(i=0; i<=(argc-matchc); i++, argv++) {
+  for (i = 0; i <= (argc - matchc); i++, argv++) {
     DEBUGFUN(post("checking at %d", i));
-    if(list_equals(matchc, argv, matchv)) {
+    if (list_equals(matchc, argv, matchv)) {
       return i;
     }
   }
   return -1;
 }
 
-static void listfind_doit(t_outlet*out, int longcount, t_atom*longlist,
-                          int patterncount, t_atom*patternlist)
+static void listfind_doit(t_outlet *out, int longcount, t_atom *longlist,
+    int patterncount, t_atom *patternlist)
 {
-  int count=0;
+  int count = 0;
   int index;
-  int offset=0;
+  int offset = 0;
 
-  t_atom*ap=0;
-  int length=1+((patterncount>0)?(longcount/patterncount):
-                longcount); /* we shan't have more hits than this! */
-  if(length<1) {
+  t_atom *ap = 0;
+  int length =
+      1 + ((patterncount > 0)
+                  ? (longcount / patterncount)
+                  : longcount); /* we shan't have more hits than this! */
+  if (length < 1) {
     outlet_bang(out);
   }
-  ap=(t_atom*)getbytes(length*sizeof(t_atom));
+  ap = (t_atom *)getbytes(length * sizeof(t_atom));
 
   DEBUGFUN(post("expecting no more than %d results", length));
 
-  while((index=listfind_find(longcount-offset, longlist+offset, patterncount,
-                             patternlist))>=0) {
-    offset+=index;
-    SETFLOAT(ap+count, offset);
+  while ((index = listfind_find(longcount - offset, longlist + offset,
+              patterncount, patternlist)) >= 0) {
+    offset += index;
+    SETFLOAT(ap + count, offset);
 
     count++;
 
@@ -165,11 +162,11 @@ static void listfind_doit(t_outlet*out, int longcount, t_atom*longlist,
   DEBUGFUN(post("got %d results", count));
 
   outlet_list(out, gensym("list"), count, ap);
-  freebytes(ap, length*sizeof(t_atom));
+  freebytes(ap, length * sizeof(t_atom));
 }
 
-static void listfind_list(t_listfind *x, t_symbol *UNUSED(s), int argc,
-                          t_atom *argv)
+static void listfind_list(
+    t_listfind *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
 #if 0
   /* entire list hot:
@@ -192,43 +189,41 @@ static void listfind_list(t_listfind *x, t_symbol *UNUSED(s), int argc,
 
 static void listfind_free(t_listfind *x)
 {
-  if(x->x_argv) {
-    freebytes(x->x_argv, x->x_argc*sizeof(int));
-    x->x_argv=0;
-    x->x_argc=0;
+  if (x->x_argv) {
+    freebytes(x->x_argv, x->x_argc * sizeof(int));
+    x->x_argv = 0;
+    x->x_argc = 0;
   }
   inlet_free(x->x_listin);
-
 }
 
-static void *listfind_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *listfind_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_listfind *x = (t_listfind *)pd_new(listfind_class);
 
   outlet_new(&x->x_obj, 0);
-  x->x_listin=inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"),
-                        gensym("lst2"));
+  x->x_listin =
+      inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("list"), gensym("lst2"));
 
-  x->x_argc=0;
-  x->x_argv=0;
+  x->x_argc = 0;
+  x->x_argv = 0;
 
   listfind_list2(x, gensym("list"), argc, argv);
 
   return (x);
 }
 
-
-static void listfind_help(t_listfind*UNUSED(x))
+static void listfind_help(t_listfind *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL
+  post("\n" HEARTSYMBOL
        " listfind\t\t:: split lists into multiple sublists based on matches");
 }
 
 ZEXY_SETUP void listfind_setup(void)
 {
-  listfind_class = zexy_new("listfind",
-                            listfind_new, listfind_free, t_listfind, CLASS_DEFAULT, "*");
-  class_addlist    (listfind_class, listfind_list);
+  listfind_class = zexy_new(
+      "listfind", listfind_new, listfind_free, t_listfind, CLASS_DEFAULT, "*");
+  class_addlist(listfind_class, listfind_list);
   zexy_addmethod(listfind_class, (t_method)listfind_list2, "lst2", "*");
 
   zexy_addmethod(listfind_class, (t_method)listfind_help, "help", "");

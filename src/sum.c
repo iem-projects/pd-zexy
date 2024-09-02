@@ -19,21 +19,21 @@
 
 #include "zexy.h"
 
-static t_class *sum_class=NULL;
+static t_class *sum_class = NULL;
 
 typedef struct _sum {
   t_object x_obj;
 } t_sum;
 
-static void sum_list(t_sum *x, t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void sum_list(t_sum *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_float sum = 0.f;
 
-  while(argc--) {
-    sum+=atom_getfloat(argv++);
+  while (argc--) {
+    sum += atom_getfloat(argv++);
   }
 
-  outlet_float(x->x_obj.ob_outlet,sum);
+  outlet_float(x->x_obj.ob_outlet, sum);
 }
 
 static void *sum_new(void)
@@ -52,8 +52,7 @@ static void sum_help(void)
 
 ZEXY_SETUP void sum_setup(void)
 {
-  sum_class = zexy_new("sum",
-                       sum_new, 0, t_sum, CLASS_DEFAULT, "");
+  sum_class = zexy_new("sum", sum_new, 0, t_sum, CLASS_DEFAULT, "");
 
   class_addlist(sum_class, (t_method)sum_list);
   zexy_addmethod(sum_class, (t_method)sum_help, "help", "");

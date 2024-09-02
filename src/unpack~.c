@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *sigunpack_class=NULL;
+static t_class *sigunpack_class = NULL;
 
 typedef struct _sigunpack {
   t_object x_obj;
@@ -31,7 +31,7 @@ typedef struct _sigunpack {
 
 static void sigunpack_float(t_sigunpack *x, t_float f)
 {
-  if (x->wp + 1  != x->rp) {
+  if (x->wp + 1 != x->rp) {
     *(x->wp)++ = f;
     if (x->wp == x->buffer + x->bufsize) {
       x->wp = x->buffer;
@@ -39,13 +39,13 @@ static void sigunpack_float(t_sigunpack *x, t_float f)
   }
 }
 
-static void sigunpack_list(t_sigunpack *x, t_symbol *UNUSED(s), int argc,
-                           t_atom *argv)
+static void sigunpack_list(
+    t_sigunpack *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_atom *ap = argv;
   int i;
   for (i = 0, ap = argv; i < argc; ap++, i++) {
-    if (x->wp + 1  != x->rp) {
+    if (x->wp + 1 != x->rp) {
       *(x->wp)++ = atom_getfloat(ap);
       if (x->wp == x->buffer + x->bufsize) {
         x->wp = x->buffer;
@@ -53,7 +53,6 @@ static void sigunpack_list(t_sigunpack *x, t_symbol *UNUSED(s), int argc,
     }
   }
 }
-
 
 static t_int *sigunpack_perform(t_int *w)
 {
@@ -64,8 +63,8 @@ static t_int *sigunpack_perform(t_int *w)
   t_sample *buf = x->rp;
   int hitchhike = 0;
 
-  if ((x->wp >= x->rp) && (x->wp < x->rp+n)) {
-    hitchhike=1;
+  if ((x->wp >= x->rp) && (x->wp < x->rp + n)) {
+    hitchhike = 1;
   }
   x->rp += n;
   if (x->rp == x->buffer + x->bufsize) {
@@ -80,13 +79,13 @@ static t_int *sigunpack_perform(t_int *w)
     *buf++ = 0;
   }
 
-  return (w+4);
+  return (w + 4);
 }
 
 static void sigunpack_dsp(t_sigunpack *x, t_signal **sp)
 {
   if (x->bufsize % sp[0]->s_n) {
-    int newsize = sp[0]->s_n*(1+(int)(x->bufsize/sp[0]->s_n));
+    int newsize = sp[0]->s_n * (1 + (int)(x->bufsize / sp[0]->s_n));
     freebytes(x->buffer, x->bufsize * sizeof(*x->buffer));
     x->buffer = (t_sample *)getbytes(newsize * sizeof(*x->buffer));
 
@@ -106,8 +105,8 @@ static void *sigunpack_new(t_floatarg f)
   if (!suggestedsize) {
     bufsize = 64;
   } else {
-    bufsize = (suggestedsize % 64)?(64*(1+(int)(suggestedsize/64))):
-              suggestedsize;
+    bufsize = (suggestedsize % 64) ? (64 * (1 + (int)(suggestedsize / 64)))
+                                   : suggestedsize;
   }
 
   x->buffer = (t_sample *)getbytes(bufsize * sizeof(*x->buffer));
@@ -126,11 +125,11 @@ static void sigunpack_help(void)
 
 ZEXY_SETUP void unpack_tilde_setup(void)
 {
-  sigunpack_class = zexy_new("unpack~",
-                             sigunpack_new, 0, t_sigunpack, CLASS_DEFAULT, "F");
+  sigunpack_class =
+      zexy_new("unpack~", sigunpack_new, 0, t_sigunpack, CLASS_DEFAULT, "F");
   zexy_addmethod(sigunpack_class, (t_method)sigunpack_dsp, "dsp", "!");
   class_addfloat(sigunpack_class, (t_method)sigunpack_float);
-  class_addlist (sigunpack_class, (t_method)sigunpack_list);
+  class_addlist(sigunpack_class, (t_method)sigunpack_list);
 
   zexy_addmethod(sigunpack_class, (t_method)sigunpack_help, "help", "");
   zexy_register("unpack~");

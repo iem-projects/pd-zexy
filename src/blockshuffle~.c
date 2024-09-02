@@ -17,7 +17,6 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "zexy.h"
 
 /* ------------------------ blockshuffle~ ----------------------------- */
@@ -26,14 +25,14 @@
    {x[0], x[1], ... x[n-1]} --> {x[n-1], x[n-2], ... x[0]}
 */
 
-static t_class *blockshuffle_class=NULL;
+static t_class *blockshuffle_class = NULL;
 
 typedef struct _blockshuffle {
   t_object x_obj;
 
-  t_sample*blockbuf;
-  t_int*   indices;
-  int      size;
+  t_sample *blockbuf;
+  t_int *indices;
+  int size;
 
   t_float *shuffle;
   int shufflesize;
@@ -41,87 +40,86 @@ typedef struct _blockshuffle {
 
 static void blockshuffle_buildindex(t_blockshuffle *x, int blocksize)
 {
-  int i=0;
-  if(blocksize!=x->size) {
-    if(x->indices) {
+  int i = 0;
+  if (blocksize != x->size) {
+    if (x->indices) {
       freebytes(x->indices, x->size);
     }
-    if(x->blockbuf) {
+    if (x->blockbuf) {
       freebytes(x->blockbuf, x->size);
     }
-    x->indices=getbytes (sizeof(t_int)*blocksize);
-    x->blockbuf=getbytes(sizeof(t_sample)*blocksize);
-    x->size=blocksize;
+    x->indices = getbytes(sizeof(t_int) * blocksize);
+    x->blockbuf = getbytes(sizeof(t_sample) * blocksize);
+    x->size = blocksize;
   }
-  for(i=0; i<x->shufflesize&&i<blocksize; i++) {
-    int idx=x->shuffle[i];
-    if(idx>=blocksize) {
-      idx=blocksize-1;
+  for (i = 0; i < x->shufflesize && i < blocksize; i++) {
+    int idx = x->shuffle[i];
+    if (idx >= blocksize) {
+      idx = blocksize - 1;
     }
-    if(idx<0) {
-      idx=0;
+    if (idx < 0) {
+      idx = 0;
     }
-    x->indices[i]=idx;
+    x->indices[i] = idx;
   }
-  for(; i<blocksize; i++) {
-    x->indices[i]=i;
+  for (; i < blocksize; i++) {
+    x->indices[i] = i;
   }
 }
 
-static void blockshuffle_list(t_blockshuffle *x, t_symbol* UNUSED(s),
-                              int argc, t_atom*argv)
+static void blockshuffle_list(
+    t_blockshuffle *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   int i;
-  if(x->shuffle) {
+  if (x->shuffle) {
     freebytes(x->shuffle, x->shufflesize);
-    x->shuffle=0;
+    x->shuffle = 0;
   }
-  x->shufflesize=argc;
-  x->shuffle=getbytes(sizeof(*x->shuffle)*argc);
+  x->shufflesize = argc;
+  x->shuffle = getbytes(sizeof(*x->shuffle) * argc);
 
-  for(i=0; i<argc; i++) {
-    x->shuffle[i]=atom_getfloat(argv++);
+  for (i = 0; i < argc; i++) {
+    x->shuffle[i] = atom_getfloat(argv++);
   }
   blockshuffle_buildindex(x, x->size);
 }
 
 static t_int *blockshuffle_perform(t_int *w)
 {
-  t_blockshuffle*x = (t_blockshuffle *)(w[1]);
+  t_blockshuffle *x = (t_blockshuffle *)(w[1]);
   t_sample *in = (t_sample *)(w[2]);
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
-  t_sample *temp=x->blockbuf;
-  t_int    *idx =x->indices;
+  t_sample *temp = x->blockbuf;
+  t_int *idx = x->indices;
 
-  if(idx) {
-    int i=0;
-    for(i=0; i<n; i++) {
-      temp[i]=in[idx[i]];
+  if (idx) {
+    int i = 0;
+    for (i = 0; i < n; i++) {
+      temp[i] = in[idx[i]];
     }
-    temp=x->blockbuf;
-    for(i=0; i<n; i++) {
-      *out++=*temp++;
+    temp = x->blockbuf;
+    for (i = 0; i < n; i++) {
+      *out++ = *temp++;
     }
   } else
-    while(n--) {
-      *out++=*in++;
+    while (n--) {
+      *out++ = *in++;
     }
 
-  return (w+5);
+  return (w + 5);
 }
 
 static void blockshuffle_dsp(t_blockshuffle *x, t_signal **sp)
 {
   blockshuffle_buildindex(x, sp[0]->s_n);
 
-  dsp_add(blockshuffle_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec,
-          sp[0]->s_n);
+  dsp_add(blockshuffle_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void blockshuffle_helper(t_blockshuffle* UNUSED(x))
+static void blockshuffle_helper(t_blockshuffle *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL
+  post("\n" HEARTSYMBOL
        " blockshuffle~-object for shuffling the samples within a signal-block");
   post("'help' : view this\n"
        "signal~");
@@ -129,14 +127,14 @@ static void blockshuffle_helper(t_blockshuffle* UNUSED(x))
 }
 static void blockshuffle_free(t_blockshuffle *x)
 {
-  if(x->indices) {
-    freebytes(x->indices,  sizeof(*x->indices) *x->size);
+  if (x->indices) {
+    freebytes(x->indices, sizeof(*x->indices) * x->size);
   }
-  if(x->blockbuf) {
-    freebytes(x->blockbuf, sizeof(*x->blockbuf)*x->size);
+  if (x->blockbuf) {
+    freebytes(x->blockbuf, sizeof(*x->blockbuf) * x->size);
   }
-  if(x->shuffle) {
-    freebytes(x->shuffle,  sizeof(*x->shuffle) *x->shufflesize);
+  if (x->shuffle) {
+    freebytes(x->shuffle, sizeof(*x->shuffle) * x->shufflesize);
   }
 }
 
@@ -144,24 +142,23 @@ static void *blockshuffle_new(void)
 {
   t_blockshuffle *x = (t_blockshuffle *)pd_new(blockshuffle_class);
   outlet_new(&x->x_obj, gensym("signal"));
-  x->size=0;
-  x->blockbuf=0;
-  x->indices=0;
-  x->shuffle=0;
-  x->shufflesize=0;
+  x->size = 0;
+  x->blockbuf = 0;
+  x->indices = 0;
+  x->shuffle = 0;
+  x->shufflesize = 0;
   return (x);
 }
 
 ZEXY_SETUP void blockshuffle_tilde_setup(void)
 {
-  blockshuffle_class = zexy_new("blockshuffle~",
-                                blockshuffle_new, blockshuffle_free, t_blockshuffle, CLASS_DEFAULT, "");
+  blockshuffle_class = zexy_new("blockshuffle~", blockshuffle_new,
+      blockshuffle_free, t_blockshuffle, CLASS_DEFAULT, "");
   zexy_addmethod(blockshuffle_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(blockshuffle_class, (t_method)blockshuffle_dsp, "dsp", "!");
 
   class_addlist(blockshuffle_class, blockshuffle_list);
 
-  zexy_addmethod(blockshuffle_class, (t_method)blockshuffle_helper, "help",
-                 "");
+  zexy_addmethod(blockshuffle_class, (t_method)blockshuffle_helper, "help", "");
   zexy_register("blockshuffle~");
 }

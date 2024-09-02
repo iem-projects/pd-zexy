@@ -20,7 +20,7 @@
 #include "zexy.h"
 #include <string.h>
 
-static t_class *a2l_class=NULL;
+static t_class *a2l_class = NULL;
 
 typedef struct _a2l {
   t_object x_obj;
@@ -28,7 +28,7 @@ typedef struct _a2l {
 
 static void a2l_anything(t_a2l *x, t_symbol *s, int argc, t_atom *argv)
 {
-  int n = argc+1;
+  int n = argc + 1;
   t_atom *cur, *alist = (t_atom *)getbytes(n * sizeof(t_atom));
 
   cur = alist;
@@ -40,7 +40,6 @@ static void a2l_anything(t_a2l *x, t_symbol *s, int argc, t_atom *argv)
   outlet_list(x->x_obj.ob_outlet, gensym("list"), n, alist);
 
   freebytes(alist, n * sizeof(t_atom));
-
 }
 
 static void a2l_list(t_a2l *x, t_symbol *s, int argc, t_atom *argv)
@@ -74,22 +73,21 @@ static void *a2l_new(void)
   outlet_new(&x->x_obj, 0);
   return (x);
 }
-static t_class* zclass_setup(const char*name)
+static t_class *zclass_setup(const char *name)
 {
-  t_class *c = zexy_new(name,
-                        a2l_new, 0, t_a2l, CLASS_DEFAULT, "");
-  class_addbang    (c, a2l_bang);
-  class_addfloat   (c, a2l_float);
-  class_addsymbol  (c, a2l_symbol);
-  class_addpointer (c, a2l_pointer);
-  class_addlist    (c, a2l_list);
+  t_class *c = zexy_new(name, a2l_new, 0, t_a2l, CLASS_DEFAULT, "");
+  class_addbang(c, a2l_bang);
+  class_addfloat(c, a2l_float);
+  class_addsymbol(c, a2l_symbol);
+  class_addpointer(c, a2l_pointer);
+  class_addlist(c, a2l_list);
   class_addanything(c, a2l_anything);
   return c;
 }
 static void dosetup()
 {
   zexy_register("any2list");
-  a2l_class=zclass_setup("any2list");
+  a2l_class = zclass_setup("any2list");
   zclass_setup("a2l");
 }
 void any2list_setup(void)

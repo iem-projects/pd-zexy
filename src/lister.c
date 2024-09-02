@@ -21,7 +21,6 @@
 
 static t_class *lister_class = NULL;
 
-
 static void atoms_copy(int argc, t_atom *from, t_atom *to)
 {
   int i;
@@ -30,41 +29,36 @@ static void atoms_copy(int argc, t_atom *from, t_atom *to)
   }
 }
 
-
 static void mypdlist_storelist(t_mypdlist *x, int argc, t_atom *argv)
 {
-  if(x->x_list) {
-    freebytes(x->x_list, x->x_n*sizeof(t_atom));
+  if (x->x_list) {
+    freebytes(x->x_list, x->x_n * sizeof(t_atom));
   }
-  x->x_n=argc;
-  x->x_list=(t_atom*)getbytes(x->x_n*sizeof(t_atom));
+  x->x_n = argc;
+  x->x_list = (t_atom *)getbytes(x->x_n * sizeof(t_atom));
 
   atoms_copy(argc, argv, x->x_list);
 }
-static void mypdlist_secondlist(t_mypdlist *x, t_symbol *UNUSED(s),
-                                int argc,
-                                t_atom *argv)
+static void mypdlist_secondlist(
+    t_mypdlist *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   mypdlist_storelist(x, argc, argv);
 }
 
 static void mypdlist_bang(t_mypdlist *x)
 {
-  int outc=x->x_n;
-  t_atom*outv = (t_atom*)getbytes(outc * sizeof(t_atom));
+  int outc = x->x_n;
+  t_atom *outv = (t_atom *)getbytes(outc * sizeof(t_atom));
   atoms_copy(x->x_n, x->x_list, outv);
   outlet_list(x->x_obj.ob_outlet, gensym("list"), outc, outv);
   freebytes(outv, outc * sizeof(t_atom));
 }
 
-
-static void mypdlist_list(t_mypdlist *x, t_symbol *s, int argc,
-                          t_atom *argv)
+static void mypdlist_list(t_mypdlist *x, t_symbol *s, int argc, t_atom *argv)
 {
   mypdlist_secondlist(x, s, argc, argv);
   mypdlist_bang(x);
 }
-
 
 static void mypdlist_free(t_mypdlist *x)
 {
@@ -81,26 +75,25 @@ static void *mypdlist_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   x->x_n = 0;
   x->x_list = 0;
 
-  if(argc) {
+  if (argc) {
     mypdlist_secondlist(x, gensym("list"), argc, argv);
   }
 
   return (x);
 }
 
-
-static void mypdlist_help(t_mypdlist*UNUSED(x))
+static void mypdlist_help(t_mypdlist *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL
-       " lister\t\t:: basic list storage (use pd>=0.39 for real [list] objects)");
+  post("\n" HEARTSYMBOL " lister\t\t:: basic list storage (use pd>=0.39 for "
+       "real [list] objects)");
 }
 
-static t_class* zclass_setup(const char*name)
+static t_class *zclass_setup(const char *name)
 {
-  t_class *c = zexy_new(name,
-                        mypdlist_new, mypdlist_free, t_mypdlist, CLASS_DEFAULT, "*");
-  class_addbang    (c, mypdlist_bang);
-  class_addlist    (c, mypdlist_list);
+  t_class *c = zexy_new(
+      name, mypdlist_new, mypdlist_free, t_mypdlist, CLASS_DEFAULT, "*");
+  class_addbang(c, mypdlist_bang);
+  class_addlist(c, mypdlist_list);
   zexy_addmethod(c, (t_method)mypdlist_secondlist, "lst2", "*");
   zexy_addmethod(c, (t_method)mypdlist_help, "help", "");
   return c;

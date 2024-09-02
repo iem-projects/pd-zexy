@@ -17,7 +17,6 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /*
    (c) 2005:forum::für::umläute:2000
 
@@ -42,7 +41,7 @@
 
 /* ----------------------- index --------------------- */
 
-static t_class *index_class=NULL;
+static t_class *index_class = NULL;
 
 typedef struct _index {
   t_object x_obj;
@@ -58,14 +57,14 @@ typedef struct _index {
  * index_helpers
  */
 
-
 /* find the last non-NULL entry in the array *
  * LATER: shouldn't this return "-1" on failure ?
  */
 static int find_last(t_symbol **names, int maxentries)
 {
   /* returns the index of the last entry (0..(maxentries-1)) */
-  while (maxentries--) if (names[maxentries]) {
+  while (maxentries--)
+    if (names[maxentries]) {
       return maxentries;
     }
   return 0;
@@ -77,11 +76,11 @@ static int find_last(t_symbol **names, int maxentries)
 static int find_item(const t_symbol *key, t_symbol **names, int maxentries)
 {
   /* returns index (0..[maxentries-1?]) on success; -1 if the item could not be found */
-  int i=-1;
+  int i = -1;
   int max = find_last(names, maxentries);
 
-  while (++i<=max)
-    if (names[i] && key==names[i]) {
+  while (++i <= max)
+    if (names[i] && key == names[i]) {
       return i;
     }
 
@@ -93,9 +92,9 @@ static int find_item(const t_symbol *key, t_symbol **names, int maxentries)
  */
 static int find_free(t_symbol **names, int maxentries)
 {
-  int i=0;
+  int i = 0;
 
-  while (i<maxentries) {
+  while (i < maxentries) {
     if (!names[i]) {
       return i;
     }
@@ -113,12 +112,12 @@ static void index_add(t_index *x, t_symbol *s, t_float f);
 static void index_symbol(t_index *x, t_symbol *s)
 {
   int element;
-  if ( (element = find_item(s, x->names, x->maxentries)+1) ) {
+  if ((element = find_item(s, x->names, x->maxentries) + 1)) {
     outlet_float(x->x_obj.ob_outlet, (t_float)element);
   } else if (x->auto_mode) { /* not yet stored: add automatically */
     index_add(x, s, 0);
   } else {
-    outlet_float(x->x_obj.ob_outlet, 0.f);  /* not yet stored but do not add */
+    outlet_float(x->x_obj.ob_outlet, 0.f); /* not yet stored but do not add */
   }
 }
 
@@ -126,63 +125,64 @@ static void index_symbol(t_index *x, t_symbol *s)
 static void index_float(t_index *x, t_float findex)
 {
   int iindex = (int)findex;
-  if ((iindex > 0) && (iindex <= x->maxentries) && (x->names[iindex-1])) {
+  if ((iindex > 0) && (iindex <= x->maxentries) && (x->names[iindex - 1])) {
     /* TB: output symbol to outlet */
-    outlet_symbol (x->x_obj.ob_outlet,x->names[iindex-1]);
+    outlet_symbol(x->x_obj.ob_outlet, x->names[iindex - 1]);
   }
 }
-
 
 /* add a symbol to the map (if possible) */
 static void index_add(t_index *x, t_symbol *s, t_float f)
 {
-  int newentry=(int)f;
+  int newentry = (int)f;
 
-  if (! (find_item(s, x->names, x->maxentries)+1) ) {
-    if (x->auto_resize && (x->entries==x->maxentries
-                           || newentry>=x->maxentries)) {
+  if (!(find_item(s, x->names, x->maxentries) + 1)) {
+    if (x->auto_resize &&
+        (x->entries == x->maxentries || newentry >= x->maxentries)) {
       /* do some resizing */
-      int maxentries=(newentry>x->maxentries)?newentry:(x->maxentries*2);
-      t_symbol**buf=(t_symbol **)getbytes(sizeof(t_symbol *) * maxentries);
-      if(buf!=0) {
+      int maxentries =
+          (newentry > x->maxentries) ? newentry : (x->maxentries * 2);
+      t_symbol **buf = (t_symbol **)getbytes(sizeof(t_symbol *) * maxentries);
+      if (buf != 0) {
         int i;
         memcpy(buf, x->names, sizeof(t_symbol *) * x->maxentries);
-        for(i=x->maxentries; i<maxentries; i++) {
-          buf[i]=0;
+        for (i = x->maxentries; i < maxentries; i++) {
+          buf[i] = 0;
         }
 
         freebytes(x->names, sizeof(t_symbol *) * x->maxentries);
 
-        x->names=buf;
-        x->maxentries=maxentries;
+        x->names = buf;
+        x->maxentries = maxentries;
       }
     }
 
-    if ( x->entries < x->maxentries ) {
-      if(newentry>0) {
+    if (x->entries < x->maxentries) {
+      if (newentry > 0) {
         newentry--;
-        if(x->names[newentry]) { /* it is already taken! */
+        if (x->names[newentry]) { /* it is already taken! */
           verbose(1,
-                  "index :: couldn't add element '%s' at position %d (already taken)",
-                  s->s_name, newentry+1);
+              "index :: couldn't add element '%s' at position %d (already "
+              "taken)",
+              s->s_name, newentry + 1);
           outlet_float(x->x_obj.ob_outlet, -1.f);
           return;
         }
       } else {
-        newentry=find_free(x->names, x->maxentries);
+        newentry = find_free(x->names, x->maxentries);
       }
       if (newentry + 1) {
         x->entries++;
-        x->names[newentry]=s;
-        outlet_float(x->x_obj.ob_outlet, (t_float)newentry+1);
+        x->names[newentry] = s;
+        outlet_float(x->x_obj.ob_outlet, (t_float)newentry + 1);
         return;
 
       } else {
         pd_error(x, "index :: couldn't find any place for new entry");
       }
     } else {
-      pd_error(x, "index :: max number of elements (%d) reached !",
-               x->maxentries);
+      pd_error(
+          x, "index :: max number of elements (%d) reached !", x->maxentries);
     }
   } else {
     verbose(1, "index :: element '%s' already exists", s->s_name);
@@ -191,26 +191,26 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
   outlet_float(x->x_obj.ob_outlet, -1.f);
 }
 /* delete a symbol from the map (if it is in there) */
-static void index_delete(t_index *x, t_symbol* UNUSED(s), int argc,
-                         t_atom*argv)
+static void index_delete(
+    t_index *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
-  int idx=-1;
-  if(argc!=1) {
+  int idx = -1;
+  if (argc != 1) {
     pd_error(x, "index :: delete what ?");
     return;
   } else {
-    if(argv->a_type==A_FLOAT) {
-      idx=atom_getint(argv)-1;
-    } else if (argv->a_type==A_SYMBOL) {
-      idx=find_item(atom_getsymbol(argv),x->names, x->maxentries);
+    if (argv->a_type == A_FLOAT) {
+      idx = atom_getint(argv) - 1;
+    } else if (argv->a_type == A_SYMBOL) {
+      idx = find_item(atom_getsymbol(argv), x->names, x->maxentries);
     } else {
       pd_error(x, "index :: delete what ?");
       return;
     }
   }
 
-  if ( idx >= 0 && idx < x->maxentries) {
-    x->names[idx]=0;
+  if (idx >= 0 && idx < x->maxentries) {
+    x->names[idx] = 0;
     x->entries--;
     outlet_float(x->x_obj.ob_outlet, 0.0);
   } else {
@@ -222,14 +222,14 @@ static void index_delete(t_index *x, t_symbol* UNUSED(s), int argc,
 /* delete all symbols from the map */
 static void index_reset(t_index *x)
 {
-  int i=x->maxentries;
+  int i = x->maxentries;
 
   while (i--)
     if (x->names[i]) {
-      x->names[i]=0;
+      x->names[i] = 0;
     }
 
-  x->entries=0;
+  x->entries = 0;
 
   outlet_float(x->x_obj.ob_outlet, 0.f);
 }
@@ -243,11 +243,11 @@ static void index_bang(t_index *x)
 static void index_dump(t_index *x)
 {
   t_atom ap[2];
-  int i=0;
-  for(i=0; i<x->maxentries; i++) {
-    if(x->names[i]) {
+  int i = 0;
+  for (i = 0; i < x->maxentries; i++) {
+    if (x->names[i]) {
       SETSYMBOL(ap, x->names[i]);
-      SETFLOAT(ap+1, i+1);
+      SETFLOAT(ap + 1, i + 1);
       outlet_list(x->x_obj.ob_outlet, 0, 2, ap);
     }
   }
@@ -256,13 +256,13 @@ static void index_dump(t_index *x)
 /* compact all entries, removing all holes in the map */
 static void index_compact(t_index *x)
 {
-  int i,j;
-  for(i=0; i<x->entries; i++) {
-    if(!x->names[i]) {
-      for(j=i+1; j<x->maxentries; j++) {
-        if(x->names[j]) {
-          x->names[i]=x->names[j];
-          x->names[j]=0;
+  int i, j;
+  for (i = 0; i < x->entries; i++) {
+    if (!x->names[i]) {
+      for (j = i + 1; j < x->maxentries; j++) {
+        if (x->names[j]) {
+          x->names[i] = x->names[j];
+          x->names[j] = 0;
           break;
         }
       }
@@ -272,26 +272,26 @@ static void index_compact(t_index *x)
 /* sort the map alphabetically */
 static void index_sort(t_index *x)
 {
-  int entries=x->entries;
-  int step=entries;
-  int loops=1, n;
-  t_symbol**buf=x->names;
+  int entries = x->entries;
+  int step = entries;
+  int loops = 1, n;
+  t_symbol **buf = x->names;
   index_compact(
-    x); /* couldn't we do it more "in-place", e.g. don't touch empty slots ? */
+      x); /* couldn't we do it more "in-place", e.g. don't touch empty slots ? */
 
-  while(step>1) {
+  while (step > 1) {
     int i = loops;
-    step+=step%2;
-    step>>=1;
-    loops+=2;
+    step += step % 2;
+    step >>= 1;
+    loops += 2;
 
-    while(i--) { /* there might be some optimization in here */
-      for (n=0; n<(x->entries-step); n++) {
-        int comp=strcmp(buf[n]->s_name,buf[n+step]->s_name);
-        if (comp>0) { /* compare STRINGS not SYMBOLS */
-          t_symbol*s_tmp = buf[n];
-          buf[n]        = buf[n+step];
-          buf[n+step]   = s_tmp;
+    while (i--) { /* there might be some optimization in here */
+      for (n = 0; n < (x->entries - step); n++) {
+        int comp = strcmp(buf[n]->s_name, buf[n + step]->s_name);
+        if (comp > 0) { /* compare STRINGS not SYMBOLS */
+          t_symbol *s_tmp = buf[n];
+          buf[n] = buf[n + step];
+          buf[n + step] = s_tmp;
         }
       }
     }
@@ -309,14 +309,12 @@ static void index_resize(t_index *x, t_float automod)
   x->auto_resize = !(!automod);
 }
 
-
-
-static void *index_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *index_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_index *x = (t_index *)pd_new(index_class);
-  t_symbol** buf;
+  t_symbol **buf;
 
-  int maxentries = 0, automod=0;
+  int maxentries = 0, automod = 0;
 
   if (argc--) {
     maxentries = (int)atom_getfloat(argv++);
@@ -325,12 +323,11 @@ static void *index_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
     }
   }
 
-  if (maxentries<1) {
-    maxentries=128;
+  if (maxentries < 1) {
+    maxentries = 128;
   }
 
   buf = (t_symbol **)getbytes(sizeof(t_symbol *) * maxentries);
-
 
   x->entries = 0;
   x->maxentries = maxentries;
@@ -339,7 +336,7 @@ static void *index_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
   x->auto_resize = 1;
 
   while (maxentries--) {
-    buf[maxentries]=0;
+    buf[maxentries] = 0;
   }
 
   outlet_new(&x->x_obj, gensym("float"));
@@ -352,36 +349,42 @@ static void index_free(t_index *x)
   freebytes(x->names, sizeof(t_symbol *) * x->maxentries);
 }
 
-
-static void index_helper(t_index* UNUSED(x))
+static void index_helper(t_index *UNUSED(x))
 {
   endpost();
-  post(""HEARTSYMBOL " index :: index symbols to indices");
-  post("<symbol>             : look up the <symbol> in the index and return it's index");
-  post("<int>                : look up the element at index <int> in the index");
+  post("" HEARTSYMBOL " index :: index symbols to indices");
+  post("<symbol>             : look up the <symbol> in the index and return "
+       "it's index");
+  post(
+      "<int>                : look up the element at index <int> in the index");
   post("'add <symbol>'       : add a new symbol to the index-map");
   post("'add <symbol> <int>' : add a new symbol at the index <int>");
   post("'delete <symbol>'    : delete a symbol from the index-map");
-  post("'delete <int>'       : delete the entry at index <int> from the index-map");
+  post("'delete <int>'       : delete the entry at index <int> from the "
+       "index-map");
   post("'reset'              : delete the whole index-map");
   post("'bang'               : return the number of entries in the index-map");
-  post("'dump'               : dump each entry in the format \"list <symbol> <index>\"");
+  post("'dump'               : dump each entry in the format \"list <symbol> "
+       "<index>\"");
   post("'compact'            : remove holes in the index-map");
   endpost();
   post("'sort'               : alphabetically sort the entries");
-  post("'auto <1/0>          : if auto is 1 and a yet unknown symbol is looked up it is\n\t\t\t automatically added to the index-map");
-  post("'resize <1/0>        : if resize is 1 (default), the index-map is resized\n\t\t\t automatically if needed");
+  post("'auto <1/0>          : if auto is 1 and a yet unknown symbol is looked "
+       "up it is\n\t\t\t automatically added to the index-map");
+  post("'resize <1/0>        : if resize is 1 (default), the index-map is "
+       "resized\n\t\t\t automatically if needed");
   post("'help'               : view this");
   post("outlet : <n>         : index of the <symbol>");
   post("         <symbol>    : entry at <index>");
   endpost();
-  post("creation:\"index [<maxelements> [<auto>]]\": creates a <maxelements> sized index");
+  post("creation:\"index [<maxelements> [<auto>]]\": creates a <maxelements> "
+       "sized index");
 }
 
 ZEXY_SETUP void index_setup(void)
 {
-  index_class = zexy_new("index",
-                         index_new, index_free, t_index, CLASS_DEFAULT, "*");
+  index_class =
+      zexy_new("index", index_new, index_free, t_index, CLASS_DEFAULT, "*");
 
   class_addsymbol(index_class, index_symbol);
 
@@ -392,8 +395,8 @@ ZEXY_SETUP void index_setup(void)
   zexy_addmethod(index_class, (t_method)index_auto, "auto", "f");
   zexy_addmethod(index_class, (t_method)index_resize, "resize", "f");
 
-  class_addfloat(index_class,  (t_method)index_float);
-  class_addbang(index_class,   (t_method)index_bang);
+  class_addfloat(index_class, (t_method)index_float);
+  class_addbang(index_class, (t_method)index_bang);
   zexy_addmethod(index_class, (t_method)index_sort, "sort", "");
   zexy_addmethod(index_class, (t_method)index_compact, "compact", "");
   zexy_addmethod(index_class, (t_method)index_dump, "dump", "");

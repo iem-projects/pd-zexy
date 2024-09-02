@@ -17,7 +17,6 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /*
     this is heavily based on code from [textfile],
     which is part of pd and written by Miller S. Puckette
@@ -27,17 +26,14 @@
 #include "zexy.h"
 
 #ifdef __WIN32__
-# include <io.h>
+#  include <io.h>
 #else
-# include <unistd.h>
+#  include <unistd.h>
 #endif
 
-#include <stdio.h>
 #include <fcntl.h>
+#include <stdio.h>
 #include <string.h>
-
-
-
 
 /* ****************************************************************************** */
 /* msgfile : save and load messages... */
@@ -70,7 +66,6 @@ typedef enum {
   FORMAT_ILLEGAL,
 } t_msgfile_format;
 
-
 typedef struct _msglist {
   int n;
   t_atom *thislist;
@@ -80,14 +75,14 @@ typedef struct _msglist {
 } t_msglist;
 
 typedef struct _msgfile {
-  t_object x_obj;              /* everything */
-  t_outlet *x_secondout;        /* "done" */
+  t_object x_obj;        /* everything */
+  t_outlet *x_secondout; /* "done" */
 
   t_msgfile_format format;
 
   t_msglist *start;
 
-  t_msglist *current;         /* pointer to our list */
+  t_msglist *current;  /* pointer to our list */
   t_msglist *previous; /* just in case we lost "current" */
 
   t_symbol *x_dir;
@@ -97,11 +92,7 @@ typedef struct _msgfile {
 
 } t_msgfile;
 
-static t_class *msgfile_class=NULL;
-
-
-
-
+static t_class *msgfile_class = NULL;
 
 /* ************************************************************************ */
 /* forward declarations                                                     */
@@ -112,31 +103,31 @@ static void msgfile_goto(t_msgfile *x, t_float f);
 /* ************************************************************************ */
 /* helper functions                                                         */
 
-static t_msgfile_format symbol2format(t_msgfile*x, t_symbol*s)
+static t_msgfile_format symbol2format(t_msgfile *x, t_symbol *s)
 {
-  if (!s || gensym("")==s) {
+  if (!s || gensym("") == s) {
     return x->format;
   }
-  if (gensym("pd")==s) {
+  if (gensym("pd") == s) {
     return FORMAT_PD;
   }
-  if (gensym("fudi")==s) {
+  if (gensym("fudi") == s) {
     return FORMAT_FUDI;
   }
-  if (gensym("cr")==s) {
+  if (gensym("cr") == s) {
     return FORMAT_CR;
   }
-  if (gensym("txt")==s) {
+  if (gensym("txt") == s) {
     return FORMAT_TXT;
   }
-  if (gensym("csv")==s) {
+  if (gensym("csv") == s) {
     return FORMAT_CSV;
   }
   pd_error(x, "msgfile: ignoring unknown format: '%s'", s->s_name);
   return x->format;
 }
 
-static int is_float(t_atom*a)
+static int is_float(t_atom *a)
 {
   return (a && A_FLOAT == a->a_type);
 }
@@ -157,12 +148,12 @@ static int node_wherearewe(t_msgfile *x)
   int counter = 0;
   t_msglist *cur = x->start;
 
-  while (cur && cur->next && cur!=x->current) {
+  while (cur && cur->next && cur != x->current) {
     counter++;
     cur = cur->next;
   }
 
-  if(cur&&cur->thislist) {
+  if (cur && cur->thislist) {
     return counter;
   }
   return -1;
@@ -172,20 +163,20 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
 {
   /* append list to the current node list */
 
-  t_msglist *cur=x->current;
-  t_atom *ap=NULL;
+  t_msglist *cur = x->current;
+  t_atom *ap = NULL;
   int newsize = 0;
 
-  if(!cur || (ac && av && A_SYMBOL==av->a_type
-              && gensym("")==atom_getsymbol(av))) {
+  if (!cur || (ac && av && A_SYMBOL == av->a_type &&
+                  gensym("") == atom_getsymbol(av))) {
     /* ignoring empty symbols! */
     return;
   }
 
   newsize = cur->n + ac;
 
-  ap = (t_atom*)resizebytes(cur->thislist, cur->n * sizeof(t_atom),
-                            newsize * sizeof(t_atom));
+  ap = (t_atom *)resizebytes(
+      cur->thislist, cur->n * sizeof(t_atom), newsize * sizeof(t_atom));
   if (ap) {
     cur->thislist = ap;
     memcpy(cur->thislist + cur->n, av, ac * sizeof(t_atom));
@@ -196,51 +187,50 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
 
 static void delete_currentnode(t_msgfile *x)
 {
-  if (x&&x->current) {
+  if (x && x->current) {
     t_msglist *dummy = x->current;
-    t_msglist *nxt=0;
-    t_msglist *prv=0;
+    t_msglist *nxt = 0;
+    t_msglist *prv = 0;
 
-    if(dummy) {
-      nxt=dummy->next;
-      prv=dummy->previous;
+    if (dummy) {
+      nxt = dummy->next;
+      prv = dummy->previous;
 
-      if(dummy==x->start) {
-        x->start=nxt;
+      if (dummy == x->start) {
+        x->start = nxt;
       }
 
       freebytes(dummy->thislist, sizeof(dummy->thislist));
       dummy->thislist = 0;
       dummy->n = 0;
-      dummy->next=0;
-      dummy->previous=0;
+      dummy->next = 0;
+      dummy->previous = 0;
 
       freebytes(dummy, sizeof(t_msglist));
 
-      dummy=0;
+      dummy = 0;
     }
 
     if (nxt) {
       nxt->previous = prv;
     }
     if (prv) {
-      prv->next     = nxt;
+      prv->next = nxt;
     }
 
-    x->current = (nxt)?nxt:prv;
-    if(x->current) {
-      x->previous=x->current->previous;
+    x->current = (nxt) ? nxt : prv;
+    if (x->current) {
+      x->previous = x->current->previous;
     } else {
-      x->previous=prv;
+      x->previous = prv;
     }
-
   }
 }
 
 static void delete_emptynodes(t_msgfile *x)
 {
-  x->current=x->start;
-  x->previous=0;
+  x->current = x->start;
+  x->previous = 0;
   if (!x->current) {
     return;
   }
@@ -249,7 +239,7 @@ static void delete_emptynodes(t_msgfile *x)
     if (!x->current->thislist) {
       delete_currentnode(x);
     } else {
-      x->previous=x->current;
+      x->previous = x->current;
       x->current = x->current->next;
     }
   }
@@ -259,13 +249,13 @@ static void add_currentnode(t_msgfile *x)
 {
   /* add (after the current node) a node at the current position (do not write the listbuf !!!) */
   t_msglist *newnode = (t_msglist *)getbytes(sizeof(t_msglist));
-  t_msglist  *prv, *nxt, *cur=x->current;
+  t_msglist *prv, *nxt, *cur = x->current;
 
   newnode->n = 0;
   newnode->thislist = 0;
 
   prv = cur;
-  nxt = (cur)?cur->next:0;
+  nxt = (cur) ? cur->next : 0;
 
   newnode->next = nxt;
   newnode->previous = prv;
@@ -278,17 +268,17 @@ static void add_currentnode(t_msgfile *x)
   }
 
   x->current = newnode;
-  x->previous=prv;
+  x->previous = prv;
 
-  if(!x->start) { /* it's the first line in the buffer */
-    x->start=x->current;
+  if (!x->start) { /* it's the first line in the buffer */
+    x->start = x->current;
   }
 }
 static void insert_currentnode(t_msgfile *x)
 {
   /* insert (add before the current node) a node (do not write a the listbuf !!!) */
   t_msglist *newnode;
-  t_msglist  *prv, *nxt, *cur = x->current;
+  t_msglist *prv, *nxt, *cur = x->current;
 
   if (!(cur && cur->thislist)) {
     add_currentnode(x);
@@ -299,7 +289,7 @@ static void insert_currentnode(t_msgfile *x)
     newnode->thislist = 0;
 
     nxt = cur;
-    prv = (cur)?cur->previous:0;
+    prv = (cur) ? cur->previous : 0;
 
     newnode->next = nxt;
     newnode->previous = prv;
@@ -311,9 +301,9 @@ static void insert_currentnode(t_msgfile *x)
       nxt->previous = newnode;
     }
 
-    x->previous=prv;
+    x->previous = prv;
     x->current = newnode;
-    if(0==prv) {
+    if (0 == prv) {
       /* oh, we have a new start! */
       x->start = newnode;
     }
@@ -334,15 +324,16 @@ static void delete_region(t_msgfile *x, int start, int stop)
   if ((stop > counter) || (stop == -1)) {
     stop = counter;
   }
-  if ((stop+1) && (start > stop)) {
+  if ((stop + 1) && (start > stop)) {
     return;
   }
   if (stop == 0) {
     return;
   }
 
-  newwhere = (oldwhere < start)?oldwhere:( (oldwhere < stop)?start:start+
-             (oldwhere-stop));
+  newwhere = (oldwhere < start)
+                 ? oldwhere
+                 : ((oldwhere < stop) ? start : start + (oldwhere - stop));
   n = stop - start;
 
   msgfile_goto(x, start);
@@ -351,13 +342,12 @@ static void delete_region(t_msgfile *x, int start, int stop)
     delete_currentnode(x);
   }
 
-  if (newwhere+1) {
+  if (newwhere + 1) {
     msgfile_goto(x, newwhere);
   } else {
     msgfile_end(x);
   }
 }
-
 
 static int atomcmp(t_atom *this, t_atom *that)
 {
@@ -382,15 +372,13 @@ static int atomcmp(t_atom *this, t_atom *that)
   return 1;
 }
 
-
-static t_atomtype str2atom(const char*atombuf, t_atom*ap,
-                           int force_symbol)
+static t_atomtype str2atom(const char *atombuf, t_atom *ap, int force_symbol)
 {
-  if(!force_symbol) {
+  if (!force_symbol) {
     double f = 0;
-    unsigned int count=0;
+    unsigned int count = 0;
     int x = sscanf(atombuf, "%lg%n", &f, &count);
-    if(x && strlen(atombuf)==count) {
+    if (x && strlen(atombuf) == count) {
       SETFLOAT(ap, f);
       return A_FLOAT;
     }
@@ -399,8 +387,8 @@ static t_atomtype str2atom(const char*atombuf, t_atom*ap,
   return A_SYMBOL;
 }
 
-static const char*parse_csv(const char*src, char dst[MAXPDSTRING],
-                            int *_eol, int*_quoted)
+static const char *parse_csv(
+    const char *src, char dst[MAXPDSTRING], int *_eol, int *_quoted)
 {
   size_t len = 0;
   int quoted = (src[0] == '"');
@@ -410,7 +398,7 @@ static const char*parse_csv(const char*src, char dst[MAXPDSTRING],
     src++;
   }
 
-  while(*src) {
+  while (*src) {
     if (!quoted || '"' == src[0]) {
       switch (src[quoted]) {
       default:
@@ -419,42 +407,42 @@ static const char*parse_csv(const char*src, char dst[MAXPDSTRING],
         *_eol = 1;
       /* fallthrough */
       case ',': /* EOC */
-        if(len<MAXPDSTRING) {
-          dst[len++]=0;
+        if (len < MAXPDSTRING) {
+          dst[len++] = 0;
         }
-        dst[MAXPDSTRING-1] = 0;
-        return src+1+quoted;
+        dst[MAXPDSTRING - 1] = 0;
+        return src + 1 + quoted;
       case '"': /* quote */
-        if(quoted) {
+        if (quoted) {
           src++;
         }
         break;
       }
     }
-    if(len<MAXPDSTRING) {
-      dst[len++]=*src;
+    if (len < MAXPDSTRING) {
+      dst[len++] = *src;
     }
     src++;
   }
-  dst[MAXPDSTRING-1] = 0;
+  dst[MAXPDSTRING - 1] = 0;
   return src;
 }
 
-static const char*parse_fudi(const char*src, char dst[MAXPDSTRING],
-                             int *_eol, int*_quoted)
+static const char *parse_fudi(
+    const char *src, char dst[MAXPDSTRING], int *_eol, int *_quoted)
 {
   size_t len = 0;
   *_quoted = 0;
   *_eol = 0;
 
-  while(*src) {
+  while (*src) {
     char c = *src++;
     char c2;
     switch (c) {
     case '\\': /* quoting */
-      c2=c;
-      c=*src++;
-      switch(c) {
+      c2 = c;
+      c = *src++;
+      switch (c) {
       case ',':
       case ';':
       case '\t':
@@ -463,8 +451,8 @@ static const char*parse_fudi(const char*src, char dst[MAXPDSTRING],
       case '\r':
         break;
       default:
-        if(len<MAXPDSTRING) {
-          dst[len++]=c2;
+        if (len < MAXPDSTRING) {
+          dst[len++] = c2;
         }
         break;
       }
@@ -474,21 +462,21 @@ static const char*parse_fudi(const char*src, char dst[MAXPDSTRING],
     case '\n':
     case '\r': /* EOL/EOA */
     case '\t':
-    case ' ':  /* EOA */
+    case ' ': /* EOA */
       goto atomend;
       break;
     }
-    if(len<MAXPDSTRING) {
-      dst[len++]=c;
+    if (len < MAXPDSTRING) {
+      dst[len++] = c;
     }
   }
 atomend:
-  if(len<MAXPDSTRING) {
-    dst[len++]=0;
+  if (len < MAXPDSTRING) {
+    dst[len++] = 0;
   }
 
-  while(*src) {
-    switch(*src) {
+  while (*src) {
+    switch (*src) {
     /* skip remaining whitespace */
     case '\n':
     case '\r':
@@ -503,21 +491,21 @@ atomend:
   return src;
 }
 
-static const char*parse_txt(const char*src, char dst[MAXPDSTRING],
-                            int *_eol, int*_quoted)
+static const char *parse_txt(
+    const char *src, char dst[MAXPDSTRING], int *_eol, int *_quoted)
 {
   size_t len = 0;
   *_quoted = 0;
   *_eol = 0;
 
-  while(*src) {
+  while (*src) {
     char c = *src++;
     char c2;
     switch (c) {
     case '\\': /* quoting */
-      c2=c;
-      c=*src++;
-      switch(c) {
+      c2 = c;
+      c = *src++;
+      switch (c) {
       case ',':
       case ';':
       case '\t':
@@ -526,8 +514,8 @@ static const char*parse_txt(const char*src, char dst[MAXPDSTRING],
       case '\r':
         break;
       default:
-        if(len<MAXPDSTRING) {
-          dst[len++]=c2;
+        if (len < MAXPDSTRING) {
+          dst[len++] = c2;
         }
         break;
       }
@@ -536,21 +524,21 @@ static const char*parse_txt(const char*src, char dst[MAXPDSTRING],
     case '\r': /* EOL/EOA */
       *_eol = 1;
     case '\t':
-    case ' ':  /* EOA */
+    case ' ': /* EOA */
       goto atomend;
       break;
     }
-    if(len<MAXPDSTRING) {
-      dst[len++]=c;
+    if (len < MAXPDSTRING) {
+      dst[len++] = c;
     }
   }
 atomend:
-  if(len<MAXPDSTRING) {
-    dst[len++]=0;
+  if (len < MAXPDSTRING) {
+    dst[len++] = 0;
   }
 
-  while(*src) {
-    switch(*src) {
+  while (*src) {
+    switch (*src) {
     /* skip remaining whitespace */
     case '\n':
     case '\r':
@@ -566,27 +554,26 @@ atomend:
   return src;
 }
 
-typedef const char*(*t_parsefn)(const char*src, char dst[MAXPDSTRING],
-                                int *_eol, int*_symbol);
+typedef const char *(*t_parsefn)(
+    const char *src, char dst[MAXPDSTRING], int *_eol, int *_symbol);
 
-static void msgfile_str2parse(t_msgfile *x, const char*src,
-                              t_parsefn parsefn)
+static void msgfile_str2parse(t_msgfile *x, const char *src, t_parsefn parsefn)
 {
-  t_binbuf*bbuf=binbuf_new();
+  t_binbuf *bbuf = binbuf_new();
   char atombuf[MAXPDSTRING + 1];
-  while(*src) {
+  while (*src) {
     int issymbol = 0;
     int iseol = 0;
     src = parsefn(src, atombuf, &iseol, &issymbol);
     atombuf[MAXPDSTRING] = 0;
-    if(*atombuf) {
+    if (*atombuf) {
       t_atom a;
       str2atom(atombuf, &a, issymbol);
       binbuf_add(bbuf, 1, &a);
     }
-    if(iseol) {
-      t_atom*argv = binbuf_getvec(bbuf);
-      int argc =  binbuf_getnatom(bbuf);
+    if (iseol) {
+      t_atom *argv = binbuf_getvec(bbuf);
+      int argc = binbuf_getnatom(bbuf);
       add_currentnode(x);
       write_currentnode(x, argc, argv);
       binbuf_clear(bbuf);
@@ -594,55 +581,55 @@ static void msgfile_str2parse(t_msgfile *x, const char*src,
   }
 
   do {
-    t_atom*argv = binbuf_getvec(bbuf);
-    int argc =  binbuf_getnatom(bbuf);
-    if(argc) {
+    t_atom *argv = binbuf_getvec(bbuf);
+    int argc = binbuf_getnatom(bbuf);
+    if (argc) {
       add_currentnode(x);
       write_currentnode(x, argc, argv);
     }
-  } while(0);
+  } while (0);
   binbuf_free(bbuf);
   delete_emptynodes(x);
 }
 
-static int nextsemi(t_atom*argv, int argc)
+static int nextsemi(t_atom *argv, int argc)
 {
   int count = 0;
-  for(count=0; count<argc; count++) {
-    if (A_SEMI==argv[count].a_type) {
+  for (count = 0; count < argc; count++) {
+    if (A_SEMI == argv[count].a_type) {
       return count + 1;
     }
   }
   return 0;
 }
 
-static void msgfile_addbinbuf(t_msgfile *x, t_binbuf*bbuf)
+static void msgfile_addbinbuf(t_msgfile *x, t_binbuf *bbuf)
 {
-  t_atom*argv = binbuf_getvec(bbuf);
-  int argc =  binbuf_getnatom(bbuf);
+  t_atom *argv = binbuf_getvec(bbuf);
+  int argc = binbuf_getnatom(bbuf);
 
-  while(argc>0) {
+  while (argc > 0) {
     int next = nextsemi(argv, argc);
-    if(next>1) {
+    if (next > 1) {
       add_currentnode(x);
-      write_currentnode(x, next-1, argv);
-    } else if (next<1) {
+      write_currentnode(x, next - 1, argv);
+    } else if (next < 1) {
       add_currentnode(x);
       write_currentnode(x, argc, argv);
       break;
     }
-    argv+=next;
-    argc-=next;
+    argv += next;
+    argc -= next;
   }
   delete_emptynodes(x);
 }
 
-static char* escape_pd(const char*src, char*dst)
+static char *escape_pd(const char *src, char *dst)
 {
   /* ',' -> '\,'; ' ' -> '\ ' */
-  char*dptr = dst;
-  while(*src) {
-    switch(*src) {
+  char *dptr = dst;
+  while (*src) {
+    switch (*src) {
     default:
       break;
 #if 0
@@ -660,19 +647,19 @@ static char* escape_pd(const char*src, char*dst)
       *dptr++ = 0;
       return dst;
     }
-    *dptr++=*src++;
+    *dptr++ = *src++;
   }
   *dptr++ = 0;
   return dst;
 }
-static char* escape_csv(const char*src, char*dst)
+static char *escape_csv(const char *src, char *dst)
 {
   /* if there are special characters in the string, quote everything */
   int needsquotes = 0;
-  const char*sptr;
-  char*dptr = dst;
-  for(sptr = src; *sptr; sptr++) {
-    switch(*sptr) {
+  const char *sptr;
+  char *dptr = dst;
+  for (sptr = src; *sptr; sptr++) {
+    switch (*sptr) {
     default:
       break;
     case ',':
@@ -681,7 +668,7 @@ static char* escape_csv(const char*src, char*dst)
       needsquotes = 1;
       break;
     }
-    if(needsquotes) {
+    if (needsquotes) {
       break;
     }
   }
@@ -689,14 +676,14 @@ static char* escape_csv(const char*src, char*dst)
     *dptr++ = '"';
   }
 
-  for(sptr = src; *sptr; sptr++) {
-    switch(*sptr) {
+  for (sptr = src; *sptr; sptr++) {
+    switch (*sptr) {
     default:
       break;
 
     /* unescape "\," and "\;" */
     case '\\':
-      switch(sptr[1]) {
+      switch (sptr[1]) {
       default:
         break;
       case ',':
@@ -709,14 +696,14 @@ static char* escape_csv(const char*src, char*dst)
     }
 
     /* escape quotes */
-    switch(*sptr) {
+    switch (*sptr) {
     default:
       break;
     case '"':
       *dptr++ = '"';
       break;
     }
-    *dptr++=*sptr;
+    *dptr++ = *sptr;
   }
 
   if (needsquotes) {
@@ -726,8 +713,7 @@ static char* escape_csv(const char*src, char*dst)
   return dst;
 }
 
-typedef char*(*t_escapefn)(const char*src, char*dst);
-
+typedef char *(*t_escapefn)(const char *src, char *dst);
 
 /* ************************************************************************ */
 /* object methods                                                           */
@@ -736,7 +722,7 @@ static void msgfile_rewind(t_msgfile *x)
 {
   //  while (x->current && x->current->previous) x->current = x->current->previous;
   x->current = x->start;
-  x->previous=0;
+  x->previous = 0;
 }
 static void msgfile_end(t_msgfile *x)
 {
@@ -744,16 +730,15 @@ static void msgfile_end(t_msgfile *x)
     return;
   }
   while (x->current->next) {
-    x->previous= x->current;
+    x->previous = x->current;
     x->current = x->current->next;
   }
-
 }
 static void msgfile_goto(t_msgfile *x, t_float f)
 {
   int i = f;
 
-  if (i<0) {
+  if (i < 0) {
     return;
   }
   if (!x->current) {
@@ -762,7 +747,7 @@ static void msgfile_goto(t_msgfile *x, t_float f)
   msgfile_rewind(x);
 
   while (i-- && x->current->next) {
-    x->previous= x->current;
+    x->previous = x->current;
     x->current = x->current->next;
   }
 }
@@ -780,14 +765,14 @@ static void msgfile_skip(t_msgfile *x, t_float f)
     return;
   }
 
-  while (dummy->next && dummy!=x->current) {
+  while (dummy->next && dummy != x->current) {
     counter++;
-    dummy=dummy->next;
+    dummy = dummy->next;
   }
 
   i = counter + f;
-  if (i<0) {
-    i=0;
+  if (i < 0) {
+    i = 0;
   }
 
   msgfile_goto(x, i);
@@ -803,34 +788,34 @@ static void msgfile_clear(t_msgfile *x)
   }
 }
 
-static int atom2rangeint(t_atom*a, int range)
+static int atom2rangeint(t_atom *a, int range)
 {
   t_float f = atom_getfloat(a);
-  if (f>range) {
+  if (f > range) {
     return range;
   }
-  if (f<-range) {
+  if (f < -range) {
     return -range;
   }
   return (unsigned int)f;
 }
-static void msgfile_delete(t_msgfile *x, t_symbol *UNUSED(s), int ac,
-                           t_atom *av)
+static void msgfile_delete(
+    t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   int count = node_count(x);
-  int pos = atom2rangeint(av+0, count);
+  int pos = atom2rangeint(av + 0, count);
   if (!is_float(av)) {
-    pd_error(x, "[msgfile] illegal deletion index %s",
-             atom_getsymbol(av)->s_name);
+    pd_error(
+        x, "[msgfile] illegal deletion index %s", atom_getsymbol(av)->s_name);
     return;
   }
-  if (count<1) {
+  if (count < 1) {
     return;
   }
-  if (ac==1) {
+  if (ac == 1) {
     int oldwhere = node_wherearewe(x);
 
-    if (pos<0) {
+    if (pos < 0) {
       return;
     }
     if (oldwhere > pos) {
@@ -839,23 +824,23 @@ static void msgfile_delete(t_msgfile *x, t_symbol *UNUSED(s), int ac,
     msgfile_goto(x, pos);
     delete_currentnode(x);
     msgfile_goto(x, oldwhere);
-  } else if (ac==2) {
+  } else if (ac == 2) {
     int pos1 = pos;
-    int pos2 = atom2rangeint(av+1, count);
-    if (!is_float(av+1)) {
+    int pos2 = atom2rangeint(av + 1, count);
+    if (!is_float(av + 1)) {
       pd_error(x, "[msgfile] illegal deletion range %s",
-               atom_getsymbol(av+1)->s_name);
+          atom_getsymbol(av + 1)->s_name);
       return;
     }
 
     if ((pos1 < pos2) || (pos2 == -1)) {
-      if (pos2+1) {
-        delete_region(x, pos1, pos2+1);
+      if (pos2 + 1) {
+        delete_region(x, pos1, pos2 + 1);
       } else {
         delete_region(x, pos1, -1);
       }
     } else {
-      delete_region(x, pos1+1, -1);
+      delete_region(x, pos1 + 1, -1);
       delete_region(x, 0, pos2);
     }
   } else {
@@ -863,19 +848,17 @@ static void msgfile_delete(t_msgfile *x, t_symbol *UNUSED(s), int ac,
   }
 }
 
-static void msgfile_add(t_msgfile *x, t_symbol *UNUSED(s), int ac,
-                        t_atom *av)
+static void msgfile_add(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   msgfile_end(x);
   add_currentnode(x);
   write_currentnode(x, ac, av);
 }
-static void msgfile_add2(t_msgfile *x, t_symbol *UNUSED(s), int ac,
-                         t_atom *av)
+static void msgfile_add2(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   msgfile_end(x);
   if (x->current) {
-    if(x->current->previous) {
+    if (x->current->previous) {
       x->current = x->current->previous;
     }
   } else {
@@ -883,19 +866,19 @@ static void msgfile_add2(t_msgfile *x, t_symbol *UNUSED(s), int ac,
   }
   write_currentnode(x, ac, av);
   if (x->current && x->current->next) {
-    x->previous= x->current;
+    x->previous = x->current;
     x->current = x->current->next;
   }
 }
-static void msgfile_append(t_msgfile *x, t_symbol *UNUSED(s), int ac,
-                           t_atom *av)
+static void msgfile_append(
+    t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   add_currentnode(x);
   write_currentnode(x, ac, av);
 }
 static void msgfile_append2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
 {
-  if(!x->current) {
+  if (!x->current) {
     add_currentnode(x);
   }
 
@@ -905,16 +888,16 @@ static void msgfile_append2(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
     msgfile_append(x, s, ac, av);
   }
 }
-static void msgfile_insert(t_msgfile *x, t_symbol *UNUSED(s), int ac,
-                           t_atom *av)
+static void msgfile_insert(
+    t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   t_msglist *cur = x->current;
   insert_currentnode(x);
   write_currentnode(x, ac, av);
   x->current = cur;
 }
-static void msgfile_insert2(t_msgfile *x, t_symbol *UNUSED(s), int ac,
-                            t_atom *av)
+static void msgfile_insert2(
+    t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   t_msglist *cur = x->current;
   if ((x->current) && (x->current->previous)) {
@@ -930,11 +913,11 @@ static void msgfile_set(t_msgfile *x, t_symbol *s, int ac, t_atom *av)
   msgfile_add(x, s, ac, av);
 }
 
-static void msgfile_replace(t_msgfile *x, t_symbol *UNUSED(s), int ac,
-                            t_atom *av)
+static void msgfile_replace(
+    t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
-  if(x->current) {
-    if(x->current->thislist) {
+  if (x->current) {
+    if (x->current->thislist) {
       freebytes(x->current->thislist, sizeof(x->current->thislist));
     }
     x->current->thislist = 0;
@@ -957,7 +940,7 @@ static void msgfile_this(t_msgfile *x)
 {
   if ((x->current) && (x->current->thislist)) {
     outlet_list(x->x_obj.ob_outlet, gensym("list"), x->current->n,
-                x->current->thislist);
+        x->current->thislist);
   } else {
     outlet_bang(x->x_secondout);
   }
@@ -977,14 +960,14 @@ static void msgfile_next(t_msgfile *x)
 }
 static void msgfile_prev(t_msgfile *x)
 {
-  t_msglist*prev=0;
+  t_msglist *prev = 0;
 
   if ((x->current) && (x->current->previous)) {
     prev = x->current->previous;
   } else if (x->previous) {
     prev = x->previous;
   }
-  if(prev) {
+  if (prev) {
     if (prev->thislist) {
       outlet_list(x->x_obj.ob_outlet, gensym("list"), prev->n, prev->thislist);
     } else {
@@ -999,20 +982,19 @@ static void msgfile_prev(t_msgfile *x)
 static void msgfile_bang(t_msgfile *x)
 {
   if ((x->current) && (x->current->thislist)) {
-    t_msglist*cur=x->current;
-    x->current=cur->next;
-    x->previous=cur;
+    t_msglist *cur = x->current;
+    x->current = cur->next;
+    x->previous = cur;
     outlet_list(x->x_obj.ob_outlet, gensym("list"), cur->n, cur->thislist);
   } else {
     outlet_bang(x->x_secondout);
   }
 }
 
-static void msgfile_find(t_msgfile *x, t_symbol *UNUSED(s), int ac,
-                         t_atom *av)
+static void msgfile_find(t_msgfile *x, t_symbol *UNUSED(s), int ac, t_atom *av)
 {
   t_msglist *found = 0;
-  t_msglist *cur=x->current;
+  t_msglist *cur = x->current;
 
   while (cur) {
     int n = cur->n;
@@ -1020,8 +1002,8 @@ static void msgfile_find(t_msgfile *x, t_symbol *UNUSED(s), int ac,
     t_atom *that = av;
     t_atom *this = cur->thislist;
 
-    if(0==this) {
-      cur=cur->next;
+    if (0 == this) {
+      cur = cur->next;
       continue;
     }
 
@@ -1029,13 +1011,13 @@ static void msgfile_find(t_msgfile *x, t_symbol *UNUSED(s), int ac,
       n = ac;
     }
 
-    while (n-->0) {
-      if ( (strcmp("*", atom_getsymbol(that)->s_name) && atomcmp(that, this)) ) {
+    while (n-- > 0) {
+      if ((strcmp("*", atom_getsymbol(that)->s_name) && atomcmp(that, this))) {
         equal = 0;
       }
 
       that++;
-      this++;
+      this ++;
     }
 
     if (equal) {
@@ -1043,16 +1025,16 @@ static void msgfile_find(t_msgfile *x, t_symbol *UNUSED(s), int ac,
       break;
     }
 
-    cur=cur->next;
+    cur = cur->next;
   }
 
-  if(found) {
+  if (found) {
     x->current = found;
-    x->previous= found->previous;
+    x->previous = found->previous;
     outlet_float(x->x_secondout, node_wherearewe(x));
-    if(found->n && found->thislist) {
-      outlet_list(x->x_obj.ob_outlet, gensym("list"), found->n,
-                  found->thislist);
+    if (found->n && found->thislist) {
+      outlet_list(
+          x->x_obj.ob_outlet, gensym("list"), found->n, found->thislist);
     }
   } else {
     outlet_bang(x->x_secondout);
@@ -1068,13 +1050,10 @@ static void msgfile_where(t_msgfile *x)
   }
 }
 
-
-static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol*s1,
-                         t_symbol*r)
+static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol *s1, t_symbol *r)
 {
   pd_error(x, "sorting not implemented yet: '%s', '%s' -> '%s'", s0->s_name,
-           s1->s_name, r->s_name);
-
+      s1->s_name, r->s_name);
 
 #if 0
   int step = argc, n;
@@ -1108,24 +1087,21 @@ static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol*s1,
     }
   }
 #endif
-
 }
-
 
 /* ********************************** */
 /* file I/O                           */
 
-static void msgfile_read2(t_msgfile *x, t_symbol *filename,
-                          t_symbol *sformat)
+static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *sformat)
 {
   int rmode = 0;
 
-  int fd=0;
-  FILE*fil=NULL;
+  int fd = 0;
+  FILE *fil = NULL;
   long readlength, length;
   char filnam[MAXPDSTRING];
   char buf[MAXPDSTRING], *bufptr, *readbuf;
-  const char*dirname=canvas_getdir(x->x_canvas)->s_name;
+  const char *dirname = canvas_getdir(x->x_canvas)->s_name;
   t_parsefn parsefn = 0;
 
   t_msgfile_format format = symbol2format(x, sformat);
@@ -1134,7 +1110,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   rmode |= O_BINARY;
 #endif
 
-  switch(format) {
+  switch (format) {
   case FORMAT_CSV:
     parsefn = parse_csv;
     break;
@@ -1148,14 +1124,14 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
     parsefn = 0;
   }
 
-  if( !parsefn ) {
+  if (!parsefn) {
     /* use Pd's own parser
      * this gives somewhat weird results with escaped LF,
      * but is consistent with how [textfile] reads the data
      */
-    t_binbuf*bbuf = binbuf_new();
-    binbuf_read_via_canvas(bbuf, filename->s_name, x->x_canvas,
-                           (FORMAT_CR == format));
+    t_binbuf *bbuf = binbuf_new();
+    binbuf_read_via_canvas(
+        bbuf, filename->s_name, x->x_canvas, (FORMAT_CR == format));
     msgfile_addbinbuf(x, bbuf);
     binbuf_free(bbuf);
     return;
@@ -1163,14 +1139,14 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
 
   /* cannot use Pd's binbuf parser, so we do our own thing */
 
-  fd = open_via_path(dirname,
-                     filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0);
+  fd = open_via_path(
+      dirname, filename->s_name, "", buf, &bufptr, MAXPDSTRING, 0);
 
   if (fd < 0) {
     /* open via path failed, fall back */
-    fd=sys_open(filename->s_name, rmode);
-    if(fd < 0) {
-      pd_error(x, "can't open in %s/%s",  dirname, filename->s_name);
+    fd = sys_open(filename->s_name, rmode);
+    if (fd < 0) {
+      pd_error(x, "can't open in %s/%s", dirname, filename->s_name);
       return;
     } else {
       sys_close(fd);
@@ -1178,25 +1154,25 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
     }
   } else {
     sys_close(fd);
-    if(snprintf(filnam, MAXPDSTRING, "%s/%s", buf, bufptr) < 0) {
-      pd_error(x, "can't create in '%s/%s'",  buf, bufptr);
+    if (snprintf(filnam, MAXPDSTRING, "%s/%s", buf, bufptr) < 0) {
+      pd_error(x, "can't create in '%s/%s'", buf, bufptr);
       return;
     }
   }
-  filnam[MAXPDSTRING-1]=0;
+  filnam[MAXPDSTRING - 1] = 0;
 
-  fil=sys_fopen(filnam, "rb");
-  if(fil==NULL) {
+  fil = sys_fopen(filnam, "rb");
+  if (fil == NULL) {
     pd_error(x, "could not open '%s'", filnam);
     return;
   }
   fseek(fil, 0, SEEK_END);
-  length=ftell(fil);
+  length = ftell(fil);
   fseek(fil, 0, SEEK_SET);
 
-  if (!(readbuf = t_getbytes(length+1))) {
-    pd_error(x, "msgfile_read: could not reserve %ld bytes to read into",
-             length);
+  if (!(readbuf = t_getbytes(length + 1))) {
+    pd_error(
+        x, "msgfile_read: could not reserve %ld bytes to read into", length);
     sys_fclose(fil);
     return;
   }
@@ -1204,9 +1180,9 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
   /* read */
   if ((readlength = fread(readbuf, sizeof(char), length, fil)) < length) {
     pd_error(x, "msgfile_read: unable to read %s: %ld of %ld", filnam,
-             readlength, length);
+        readlength, length);
     sys_fclose(fil);
-    t_freebytes(readbuf, length+1);
+    t_freebytes(readbuf, length + 1);
     return;
   }
   /* close */
@@ -1217,18 +1193,15 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename,
 
   msgfile_str2parse(x, readbuf, parsefn);
 
-  t_freebytes(readbuf, length+1);
+  t_freebytes(readbuf, length + 1);
 }
-static void msgfile_read(t_msgfile *x, t_symbol *filename,
-                         t_symbol *format)
+static void msgfile_read(t_msgfile *x, t_symbol *filename, t_symbol *format)
 {
   msgfile_clear(x);
   msgfile_read2(x, filename, format);
 }
 
-
-static void msgfile_write(t_msgfile *x, t_symbol *filename,
-                          t_symbol *sformat)
+static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *sformat)
 {
   char buf[MAXPDSTRING];
   t_msglist *cur = x->start;
@@ -1239,7 +1212,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
   int errcount = 0;
   t_escapefn escapefn = escape_pd;
 
-  FILE *f=0;
+  FILE *f = 0;
 
   switch (format) {
   case FORMAT_TXT:
@@ -1258,10 +1231,8 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
     break;
   }
 
-
   /* open */
-  canvas_makefilename(x->x_canvas, filename->s_name,
-                      buf, MAXPDSTRING);
+  canvas_makefilename(x->x_canvas, filename->s_name, buf, MAXPDSTRING);
   sys_bashfilename(buf, filnam);
   f = sys_fopen(filnam, "w");
   if (!f) {
@@ -1269,11 +1240,11 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
     return;
   }
 
-  for(cur = x->start; cur; cur=cur->next) {
+  for (cur = x->start; cur; cur = cur->next) {
     int i;
-    for(i=0; i<cur->n; i++) {
-      t_atom*a = cur->thislist + i;
-      switch(a->a_type) {
+    for (i = 0; i < cur->n; i++) {
+      t_atom *a = cur->thislist + i;
+      switch (a->a_type) {
       case A_FLOAT:
         errcount += (fprintf(f, "%g", atom_getfloat(a)) < 1);
         break;
@@ -1283,26 +1254,25 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
       default: {
         int mylen = 0;
         char mytext[MAXPDSTRING];
-        char mytext2[MAXPDSTRING*2];
+        char mytext2[MAXPDSTRING * 2];
         atom_string(a, mytext, MAXPDSTRING);
         escapefn(mytext, mytext2);
         mylen = strnlen(mytext2, MAXPDSTRING);
         errcount += (fwrite(mytext2, mylen, sizeof(char), f) < 1);
       }
       }
-      if(i + 1 < cur->n) {
+      if (i + 1 < cur->n) {
         errcount += (fwrite(&separator, sizeof(char), 1, f) < 1);
       }
     }
-    if(eol) {
+    if (eol) {
       errcount += (fwrite(&eol, sizeof(char), 1, f) < 1);
     }
     errcount += (fwrite("\n", sizeof(char), 1, f) < 1);
   }
 
   if (errcount > 0) {
-    pd_error(x, "msgfile : failed to write '%s': % d errors", filnam,
-             errcount);
+    pd_error(x, "msgfile : failed to write '%s': % d errors", filnam, errcount);
   }
   /* close */
   sys_fclose(f);
@@ -1314,11 +1284,11 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename,
 static void msgfile_print(t_msgfile *x)
 {
   t_msglist *cur = x->start;
-  int j=0;
+  int j = 0;
   post("--------- msgfile contents: -----------");
 
   while (cur) {
-    t_msglist *dum=cur;
+    t_msglist *dum = cur;
     int i;
     startpost("line %d:", j);
     j++;
@@ -1333,7 +1303,7 @@ static void msgfile_print(t_msgfile *x)
 
 static void msgfile_help(t_msgfile *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " msgfile\t:: handle and store files of lists");
+  post("\n" HEARTSYMBOL " msgfile\t:: handle and store files of lists");
   post("goto <n>\t: goto line <n>"
        "\nrewind\t\t: goto the beginning of the file"
        "\nend\t\t: goto the end of the file"
@@ -1360,7 +1330,8 @@ static void msgfile_help(t_msgfile *UNUSED(x))
        "\n\t\t: valid <formats> are\t: pd, cr, fudi, txt, csv"
        "\n\nprint\t\t: show buffer (for debugging)"
        "\nhelp\t\t: show this help");
-  post("creation: \"msgfile [<format>]\": <format> defines fileaccess-mode(default is 'pd')");
+  post("creation: \"msgfile [<format>]\": <format> defines "
+       "fileaccess-mode(default is 'pd')");
 }
 static void msgfile_free(t_msgfile *x)
 {
@@ -1374,12 +1345,12 @@ static void *msgfile_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 
   /* an empty node indicates the end of our listbuffer */
   x->current = 0;
-  x->start   = 0;
-  x->previous= 0;
+  x->start = 0;
+  x->previous = 0;
 
-  x->format=FORMAT_PD; /* that's the default */
+  x->format = FORMAT_PD; /* that's the default */
 
-  if ((argc==1) && (argv->a_type == A_SYMBOL)) {
+  if ((argc == 1) && (argv->a_type == A_SYMBOL)) {
     x->format = symbol2format(x, atom_getsymbol(argv));
   }
 
@@ -1387,16 +1358,16 @@ static void *msgfile_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   x->x_secondout = outlet_new(&x->x_obj, gensym("float"));
   x->x_canvas = canvas_getcurrent();
 
-  x->eol=' ';
-  x->separator=',';
+  x->eol = ' ';
+  x->separator = ',';
 
   return (x);
 }
 
 ZEXY_SETUP void msgfile_setup(void)
 {
-  msgfile_class = zexy_new("msgfile",
-                           msgfile_new, msgfile_free, t_msgfile, CLASS_DEFAULT, "*");
+  msgfile_class = zexy_new(
+      "msgfile", msgfile_new, msgfile_free, t_msgfile, CLASS_DEFAULT, "*");
   zexy_addmethod(msgfile_class, (t_method)msgfile_goto, "goto", "F");
   zexy_addmethod(msgfile_class, (t_method)msgfile_rewind, "rewind", "");
   zexy_addmethod(msgfile_class, (t_method)msgfile_rewind, "begin", "");
@@ -1431,7 +1402,6 @@ ZEXY_SETUP void msgfile_setup(void)
   class_addbang(msgfile_class, msgfile_bang);
   zexy_addmethod(msgfile_class, (t_method)msgfile_this, "this", "");
   zexy_addmethod(msgfile_class, (t_method)msgfile_where, "where", "");
-
 
   zexy_addmethod(msgfile_class, (t_method)msgfile_sort, "sort", "sss");
 

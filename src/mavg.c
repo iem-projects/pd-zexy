@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *mavg_class=NULL;
+static t_class *mavg_class = NULL;
 
 typedef struct _mavg {
   t_object x_obj;
@@ -35,39 +35,38 @@ static void mavg_resize(t_mavg *x, t_float f)
   int i = (int)f;
   t_float *dumbuf;
 
-  if ((i<1) || (i == x->size)) {
+  if ((i < 1) || (i == x->size)) {
     return;
   }
 
-  dumbuf = getbytes(sizeof(t_float)*i);
-  if(!dumbuf) {
+  dumbuf = getbytes(sizeof(t_float) * i);
+  if (!dumbuf) {
     pd_error(x, "unable to allocate memory for %d elements", i);
     return;
   }
-  if(x->buf) {
-    freebytes(x->buf, sizeof(t_float)*x->size);
+  if (x->buf) {
+    freebytes(x->buf, sizeof(t_float) * x->size);
   }
   x->buf = x->wp = dumbuf;
   x->size = i;
-  x->n_inv = 1.0/(t_float)i;
+  x->n_inv = 1.0 / (t_float)i;
 
-  while(i--) {
+  while (i--) {
     *dumbuf++ = x->avg;
   }
 }
 
-static void mavg_set(t_mavg *x, t_symbol* UNUSED(s), int argc,
-                     t_atom *argv)
+static void mavg_set(t_mavg *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   int i = x->size;
   t_float *dummy = x->buf;
-  t_float f=(argc)?atom_getfloat(argv):x->avg;
-  if(!x->buf) {
+  t_float f = (argc) ? atom_getfloat(argv) : x->avg;
+  if (!x->buf) {
     return;
   }
 
   while (i--) {
-    *dummy++=f;
+    *dummy++ = f;
   }
 
   x->wp = x->buf;
@@ -78,7 +77,7 @@ static void mavg_float(t_mavg *x, t_float f)
   int i = x->size;
   t_float dummy = 0;
   t_float *dumb = x->buf;
-  if(!x->buf) {
+  if (!x->buf) {
     return;
   }
 
@@ -91,15 +90,15 @@ static void mavg_float(t_mavg *x, t_float f)
     dummy += *dumb++;
   }
 
-  x->avg = dummy*x->n_inv;
+  x->avg = dummy * x->n_inv;
 
-  outlet_float(x->x_obj.ob_outlet,x->avg);
+  outlet_float(x->x_obj.ob_outlet, x->avg);
 }
 
 static void *mavg_new(t_floatarg f)
 {
   t_mavg *x = (t_mavg *)pd_new(mavg_class);
-  int i = (f<1)?2:f;
+  int i = (f < 1) ? 2 : f;
 
   outlet_new(&x->x_obj, gensym("float"));
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
@@ -120,8 +119,7 @@ static void mavg_help(void)
 
 ZEXY_SETUP void mavg_setup(void)
 {
-  mavg_class = zexy_new("mavg",
-                        mavg_new, 0, t_mavg, CLASS_DEFAULT, "F");
+  mavg_class = zexy_new("mavg", mavg_new, 0, t_mavg, CLASS_DEFAULT, "F");
 
   class_addfloat(mavg_class, (t_method)mavg_float);
 

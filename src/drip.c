@@ -25,10 +25,9 @@ like a medical drip
 you can adjust the drop-speed in [ms]
 */
 
-
 #include "zexy.h"
 
-static t_class *drip_class=NULL;
+static t_class *drip_class = NULL;
 
 typedef struct _drip {
   t_object x_obj;
@@ -37,11 +36,10 @@ typedef struct _drip {
   int bufsize;
 
   t_clock *x_clock;
-  t_float  deltime;
+  t_float deltime;
 
-  int    flush;
+  int flush;
 } t_drip;
-
 
 static void drip_makebuffer(t_drip *x, int n, t_atom *list)
 {
@@ -60,7 +58,6 @@ static void drip_bang(t_drip *x)
 {
   outlet_bang(x->x_obj.ob_outlet);
 }
-
 
 static void drip_all(t_drip *x, int argc, t_atom *argv)
 {
@@ -109,8 +106,7 @@ static void drip_tick(t_drip *x)
   }
 }
 
-static void drip_list(t_drip *x, t_symbol* UNUSED(s), int argc,
-                      t_atom *argv)
+static void drip_list(t_drip *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   if (x->flush && x->current) { /* do we want to flush */
     drip_all(x, x->bufsize - (x->current - x->buffer), x->current);
@@ -132,7 +128,7 @@ static void drip_list(t_drip *x, t_symbol* UNUSED(s), int argc,
       outlet_bang(x->x_obj.ob_outlet);
     }
     /* create a buffer and copy the remaining list into it */
-    drip_makebuffer(x, argc-1, argv+1);
+    drip_makebuffer(x, argc - 1, argv + 1);
     /* set the clock and start */
     clock_delay(x->x_clock, x->deltime);
   } else { /* UNSCHEDULED */
@@ -170,12 +166,11 @@ static void drip_free(t_drip *x)
   }
 }
 
-
-static void *drip_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
+static void *drip_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_drip *x = (t_drip *)pd_new(drip_class);
 
-  if (argc>1) {
+  if (argc > 1) {
     x->flush = 1;
   } else {
     x->flush = 0;
@@ -199,11 +194,11 @@ static void *drip_new(t_symbol* UNUSED(s), int argc, t_atom *argv)
 
 ZEXY_SETUP void drip_setup(void)
 {
-  drip_class = zexy_new("drip",
-                        drip_new, drip_free, t_drip, CLASS_DEFAULT, "*");
+  drip_class =
+      zexy_new("drip", drip_new, drip_free, t_drip, CLASS_DEFAULT, "*");
 
-  class_addbang    (drip_class, drip_bang);
-  class_addlist    (drip_class, drip_list);
+  class_addbang(drip_class, drip_bang);
+  class_addlist(drip_class, drip_list);
   class_addanything(drip_class, drip_anything);
   zexy_register("drip");
 }

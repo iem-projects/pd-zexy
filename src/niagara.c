@@ -30,7 +30,7 @@
   (though this cannot handle negative indices)
 */
 
-static t_class *niagara_class=NULL;
+static t_class *niagara_class = NULL;
 
 typedef struct _niagara {
   t_object x_obj;
@@ -43,12 +43,12 @@ static void niagara_list(t_niagara *x, t_symbol *s, int argc, t_atom *argv)
   int n_l, n_r;
   t_atom *ap_l, *ap_r;
   int dumrock = x->rock;
-  int rock = ((dumrock < 0.f)?(argc+dumrock):dumrock);
+  int rock = ((dumrock < 0.f) ? (argc + dumrock) : dumrock);
 
-  n_l  = (rock < argc)?rock:argc;
+  n_l = (rock < argc) ? rock : argc;
   ap_l = argv;
 
-  n_r  = argc - n_l;
+  n_r = argc - n_l;
   ap_r = &argv[n_l];
 
   if (n_r) {
@@ -65,13 +65,13 @@ static void niagara_any(t_niagara *x, t_symbol *s, int argc, t_atom *argv)
   t_atom *ap_l, *ap_r;
   t_symbol *s_l;
   int dumrock = x->rock;
-  int rock = ((dumrock < 0.f)?(argc+dumrock):dumrock-1);
+  int rock = ((dumrock < 0.f) ? (argc + dumrock) : dumrock - 1);
 
-  n_l  = (rock < argc)?rock:argc;
+  n_l = (rock < argc) ? rock : argc;
   ap_l = argv;
-  s_l  = s;
+  s_l = s;
 
-  n_r  = argc - n_l;
+  n_r = argc - n_l;
   ap_r = &argv[n_l];
 
   if (n_r) {
@@ -86,7 +86,7 @@ static void niagara_any(t_niagara *x, t_symbol *s, int argc, t_atom *argv)
     outlet_anything(x->right, s_r, n_r, ap_r);
   }
 
-  if (n_l+1 ) {
+  if (n_l + 1) {
     outlet_anything(x->left, s_l, n_l, ap_l);
   }
 }
@@ -97,7 +97,7 @@ static void *niagara_new(t_floatarg f)
 
   x->rock = f;
 
-  x->left =  outlet_new(&x->x_obj, gensym("list"));
+  x->left = outlet_new(&x->x_obj, gensym("list"));
   x->right = outlet_new(&x->x_obj, gensym("list"));
 
   floatinlet_new(&x->x_obj, &x->rock);
@@ -107,10 +107,10 @@ static void *niagara_new(t_floatarg f)
 
 ZEXY_SETUP void niagara_setup(void)
 {
-  niagara_class = zexy_new("niagara",
-                           niagara_new, 0, t_niagara, CLASS_DEFAULT, "F");
+  niagara_class =
+      zexy_new("niagara", niagara_new, 0, t_niagara, CLASS_DEFAULT, "F");
 
-  class_addlist    (niagara_class, niagara_list);
+  class_addlist(niagara_class, niagara_list);
   class_addanything(niagara_class, niagara_any);
 
   zexy_register("niagara");

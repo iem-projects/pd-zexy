@@ -25,8 +25,7 @@
 
 #include "zexy.h"
 
-
-static t_class *sigzero_class=NULL;
+static t_class *sigzero_class = NULL;
 
 typedef struct _sigzero {
   t_object x_obj;
@@ -36,7 +35,7 @@ typedef struct _sigzero {
 
 static void sigzero_activate(t_sigzero *x, t_floatarg activate)
 {
-  x->activate = (activate)?1:0;
+  x->activate = (activate) ? 1 : 0;
 }
 
 static void sigzero_banged(t_sigzero *x)
@@ -55,7 +54,6 @@ static t_int *sigzero_perform(t_int *w)
   t_sigzero *x = (t_sigzero *)w[2];
   int n = (int)w[3];
 
-
   if (x->activate) {
     int non_zero = 0;
     while (n--) {
@@ -69,7 +67,7 @@ static t_int *sigzero_perform(t_int *w)
     }
   }
 
-  return (w+4);
+  return (w + 4);
 }
 
 static void sigzero_dsp(t_sigzero *x, t_signal **sp)
@@ -79,8 +77,8 @@ static void sigzero_dsp(t_sigzero *x, t_signal **sp)
 
 static void sigzero_tilde_helper(void)
 {
-  post("\n"HEARTSYMBOL
-       " sigzero~-object :: for detecting whether a signal is currently zero or not");
+  post("\n" HEARTSYMBOL " sigzero~-object :: for detecting whether a signal is "
+       "currently zero or not");
   post("'bang'\t: turn the detector on\n"
        "'off'\t: turn it off\n"
        "<1/0>\t: turn it on/off\n"
@@ -98,8 +96,8 @@ static void *sigzero_new(void)
 
 ZEXY_SETUP void sigzero_tilde_setup(void)
 {
-  sigzero_class = zexy_new("sigzero~",
-                           sigzero_new, 0, t_sigzero, CLASS_DEFAULT, "");
+  sigzero_class =
+      zexy_new("sigzero~", sigzero_new, 0, t_sigzero, CLASS_DEFAULT, "");
   class_addfloat(sigzero_class, sigzero_activate);
   class_addbang(sigzero_class, sigzero_banged);
   zexy_addmethod(sigzero_class, (t_method)sigzero_off, "off", "");

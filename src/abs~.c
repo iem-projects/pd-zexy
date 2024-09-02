@@ -17,7 +17,6 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "zexySIMD.h"
 
 typedef struct _abs {
@@ -25,10 +24,9 @@ typedef struct _abs {
   t_float x_f;
 } t_abs;
 
-
 /* ------------------------ sigABS~ ----------------------------- */
 
-static t_class *sigABS_class=NULL;
+static t_class *sigABS_class = NULL;
 
 static t_int *sigABS_perform(t_int *w)
 {
@@ -40,18 +38,18 @@ static t_int *sigABS_perform(t_int *w)
     *out++ = Z_FABS(*in++);
   }
 
-  return (w+4);
+  return (w + 4);
 }
 
 #ifdef __SSE__
-static int l_bitmask[]= {0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
+static int l_bitmask[] = {0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff};
 static t_int *sigABS_performSSE(t_int *w)
 {
-  __m128 *in =  (__m128 *)(w[1]);
+  __m128 *in = (__m128 *)(w[1]);
   __m128 *out = (__m128 *)(w[2]);
-  int n = (int)(w[3])>>4;
+  int n = (int)(w[3]) >> 4;
 
-  __m128  bitmask= _mm_loadu_ps((float*)l_bitmask);
+  __m128 bitmask = _mm_loadu_ps((float *)l_bitmask);
 
   while (n--) {
     out[0] = _mm_and_ps(in[0], bitmask);
@@ -59,11 +57,10 @@ static t_int *sigABS_performSSE(t_int *w)
     out[2] = _mm_and_ps(in[2], bitmask);
     out[3] = _mm_and_ps(in[3], bitmask);
 
-    in +=4;
-    out+=4;
-
+    in += 4;
+    out += 4;
   }
-#if 0
+#  if 0
   /*
    * handwritten SSE-code by tim blechmann
    *
@@ -110,24 +107,18 @@ static t_int *sigABS_performSSE(t_int *w)
     :"r"(in), "r"(out), "c"(n), "r"(0)
     :"%xmm0", "%xmm1", "%xmm2", "%xmm3", "%xmm4"
   );
-#endif /*0*/
+#  endif /*0*/
 
-  return (w+4);
+  return (w + 4);
 }
 #endif /* __SSE__ */
 
-static void sigABS_dsp(t_abs * UNUSED(x), t_signal **sp)
+static void sigABS_dsp(t_abs *UNUSED(x), t_signal **sp)
 {
 #ifdef __SSE__
-  if(
-    Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n) &&
-    Z_SIMD_CHKALIGN(sp[0]->s_vec) &&
-    Z_SIMD_CHKALIGN(sp[1]->s_vec) &&
-    ZEXY_TYPE_EQUAL(t_sample, float) &&
-    zexy_testSSE(sigABS_perform,
-                 sigABS_performSSE,
-                 1, 1)
-  ) {
+  if (Z_SIMD_CHKBLOCKSIZE(sp[0]->s_n) && Z_SIMD_CHKALIGN(sp[0]->s_vec) &&
+      Z_SIMD_CHKALIGN(sp[1]->s_vec) && ZEXY_TYPE_EQUAL(t_sample, float) &&
+      zexy_testSSE(sigABS_perform, sigABS_performSSE, 1, 1)) {
     dsp_add(sigABS_performSSE, 3, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
   } else
 #endif
@@ -138,13 +129,13 @@ static void sigABS_dsp(t_abs * UNUSED(x), t_signal **sp)
 
 static void sigABS_helper(void)
 {
-  post("\n"HEARTSYMBOL " abs~ \t\t:: absolute value of a signal");
+  post("\n" HEARTSYMBOL " abs~ \t\t:: absolute value of a signal");
 }
 
 static void *sigABS_new(void)
 {
   t_abs *x = (t_abs *)pd_new(sigABS_class);
-  x->x_f=0.f;
+  x->x_f = 0.f;
   outlet_new(&x->x_obj, gensym("signal"));
 
   return (x);
@@ -152,8 +143,7 @@ static void *sigABS_new(void)
 
 ZEXY_SETUP void abs_tilde_setup(void)
 {
-  sigABS_class = zexy_new("abs~",
-                          sigABS_new, 0, t_abs, CLASS_DEFAULT, "");
+  sigABS_class = zexy_new("abs~", sigABS_new, 0, t_abs, CLASS_DEFAULT, "");
   CLASS_MAINSIGNALIN(sigABS_class, t_abs, x_f);
   zexy_addmethod(sigABS_class, (t_method)sigABS_dsp, "dsp", "!");
 

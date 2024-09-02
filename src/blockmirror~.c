@@ -17,7 +17,6 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "zexy.h"
 
 /* ------------------------ blockmirror~ ----------------------------- */
@@ -26,7 +25,7 @@
    {x[0], x[1], ... x[n-1]} --> {x[n-1], x[n-2], ... x[0]}
 */
 
-static t_class *blockmirror_class=NULL;
+static t_class *blockmirror_class = NULL;
 
 typedef struct _blockmirror {
   t_object x_obj;
@@ -47,73 +46,73 @@ static t_int *blockmirror_perform(t_int *w)
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   if (x->doit) {
-    if (in==out) {
-      int N=n;
-      t_sample *dummy=x->blockbuffer;
-      while(n--) {
-        *dummy++=*in++;
+    if (in == out) {
+      int N = n;
+      t_sample *dummy = x->blockbuffer;
+      while (n--) {
+        *dummy++ = *in++;
       }
       dummy--;
-      while(N--) {
-        *out++=*dummy--;
+      while (N--) {
+        *out++ = *dummy--;
       }
     } else {
-      in+=n-1;
-      while(n--) {
-        *out++=*in--;
+      in += n - 1;
+      while (n--) {
+        *out++ = *in--;
       }
     }
-  } else while (n--) {
+  } else
+    while (n--) {
       *out++ = *in++;
     }
-  return (w+5);
+  return (w + 5);
 }
 
 static void blockmirror_dsp(t_blockmirror *x, t_signal **sp)
 {
-  if (x->blocksize<sp[0]->s_n) {
-    if(x->blockbuffer) {
-      freebytes(x->blockbuffer, sizeof(*x->blockbuffer)*x->blocksize);
+  if (x->blocksize < sp[0]->s_n) {
+    if (x->blockbuffer) {
+      freebytes(x->blockbuffer, sizeof(*x->blockbuffer) * x->blocksize);
     }
     x->blocksize = sp[0]->s_n;
-    x->blockbuffer = getbytes(sizeof(*x->blockbuffer)*x->blocksize);
+    x->blockbuffer = getbytes(sizeof(*x->blockbuffer) * x->blocksize);
   }
   dsp_add(blockmirror_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void blockmirror_helper(t_blockmirror* UNUSED(x))
+static void blockmirror_helper(t_blockmirror *UNUSED(x))
 {
-  post("\n"HEARTSYMBOL " blockmirror~-object for reverting a signal");
+  post("\n" HEARTSYMBOL " blockmirror~-object for reverting a signal");
   post("'help' : view this\n"
        "signal~");
   post("outlet : signal~");
 }
-static void blockmirror_free(t_blockmirror*x)
+static void blockmirror_free(t_blockmirror *x)
 {
-  if(x->blockbuffer) {
-    freebytes(x->blockbuffer, sizeof(*x->blockbuffer)*x->blocksize);
+  if (x->blockbuffer) {
+    freebytes(x->blockbuffer, sizeof(*x->blockbuffer) * x->blocksize);
   }
-  x->blockbuffer=0;
+  x->blockbuffer = 0;
 }
 static void *blockmirror_new(void)
 {
   t_blockmirror *x = (t_blockmirror *)pd_new(blockmirror_class);
   outlet_new(&x->x_obj, gensym("signal"));
   x->doit = 1;
-  x->blocksize=0;
+  x->blocksize = 0;
   return (x);
 }
 
 ZEXY_SETUP void blockmirror_tilde_setup(void)
 {
-  blockmirror_class = zexy_new("blockmirror~",
-                               blockmirror_new, blockmirror_free, t_blockmirror, CLASS_DEFAULT, "");
+  blockmirror_class = zexy_new("blockmirror~", blockmirror_new,
+      blockmirror_free, t_blockmirror, CLASS_DEFAULT, "");
   zexy_addmethod(blockmirror_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(blockmirror_class, (t_method)blockmirror_dsp, "dsp", "!");
 
   class_addfloat(blockmirror_class, blockmirror_float);
 
-  zexy_addmethod(blockmirror_class, (t_method)blockmirror_helper, "help",
-                 "");
+  zexy_addmethod(blockmirror_class, (t_method)blockmirror_helper, "help", "");
   zexy_register("blockmirror~");
 }

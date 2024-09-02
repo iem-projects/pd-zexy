@@ -19,7 +19,7 @@
 
 #include "zexy.h"
 
-static t_class *tavg_class=NULL;
+static t_class *tavg_class = NULL;
 
 typedef struct _tavg {
   t_object x_obj;
@@ -28,11 +28,10 @@ typedef struct _tavg {
   unsigned int blocks;
 } t_tavgtilde;
 
-
 static void tavg_bang(t_tavgtilde *x)
 {
   if (x->blocks) {
-    t_float result=x->buf*x->n_inv/x->blocks;
+    t_float result = x->buf * x->n_inv / x->blocks;
     outlet_float(x->x_obj.ob_outlet, result);
     x->blocks = 0;
     x->buf = 0.;
@@ -51,12 +50,12 @@ static t_int *tavg_perform(t_int *w)
   }
   x->buf = buf;
   x->blocks++;
-  return (w+4);
+  return (w + 4);
 }
 
 static void tavg_dsp(t_tavgtilde *x, t_signal **sp)
 {
-  x->n_inv=1./sp[0]->s_n;
+  x->n_inv = 1. / sp[0]->s_n;
   dsp_add(tavg_perform, 3, sp[0]->s_vec, x, sp[0]->s_n);
 }
 
@@ -75,8 +74,7 @@ static void tavg_help(void)
 
 ZEXY_SETUP void tavg_tilde_setup(void)
 {
-  tavg_class = zexy_new("tavg~",
-                        tavg_new, 0, t_tavgtilde, CLASS_DEFAULT, "");
+  tavg_class = zexy_new("tavg~", tavg_new, 0, t_tavgtilde, CLASS_DEFAULT, "");
   zexy_addmethod(tavg_class, (t_method)nullfn, "signal", "");
   zexy_addmethod(tavg_class, (t_method)tavg_dsp, "dsp", "!");
 

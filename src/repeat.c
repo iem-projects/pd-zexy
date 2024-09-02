@@ -21,37 +21,36 @@
 
 /* ------------------------- repeat ------------------------------- */
 
-static t_class *repeat_class=NULL;
+static t_class *repeat_class = NULL;
 
 typedef struct _repeat {
   t_object x_obj;
   t_float fcount;
 } t_repeat;
 
-static void repeat_anything(t_repeat *x, t_symbol *s, int argc,
-                            t_atom *argv)
+static void repeat_anything(t_repeat *x, t_symbol *s, int argc, t_atom *argv)
 {
   int i;
-  i=x->fcount;
-  if (i<0) {
-    i=1;
+  i = x->fcount;
+  if (i < 0) {
+    i = 1;
   }
-  while(i--) {
+  while (i--) {
     outlet_anything(x->x_obj.ob_outlet, s, argc, argv);
   }
 }
 
-static void *repeat_new(t_symbol* UNUSED(s), int argc, t_atom*argv)
+static void *repeat_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   t_repeat *x = (t_repeat *)pd_new(repeat_class);
-  if(argc) {
-    if(A_FLOAT==argv->a_type) {
+  if (argc) {
+    if (A_FLOAT == argv->a_type) {
       x->fcount = atom_getfloat(argv);
     } else {
       return 0;
     }
   } else {
-    x->fcount=2;
+    x->fcount = 2;
   }
   floatinlet_new(&x->x_obj, &x->fcount);
   outlet_new(&x->x_obj, 0);
@@ -60,8 +59,8 @@ static void *repeat_new(t_symbol* UNUSED(s), int argc, t_atom*argv)
 
 ZEXY_SETUP void repeat_setup(void)
 {
-  repeat_class = zexy_new("repeat",
-                          repeat_new, 0, t_repeat, CLASS_DEFAULT, "*");
+  repeat_class =
+      zexy_new("repeat", repeat_new, 0, t_repeat, CLASS_DEFAULT, "*");
   class_addanything(repeat_class, repeat_anything);
 
   zexy_register("repeat");

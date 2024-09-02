@@ -22,8 +22,7 @@
 
 /******************** tabread4~~ ***********************/
 
-
-static t_class *tabread4_tilde_class=NULL;
+static t_class *tabread4_tilde_class = NULL;
 
 typedef struct _tabread4_tilde {
   t_object x_obj;
@@ -38,7 +37,7 @@ static void *tabread4_tilde_new(t_symbol *s)
   t_tabread4_tilde *x = (t_tabread4_tilde *)pd_new(tabread4_tilde_class);
   x->x_arrayname = s;
   x->x_vec = 0;
-  x->x_npoints=0;
+  x->x_npoints = 0;
 
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
   outlet_new(&x->x_obj, gensym("signal"));
@@ -62,15 +61,15 @@ static t_int *tabread4_tilde_perform(t_int *w)
     while (n--) {
       *out++ = 0;
     }
-    return (w+6);
+    return (w + 6);
   }
   for (i = 0; i < n; i++) {
-    t_sample in0_s=*in++;
-    t_sample in1_s=*in1++;
+    t_sample in0_s = *in++;
+    t_sample in1_s = *in1++;
     double findex = (double)in0_s + (double)in1_s;
     long int index = findex;
     double frac;
-    t_sample a,  b,  c,  d, cminusb;
+    t_sample a, b, c, d, cminusb;
     if (index < 1) {
       index = 1, frac = 0;
     } else if (index > maxindex) {
@@ -82,18 +81,16 @@ static t_int *tabread4_tilde_perform(t_int *w)
     wp = buf + index;
 
     a = wp[-1].w_float;
-    b = wp[ 0].w_float;
-    c = wp[ 1].w_float;
-    d = wp[ 2].w_float;
+    b = wp[0].w_float;
+    c = wp[1].w_float;
+    d = wp[2].w_float;
 
-    cminusb = c-b;
-    *out++ = b + frac * (
-               cminusb - 0.1666667f * (1.-frac) * (
-                 (d - a - 3.0f * cminusb) * frac + (d + 2.0f*a - 3.0f*b)
-               )
-             );
+    cminusb = c - b;
+    *out++ = b + frac * (cminusb - 0.1666667f * (1. - frac) *
+                                       ((d - a - 3.0f * cminusb) * frac +
+                                           (d + 2.0f * a - 3.0f * b)));
   }
-  return (w+6);
+  return (w + 6);
 }
 
 static void tabread4_tilde_set(t_tabread4_tilde *x, t_symbol *s)
@@ -118,9 +115,8 @@ static void tabread4_tilde_dsp(t_tabread4_tilde *x, t_signal **sp)
 {
   tabread4_tilde_set(x, x->x_arrayname);
 
-  dsp_add(tabread4_tilde_perform, 5, x,
-          sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[0]->s_n);
-
+  dsp_add(tabread4_tilde_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec,
+      sp[2]->s_vec, sp[0]->s_n);
 }
 
 static void tabread4_tilde_free(t_tabread4_tilde *UNUSED(x))
@@ -129,14 +125,13 @@ static void tabread4_tilde_free(t_tabread4_tilde *UNUSED(x))
 
 ZEXY_SETUP void tabread4_tilde_tilde_setup(void)
 {
-  tabread4_tilde_class = zexy_new("tabread4~~",
-                                  tabread4_tilde_new, tabread4_tilde_free, t_tabread4_tilde, CLASS_DEFAULT,
-                                  "S");
+  tabread4_tilde_class = zexy_new("tabread4~~", tabread4_tilde_new,
+      tabread4_tilde_free, t_tabread4_tilde, CLASS_DEFAULT, "S");
   CLASS_MAINSIGNALIN(tabread4_tilde_class, t_tabread4_tilde, x_f);
-  zexy_addmethod(tabread4_tilde_class, (t_method)tabread4_tilde_dsp, "dsp",
-                 "!");
-  zexy_addmethod(tabread4_tilde_class, (t_method)tabread4_tilde_set, "set",
-                 "s");
+  zexy_addmethod(
+      tabread4_tilde_class, (t_method)tabread4_tilde_dsp, "dsp", "!");
+  zexy_addmethod(
+      tabread4_tilde_class, (t_method)tabread4_tilde_set, "set", "s");
 
   zexy_register("tabread4~~");
 }
