@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-if [ "x$(which realpath)" = "x" ]; then
+if ! which realpath >/dev/null 2>&1; then
 realpath() {
     if [ -d "$1" ]; then
         (cd "$1"; pwd -P)
@@ -52,7 +52,7 @@ catverbose() {
      cat >/dev/null
   fi
 }
-if test "X$TERM" != Xdumb && test -t 1 2>/dev/null; then
+if test "${TERM}" != dumb && test -t 1 2>/dev/null; then
     red='^[[0;31m'
     #    grn='^[[0;32m'
     lgn='^[[1;32m'
@@ -84,14 +84,14 @@ report_success() {
 if [ 1 -le $verbosity ]; then
     case "$1" in
         0)
-            if [ "x${wantfail}" = "x1" ]; then
+            if [ "${wantfail}" = "1" ]; then
                 echo "${lgn}XFAIL${std}: $2"
             else
                 echo "${grn}PASS${std}: $2"
             fi
             ;;
         1)
-            if [ "x${wantfail}" = "x1" ]; then
+            if [ "${wantfail}" = "1" ]; then
                 echo "${lrd}XPASS${std}: $2"
             else
                 echo "${red}FAIL${std}: $2"
@@ -111,7 +111,7 @@ fi
     count_all=$((count_all+1))
     case "$1" in
         0)
-            if [ "x${wantfail}" = "x1" ]; then
+            if [ "${wantfail}" = "1" ]; then
                 count_xfail=$((count_xfail+1))
             else
                 count_pass=$((count_pass+1))
@@ -124,7 +124,7 @@ fi
             count_error=$((count_error+1))
             ;;
         *)
-            if [ "x${wantfail}" = "x1" ]; then
+            if [ "${wantfail}" = "1" ]; then
                 count_xpass=$((count_xpass+1))
             else
                 count_fail=$((count_fail+1))
@@ -162,8 +162,8 @@ summary_success() {
 }
 
 should_fail() {
-    if [ "x$1" = "xauto" ]; then
-        if [ "x${2#fail}" != "x${2}" ]; then
+    if [ "$1" = "auto" ]; then
+        if [ "${2#fail}" != "${2}" ]; then
             echo 1
         else
             echo 0
@@ -228,7 +228,7 @@ fi
 
 
 wantfail=${shouldfail}
-if [ "x${PD}" = "x" ]; then
+if [ -z "${PD}" ]; then
  echo "couldn't find Pd (Hint: use the PD environment variable)" 1>&2
  sys_exit 77
 fi
