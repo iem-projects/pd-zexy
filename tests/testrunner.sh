@@ -4,19 +4,19 @@
 if ! which realpath >/dev/null 2>&1; then
 realpath() {
     if [ -d "$1" ]; then
-        (cd "$1"; pwd -P)
+        (cd "$1" && pwd -P)
     else
-        (cd $(dirname "$1"); pwd -P)
+        (cd "$(dirname "$1")" && pwd -P)
     fi
 }
 fi
 
-PD=${PD:=$(which pd)}
-LIBDIR=${LIBDIR:=..}
-ABSDIR=${ABSDIR:=${LIBDIR}/abs}
-SCRIPTDIR=${0%/*}
-TESTDIR=${TESTDIR:=${SCRIPTDIR}}
-SCRIPTDIR=$(realpath ${SCRIPTDIR})
+PD="${PD:=$(which pd)}"
+LIBDIR="${LIBDIR:=..}"
+ABSDIR="${ABSDIR:=${LIBDIR}/abs}"
+SCRIPTDIR="${0%/*}"
+TESTDIR="${TESTDIR:=${SCRIPTDIR}}"
+SCRIPTDIR="$(realpath "${SCRIPTDIR}")"
 
 count_all=0
 count_pass=0
@@ -42,11 +42,11 @@ EOF
 exit
 }
 sys_exit() {
-    test $softfail -gt 0 && test $1 -eq 77 && exit 0
-    exit $1
+    test $softfail -gt 0 && test "$1" -eq 77 && exit 0
+    exit "$1"
 }
 catverbose() {
-  if [ $1 -le $verbosity ]; then
+  if [ "$1" -le "${verbosity}" ]; then
      cat
   else
      cat >/dev/null
@@ -133,7 +133,7 @@ fi
     esac
 }
 highlight_nonnull() {
-    if [  $1 -gt 0 ]; then
+    if [  "$1" -gt 0 ]; then
         echo "$2$1$std"
     else
         echo "$1"
@@ -145,13 +145,13 @@ summary_success() {
         echo "${grn}============================================================================${std}"
         echo "${grn}Testsuite summary"
         echo "${grn}============================================================================${std}"
-        echo "${brg}TOTAL${std}        $(highlight_nonnull ${count_all} ${brg})"
-        echo "${grn}PASS${std}         $(highlight_nonnull ${count_pass} ${grn})"
-        echo "${red}FAIL${std}         $(highlight_nonnull ${count_fail} ${red})"
-        echo "${blu}SKIP${std}         $(highlight_nonnull ${count_skip} ${blu})"
-        echo "${lgn}XFAIL${std}        $(highlight_nonnull ${count_xfail} ${lgn})"
-        echo "${lrd}XPASS${std}        $(highlight_nonnull ${count_xpass} ${lrd})"
-        echo "${mgn}ERROR${std}        $(highlight_nonnull ${count_error} ${mgn})"
+        echo "${brg}TOTAL${std}        $(highlight_nonnull "${count_all}" "${brg}")"
+        echo "${grn}PASS${std}         $(highlight_nonnull "${count_pass}" "${grn}")"
+        echo "${red}FAIL${std}         $(highlight_nonnull "${count_fail}" "${red}")"
+        echo "${blu}SKIP${std}         $(highlight_nonnull "${count_skip}" "${blu}")"
+        echo "${lgn}XFAIL${std}        $(highlight_nonnull "${count_xfail}" "${lgn}")"
+        echo "${lrd}XPASS${std}        $(highlight_nonnull "${count_xpass}" "${lrd}")"
+        echo "${mgn}ERROR${std}        $(highlight_nonnull "${count_error}" "${mgn}")"
         echo "${grn}============================================================================${std}"
     fi
 
@@ -169,25 +169,25 @@ should_fail() {
             echo 0
         fi
     else
-        echo $1
+        echo "$1"
     fi
 }
 
 check_success() {
-    if [  ${wantfail} -ge 1 ]; then
+    if [  "${wantfail}" -ge 1 ]; then
         case "$1" in
             0)
                 echo 1
                 ;;
             77|99)
-                echo $1
+                echo "$1"
                 ;;
             *)
                 echo 0
                 ;;
         esac
     else
-        echo $1
+        echo "$1"
     fi
 }
 
@@ -221,7 +221,7 @@ while getopts "vqlxXsh?" opt; do
             ;;
     esac
 done
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 if [ $# -lt 1 ]; then
     usage
 fi
@@ -243,10 +243,10 @@ fi
 
 # assume that the first component of the test-path is the object to be tested
 # at least this object must not fail to create
-TESTOBJ=$(realpath "${TEST}")
-TESTOBJ=${TESTOBJ#${SCRIPTDIR}}
-TESTOBJ=${TESTOBJ#/}
-TESTOBJ=${TESTOBJ%%/*}
+TESTOBJ="$(realpath "${TEST}")"
+TESTOBJ="${TESTOBJ#"${SCRIPTDIR}"}"
+TESTOBJ="${TESTOBJ#/}"
+TESTOBJ="${TESTOBJ%%/*}"
 
 TMPFILE=$(mktemp)
 
@@ -282,14 +282,14 @@ then
     SUCCESS=1
 fi
 
-wantfail=$(should_fail $shouldfail ${TEST##*/})
-SUCCESS=$(check_success $SUCCESS)
+wantfail="$(should_fail "${shouldfail}" "${TEST##*/}")"
+SUCCESS="$(check_success "${SUCCESS}")"
 
-if test ${SUCCESS} -ge 1 && test ${showlog} -ge 1 && test $verbosity -le 3; then
+if test "${SUCCESS}" -ge 1 && test "${showlog}" -ge 1 && test "${verbosity}" -le 3; then
     cat "${TMPFILE}"
 fi
 rm "${TMPFILE}"
-report_success $SUCCESS "$TEST"
+report_success "${SUCCESS}" "$TEST"
 
 }
 
@@ -298,8 +298,8 @@ for t in "$@"; do
     do_runtest "$t"
 done
 
-if [  ${count_all} -gt 1 ]; then
+if [  "${count_all}" -gt 1 ]; then
     summary_success
 fi
 
-sys_exit ${SUCCESS}
+sys_exit "${SUCCESS}"
