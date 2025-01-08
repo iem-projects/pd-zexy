@@ -26,9 +26,9 @@ RUNTESTS_FINAL_LOG="runtest-${SUFFIX}.log"
 
 
 RUNTESTS_TXT=runtests.txt
-if which tempfile > /dev/null
+if which mktemp > /dev/null
 then
-  RUNTESTS_LOG="$(tempfile)"
+  RUNTESTS_LOG="$(mktemp)"
 else
   RUNTESTS_LOG="tmp$$.log"
 fi
@@ -57,10 +57,10 @@ evaluate_tests() {
  debug "now evaluating results in ${logfile} (${testfile}"
 
  numtests="$(grep -c . "${testfile}")"
- numpass="$(egrep -c "regression-test: (.*/fail.*: failed|.*: OK)$" "${logfile}")"
+ numpass="$(grep -E -c "regression-test: (.*/fail.*: failed|.*: OK)$" "${logfile}")"
  numfail=0
  failtests=""
- for t in $(egrep "regression-test: .*: (failed|OK)$" "${logfile}" | egrep -v "regression-test: (.*/fail.*: failed|.*: OK)$" | awk '{print "$2"}')
+ for t in $(grep -E "regression-test: .*: (failed|OK)$" "${logfile}" | grep -E -v "regression-test: (.*/fail.*: failed|.*: OK)$" | awk '{print "$2"}')
  do
   failtests="${failtests} ${t%:}"
   let numfail=numfail+1
@@ -75,7 +75,7 @@ evaluate_tests() {
   echo "regression-test: failed tests: ${failtests}" >> "${logfile}"
  fi
  debug "show results"
- cat "${logfile}" | egrep "^regression-test: " | sed -e 's/^regression-test: //'
+ cat "${logfile}" | grep -E "^regression-test: " | sed -e 's/^regression-test: //'
 }
 
 
