@@ -9,7 +9,7 @@ then
  PD=pd
 fi
 
-if which ${PD} > /dev/null
+if which "${PD}" > /dev/null
 then
  :
 else
@@ -18,31 +18,31 @@ else
  exit 77
 fi
 
-echo running tests in ${TESTDIR:=.}
+echo running tests in "${TESTDIR:=.}"
 
 
 SUFFIX=$(date +%y%m%d-%H%M%S)
-RUNTESTS_FINAL_LOG=runtest-${SUFFIX}.log
+RUNTESTS_FINAL_LOG="runtest-${SUFFIX}.log"
 
 
 RUNTESTS_TXT=runtests.txt
 if which tempfile > /dev/null
 then
-  RUNTESTS_LOG=$(tempfile)
+  RUNTESTS_LOG="$(tempfile)"
 else
-  RUNTESTS_LOG=tmp$$.log
+  RUNTESTS_LOG="tmp$$.log"
 fi
 
 LIBFLAGS="-path ../ -lib zexy -path ../abs/:${TESTDIR}:."
 
 list_tests() {
 #  find . -mindepth 2  -name "*.pd" | sed 's|\.pd$|;|'
- ls -1 ${TESTDIR}/*/*.pd | sed 's|\.pd$|;|'
+ ls -1 "${TESTDIR}"/*/*.pd | sed 's|\.pd$|;|'
 }
 
 debug() {
  :
-if [ "${DEBUG}" = "yes" ]; then echo $@; fi
+if [ "${DEBUG}" = "yes" ]; then echo "$@"; fi
 }
 
 
@@ -51,51 +51,51 @@ evaluate_tests() {
  local testfile
  local numtests
 
- testfile=$1
- logfile=$2
+ testfile="$1"
+ logfile="$2"
 
  debug "now evaluating results in ${logfile} (${testfile}"
 
- numtests=$(grep -c . ${testfile})
- numpass=$(egrep -c "regression-test: (.*/fail.*: failed|.*: OK)$" ${logfile})
+ numtests="$(grep -c . "${testfile}")"
+ numpass="$(egrep -c "regression-test: (.*/fail.*: failed|.*: OK)$" "${logfile}")"
  numfail=0
  failtests=""
- for t in $(egrep "regression-test: .*: (failed|OK)$" ${logfile} | egrep -v "regression-test: (.*/fail.*: failed|.*: OK)$" | awk '{print $2}')
+ for t in $(egrep "regression-test: .*: (failed|OK)$" "${logfile}" | egrep -v "regression-test: (.*/fail.*: failed|.*: OK)$" | awk '{print "$2"}')
  do
   failtests="${failtests} ${t%:}"
   let numfail=numfail+1
  done
  debug "number of tests = ${numtests}"
- echo "regression-test: ======================================" >>  ${logfile}
- echo "regression-test: ${numtests} regression-tests total" >>  ${logfile}
- echo "regression-test: ${numpass} regression-tests passed" >>  ${logfile}
- echo "regression-test: ${numfail} regression-tests failed" >>  ${logfile}
- echo "regression-test: ======================================" >>  ${logfile}
+ echo "regression-test: ======================================" >>  "${logfile}"
+ echo "regression-test: ${numtests} regression-tests total" >>  "${logfile}"
+ echo "regression-test: ${numpass} regression-tests passed" >>  "${logfile}"
+ echo "regression-test: ${numfail} regression-tests failed" >>  "${logfile}"
+ echo "regression-test: ======================================" >>  "${logfile}"
  if [ -n "${failtests}" ]; then
-  echo "regression-test: failed tests: ${failtests}" >> ${logfile}
+  echo "regression-test: failed tests: ${failtests}" >> "${logfile}"
  fi
  debug "show results"
- cat ${logfile} | egrep "^regression-test: " | sed -e 's/^regression-test: //'
+ cat "${logfile}" | egrep "^regression-test: " | sed -e 's/^regression-test: //'
 }
 
 
 run_nogui() {
  debug "running test without gui"
- ${PD} ${LIBFLAGS} -nrt -noprefs -nostdpath -batch runtests_nogui.pd > ${RUNTESTS_LOG} 2>&1
+ ${PD} ${LIBFLAGS} -nrt -noprefs -nostdpath -batch runtests_nogui.pd > "${RUNTESTS_LOG}" 2>&1
  SUCCESS=$?
  debug "testing done"
- evaluate_tests ${RUNTESTS_TXT} ${RUNTESTS_LOG}
+ evaluate_tests "${RUNTESTS_TXT}" "${RUNTESTS_LOG}"
  debug "testing finished"
 }
 
 run_withgui() {
  debug "running test with gui"
- ${PD} ${LIBFLAGS} -stderr runtests.pd 2>&1 | tee ${RUNTESTS_LOG}
+ ${PD} ${LIBFLAGS} -stderr runtests.pd 2>&1 | tee "${RUNTESTS_LOG}"
  SUCCESS=$?
  echo "testing completed, no evaluation will be done; see ${RUNTESTS_LOG} for results"
 }
 
-list_tests > ${RUNTESTS_TXT}
+list_tests > "${RUNTESTS_TXT}"
 
 USEGUI=""
 DEBUG=""
@@ -132,13 +132,13 @@ if [ -z "${RUNTESTS_FINAL_LOG}" ]; then
    cat "${RUNTESTS_LOG}"
  fi
 else
- cat ${RUNTESTS_LOG} >> ${RUNTESTS_FINAL_LOG}
+ cat "${RUNTESTS_LOG}" >> "${RUNTESTS_FINAL_LOG}"
 fi
 
 if [ "${RUNTESTS_FINAL_LOG}" = "${RUNTESTS_LOG}" ]; then
  :
 else
- rm -f ${RUNTESTS_LOG}
+ rm -f "${RUNTESTS_LOG}"
 fi
 
-exit ${SUCCESS}
+exit "${SUCCESS}"
