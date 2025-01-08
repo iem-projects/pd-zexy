@@ -4,7 +4,7 @@
 ##  find zexy (either in ../src or ../)
 ##  if it is not there, assume it is split into externals
 
-if [ "x${PD}" = "x" ]
+if [ -z "${PD}" ]
 then
  PD=pd
 fi
@@ -42,7 +42,7 @@ list_tests() {
 
 debug() {
  :
-if [ "x${DEBUG}" = "xyes" ]; then echo $@; fi
+if [ "${DEBUG}" = "yes" ]; then echo $@; fi
 }
 
 
@@ -71,7 +71,7 @@ evaluate_tests() {
  echo "regression-test: ${numpass} regression-tests passed" >>  ${logfile}
  echo "regression-test: ${numfail} regression-tests failed" >>  ${logfile}
  echo "regression-test: ======================================" >>  ${logfile}
- if [ "x${failtests}" != "x" ]; then
+ if [ -n "${failtests}" ]; then
   echo "regression-test: failed tests: ${failtests}" >> ${logfile}
  fi
  debug "show results"
@@ -100,34 +100,34 @@ list_tests > ${RUNTESTS_TXT}
 USEGUI=""
 DEBUG=""
 
-while [ "x$#" != "x0" ]
+while [ "$#" != "0" ]
 do
- if test "x$1" = "x-gui"; then
+ if test "$1" = "-gui"; then
   USEGUI="yes"
  fi
- if test "x$1" = "x-debug"; then
+ if test "$1" = "-debug"; then
   DEBUG="yes"
  fi
- if test "x$1" = "x-d"; then
+ if test "$1" = "-d"; then
   DEBUG="yes"
  fi
- if test "x$1" = "x-nolog"; then
+ if test "$1" = "-nolog"; then
   RUNTESTS_FINAL_LOG=
  fi
  shift
 done
 
 SUCCESS=0
-if [ "x${USEGUI}" = "xyes" ]; then
+if [ "${USEGUI}" = "yes" ]; then
  run_withgui
 else
  run_nogui
 fi
 
-if [ "x${RUNTESTS_NOLOG}" != "x" ]; then
+if [ -n "${RUNTESTS_NOLOG}" ]; then
   RUNTESTS_FINAL_LOG=
 fi
-if [ "x${RUNTESTS_FINAL_LOG}" = "x" ]; then
+if [ -z "${RUNTESTS_FINAL_LOG}" ]; then
  if [ ${SUCCESS} -ne 0 ]; then
    cat "${RUNTESTS_LOG}"
  fi
@@ -135,7 +135,7 @@ else
  cat ${RUNTESTS_LOG} >> ${RUNTESTS_FINAL_LOG}
 fi
 
-if [ "x${RUNTESTS_FINAL_LOG}" = "x${RUNTESTS_LOG}" ]; then
+if [ "${RUNTESTS_FINAL_LOG}" = "${RUNTESTS_LOG}" ]; then
  :
 else
  rm -f ${RUNTESTS_LOG}
