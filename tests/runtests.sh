@@ -63,7 +63,7 @@ evaluate_tests() {
  for t in $(grep -E "regression-test: .*: (failed|OK)$" "${logfile}" | grep -E -v "regression-test: (.*/fail.*: failed|.*: OK)$" | awk '{print "$2"}')
  do
   failtests="${failtests} ${t%:}"
-  let numfail=numfail+1
+  numfail=$((numfail+1))
  done
  debug "number of tests = ${numtests}"
  echo "regression-test: ======================================" >>  "${logfile}"
