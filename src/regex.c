@@ -163,9 +163,8 @@ static void regex_case(t_regex *x, t_float f)
   if (f > 0.f) {
     x->x_flags |= REG_ICASE;
   } else {
-    x->x_flags ^= REG_ICASE;
+    x->x_flags &= ~REG_ICASE;
   }
-
   regex_compile(x);
 #endif
 }
