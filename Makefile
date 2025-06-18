@@ -35,6 +35,7 @@ class.sources = \
 	src/doublepole~.c \
 	src/drip.c \
 	src/envrms~.c \
+	src/envvar.c \
 	src/fifop.c \
 	src/freadln.c \
 	src/fwriteln.c \

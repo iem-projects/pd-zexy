@@ -27,6 +27,7 @@ void dirac_tilde_setup(void);          /*  dirac~.c            */
 void doublepole_tilde_setup(void);     /*  doublepole~.c       */
 void drip_setup(void);                 /*  drip.c              */
 void envrms_tilde_setup(void);         /*  envrms~.c           */
+void envvar_setup(void);               /*  envvar.c           */
 void fifop_setup(void);                /*  fifop.c             */
 void freadln_setup(void);              /*  freadln.c           */
 void fwriteln_setup(void);             /*  fwriteln.c          */
@@ -116,6 +117,7 @@ void z_zexy_setup(void)
   doublepole_tilde_setup();
   drip_setup();
   envrms_tilde_setup();
+  envvar_setup();
   fifop_setup();
   freadln_setup();
   fwriteln_setup();
