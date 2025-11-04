@@ -2,13 +2,13 @@
 include:
   - https://git.iem.at/pd/iem-ci/raw/main/pd-lib-builder/gitlab-iem.yml
 
-pages:
-  stage: build
-  script:
-    - mkdir public
-    - cp .git-ci/index.html public/
-  artifacts:
-    paths:
-    - public
-  only:
-  - master
+#pages:
+#  stage: build
+#  script:
+#    - mkdir public
+#    - cp .git-ci/index.html public/
+#  artifacts:
+#    paths:
+#    - public
+#  only:
+#  - master
