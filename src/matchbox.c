@@ -27,6 +27,7 @@
 
 #include "zexy.h"
 #include "z_strndup.h"
+#include "z_strnlen.h"
 
 #define MATCHBOX_EXACT 0
 #define MATCHBOX_OSC 1
@@ -343,7 +344,7 @@ static int atommatch_osc(void *x, t_atom *pattern, t_atom *test)
 
   if (pattern->a_type == A_SYMBOL) {
     s_pattern = z_strndup(pattern->a_w.w_symbol->s_name, MAXPDSTRING);
-    pattern_size = strnlen(s_pattern, MAXPDSTRING);
+    pattern_size = z_strnlen(s_pattern, MAXPDSTRING);
   } else {
     pattern_size = sizeof(char) * MAXPDSTRING;
     s_pattern = (char *)getbytes(pattern_size);
@@ -351,7 +352,7 @@ static int atommatch_osc(void *x, t_atom *pattern, t_atom *test)
   }
   if (test->a_type == A_SYMBOL) {
     s_test = z_strndup(test->a_w.w_symbol->s_name, MAXPDSTRING);
-    test_size = strnlen(s_test, MAXPDSTRING);
+    test_size = z_strnlen(s_test, MAXPDSTRING);
   } else {
     test_size = sizeof(char) * MAXPDSTRING;
     s_test = (char *)getbytes(test_size);
@@ -391,7 +392,7 @@ static int atommatch_regex(regex_t *pattern, t_atom *test)
 
   if (test->a_type == A_SYMBOL) {
     s_test = z_strndup(test->a_w.w_symbol->s_name, MAXPDSTRING);
-    test_size = strnlen(s_test, MAXPDSTRING);
+    test_size = z_strnlen(s_test, MAXPDSTRING);
   } else {
     test_size = sizeof(char) * MAXPDSTRING;
     s_test = (char *)getbytes(test_size);
@@ -446,7 +447,7 @@ static t_listlist *matchlistlist_regex(void *x, unsigned int *numresults,
     t_atom *pattern = p_argv + i;
     if (pattern->a_type == A_SYMBOL) {
       s_pattern = z_strndup(pattern->a_w.w_symbol->s_name, MAXPDSTRING);
-      pattern_size = strnlen(s_pattern, MAXPDSTRING);
+      pattern_size = z_strnlen(s_pattern, MAXPDSTRING);
     } else {
       pattern_size = sizeof(char) * MAXPDSTRING;
       s_pattern = (char *)getbytes(pattern_size);

@@ -19,6 +19,7 @@
 
 #include "zexy.h"
 #include "z_strndup.h"
+#include "z_strnlen.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -96,7 +97,7 @@ static void strcmp_symbol(t_strcmp *x, t_symbol *s)
     freebytes(x->str1, x->n1);
   }
   x->str1 = z_strndup(s->s_name, MAXPDSTRING);
-  x->n1 = strnlen(x->str1, MAXPDSTRING);
+  x->n1 = z_strnlen(x->str1, MAXPDSTRING);
   strcmp_bang(x);
 }
 
@@ -111,7 +112,7 @@ static void strcmp_secondsymbol(t_strcmp *x, t_symbol *s)
     freebytes(x->str2, x->n2);
   }
   x->str2 = z_strndup(s->s_name, MAXPDSTRING);
-  x->n2 = strnlen(x->str2, MAXPDSTRING);
+  x->n2 = z_strnlen(x->str2, MAXPDSTRING);
 }
 
 static void strcmp_proxy_list(

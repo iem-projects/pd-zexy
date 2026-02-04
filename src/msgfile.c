@@ -24,6 +24,7 @@
 */
 
 #include "zexy.h"
+#include "z_strnlen.h"
 
 #ifdef __WIN32__
 #  include <io.h>
@@ -1257,7 +1258,7 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *sformat)
         char mytext2[MAXPDSTRING * 2];
         atom_string(a, mytext, MAXPDSTRING);
         escapefn(mytext, mytext2);
-        mylen = strnlen(mytext2, MAXPDSTRING);
+        mylen = z_strnlen(mytext2, MAXPDSTRING);
         errcount += (fwrite(mytext2, mylen, sizeof(char), f) < 1);
       }
       }
