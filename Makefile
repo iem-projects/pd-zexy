@@ -19,7 +19,6 @@ class.sources = \
 	src/0x3e0x7e.c \
 	src/0x7c0x7c0x7e.c \
 	src/a2l.c \
-	src/abs~.c \
 	src/absgn~.c \
 	src/atof.c \
 	src/atoi.c \

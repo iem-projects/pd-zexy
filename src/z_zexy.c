@@ -12,7 +12,6 @@ void setup_0x3e0x7e(void);             /*  0x3e0x7e.c          */
 void setup_0x7c0x7c0x7e(void);         /*  0x7c0x7c0x7e.c      */
 void a2l_setup(void);                  /*  a2l.c               */
 void absgn_tilde_setup(void);          /*  absgn~.c            */
-void abs_tilde_setup(void);            /*  abs~.c              */
 void atof_setup(void);                 /*  atof.c              */
 void atoi_setup(void);                 /*  atoi.c              */
 void avg_tilde_setup(void);            /*  avg~.c              */
@@ -102,7 +101,6 @@ void z_zexy_setup(void)
   setup_0x7c0x7c0x7e();
   a2l_setup();
   absgn_tilde_setup();
-  abs_tilde_setup();
   atof_setup();
   atoi_setup();
   avg_tilde_setup();
