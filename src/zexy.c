@@ -176,17 +176,3 @@ void zexy_setup(void)
   /* ************************************** */
   z_zexy_setup();
 }
-
-#ifndef __WIN32__
-void verbose(int level, const char *fmt, ...)
-{
-  char buf[MAXPDSTRING];
-  va_list ap;
-
-  va_start(ap, fmt);
-  vsnprintf(buf, MAXPDSTRING - 1, fmt, ap);
-  va_end(ap);
-
-  post("zverbose(%d): %s", level, buf);
-}
-#endif
