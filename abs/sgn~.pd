@@ -1,4 +1,5 @@
 #N canvas 86 70 450 300 10;
+#X declare -path zexy -lib zexy;
 #X obj 30 88 inlet~;
 #X obj 30 186 outlet~;
 #X text 33 209 using [expr~] is slower than doing it in C...;
@@ -9,6 +10,7 @@
 #X obj 70 148 *~ -1;
 #X text 250 261 updated for zexy-2.1;
 #X obj 31 124 >~ 0;
+#X obj 51 261 declare -path zexy -lib zexy;
 #X connect 0 0 6 0;
 #X connect 0 0 9 0;
 #X connect 6 0 7 0;

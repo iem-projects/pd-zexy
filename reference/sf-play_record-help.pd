@@ -1,4 +1,5 @@
 #N canvas 539 295 609 448 10;
+#X declare -path zexy -lib zexy;
 #X obj 436 322 sfplay 2;
 #X obj 38 325 sfrecord 2;
 #X msg 436 140 help;
@@ -18,7 +19,7 @@
 #X msg 38 238 close;
 #X msg 38 166 open test.raw l;
 #X msg 38 263 bang;
-#X floatatom 38 351 0 0 0 0 - - -;
+#X floatatom 38 351 0 0 0 0 - - - 0;
 #X text 72 351 status (1-recording / 0-not_recording);
 #X obj 45 301 osc~ 100;
 #X obj 113 301 osc~ 578;
@@ -27,11 +28,9 @@
 #X text 77 264 retrigger status-output;
 #X text 135 325 sfrecord/sfplay <num. of channels>;
 #X text 53 49 this makes it possible to do multi-track recordings;
-#X text 52 64 up to now \, the "sfrecord" only supports .RAW format
-;
-#X text 51 78 "sfplay" can skip any header \, if you know it's size::
-just call "sfplay <num.of.chan> <skip.bytes>";
-#X floatatom 471 356 0 0 0 0 - - -;
+#X text 52 64 up to now \, the "sfrecord" only supports .RAW format;
+#X text 51 78 "sfplay" can skip any header \, if you know it's size:: just call "sfplay <num.of.chan> <skip.bytes>";
+#X floatatom 471 356 0 0 0 0 - - - 0;
 #N canvas 160 49 495 266 output 0;
 #X obj 338 160 t b;
 #X obj 338 110 f;
@@ -93,22 +92,20 @@ just call "sfplay <num.of.chan> <skip.bytes>";
 #X text 111 363 output amplitude;
 #X text 435 9 part of zexy;
 #N canvas 589 163 494 344 META 0;
-#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 145 AUTHOR IOhannes m zmoelnig;
 #X text 12 45 DESCRIPTION a little harddisk recording system;
-#X text 12 65 INLET_0 float bang help open start stop rewind goto close
-;
+#X text 12 65 INLET_0 float bang help open start stop rewind goto close;
 #X text 12 105 OUTLET_N signal;
 #X text 12 125 OUTLET_R bang;
 #X text 12 85 INLET_1 float;
 #X text 12 5 KEYWORDS signal soundfile;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 528 417 pd META;
-#X floatatom 514 272 5 0 0 2 undocumented - -;
+#X floatatom 514 272 5 0 0 2 undocumented - - 0;
 #X text 212 164 open <name> <endianity>;
-#X text 54 106 you might be able to change the <skip.bytes> via the
-2nd inlet of sfplay \, but that's a hidden feature.;
+#X text 54 106 you might be able to change the <skip.bytes> via the 2nd inlet of sfplay \, but that's a hidden feature.;
 #X connect 0 0 31 0;
 #X connect 0 1 31 1;
 #X connect 0 2 11 0;

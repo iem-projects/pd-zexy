@@ -1,17 +1,16 @@
 #N canvas 0 31 828 628 10;
+#X declare -path zexy -lib zexy;
 #X msg 30 88 come on \, my house;
 #X obj 30 190 print UNFOLDED;
 #X msg 48 115 1 two tre quatre 5 se;
 #X text 72 10 drip;
 #X obj 30 163 drip;
-#X text 311 84 drip is like a medical drip - you can adjust the drop-speed
-;
+#X text 311 84 drip is like a medical drip - you can adjust the drop-speed;
 #X obj 316 178 drip 1000;
 #X obj 316 198 print DROP;
 #X msg 316 132 this is that slow;
-#X floatatom 365 159 0 0 0 0 - - -;
-#X text 439 475 drip without arguments will do no scheduling (this
-is: output all the atoms at once);
+#X floatatom 365 159 0 0 0 0 - - - 0;
+#X text 439 475 drip without arguments will do no scheduling (this is: output all the atoms at once);
 #X text 424 162 drop-delay in [ms];
 #X obj 36 529 drip;
 #X obj 95 531 drip 0;
@@ -23,8 +22,7 @@ is: output all the atoms at once);
 #X obj 248 551 print DESCHED;
 #X msg 248 486 bang;
 #X text 44 27 unfolds a package to a sequence;
-#X text 43 50 since you can switch to scheduled mode \, this might
-be used to reduce CPU-load;
+#X text 43 50 since you can switch to scheduled mode \, this might be used to reduce CPU-load;
 #X text 530 602 see also :;
 #X obj 602 604 repack;
 #X obj 35 259 t l l b;
@@ -38,11 +36,9 @@ be used to reduce CPU-load;
 #X text 411 269 creation:;
 #X text 475 269 "drip [<n> [flush]]";
 #X text 447 357 <n> is the initial drop-delay in [ms];
-#X text 442 293 "flush" indicates whether non-empty buffers should
-be flushed when a new package arrives or not.;
+#X text 442 293 "flush" indicates whether non-empty buffers should be flushed when a new package arrives or not.;
 #X text 443 322 default is no_flush;
-#X text 447 390 n==0 will DO scheduling (and is therefore somewhat
-"slower" than without arguments;
+#X text 447 390 n==0 will DO scheduling (and is therefore somewhat "slower" than without arguments;
 #X text 445 375 default is NO scheduling;
 #X text 446 425 negative values for <n> turn off scheduling;
 #X obj 35 335 drip 200 flush;
@@ -50,8 +46,7 @@ be flushed when a new package arrives or not.;
 #X text 717 13 part of;
 #X obj 776 13 zexy;
 #N canvas 460 154 494 344 META 0;
-#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 65 INLET_0 anything;
 #X text 12 125 AUTHOR IOhannes m zmoelnig;
@@ -59,6 +54,7 @@ Wilkes for Pd version 0.42.;
 #X text 12 85 INLET_1 float;
 #X text 12 105 OUTLET_0 float symbol pointer;
 #X text 12 5 KEYWORDS control list_op;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 777 601 pd META;
 #X connect 0 0 4 0;
 #X connect 2 0 4 0;

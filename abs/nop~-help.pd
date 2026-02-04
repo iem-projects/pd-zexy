@@ -1,4 +1,5 @@
 #N canvas 190 161 423 354 10;
+#X declare -path zexy -lib zexy;
 #X obj 89 71 nop~;
 #X obj 105 156 osc~ 440;
 #X obj 105 252 -~;
@@ -15,6 +16,7 @@
 #X text 12 65 INLET_0 signal;
 #X text 12 85 OUTLET_0 signal;
 #X text 12 45 DESCRIPTION do nothing (pass signal unaltered);
+#X obj 65 140 declare -path zexy -lib zexy;
 #X restore 333 307 pd META;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;

@@ -1,4 +1,5 @@
 #N canvas 456 395 450 428 10;
+#X declare -path zexy -lib zexy;
 #X obj 121 331 nop;
 #X msg 155 157 bang;
 #X floatatom 155 175 0 0 0 0 - - - 0;
@@ -18,6 +19,7 @@
 #X text 12 75 KEYWORDS control;
 #X text 12 35 INLET_0 anything;
 #X text 12 55 OUTLET_0 anything;
+#X obj 65 140 declare -path zexy -lib zexy;
 #X restore 333 357 pd META;
 #X connect 0 0 4 0;
 #X connect 1 0 0 0;

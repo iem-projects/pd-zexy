@@ -1,4 +1,5 @@
 #N canvas 0 31 767 473 10;
+#X declare -path zexy -lib zexy;
 #X obj 90 43 pdf~;
 #X text 175 44 probability density function;
 #X obj 14 166 osc~ 440;
@@ -15,18 +16,20 @@
 #X text 227 315 default is 64;
 #N canvas 0 0 450 300 (subpatch) 0;
 #X array array99 128 float 0;
+#A color 0;
+#A width 1;
 #X coords 0 1 128 -1 400 300 1;
 #X restore 338 111 graph;
 #X text 532 42 part of zexy;
 #N canvas 460 154 494 344 META 0;
-#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 85 OUTLET_0 list;
 #X text 12 105 AUTHOR IOhannes m zmoelnig;
 #X text 12 5 KEYWORDS signal conversion;
 #X text 12 45 DESCRIPTION probability density function;
 #X text 12 65 INLET_0 signal bang float clear;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 711 445 pd META;
 #X connect 2 0 5 0;
 #X connect 3 0 5 0;

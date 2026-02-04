@@ -1,4 +1,5 @@
 #N canvas 109 108 780 669 10;
+#X declare -path zexy -lib zexy;
 #X msg 91 146 symbol a;
 #X obj 197 385 print DETAILS;
 #X msg 36 144 123;
@@ -26,6 +27,7 @@
 #X text 12 115 OUTLET_0 float;
 #X text 12 135 OUTLET_1 list;
 #X text 12 155 OUTLET_2 float;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 640 16 pd META;
 #X text 403 6 part of zexy;
 #X obj 67 36 regex;

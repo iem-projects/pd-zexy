@@ -1,10 +1,11 @@
 #N canvas 0 31 487 386 10;
-#X floatatom 33 65 0 0 0 0 - - -;
+#X declare -path zexy -lib zexy;
+#X floatatom 33 65 0 0 0 0 - - - 0;
 #X obj 33 84 osc~ 689.062;
 #X obj 33 293 unpack 0 0 0;
 #X obj 190 295 print;
-#X floatatom 33 332 0 0 0 0 - - -;
-#X floatatom 100 312 0 0 0 0 - - -;
+#X floatatom 33 332 0 0 0 0 - - - 0;
+#X floatatom 100 312 0 0 0 0 - - - 0;
 #X obj 33 203 t l l;
 #X obj 190 255 spigot;
 #X msg 223 230 1;
@@ -21,14 +22,14 @@
 #X text 384 9 part of zexy;
 #X obj 190 275 t l b;
 #N canvas 460 154 494 344 META 0;
-#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 85 OUTLET_0 list;
 #X text 12 105 AUTHOR IOhannes m zmoelnig;
 #X text 12 45 DESCRIPTION convert signals to lists;
 #X text 12 65 INLET_0 signal;
 #X text 12 5 KEYWORDS control list_op conversion;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 431 357 pd META;
 #X connect 0 0 1 0;
 #X connect 1 0 13 0;

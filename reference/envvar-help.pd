@@ -1,4 +1,5 @@
 #N canvas 116 95 499 300 10;
+#X declare -path zexy -lib zexy;
 #X text 303 9 part of zexy;
 #N canvas 509 158 494 201 META 0;
 #X text 12 25 LICENSE GPL v2;
@@ -8,6 +9,7 @@
 #X text 12 65 INLET_0 symbol;
 #X text 12 85 OUTLET_0 symbol;
 #X text 12 135 HELP_PATCH_AUTHORS IOhannes m zmölnig;
+#X obj 41 174 declare -path zexy -lib zexy;
 #X restore 442 275 pd META;
 #X obj 34 32 envvar;
 #X text 104 34 read an environment variable;

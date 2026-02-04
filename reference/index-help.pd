@@ -1,6 +1,7 @@
 #N canvas 4 50 929 598 10;
+#X declare -path zexy -lib zexy;
 #X msg 33 364 help;
-#X floatatom 682 190 0 0 128 0 - - -;
+#X floatatom 682 190 0 0 128 0 - - - 0;
 #X msg 58 185 add alias;
 #X msg 58 203 add bind;
 #X msg 58 221 add break;
@@ -26,36 +27,28 @@
 #X text 580 350 delete item from map;
 #X text 128 39 creation : "index [<n> [<auto>]]";
 #X msg 582 389 delete alias;
-#X text 162 73 auto :: 1_sets auto ON \, 0_sets auto OFF (default off)
-;
+#X text 162 73 auto :: 1_sets auto ON \, 0_sets auto OFF (default off);
 #X text 705 14 part of zexy;
-#X floatatom 61 563 0 0 0 0 - - -;
-#X symbolatom 121 562 0 0 0 0 - - -;
+#X floatatom 61 563 0 0 0 0 - - - 0;
+#X symbolatom 121 562 0 0 0 0 - - - 0;
 #X obj 61 542 route float symbol;
 #X obj 196 542 print INDEX;
 #X obj 682 294 send \$0-2index;
 #X text 673 168 query an item at index #;
 #X text 61 9 index:: create a symbol->int map;
-#X text 164 59 n :: initial max. number of elements in list (default:
-128);
+#X text 164 59 n :: initial max. number of elements in list (default: 128);
 #X obj 460 7 index;
 #N canvas 0 0 849 372 administrative 0;
 #X obj 61 268 outlet;
 #X msg 61 77 reset;
 #X text 50 58 clear map;
 #X msg 103 155 auto \$1;
-#X obj 103 134 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
-1;
-#X obj 156 205 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
-1;
+#X obj 103 134 tgl 15 0 empty empty empty 0 -6 0 8 #fcfcfc #000000 #000000 0 1;
+#X obj 156 205 tgl 15 0 empty empty empty 0 -6 0 8 #fcfcfc #000000 #000000 0 1;
 #X msg 156 226 resize \$1;
-#X text 174 116 in AUTO mode \, unknown symbols are automatically added
-to the map \;;
-#X text 175 143 in NON-AUTO mode (default) \, only ADDed symbols (eg.
-"add <symbol>") are added to the map;
-#X text 235 197 normally \, the map will resize automatically if it
-gets to small. you can prevent it from resizing by sending a "resize
-0" message.;
+#X text 174 116 in AUTO mode \, unknown symbols are automatically added to the map \;;
+#X text 175 143 in NON-AUTO mode (default) \, only ADDed symbols (eg. "add <symbol>") are added to the map;
+#X text 235 197 normally \, the map will resize automatically if it gets to small. you can prevent it from resizing by sending a "resize 0" message.;
 #X connect 1 0 0 0;
 #X connect 3 0 0 0;
 #X connect 4 0 3 0;
@@ -68,17 +61,13 @@ gets to small. you can prevent it from resizing by sending a "resize
 #X msg 111 251 sort;
 #X msg 76 56 bang;
 #X text 124 56 output the number of stored entries;
-#X text 128 109 dump each entry in the format "list <symbol> <index>"
-;
+#X text 128 109 dump each entry in the format "list <symbol> <index>";
 #X msg 114 161 compact;
-#X text 173 161 compact the entries \, so there are no holes in the
-map;
+#X text 173 161 compact the entries \, so there are no holes in the map;
 #X text 159 253 sort the elements alphabetically;
 #X text 172 198 this does not produce any immediate output!;
-#X text 177 179 (e.g. "1 ... foo \, 3 ... bar" --> "1 ... foo \, 2
-... bar");
-#X text 156 270 (e.g. "1 ... foo \, 2 ... bar" --> "1 ... bar \, 2
-... foo");
+#X text 177 179 (e.g. "1 ... foo \, 3 ... bar" --> "1 ... foo \, 2 ... bar");
+#X text 156 270 (e.g. "1 ... foo \, 2 ... bar" --> "1 ... bar \, 2 ... foo");
 #X text 161 288 this does not produce any immediate output!;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
@@ -99,15 +88,14 @@ map;
 #X text 88 123 "0" indicates success \; "-1" indicates an error;
 #X text 45 105 NOTE: indices start counting from "1" !!!;
 #N canvas 607 221 494 344 META 0;
-#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 5 KEYWORDS control conversion;
 #X text 12 105 AUTHOR IOhannes m zmoelnig;
 #X text 12 45 DESCRIPTION create a symbol -> int map;
-#X text 12 65 INLET_0 add help reset auto resize bang dump compact
-sort;
+#X text 12 65 INLET_0 add help reset auto resize bang dump compact sort;
 #X text 12 85 OUTLET_0 list;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 875 572 pd META;
 #X connect 0 0 42 0;
 #X connect 1 0 33 0;

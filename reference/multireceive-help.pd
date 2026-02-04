@@ -1,4 +1,5 @@
 #N canvas 275 127 834 332 10;
+#X declare -path zexy -lib zexy;
 #X floatatom 389 174 5 0 0 0 - - - 0;
 #X obj 153 186 print x;
 #X text 51 32 [multireceive]: combine multiple receives;
@@ -20,6 +21,7 @@
 #X text 12 55 OUTLET_0 anything;
 #X text 12 15 DESCRIPTION receive from multiple senders;
 #X text 12 35 INLET_0 set <receivers>;
+#X obj 51 144 declare -path zexy -lib zexy;
 #X restore 623 297 pd META;
 #X connect 0 0 3 0;
 #X connect 4 0 5 0;

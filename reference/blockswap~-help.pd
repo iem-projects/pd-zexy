@@ -1,22 +1,23 @@
 #N canvas 0 31 705 547 10;
-#X floatatom 26 203 0 0 0 0 - - -;
+#X declare -path zexy -lib zexy;
+#X floatatom 26 203 0 0 0 0 - - - 0;
 #X msg 118 228 help;
 #X msg 404 59 \; pd dsp 1;
 #N canvas 0 0 450 300 (subpatch) 0;
 #X array \$0-scope 100 float 0;
+#A color 0;
+#A width 1;
 #X coords 0 1 100 -1 400 300 1;
 #X restore 298 194 graph;
 #X msg 139 289 bang;
-#X text 287 166 note: there will be a break at 64 samples (signal-vector!)
-;
+#X text 287 166 note: there will be a break at 64 samples (signal-vector!);
 #X obj 87 255 blockswap~;
 #X obj 26 227 osc~ 440;
 #X obj 123 12 blockswap~;
 #X text 200 13 swap upper and lower half of the signal-vector;
-#X obj 122 198 tgl 15 0 empty empty on/off 0 -6 0 8 -262144 -1 -1 0
-1;
+#X obj 122 198 tgl 15 0 empty empty on/off 0 -6 0 8 #fcfcfc #000000 #000000 0 1;
 #X text 287 151 note: there will be a break at 32 samples (swap!);
-#X floatatom 112 448 0 0 0 0 - - -;
+#X floatatom 112 448 0 0 0 0 - - - 0;
 #N canvas 159 26 495 266 output 0;
 #X obj 338 160 t b;
 #X obj 338 110 f;
@@ -73,16 +74,15 @@
 #X text 107 429 output amplitude;
 #X text 477 63 part of zexy;
 #N canvas 515 193 494 344 META 0;
-#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 45 LICENSE GPL v2;
 #X text 12 5 GENRE help;
 #X text 12 25 KEYWORDS signal block_oriented;
 #X text 12 125 AUTHOR IOhannes m zmoelnig;
-#X text 12 65 DESCRIPTION swap upper and lower half of the signal-vector
-;
+#X text 12 65 DESCRIPTION swap upper and lower half of the signal-vector;
 #X text 12 85 INLET_0 float signal help;
 #X text 12 105 OUTLET_0 signal;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 657 527 pd META;
 #X obj 139 314 tabwrite~ \$0-scope;
 #X connect 0 0 7 0;

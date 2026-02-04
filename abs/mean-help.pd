@@ -1,4 +1,5 @@
 #N canvas 186 94 463 310 10;
+#X declare -path zexy -lib zexy;
 #X obj 83 154 mean;
 #X floatatom 83 202 4 0 0 0 - - - 0;
 #X msg 96 96 2 4;
@@ -13,6 +14,7 @@
 #X text 12 55 OUTLET_0 float;
 #X text 12 35 INLET_0 list;
 #X text 12 15 DESCRIPTION mean value;
+#X obj 65 180 declare -path zexy -lib zexy;
 #X restore 350 251 pd META;
 #X connect 0 0 1 0;
 #X connect 2 0 0 0;

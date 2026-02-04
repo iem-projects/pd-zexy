@@ -1,4 +1,5 @@
-#N canvas 950 226 450 496 10;
+#N canvas 241 100 450 496 10;
+#X declare -path zexy -lib zexy;
 #X obj 136 344 segregate;
 #X obj 136 447 print BANG;
 #X obj 145 430 print FLOAT;
@@ -34,6 +35,7 @@
 #X text 12 115 OUTLET_0 list;
 #X text 12 135 OUTLET_1 ponter;
 #X text 12 155 OUTLET_2 unknown;
+#X obj 275 220 declare -path zexy -lib zexy;
 #X restore 361 442 pd META;
 #X connect 0 0 1 0;
 #X connect 0 1 2 0;

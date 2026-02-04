@@ -1,4 +1,5 @@
 #N canvas 421 168 450 300 10;
+#X declare -path zexy -lib zexy;
 #X floatatom 76 167 5 0 0 0 - - - 0;
 #X floatatom 76 86 5 0 0 0 - - - 0;
 #X obj 116 225 -;
@@ -28,6 +29,7 @@
 #X text 12 131 OUTLET_2 float;
 #X text 12 155 KEYWORDS control angles;
 #X text 12 15 DESCRIPTION convert radian to degree, f 76;
+#X obj 285 200 declare -path zexy -lib zexy;
 #X restore 361 252 pd META;
 #X connect 0 0 2 0;
 #X connect 1 0 4 0;

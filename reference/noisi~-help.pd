@@ -1,20 +1,18 @@
 #N canvas 0 31 487 433 10;
+#X declare -path zexy -lib zexy;
 #X text 45 44 noisi~ ::;
-#X text 119 43 draws a random number every n samples and interpolates
-between;
+#X text 119 43 draws a random number every n samples and interpolates between;
 #X text 106 87 DODGE:JERSE::computer:music::c3:9;
-#X floatatom 91 222 0 0 0 0 - - -;
+#X floatatom 91 222 0 0 0 0 - - - 0;
 #X text 85 199 drawing rate in Hz;
 #X obj 132 322 print~;
 #X msg 132 298 bang;
 #X obj 55 321 env~;
-#X floatatom 55 347 0 0 0 0 - - -;
+#X floatatom 55 347 0 0 0 0 - - - 0;
 #X text 223 219 maybe the input should be fixed to signal;
-#X text 107 120 the effect is that you get a bandlimited:noise the
-bandwidth of which can be controlled via the drawing:rate without having
-to use expensive filters;
+#X text 107 120 the effect is that you get a bandlimited:noise the bandwidth of which can be controlled via the drawing:rate without having to use expensive filters;
 #X obj 91 244 noisi~ 2756.25;
-#X floatatom 116 378 0 0 0 0 - - -;
+#X floatatom 116 378 0 0 0 0 - - - 0;
 #N canvas 159 26 495 266 output 0;
 #X obj 338 160 t b;
 #X obj 338 110 f;
@@ -71,15 +69,14 @@ to use expensive filters;
 #X text 111 359 output amplitude;
 #X text 409 16 part of zexy;
 #N canvas 460 154 494 344 META 0;
-#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 115 AUTHOR IOhannes m zmoelnig;
 #X text 12 5 KEYWORDS signal random;
-#X text 12 45 DESCRIPTION draws a random number every n samples and
-interpolates between;
+#X text 12 45 DESCRIPTION draws a random number every n samples and interpolates between;
 #X text 12 75 INLET_0 float;
 #X text 12 95 OUTLET_0 signal;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 429 399 pd META;
 #X connect 3 0 11 0;
 #X connect 6 0 5 0;

@@ -1,18 +1,18 @@
 #N canvas 4 50 548 454 10;
+#X declare -path zexy -lib zexy;
 #X obj 75 195 sigzero~;
 #X obj 75 147 sig~;
-#X floatatom 75 89 0 0 0 0 - - -;
-#X floatatom 75 222 0 0 0 0 - - -;
+#X floatatom 75 89 0 0 0 0 - - - 0;
+#X floatatom 75 222 0 0 0 0 - - - 0;
 #X obj 113 273 print signal;
 #X obj 113 224 select 0;
 #X msg 113 249 off;
 #X msg 172 248 on;
-#X text 72 42 sigzero~ detects whether there is a signal or not (e.g.
-zeroes throughout);
+#X text 72 42 sigzero~ detects whether there is a signal or not (e.g. zeroes throughout);
 #X obj 74 25 sigzero~;
 #X msg 132 121 bang;
 #X msg 131 145 off;
-#X floatatom 131 168 0 0 0 0 - - -;
+#X floatatom 131 168 0 0 0 0 - - - 0;
 #X text 212 123 turn the detector on;
 #X text 212 148 turn it off;
 #X text 213 170 turn it on/off;
@@ -20,7 +20,7 @@ zeroes throughout);
 #X obj 72 303 adc~ 1;
 #X obj 131 330 sigzero~;
 #X text 209 330 that's how i use it;
-#X floatatom 98 408 0 0 0 0 - - -;
+#X floatatom 98 408 0 0 0 0 - - - 0;
 #N canvas 159 26 495 266 output 0;
 #X obj 338 160 t b;
 #X obj 338 110 f;
@@ -77,15 +77,14 @@ zeroes throughout);
 #X text 93 389 output amplitude;
 #X text 445 12 part of zexy;
 #N canvas 558 166 494 344 META 0;
-#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
-#X text 12 45 DESCRIPTION detects whether there is a signal or not
-(e.g. zeroes throughout);
+#X text 12 45 DESCRIPTION detects whether there is a signal or not (e.g. zeroes throughout);
 #X text 12 5 KEYWORDS signal analysis;
 #X text 12 75 INLET_0 signal bang off float;
 #X text 12 95 OUTLET_0 float;
 #X text 12 115 AUTHOR IOhannes m zmoelnig;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 491 425 pd META;
 #N canvas 4 50 551 343 sub 0;
 #X obj 152 104 inlet~;
@@ -94,9 +93,7 @@ Wilkes for Pd version 0.42.;
 #X text 190 157 imagine we were doing some VERY heavy calcs here;
 #X obj 427 48 inlet;
 #X obj 427 75 switch~;
-#X text 35 272 if the heavy calculations done here are done in vain
-because there is no incoming signal \, it would be better to turn the
-whole sub-patch off...;
+#X text 35 272 if the heavy calculations done here are done in vain because there is no incoming signal \, it would be better to turn the whole sub-patch off...;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 4 0 5 0;

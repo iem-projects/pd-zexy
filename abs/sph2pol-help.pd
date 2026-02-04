@@ -1,4 +1,5 @@
 #N canvas 200 209 457 355 10;
+#X declare -path zexy -lib zexy;
 #X text 297 321 updated for zexy-2.0;
 #X floatatom 168 198 5 0 0 1 theta - - 0;
 #X floatatom 134 156 5 0 0 1 phi - - 0;
@@ -9,8 +10,7 @@
 #X floatatom 124 308 0 0 0 0 r - - 0;
 #X msg 22 210 1 2 3;
 #X text 21 76 all angles are in rad.;
-#X text 24 31 [sph2pol]: convert spherical coordinates to polar coordinates
-;
+#X text 24 31 [sph2pol]: convert spherical coordinates to polar coordinates;
 #X obj 124 246 sph2pol;
 #X text 19 192 R phi theta;
 #X text 321 15 part of zexy;
@@ -24,8 +24,8 @@
 #X text 12 95 OUTLET_0 float;
 #X text 12 113 OUTLET_1 float;
 #X text 12 131 OUTLET_2 float;
-#X text 12 15 DESCRIPTION convert spherical coordinates to polar coordinates
-, f 76;
+#X text 12 15 DESCRIPTION convert spherical coordinates to polar coordinates, f 76;
+#X obj 255 200 declare -path zexy -lib zexy;
 #X restore 361 302 pd META;
 #X connect 1 0 11 2;
 #X connect 2 0 3 0;

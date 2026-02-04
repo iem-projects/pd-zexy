@@ -1,22 +1,15 @@
 #N canvas 0 31 640 573 10;
-#X text 68 38 you can store a number of lists by sending them to its
-right inlet.;
+#X declare -path zexy -lib zexy;
+#X text 68 38 you can store a number of lists by sending them to its right inlet.;
 #X text 50 14 [matchbox] - retrieve matching lists;
-#X text 67 67 when you send a list to the left inlet of [matchbox]
-\, it will be compared to each stored list \; any matches will be send
-to the first output of [matchbox]. the number of matches is sent to
-the 2nd outlet.;
-#X text 69 132 there are several matching algorithms available. you
-can choose between them via the "mode" message or by providing an argument
-at object creation.;
+#X text 67 67 when you send a list to the left inlet of [matchbox] \, it will be compared to each stored list \; any matches will be send to the first output of [matchbox]. the number of matches is sent to the 2nd outlet.;
+#X text 69 132 there are several matching algorithms available. you can choose between them via the "mode" message or by providing an argument at object creation.;
 #X text 70 176 currently available matching-modes:;
 #X text 90 195 '==': only matches if lists are exactly equal;
-#X text 90 207 'OSC': list-atoms are compared using OSC-pattern matching
-;
-#X floatatom 248 450 5 0 0 1 num_results - -;
+#X text 90 207 'OSC': list-atoms are compared using OSC-pattern matching;
+#X floatatom 248 450 5 0 0 1 num_results - - 0;
 #X obj 205 484 print results;
-#X msg 250 377 list this is my string \, list this is your string \,
-list this was my string;
+#X msg 250 377 list this is my string \, list this is your string \, list this was my string;
 #X text 268 431 default is exact matching;
 #X msg 205 252 list this is my string;
 #X msg 218 274 list this is no string;
@@ -30,24 +23,21 @@ list this was my string;
 #X obj 250 355 loadbang;
 #X text 303 356 add lists to the pool;
 #X text 52 292 change matching mode;
-#X text 90 219 'regex': list-atoms are compared using regular expression
-pattern-matching;
+#X text 90 219 'regex': list-atoms are compared using regular expression pattern-matching;
 #X msg 120 355 mode regex;
 #X msg 247 318 list this .+ my string;
 #X text 394 296 an OSC pattern;
 #X text 394 319 a regular expression;
 #N canvas 0 0 556 395 default 0;
-#X floatatom 100 295 5 0 0 1 num_results - -;
-#X msg 100 161 list this is my string \, list this is your string \,
-list this was my string;
+#X floatatom 100 295 5 0 0 1 num_results - - 0;
+#X msg 100 161 list this is my string \, list this is your string \, list this was my string;
 #X msg 33 90 list this is my string;
 #X obj 33 238 matchbox OSC;
 #X obj 33 313 print OSCresults;
 #X msg 61 123 list this *s * string;
 #X msg 46 106 list this is * string;
 #X obj 100 145 loadbang;
-#X text 57 38 you can give the matching mode as 1st argument to matchbox]
-;
+#X text 57 38 you can give the matching mode as 1st argument to matchbox];
 #X text 118 239 <-- this object does OSC-pattern matching;
 #X connect 1 0 3 1;
 #X connect 2 0 3 0;
@@ -60,8 +50,7 @@ list this was my string;
 #N canvas 220 74 737 499 deleting 0;
 #X obj 205 284 matchbox;
 #X obj 205 369 print results;
-#X msg 248 241 list this is my string \, list this is your string \,
-list this was my string;
+#X msg 248 241 list this is my string \, list this is your string \, list this was my string;
 #X text 268 286 default is exact matching;
 #X msg 119 172 mode ==;
 #X msg 120 190 mode OSC;
@@ -78,14 +67,10 @@ list this was my string;
 #X msg 217 135 delete this is no string;
 #X msg 234 155 delete this is * string;
 #X msg 247 173 delete this .+ my string;
-#X text 80 51 you can either "clear" all stored lists \, or "delete"
-them based pattern matching;
-#X text 327 316 after you have deleted something \, click "dump" to
-see the currently stored lists.;
-#X text 70 426 when "delete"ing \, [matchbox] will output the deleted
-list(s) with a "deleted" prepended;
-#X text 73 456 you can use [route delete] to distinguish between 'deleted'
-and 'found' results;
+#X text 80 51 you can either "clear" all stored lists \, or "delete" them based pattern matching;
+#X text 327 316 after you have deleted something \, click "dump" to see the currently stored lists.;
+#X text 70 426 when "delete"ing \, [matchbox] will output the deleted list(s) with a "deleted" prepended;
+#X text 73 456 you can use [route delete] to distinguish between 'deleted' and 'found' results;
 #X connect 0 0 1 0;
 #X connect 2 0 0 1;
 #X connect 4 0 0 0;
@@ -103,8 +88,7 @@ and 'found' results;
 #X text 475 15 part of zexy (2.1);
 #X obj 205 429 matchbox;
 #N canvas 515 193 494 344 META 0;
-#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 145 AUTHOR IOhannes m zmoelnig;
 #X text 12 5 KEYWORDS control storage;
@@ -113,6 +97,7 @@ Wilkes for Pd version 0.42.;
 #X text 12 85 INLET_1 list;
 #X text 12 105 OUTLET_0 list;
 #X text 12 125 OUTLET_1 float;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 585 548 pd META;
 #X connect 9 0 32 1;
 #X connect 11 0 32 0;

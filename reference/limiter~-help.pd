@@ -1,16 +1,19 @@
 #N canvas 4 50 762 443 10;
+#X declare -path zexy -lib zexy;
 #X text 189 15 limiter;
 #X text 187 25 ========;
 #X msg 398 249 print;
 #X obj 445 319 *~;
 #X obj 476 319 *~;
-#X floatatom 476 199 0 0 0 2 left - -;
-#X floatatom 562 200 0 0 0 2 right - -;
-#X floatatom 520 181 0 0 0 2 both - -;
+#X floatatom 476 199 0 0 0 2 left - - 0;
+#X floatatom 562 200 0 0 0 2 right - - 0;
+#X floatatom 520 181 0 0 0 2 both - - 0;
 #X obj 476 266 limiter~ 50 1;
 #N canvas 0 153 455 493 tabwrite 0;
 #N canvas 0 0 450 300 (subpatch) 0;
 #X array array1 32768 float 0;
+#A color 0;
+#A width 1;
 #X coords 0 1 32767 -1 200 140 1;
 #X restore 130 196 graph;
 #X obj 111 63 inlet~;
@@ -24,7 +27,7 @@
 #X connect 5 0 2 0;
 #X restore 372 408 pd tabwrite;
 #X obj 382 341 env~;
-#X floatatom 382 359 4 0 0 0 - - -;
+#X floatatom 382 359 4 0 0 0 - - - 0;
 #X text 30 299 to learn more about this object \, try these;
 #X text 48 371 http://users.iem.at/zmoelnig;
 #N canvas 59 76 600 400 generator~ 0;
@@ -59,15 +62,14 @@
 #X connect 14 0 11 0;
 #X connect 15 0 12 0;
 #X restore 476 221 pd generator~;
-#X text 37 99 it is quite important to delay the original signals before
-the limiter-amplification is applied to prevent clicks !!!;
+#X text 37 99 it is quite important to delay the original signals before the limiter-amplification is applied to prevent clicks !!!;
 #X text 52 353 1906:forum::für::umläute:2001;
 #X text 585 170 level of the inlets;
 #X text 511 148 (give some 190dB and notice no clipping);
 #X obj 493 298 z~ 64;
 #X obj 445 299 z~ 64;
 #X text 539 17 part of zexy;
-#X floatatom 492 354 0 0 100 0 - - -;
+#X floatatom 492 354 0 0 100 0 - - - 0;
 #N canvas 159 26 532 285 output 0;
 #X obj 348 160 t b;
 #X obj 348 110 f;
@@ -131,26 +133,19 @@ the limiter-amplification is applied to prevent clicks !!!;
 #X msg 520 354 MUTE;
 #X text 532 300 just a small delay of 64 samples;
 #X text 531 44 updated for zexy-2.0;
-#X text 37 132 this is because the limiter algorithm needs some time
-(e.g. the outgoing signal is delayed by some samples) \; directly multiplying
-would therefore be a bit too late \, in case a spike appears. Adding
-a small delay takes care of this psychoacoustically (you won't hear
-the click);
+#X text 37 132 this is because the limiter algorithm needs some time (e.g. the outgoing signal is delayed by some samples) \; directly multiplying would therefore be a bit too late \, in case a spike appears. Adding a small delay takes care of this psychoacoustically (you won't hear the click);
 #N canvas 603 395 494 344 META 0;
-#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 135 AUTHOR IOhannes m zmoelnig;
 #X text 12 45 DESCRIPTION limiter;
 #X text 12 5 KEYWORDS signal filter analysis;
-#X text 12 65 INLET_0 signal print mode LIMIT CRACK COMPRESS help limit
-set limits set2 treshold compress;
+#X text 12 65 INLET_0 signal print mode LIMIT CRACK COMPRESS help limit set limits set2 treshold compress;
 #X text 12 95 INLET_N signal;
 #X text 12 115 OUTLET_0 signal;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 711 417 pd META;
-#X text 36 41 limiter will output the amplification-factor that has
-to be applied on all inlet~s to get a beautiful limited multichannel-signal
-that preserves the balance between the channels;
+#X text 36 41 limiter will output the amplification-factor that has to be applied on all inlet~s to get a beautiful limited multichannel-signal that preserves the balance between the channels;
 #N canvas 4 50 951 819 modes 0;
 #X text 81 189 MODE 0 : 1-treshold-limiter;
 #X text 79 384 MODE 1 : 2-tresholds-limiter;
@@ -184,8 +179,7 @@ that preserves the balance between the channels;
 #X msg 500 776 COMPRESS;
 #X msg 492 629 ratio 0.5;
 #X text 599 628 set compress-ratio (0.5 == 1:2);
-#X text 599 605 set the treshold \, where the compressor should start
-to compress;
+#X text 599 605 set the treshold \, where the compressor should start to compress;
 #X text 622 677 set the compressor (limit/treshold/ratio);
 #X text 601 655 set limit/holdtime/releasetime at once;
 #X text 603 717 view actual settings;
@@ -203,36 +197,16 @@ to compress;
 #X text 609 212 set limit/holdtime/releasetime at once;
 #X text 609 185 set output limit;
 #X obj 439 790 limiter~;
-#X text 605 404 set limiter1 (output-limit/hold-time/release-time)
-;
-#X text 10 621 the output signal will never become louder than the
-specified output-limit.;
-#X text 10 653 if the input-signal becomes loader than the input-treshold
-\, a compressor will start working \, compressing the dynamic range
-by the specified ratio. Signals lesser than the treshold will pass
-through uncompressed.;
+#X text 605 404 set limiter1 (output-limit/hold-time/release-time);
+#X text 10 621 the output signal will never become louder than the specified output-limit.;
+#X text 10 653 if the input-signal becomes loader than the input-treshold \, a compressor will start working \, compressing the dynamic range by the specified ratio. Signals lesser than the treshold will pass through uncompressed.;
 #X text 39 59 set the limiter~ to one of the 3 modes;
 #X text 604 380 set both limits;
-#X text 11 210 this is simple : the output will not become bigger than
-the specified limit. When the input becomes small enough again so that
-this condition is matched even without (positive) amplification (this
-is \, when the input signal level falls below the limit) \, the amplification
-will increase gradually (depending on hold- & release-time) towards
-1;
-#X text 604 427 set limiter2 (input-treshold/hold-time/release-time)
-;
+#X text 11 210 this is simple : the output will not become bigger than the specified limit. When the input becomes small enough again so that this condition is matched even without (positive) amplification (this is \, when the input signal level falls below the limit) \, the amplification will increase gradually (depending on hold- & release-time) towards 1;
+#X text 604 427 set limiter2 (input-treshold/hold-time/release-time);
 #X msg 502 381 limits 100 108;
-#X text 10 414 this limiter can be used to handle disgusting things
-like cracks \, which are much louder than the "normal" musical signal.
-Typically hold- and release-times for the second limiter are far smaller
-than those for the first \, to ensure that the disturbance will pass
-quite fast (since the crack would disturb the sensation anyhow \, we
-do not care much about the distortion caused by a fast limiter). The
-treshold for the 2nd limiter must be greater than the ouput-limit (if
-not \, the limiter will be reset to MODE 0);
-#X text 13 298 all levels (limits/tresholds) should be given in dB to
-produce satisfying results (following pd's agreement on the deziBel-scale
-\, 100dB are equal to 1 \, 0dB equals 0 \, ...);
+#X text 10 414 this limiter can be used to handle disgusting things like cracks \, which are much louder than the "normal" musical signal. Typically hold- and release-times for the second limiter are far smaller than those for the first \, to ensure that the disturbance will pass quite fast (since the crack would disturb the sensation anyhow \, we do not care much about the distortion caused by a fast limiter). The treshold for the 2nd limiter must be greater than the ouput-limit (if not \, the limiter will be reset to MODE 0);
+#X text 13 298 all levels (limits/tresholds) should be given in dB to produce satisfying results (following pd's agreement on the deziBel-scale \, 100dB are equal to 1 \, 0dB equals 0 \, ...);
 #X text 624 123 context(!) help;
 #X connect 2 0 3 0;
 #X connect 5 0 4 0;
@@ -263,17 +237,13 @@ produce satisfying results (following pd's agreement on the deziBel-scale
 #X connect 57 0 23 0;
 #X restore 189 322 pd modes;
 #N canvas 4 50 565 362 creation 0;
-#X text 211 152 creates a default limiter (MONO \, 9-samples-buffer)
-;
+#X text 211 152 creates a default limiter (MONO \, 9-samples-buffer);
 #X text 213 189 creates a limiter(MONO \, 10ms-buffer);
-#X text 213 223 creates a limiter (multichannel \, 9-samples-buffer)
-;
+#X text 213 223 creates a limiter (multichannel \, 9-samples-buffer);
 #X text 216 256 creates a limiter (multichannel \, 1ms-buffer !!);
 #X text 82 17 "limiter [<bufsize>] [<in1> [<in2> [...]]]";
-#X text 148 70 creating inlets depends ONLY on the number of arguments
-\, not on the arguments themselves... !;
-#X text 218 313 creates a limiter (multichannel \, 9-samples-buffer)
-;
+#X text 148 70 creating inlets depends ONLY on the number of arguments \, not on the arguments themselves... !;
+#X text 218 313 creates a limiter (multichannel \, 9-samples-buffer);
 #X text 113 187 ______________;
 #X text 89 150 _________________;
 #X text 145 220 _________;

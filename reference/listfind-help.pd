@@ -1,4 +1,5 @@
 #N canvas 0 31 567 344 10;
+#X declare -path zexy -lib zexy;
 #X text 467 29 part of zexy;
 #X obj 33 13 listfind;
 #X text 92 14 - find sublists in lists;
@@ -12,14 +13,10 @@
 #X msg 84 119 list 2 3;
 #X msg 96 142 list 8;
 #X obj 58 220 print found@;
-#X text 150 223 outputs a list of (0-based) indices of all occurrences
-of the sublist;
-#X text 54 281 this is similar (and hopefully compatible) to foobar's
-[list-find] but it searches not only for single elements but for entire
-sub-lists;
+#X text 150 223 outputs a list of (0-based) indices of all occurrences of the sublist;
+#X text 54 281 this is similar (and hopefully compatible) to foobar's [list-find] but it searches not only for single elements but for entire sub-lists;
 #N canvas 460 154 494 344 META 0;
-#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 105 OUTLET_0 list;
 #X text 12 125 AUTHOR IOhannes m zmoelnig;
@@ -27,6 +24,7 @@ Wilkes for Pd version 0.42.;
 #X text 12 45 DESCRIPTION find sublists in lists;
 #X text 12 65 INLET_0 list;
 #X text 12 85 INLET_1 list;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 511 317 pd META;
 #X connect 3 0 12 0;
 #X connect 4 0 3 1;

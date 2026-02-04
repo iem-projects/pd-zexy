@@ -1,7 +1,8 @@
 #N canvas 0 31 646 432 10;
+#X declare -path zexy -lib zexy;
 #X obj 48 34 packel;
 #X text 112 33 get the nth element of a package;
-#X floatatom 105 219 0 0 0 0 n - -;
+#X floatatom 105 219 0 0 0 0 n - - 0;
 #X obj 62 239 packel 3;
 #X obj 62 268 print ELEMENT;
 #X obj 62 377 packel -2;
@@ -15,21 +16,21 @@
 #X msg 62 357 list uno dva drei quattre five;
 #X obj 380 302 print E1;
 #X obj 441 302 print E2;
-#X floatatom 410 249 4 -5 5 0 n1 - -;
+#X floatatom 410 249 4 -5 5 0 n1 - - 0;
 #X obj 380 273 packel 3 -1;
-#X floatatom 441 250 4 -5 5 1 n2 - -;
+#X floatatom 441 250 4 -5 5 1 n2 - - 0;
 #X text 380 199 you can also query several elements at once;
 #X msg 380 225 list uno dva drei quattre five;
 #X text 63 336 reading from the end of the list;
 #N canvas 293 85 494 344 META 0;
-#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 105 AUTHOR IOhannes m zmoelnig;
 #X text 12 45 DESCRIPTION get the nth element of a package;
 #X text 12 65 INLET_0 list;
 #X text 12 5 KEYWORDS control list_op;
 #X text 12 85 OUTLET_0 symbol float pointer;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 587 396 pd META;
 #X connect 2 0 3 1;
 #X connect 3 0 4 0;

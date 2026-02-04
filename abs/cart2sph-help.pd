@@ -1,4 +1,5 @@
 #N canvas 231 219 466 341 10;
+#X declare -path zexy -lib zexy;
 #X text 322 322 updated for zexy-2.0;
 #X floatatom 175 198 5 0 0 1 z - - 0;
 #X floatatom 134 156 5 0 0 1 y - - 0;
@@ -9,8 +10,7 @@
 #X floatatom 124 308 0 0 0 0 R - - 0;
 #X msg 32 204 1 2 3;
 #X text 77 204 x y z;
-#X text 24 31 [cart2sph]: convert cartesian coordinates to spheric
-coordinates;
+#X text 24 31 [cart2sph]: convert cartesian coordinates to spheric coordinates;
 #X obj 124 246 cart2sph;
 #X text 21 76 all angles are in rad.;
 #X text 357 6 part of zexy;
@@ -24,8 +24,8 @@ coordinates;
 #X text 12 95 OUTLET_0 float;
 #X text 12 113 OUTLET_1 float;
 #X text 12 131 OUTLET_2 float;
-#X text 12 15 DESCRIPTION convert cartesian coordinates to spheric
-coordinates, f 76;
+#X text 12 15 DESCRIPTION convert cartesian coordinates to spheric coordinates, f 76;
+#X obj 305 190 declare -path zexy -lib zexy;
 #X restore 361 302 pd META;
 #X connect 1 0 11 2;
 #X connect 2 0 3 0;

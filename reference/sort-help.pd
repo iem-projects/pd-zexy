@@ -1,9 +1,9 @@
 #N canvas 0 31 689 468 10;
+#X declare -path zexy -lib zexy;
 #X obj 95 193 print UNSORTED;
 #X msg 37 67 bang;
 #X obj 198 13 sort;
-#X text 314 77 any package-elements that are non-float will be interpreted
-as "0.0".;
+#X text 314 77 any package-elements that are non-float will be interpreted as "0.0".;
 #X text 270 77 note :;
 #X obj 56 295 sort 1;
 #X obj 56 420 print ASCENDING;
@@ -56,7 +56,7 @@ as "0.0".;
 #X restore 37 155 pd randompackage;
 #X msg 72 120 -----;
 #X obj 37 101 t b b;
-#X floatatom 94 228 0 0 0 0 - - -;
+#X floatatom 94 228 0 0 0 0 - - - 0;
 #X text 128 230 direction;
 #X obj 37 173 t l l l l;
 #X obj 75 247 sort;
@@ -66,11 +66,9 @@ as "0.0".;
 #X obj 81 362 print indicesD;
 #X obj 93 317 print indicesA;
 #X obj 72 137 print -----;
-#X text 269 152 the second outlet gives the indices of the input data.
-;
+#X text 269 152 the second outlet gives the indices of the input data.;
 #N canvas 558 166 494 344 META 0;
-#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 145 AUTHOR IOhannes m zmoelnig;
 #X text 12 45 DESCRIPTION shell sort a package of floats;
@@ -79,6 +77,7 @@ Wilkes for Pd version 0.42.;
 #X text 12 105 OUTLET_0 list;
 #X text 12 125 OUTLET_1 list;
 #X text 12 5 KEYWORDS control list_op;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 631 435 pd META;
 #X connect 1 0 15 0;
 #X connect 5 0 6 0;

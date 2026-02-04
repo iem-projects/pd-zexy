@@ -1,7 +1,7 @@
 #N canvas 410 364 513 356 10;
+#X declare -path zexy -lib zexy;
 #X obj 124 246 cart2pol;
-#X text 24 31 [cart2pol]: convert cartesian coordinates to polar coordinates
-;
+#X text 24 31 [cart2pol]: convert cartesian coordinates to polar coordinates;
 #X text 360 325 updated for zexy-2.0;
 #X floatatom 175 198 5 0 0 1 z - - 0;
 #X floatatom 134 156 5 0 0 1 y - - 0;
@@ -14,7 +14,7 @@
 #X text 77 204 x y z;
 #X text 21 76 all angles are in rad.;
 #X text 399 6 part of zexy;
-#N canvas 690 246 494 237 META 0;
+#N canvas 690 246 494 245 META 0;
 #X text 12 175 LICENSE GPL v2;
 #X text 12 195 AUTHOR IOhannes m zmoelnig;
 #X text 12 155 KEYWORDS control coordinates;
@@ -24,8 +24,8 @@
 #X text 12 95 OUTLET_0 float;
 #X text 12 113 OUTLET_1 float;
 #X text 12 131 OUTLET_2 float;
-#X text 12 15 DESCRIPTION convert cartesian coordinates to polar coordinates
-, f 76;
+#X text 12 15 DESCRIPTION convert cartesian coordinates to polar coordinates, f 76;
+#X obj 65 220 declare -path zexy -lib zexy;
 #X restore 361 302 pd META;
 #X connect 0 0 9 0;
 #X connect 0 1 8 0;

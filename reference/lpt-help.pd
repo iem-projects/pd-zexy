@@ -1,67 +1,50 @@
-#N canvas 420 106 775 605 10;
+#N canvas 420 106 689 605 10;
+#X declare -path zexy -lib zexy;
 #X text 129 36 write data to the (parallel) port;
-#X floatatom 81 304 4 0 255 0 - - -;
+#X floatatom 81 304 4 0 255 0 - - - 0;
 #X text 122 304 write an 8bit-word;
 #X obj 90 33 lpt;
 #X text 521 30 part of zexy;
-#X text 79 64 this does not work on osX (as there is no parallel port)
-;
+#X text 79 64 this does not work on osX (as there is no parallel port);
 #N canvas 4 49 631 406 windows 0;
-#X text 32 16 To get it running under WinNT/2000/XP a special kernel
-driver is needed. These systems do not allow direct access to I/O ports.
-;
-#X text 53 207 If you ever wish to remove the kernel driver start
-the program again and click 'Stop'.;
+#X text 32 16 To get it running under WinNT/2000/XP a special kernel driver is needed. These systems do not allow direct access to I/O ports.;
+#X text 53 207 If you ever wish to remove the kernel driver start the program again and click 'Stop'.;
 #X text 54 242 Under Win95/98/Me all this is not needed!!!;
 #X text 52 272 Good Luck!;
-#X text 54 141 The subfolder 'UserPort' contains a kernel driver that
-handles the I/O stuff. Just copy the file UserPort.sys into %WINDIR%/system32/drivers
-(e.g. C:/WinNT/system32/drivers) and run the program UserPort.exe.
-Click on 'Start' and then 'Exit'.;
+#X text 54 141 The subfolder 'UserPort' contains a kernel driver that handles the I/O stuff. Just copy the file UserPort.sys into %WINDIR%/system32/drivers (e.g. C:/WinNT/system32/drivers) and run the program UserPort.exe. Click on 'Start' and then 'Exit'.;
 #X text 175 112 ftp://iem.at/DOSen/UserPort/;
-#X text 172 82 http://www.embeddedtronics.com/public/Electronics/minidaq/..
-../userport;
+#X text 172 82 http://www.embeddedtronics.com/public/Electronics/minidaq/.. ../userport;
 #X text 49 79 downloads:;
 #X text 267 326 thanks to Olaf Matthes for this;
 #X restore 292 86 pd windows;
-#X text 80 253 you should be member of the "lp" group or set the the
-permissions of the device file;
+#X text 80 253 you should be member of the "lp" group or set the the permissions of the device file;
 #X obj 81 477 lpt /dev/parport0;
 #N canvas 4 49 553 385 raw 0;
-#X text 24 127 if your port-address exceeds 0x3ff \, "lpt" will try
-to get all permissions with the iopl()-command. this might be dangerous
-!;
-#X text 26 50 you can access all ports on your system when using "lpt
-<hex-port-address>";
-#X text 26 89 you might have to be root (superuser) \, in order to
-gain raw access to the port.;
+#X text 24 127 if your port-address exceeds 0x3ff \, "lpt" will try to get all permissions with the iopl()-command. this might be dangerous !;
+#X text 26 50 you can access all ports on your system when using "lpt <hex-port-address>";
+#X text 26 89 you might have to be root (superuser) \, in order to gain raw access to the port.;
 #X text 75 230 parallel ports 0 \, 1 \, 2;
 #X obj 81 251 lpt 0;
 #X obj 130 251 lpt 1;
 #X obj 179 251 lpt 2;
 #X obj 68 329 lpt 0x378;
-#X text 63 308 another port (directly specifying the port address)
-;
+#X text 63 308 another port (directly specifying the port address);
 #X restore 460 150 pd raw access;
 #X text 78 86 w32 users should read this:;
-#X text 81 153 linux users can use the deprecated RAW access method
-;
-#X text 80 219 you can access your parallel ports by accessing /dev/parport0
-(and similar);
-#X text 82 189 the preferred way for linux users is to use the device-filesystem:
-;
+#X text 81 153 linux users can use the deprecated RAW access method;
+#X text 80 219 you can access your parallel ports by accessing /dev/parport0 (and similar);
+#X text 82 189 the preferred way for linux users is to use the device-filesystem:;
 #X text 217 478 <-- access /dev/parport0;
 #X obj 84 545 lpt /dev/parports/0;
 #X text 222 546 <-- some systems might use this syntax;
 #X msg 335 309 control \$1;
-#X floatatom 335 291 4 0 255 0 - - -;
-#X floatatom 81 509 5 0 0 0 - - -;
+#X floatatom 335 291 4 0 255 0 - - - 0;
+#X floatatom 81 509 5 0 0 0 - - - 0;
 #X msg 337 433 bang;
 #X text 380 437 read the input bits;
 #X text 131 509 input bits;
 #N canvas 461 150 494 344 META 0;
-#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
-Wilkes for Pd version 0.42.;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan Wilkes for Pd version 0.42.;
 #X text 12 25 LICENSE GPL v2;
 #X text 12 125 AUTHOR IOhannes m zmoelnig;
 #X text 12 45 DESCRIPTION write data to the (parallel) port;
@@ -69,8 +52,9 @@ Wilkes for Pd version 0.42.;
 #X text 12 105 OUTLET_0 float;
 #X text 12 5 KEYWORDS control hardware interfacing;
 #X text 12 85 INLET_1 float;
+#X obj 41 244 declare -path zexy -lib zexy;
 #X restore 571 557 pd META;
-#X floatatom 335 361 4 0 255 0 - - -;
+#X floatatom 335 361 4 0 255 0 - - - 0;
 #X text 373 361 alternative way to set control bits;
 #X text 373 291 set control bits;
 #X connect 1 0 8 0;

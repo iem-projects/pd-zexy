@@ -1,4 +1,5 @@
 #N canvas 0 0 450 300 10;
+#X declare -path zexy -lib zexy;
 #X obj 68 60 inlet~;
 #X obj 68 133 outlet~;
 #X text 67 27 nop~ no-operation;
@@ -10,6 +11,7 @@
 #X msg 178 204 nop~ does not delay any more!;
 #X obj 178 183 loadbang;
 #X text 272 20 part of zexy;
+#X obj 78 261 declare -path zexy -lib zexy;
 #X connect 0 0 1 0;
 #X connect 8 0 7 0;
 #X connect 9 0 8 0;
