@@ -25,9 +25,9 @@
  * even LATER: dynamically bind to several searchlists (via "set" message)
  */
 
-#include "zexy.h"
 #include "z_strndup.h"
 #include "z_strnlen.h"
+#include "zexy.h"
 
 #define MATCHBOX_EXACT 0
 #define MATCHBOX_OSC 1

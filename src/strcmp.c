@@ -17,9 +17,9 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "zexy.h"
 #include "z_strndup.h"
 #include "z_strnlen.h"
+#include "zexy.h"
 #include <stdlib.h>
 #include <string.h>
 

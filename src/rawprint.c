@@ -59,13 +59,13 @@ static void rawprint_any(t_rawprint *x, t_symbol *s, int argc, t_atom *argv)
       snprintf(buf, MAXPDSTRING - 1, "'%s'", atom_getsymbol(argv)->s_name);
       break;
     case A_POINTER: {
-      const t_gpointer*ptr =  argv->a_w.w_gpointer;
-      if(ptr && gpointer_check(ptr, 1))
-        snprintf(buf, MAXPDSTRING - 1, "gpointer[%p](%p,%d,%p)", ptr, ptr->gp_un.gp_w, ptr->gp_valid, ptr->gp_stub);
+      const t_gpointer *ptr = argv->a_w.w_gpointer;
+      if (ptr && gpointer_check(ptr, 1))
+        snprintf(buf, MAXPDSTRING - 1, "gpointer[%p](%p,%d,%p)", ptr,
+            ptr->gp_un.gp_w, ptr->gp_valid, ptr->gp_stub);
       else
         snprintf(buf, MAXPDSTRING - 1, "pointer[%p]", ptr);
-    }
-      break;
+    } break;
     case A_SEMI:
       snprintf(buf, MAXPDSTRING - 1, "SEMI");
       break;

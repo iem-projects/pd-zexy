@@ -31,20 +31,20 @@ static t_class *envvar_class = NULL;
 
 typedef struct _envvar {
   t_object x_obj;
-  t_outlet*x_outlet;
-  t_outlet*x_errout;
+  t_outlet *x_outlet;
+  t_outlet *x_errout;
 } t_envvar;
 
-static void envvar_symbol(t_envvar*x, t_symbol*s) {
-  char*e = getenv(s->s_name);
-  if(e)
+static void envvar_symbol(t_envvar *x, t_symbol *s)
+{
+  char *e = getenv(s->s_name);
+  if (e)
     outlet_symbol(x->x_outlet, gensym(e));
   else if (x->x_errout) {
     outlet_bang(x->x_errout);
   } else {
     pd_error(x, "no such environment variable: %s", s->s_name);
   }
-
 }
 
 static void *envvar_new()
@@ -57,8 +57,7 @@ static void *envvar_new()
 
 ZEXY_SETUP void envvar_setup(void)
 {
-  envvar_class =
-    zexy_new("envvar", envvar_new, 0, t_envvar, CLASS_DEFAULT, "");
+  envvar_class = zexy_new("envvar", envvar_new, 0, t_envvar, CLASS_DEFAULT, "");
   class_addsymbol(envvar_class, envvar_symbol);
   zexy_register("envvar");
 }

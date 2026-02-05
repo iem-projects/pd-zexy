@@ -92,7 +92,7 @@ static t_int *sigenvrms_perform(t_int *w)
   t_sample *sump;
   in += n;
   for (count = x->x_phase, sump = x->x_sumbuf; count < x->x_npoints;
-       count += x->x_realperiod, sump++) {
+      count += x->x_realperiod, sump++) {
     t_sample *hp = x->x_buf + count;
     t_sample *fp = in;
     t_sample sum = *sump;
@@ -109,7 +109,7 @@ static t_int *sigenvrms_perform(t_int *w)
   if (x->x_phase < 0) {
     x->x_result = x->x_sumbuf[0];
     for (count = x->x_realperiod, sump = x->x_sumbuf; count < x->x_npoints;
-         count += x->x_realperiod, sump++) {
+        count += x->x_realperiod, sump++) {
       sump[0] = sump[1];
     }
     sump[0] = 0;

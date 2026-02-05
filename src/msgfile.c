@@ -23,8 +23,8 @@
     pd (and thus [textfile]) come with their own license
 */
 
-#include "zexy.h"
 #include "z_strnlen.h"
+#include "zexy.h"
 
 #ifdef __WIN32__
 #  include <io.h>

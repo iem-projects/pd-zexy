@@ -19,9 +19,11 @@
 #ifndef INCLUDE_Z_STRNLEN_H__
 #define INCLUDE_Z_STRNLEN_H__
 #include <stddef.h>
-static size_t z_strnlen(const char*s, size_t maxlen) {
-    size_t i;
-    for(i=0; i<maxlen && *s++; i++);
-    return i;
+static size_t z_strnlen(const char *s, size_t maxlen)
+{
+  size_t i;
+  for (i = 0; i < maxlen && *s++; i++)
+    ;
+  return i;
 }
 #endif /* INCLUDE_Z_STRNLEN_H__ */
