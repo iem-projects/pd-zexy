@@ -133,7 +133,7 @@ datafiles += \
 	$(empty)
 
 cflags =
-cflags += -DVERSION='"2.4.2"'
+cflags += -DVERSION='"2.4.4"'
 
 DATE_FMT = %Y/%m/%d at %H:%M:%S UTC
 ifdef SOURCE_DATE_EPOCH

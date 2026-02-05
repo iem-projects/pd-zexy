@@ -1,3 +1,30 @@
+zexy (2.4.4) RELEASED; urgency=medium
+
+  * New object [envvar] (to read environment variables)
+  * [regex] fix help and case-insensitive search
+  * [rawprint] special handling of (valid-looking) gpointers
+  * [segregate] use built-in [list] instead of [a2l]
+  * Make sure all help patches have a [pd META]
+  * Add [declare] to help patches and abstractions
+
+  * Internals
+    + [makesymbol] mark helper-function as potentially unused
+    + renamed "zexy_strndup" to "z_strndup"
+    + Replacement function "z_strnlen()"
+  * Cleanup
+    - replace verbose() with logpost()/pd_error()
+  * Housekeeping
+    - Drop [abs~] (it's in Pd vanilla for ages)
+    - Drop duplicate [regex] help
+    - Remove src/Makefile.nt
+    - Remove verbose() wrapper (not needed for ages)
+  * Add a release script
+  * [ci] drop 'pages' job
+  * Fix shell-scripts with 'shellcheck'
+  * Reformat code with clang-format
+
+ -- IOhannes m zmölnig <zmoelnig@iem.at> Thu, 05 Feb 2026 13:48:45 +0100
+
 zexy (2.4.3) RELEASED; urgency=medium
 
   * Group deken packages by Operating System,
