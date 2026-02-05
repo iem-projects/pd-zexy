@@ -5,6 +5,6 @@ AllowShortIfStatementsOnASingleLine: false
 BreakBeforeBraces: Linux
 IndentCaseLabels: false
 IndentPPDirectives: AfterHash
-ReflowComments: no
+ReflowComments: false
 TabWidth: 4
 UseTab: Never
