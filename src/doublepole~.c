@@ -31,7 +31,7 @@ static void sigdoublepole_list(
 static void *sigdoublepole_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_sigdoublepole *x = (t_sigdoublepole *)pd_new(sigdoublepole_class);
-  outlet_new(&x->x_obj, &s_signal);
+  outlet_new(&x->x_obj, gensym("signal"));
   x->x_ctl = &x->x_cspace;
   x->x_cspace.c_x1 = x->x_cspace.c_x2 = 0;
   sigdoublepole_list(x, s, argc, argv);
