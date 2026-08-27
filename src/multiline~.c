@@ -26,12 +26,6 @@
   1403:forum::für::umläute:2001
 */
 
-/* i am not sure, whether there is a difference between loop-unrolling by hand or by compiler
- * i somehow have the feeling, that doing it by hand increases(!) performance for about 2%
- * anyhow, if you think that the compiler can do this job better, just disable the UNROLLED define below
- */
-#define UNROLLED
-
 #include "zexy.h"
 
 /* --------------------------- multiline~ ---------------------------------- */
