@@ -371,18 +371,18 @@ static t_int *sfrecord_perform(t_int *w)
     }
 
     /* then write soundfile 16 bit*/
-    if ((j = fwrite(bufstart, sizeof(short), c * s_n, x->fp)) < 1) {
+    if ((j = fwrite(bufstart, sizeof(*bufstart), c * s_n, x->fp)) < 1) {
       x->state = SFRECORD_ERROR;
       x->count = SFRECORD_WAITTICKS;
 #ifdef DEBUG_ME
       post("write -> write error\t %xd\t%xd\t%d\t%d", x->data, buf,
-          c * s_n * sizeof(short), j);
+          c * s_n * sizeof(*bufstart), j);
 #endif
       break;
     }
 
 #if 0
-    if((j=fwrite(buf,sizeof(short),c*n,x->fp)) < (unsigned int) n) {
+    if((j=fwrite(buf,sizeof(*buf),c*n,x->fp)) < (unsigned int) n) {
       if(feof(x->fp)) {
 
         while (n--) {

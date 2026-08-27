@@ -37,9 +37,9 @@ static void scalmul_lst2(
 {
   t_float *fp;
   if (x->n2 != argc) {
-    freebytes(x->buf2, x->n2 * sizeof(t_float));
+    freebytes(x->buf2, x->n2 * sizeof(*x->buf2));
     x->n2 = argc;
-    x->buf2 = (t_float *)getbytes(sizeof(t_float) * x->n2);
+    x->buf2 = (t_float *)getbytes(sizeof(*x->buf2) * x->n2);
   };
   fp = x->buf2;
   while (argc--) {
@@ -56,9 +56,9 @@ static void scalmul_lst(
 
   if (argc) {
     if (x->n1 != argc) {
-      freebytes(x->buf1, x->n1 * sizeof(t_float));
+      freebytes(x->buf1, x->n1 * sizeof(*x->buf1));
       x->n1 = argc;
-      x->buf1 = (t_float *)getbytes(sizeof(t_float) * x->n1);
+      x->buf1 = (t_float *)getbytes(sizeof(*x->buf1) * x->n1);
     };
     fp = x->buf1;
     while (argc--) {
@@ -76,7 +76,7 @@ static void scalmul_lst(
     t_float f = *x->buf1;
     fp = x->buf2;
     n = x->n2;
-    ap = (t_atom *)getbytes(sizeof(t_atom) * n);
+    ap = (t_atom *)getbytes(sizeof(*ap) * n);
     a = ap;
     while (i--) {
       SETFLOAT(a, *fp++ * f);
@@ -87,7 +87,7 @@ static void scalmul_lst(
     t_atom *a;
     int i = x->n1;
     n = x->n1;
-    ap = (t_atom *)getbytes(sizeof(t_atom) * n);
+    ap = (t_atom *)getbytes(sizeof(*ap) * n);
     a = ap;
     fp = x->buf1;
     while (i--) {
@@ -106,7 +106,7 @@ static void scalmul_lst(
         n = x->n2;
       }
     }
-    ap = (t_atom *)getbytes(sizeof(t_atom) * n);
+    ap = (t_atom *)getbytes(sizeof(*ap) * n);
     a = ap;
     i = n;
     while (i--) {
@@ -115,12 +115,12 @@ static void scalmul_lst(
     }
   }
   outlet_list(x->x_obj.ob_outlet, gensym("list"), n, ap);
-  freebytes(ap, sizeof(t_atom) * n);
+  freebytes(ap, sizeof(*ap) * n);
 }
 static void scalmul_free(t_scalmul *x)
 {
-  freebytes(x->buf1, sizeof(t_float) * x->n1);
-  freebytes(x->buf2, sizeof(t_float) * x->n2);
+  freebytes(x->buf1, sizeof(*x->buf1) * x->n1);
+  freebytes(x->buf2, sizeof(*x->buf2) * x->n2);
 }
 
 static void *scalmul_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
@@ -136,14 +136,14 @@ static void *scalmul_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   outlet_new(&x->x_obj, 0);
 
   x->n1 = 1;
-  x->buf1 = (t_float *)getbytes(sizeof(t_float));
+  x->buf1 = (t_float *)getbytes(sizeof(*x->buf1));
   *x->buf1 = 0;
 
   if (argc) {
     scalmul_lst2(x, gensym("list"), argc, argv);
   } else {
     x->n2 = 1;
-    x->buf2 = (t_float *)getbytes(sizeof(t_float));
+    x->buf2 = (t_float *)getbytes(sizeof(*x->buf2));
     *x->buf2 = 0;
   }
 

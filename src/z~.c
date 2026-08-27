@@ -48,9 +48,9 @@ static void zdel_float(t_zNdelay *x, t_floatarg f)
   if (i == x->bufsize) {
     return;
   }
-  freebytes(x->buf, x->bufsize * sizeof(t_sample));
+  freebytes(x->buf, x->bufsize * sizeof(*x->buf));
   x->bufsize = i;
-  x->buf = (t_sample *)getbytes(x->bufsize * sizeof(t_sample));
+  x->buf = (t_sample *)getbytes(x->bufsize * sizeof(*x->buf));
   x->phase = 0;
 }
 
@@ -122,7 +122,7 @@ static void *zNdelay_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   i++;
 
   x->bufsize = i;
-  x->buf = (t_sample *)getbytes(sizeof(t_sample) * x->bufsize);
+  x->buf = (t_sample *)getbytes(sizeof(*x->buf) * x->bufsize);
   b = x->buf;
   while (i--) {
     *b++ = 0;
@@ -136,7 +136,7 @@ static void *zNdelay_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 
 static void zNdelay_free(t_zNdelay *x)
 {
-  freebytes(x->buf, sizeof(t_sample) * x->bufsize);
+  freebytes(x->buf, sizeof(*x->buf) * x->bufsize);
 }
 
 static void zdel_helper(void)

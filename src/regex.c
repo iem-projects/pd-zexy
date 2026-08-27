@@ -92,7 +92,7 @@ static char *regex_l2s(int *reslen, t_symbol *s, int argc, t_atom *argv)
     return (0);
   }
 
-  result = (char *)getbytes((length + 1) * sizeof(char));
+  result = (char *)getbytes((length + 1) * sizeof(*result));
 
   if (s) {
     const char *buf = s->s_name;
@@ -142,15 +142,15 @@ static void regex_compile(t_regex *x)
 
   if (x->x_regexp) {
     regfree(x->x_regexp);
-    freebytes(x->x_regexp, sizeof(t_regex));
+    freebytes(x->x_regexp, sizeof(*x->x_regexp));
     x->x_regexp = 0;
   }
-  x->x_regexp = (regex_t *)getbytes(sizeof(t_regex));
+  x->x_regexp = (regex_t *)getbytes(sizeof(*x->x_regexp));
 
   if (regcomp(x->x_regexp, x->x_regexstring, flags)) {
     pd_error(x, "[regex]: invalid regular expression: %s", x->x_regexstring);
     if (x->x_regexp) {
-      freebytes(x->x_regexp, sizeof(t_regex));
+      freebytes(x->x_regexp, sizeof(*x->x_regexp));
     }
     x->x_regexp = 0;
   }
@@ -204,8 +204,8 @@ static void regex_symbol(
   int length = 0;
 
   int num_matches = x->x_matchnum;
-  regmatch_t *match = (regmatch_t *)getbytes(sizeof(regmatch_t) * num_matches);
-  t_atom *ap = (t_atom *)getbytes(sizeof(t_atom) * (3 * num_matches));
+  regmatch_t *match = (regmatch_t *)getbytes(sizeof(*match) * num_matches);
+  t_atom *ap = (t_atom *)getbytes(sizeof(*ap) * (3 * num_matches));
 
   int err = 0;
 
@@ -228,7 +228,7 @@ static void regex_symbol(
 
   if (err) { /* NO match */
     if (match) {
-      freebytes(match, sizeof(regmatch_t) * num_matches);
+      freebytes(match, sizeof(*match) * num_matches);
       match = 0;
     }
 
@@ -254,7 +254,7 @@ static void regex_symbol(
       }
     }
     if (match) {
-      freebytes(match, sizeof(regmatch_t) * num_matches);
+      freebytes(match, sizeof(*match) * num_matches);
       match = 0;
     }
     outlet_float(x->x_outNumDetails, (t_float)num_results);
@@ -268,11 +268,11 @@ cleanup:
     freebytes(teststring, length);
   }
   if (match) {
-    freebytes(match, sizeof(regmatch_t) * num_matches);
+    freebytes(match, sizeof(*match) * num_matches);
   }
 
   if (ap) {
-    freebytes(ap, sizeof(t_atom) * (1 + 2 * num_matches));
+    freebytes(ap, sizeof(*ap) * (1 + 2 * num_matches));
   }
 #endif
 }
@@ -320,7 +320,7 @@ static void regex_free(t_regex *x)
 
   if (x->x_regexp) {
     regfree(x->x_regexp);
-    freebytes(x->x_regexp, sizeof(t_regex));
+    freebytes(x->x_regexp, sizeof(*x->x_regexp));
     x->x_regexp = 0;
   }
 #endif

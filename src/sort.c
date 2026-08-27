@@ -73,7 +73,7 @@ static void sort_buffer(t_sort *x, int argc, t_atom *argv)
 static void sort_list(t_sort *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   int step = argc, n;
-  t_atom *atombuf = (t_atom *)getbytes(sizeof(t_atom) * argc);
+  t_atom *atombuf = (t_atom *)getbytes(sizeof(*atombuf) * argc);
   t_float *buf;
   int *idx;
 
@@ -124,7 +124,7 @@ static void sort_list(t_sort *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
     }
   outlet_list(x->sortedOut, gensym("list"), n, atombuf);
 
-  freebytes(atombuf, argc * sizeof(t_atom));
+  freebytes(atombuf, argc * sizeof(*atombuf));
 }
 
 static void *sort_new(t_floatarg f)

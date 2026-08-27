@@ -35,28 +35,28 @@ static void glue_lst2(t_glue *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   x->changed = 1;
   if (x->n2 != argc) {
-    freebytes(x->ap2, x->n2 * sizeof(t_atom));
+    freebytes(x->ap2, x->n2 * sizeof(*x->ap2));
     x->n2 = argc;
-    x->ap2 = copybytes(argv, argc * sizeof(t_atom));
+    x->ap2 = copybytes(argv, argc * sizeof(*x->ap2));
   } else {
-    memcpy(x->ap2, argv, argc * sizeof(t_atom));
+    memcpy(x->ap2, argv, argc * sizeof(*argv));
   }
 }
 
 static void glue_lst(t_glue *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   if (x->n != x->n2 + argc) {
-    freebytes(x->ap, x->n * sizeof(t_atom));
+    freebytes(x->ap, x->n * sizeof(*x->ap));
     x->n1 = argc;
     x->n = x->n1 + x->n2;
-    x->ap = (t_atom *)getbytes(sizeof(t_atom) * x->n);
-    memcpy(x->ap + argc, x->ap2, x->n2 * sizeof(t_atom));
+    x->ap = (t_atom *)getbytes(sizeof(*x->ap) * x->n);
+    memcpy(x->ap + argc, x->ap2, x->n2 * sizeof(*x->ap2));
   } else if ((x->n1 != argc) || x->changed) {
-    memcpy(x->ap + argc, x->ap2, x->n2 * sizeof(t_atom));
+    memcpy(x->ap + argc, x->ap2, x->n2 * sizeof(*x->ap2));
   }
 
   x->n1 = argc;
-  memcpy(x->ap, argv, x->n1 * sizeof(t_atom));
+  memcpy(x->ap, argv, x->n1 * sizeof(*argv));
 
   x->changed = 0;
 
@@ -67,13 +67,13 @@ static void glue_bang(t_glue *x)
 {
   if (x->changed) {
     if (x->n1 + x->n2 != x->n) {
-      t_atom *ap = (t_atom *)getbytes(sizeof(t_atom) * (x->n1 + x->n2));
-      memcpy(ap, x->ap, x->n1 * sizeof(t_atom));
-      freebytes(x->ap, sizeof(t_atom) * x->n);
+      t_atom *ap = (t_atom *)getbytes(sizeof(*ap) * (x->n1 + x->n2));
+      memcpy(ap, x->ap, x->n1 * sizeof(*ap));
+      freebytes(x->ap, sizeof(*x->ap) * x->n);
       x->ap = ap;
       x->n = x->n1 + x->n2;
     }
-    memcpy(x->ap + x->n1, x->ap2, x->n2 * sizeof(t_atom));
+    memcpy(x->ap + x->n1, x->ap2, x->n2 * sizeof(*x->ap));
     x->changed = 0;
   }
 
@@ -82,8 +82,8 @@ static void glue_bang(t_glue *x)
 
 static void glue_free(t_glue *x)
 {
-  freebytes(x->ap, sizeof(t_atom) * x->n);
-  freebytes(x->ap2, sizeof(t_atom) * x->n2);
+  freebytes(x->ap, sizeof(*x->ap) * x->n);
+  freebytes(x->ap2, sizeof(*x->ap2) * x->n2);
 }
 
 static void *glue_new(t_symbol *UNUSED(s), int argc, t_atom *argv)

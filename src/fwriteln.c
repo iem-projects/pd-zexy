@@ -114,7 +114,7 @@ static void fwriteln_write(t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
       length = strlen(text);
       if (fwrite(text, length * sizeof(char), 1, x->x_file) < 1) {
         pd_error(x, "failed to write %128s", x->x_filename);
-        freebytes(text, MAXPDSTRING * sizeof(char));
+        freebytes(text, MAXPDSTRING * sizeof(*text));
         fwriteln_close(x);
         return;
       }
@@ -128,7 +128,7 @@ static void fwriteln_write(t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
         length = strlen(text);
         if (fwrite(text, length * sizeof(char), 1, x->x_file) < 1) {
           pd_error(x, "failed to write %128s", x->x_filename);
-          freebytes(text, MAXPDSTRING * sizeof(char));
+          freebytes(text, MAXPDSTRING * sizeof(*text));
           fwriteln_close(x);
           return;
         }
@@ -139,7 +139,7 @@ static void fwriteln_write(t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
         length = strlen(text);
         if (fwrite(text, length * sizeof(char), 1, x->x_file) < 1) {
           pd_error(x, "failed to write %128s", x->x_filename);
-          freebytes(text, MAXPDSTRING * sizeof(char));
+          freebytes(text, MAXPDSTRING * sizeof(*text));
           fwriteln_close(x);
           return;
         }
@@ -149,7 +149,7 @@ static void fwriteln_write(t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
         length = strlen(text);
         if (fwrite(text, length * sizeof(char), 1, x->x_file) < 1) {
           pd_error(x, "failed to write %128s", x->x_filename);
-          freebytes(text, MAXPDSTRING * sizeof(char));
+          freebytes(text, MAXPDSTRING * sizeof(*text));
           fwriteln_close(x);
           return;
         }
@@ -159,7 +159,7 @@ static void fwriteln_write(t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
         length = strlen(text);
         if (fwrite(text, length * sizeof(char), 1, x->x_file) < 1) {
           pd_error(x, "failed to write %128s", x->x_filename);
-          freebytes(text, MAXPDSTRING * sizeof(char));
+          freebytes(text, MAXPDSTRING * sizeof(*text));
           fwriteln_close(x);
           return;
         }
@@ -174,7 +174,7 @@ static void fwriteln_write(t_fwriteln *x, t_symbol *s, int argc, t_atom *argv)
     length = strlen(text);
     if (fwrite(text, length * sizeof(char), 1, x->x_file) < 1) {
       pd_error(x, "failed to write %128s", x->x_filename);
-      freebytes(text, MAXPDSTRING * sizeof(char));
+      freebytes(text, MAXPDSTRING * sizeof(*text));
       fwriteln_close(x);
       return;
     }

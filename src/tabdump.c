@@ -52,12 +52,12 @@ static void tabdump_bang(t_tabdump *x)
     }
     npoints = stop - start;
 
-    atombuf = (t_atom *)getbytes(sizeof(t_atom) * npoints);
+    atombuf = (t_atom *)getbytes(sizeof(*atombuf) * npoints);
     for (n = 0; n < npoints; n++) {
       SETFLOAT(&atombuf[n], vec[start + n].w_float);
     }
     outlet_list(x->x_obj.ob_outlet, gensym("list"), npoints, atombuf);
-    freebytes(atombuf, sizeof(t_atom) * npoints);
+    freebytes(atombuf, sizeof(*atombuf) * npoints);
   }
 }
 

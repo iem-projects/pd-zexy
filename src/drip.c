@@ -44,12 +44,12 @@ typedef struct _drip {
 static void drip_makebuffer(t_drip *x, int n, t_atom *list)
 {
   if (x->buffer) {
-    freebytes(x->buffer, x->bufsize * sizeof(t_atom));
+    freebytes(x->buffer, x->bufsize * sizeof(*x->buffer));
     x->buffer = 0;
     x->bufsize = 0;
   }
 
-  x->buffer = copybytes(list, n * sizeof(t_atom));
+  x->buffer = copybytes(list, n * sizeof(*x->buffer));
   x->bufsize = n;
   x->current = x->buffer;
 }
@@ -160,7 +160,7 @@ static void drip_free(t_drip *x)
   clock_free(x->x_clock);
 
   if (x->buffer) {
-    freebytes(x->buffer, x->bufsize * sizeof(t_atom));
+    freebytes(x->buffer, x->bufsize * sizeof(*x->buffer));
     x->buffer = 0;
     x->bufsize = 0;
   }

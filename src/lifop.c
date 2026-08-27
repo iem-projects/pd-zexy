@@ -77,7 +77,7 @@ static t_lifop_prioritylist *lifop_genprioritylist(t_lifop *x, t_float priority)
     dummy = result;
   }
   /* create a new priority list */
-  result = (t_lifop_prioritylist *)getbytes(sizeof(t_lifop_prioritylist));
+  result = (t_lifop_prioritylist *)getbytes(sizeof(*result));
   result->priority = priority;
   result->lifo_start = 0;
 
@@ -107,15 +107,15 @@ static int add2lifo(
   }
 
   /* create an entry for the lifo */
-  if (!(entry = (t_lifop_list *)getbytes(sizeof(t_lifop_list)))) {
+  if (!(entry = (t_lifop_list *)getbytes(sizeof(*entry)))) {
     pd_error(x, "plifo: couldn't add entry to end of lifo");
     return -1;
   }
-  if (!(entry->argv = (t_atom *)getbytes(argc * sizeof(t_atom)))) {
+  if (!(entry->argv = (t_atom *)getbytes(argc * sizeof(*entry->argv)))) {
     pd_error(x, "plifo: couldn't add list to lifo!");
     return -1;
   }
-  memcpy(entry->argv, argv, argc * sizeof(t_atom));
+  memcpy(entry->argv, argv, argc * sizeof(*argv));
   entry->argc = argc;
   entry->next = 0;
 
@@ -176,13 +176,13 @@ static void lifop_bang(t_lifop *x)
   lifo->next = 0;
 
   /* destroy the lifo-entry (important for recursion! */
-  freebytes(lifo, sizeof(t_lifop_list));
+  freebytes(lifo, sizeof(*lifo));
 
   /* output the list */
   outlet_list(x->x_out, gensym("list"), argc, argv);
 
   /* free the list */
-  freebytes(argv, argc * sizeof(t_atom));
+  freebytes(argv, argc * sizeof(*argv));
 }
 static void lifop_query(t_lifop *x)
 {
@@ -204,17 +204,17 @@ static void lifop_clear(t_lifop *x)
       lifo = lifo->next;
 
       if (lifo2->argv) {
-        freebytes(lifo2->argv, lifo2->argc * sizeof(t_atom));
+        freebytes(lifo2->argv, lifo2->argc * sizeof(*lifo2->argv));
       }
       lifo2->argv = 0;
       lifo2->argc = 0;
       lifo2->next = 0;
-      freebytes(lifo2, sizeof(t_lifop_list));
+      freebytes(lifo2, sizeof(*lifo2));
     }
     lifo_list2->priority = 0;
     lifo_list2->lifo_start = 0;
     lifo_list2->next = 0;
-    freebytes(lifo_list2, sizeof(t_lifop_prioritylist));
+    freebytes(lifo_list2, sizeof(*lifo_list2));
   }
   x->lifo_list = 0;
   x->counter = 0;

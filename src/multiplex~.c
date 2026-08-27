@@ -80,7 +80,7 @@ static void mux_tilde_helper(void)
 
 static void mux_tilde_free(t_mux *x)
 {
-  freebytes(x->in, x->n_in * sizeof(t_sample *));
+  freebytes(x->in, x->n_in * sizeof(*x->in));
 }
 
 static void *mux_tilde_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
@@ -98,7 +98,7 @@ static void *mux_tilde_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
   }
 
-  x->in = (t_sample **)getbytes(x->n_in * sizeof(t_sample *));
+  x->in = (t_sample **)getbytes(x->n_in * sizeof(*x->in));
   i = x->n_in;
   while (i--) {
     x->in[i] = 0;

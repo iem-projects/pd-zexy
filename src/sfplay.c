@@ -442,7 +442,7 @@ static t_int *sfplay_perform(t_int *w)
     }
 
     /* first read soundfile 16 bit*/
-    if ((j = fread(buf, sizeof(short), c * n, x->fp)) < n) {
+    if ((j = fread(buf, sizeof(*buf), c * n, x->fp)) < n) {
 
       outlet_bang(x->bangout);
 

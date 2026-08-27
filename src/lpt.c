@@ -100,7 +100,7 @@ static int z_getWinErr(char *outstr, size_t len)
   if (!err) {
     return 0;
   }
-  errstr = calloc(len, sizeof(wchar_t));
+  errstr = calloc(len, sizeof(*errstr));
   FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, err,
       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), errstr, len, NULL);
   for (i = 0; i < len; i++) {

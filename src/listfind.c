@@ -46,7 +46,7 @@ static void listfind_list2(
     t_listfind *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   if (x->x_argv != 0) {
-    freebytes(x->x_argv, sizeof(t_atom) * x->x_argc);
+    freebytes(x->x_argv, sizeof(*x->x_argv) * x->x_argc);
   }
   x->x_argc = 0;
   x->x_argv = 0;
@@ -56,7 +56,7 @@ static void listfind_list2(
   if (argc > 0) {
     int i;
     x->x_argc = argc;
-    x->x_argv = (t_atom *)getbytes((x->x_argc) * sizeof(t_atom));
+    x->x_argv = (t_atom *)getbytes((x->x_argc) * sizeof(*x->x_argv));
     for (i = 0; i < argc; i++) {
       x->x_argv[i] = argv[i];
     }
@@ -144,7 +144,7 @@ static void listfind_doit(t_outlet *out, int longcount, t_atom *longlist,
   if (length < 1) {
     outlet_bang(out);
   }
-  ap = (t_atom *)getbytes(length * sizeof(t_atom));
+  ap = (t_atom *)getbytes(length * sizeof(*ap));
 
   DEBUGFUN(post("expecting no more than %d results", length));
 
@@ -162,7 +162,7 @@ static void listfind_doit(t_outlet *out, int longcount, t_atom *longlist,
   DEBUGFUN(post("got %d results", count));
 
   outlet_list(out, gensym("list"), count, ap);
-  freebytes(ap, length * sizeof(t_atom));
+  freebytes(ap, length * sizeof(*ap));
 }
 
 static void listfind_list(
@@ -190,7 +190,7 @@ static void listfind_list(
 static void listfind_free(t_listfind *x)
 {
   if (x->x_argv) {
-    freebytes(x->x_argv, x->x_argc * sizeof(int));
+    freebytes(x->x_argv, x->x_argc * sizeof(*x->x_argv));
     x->x_argv = 0;
     x->x_argc = 0;
   }

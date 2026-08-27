@@ -87,7 +87,7 @@ static void multireceive_add(t_multireceive *x, t_symbol *s)
     }
   }
 
-  element = (t_symlist *)getbytes(sizeof(t_symlist));
+  element = (t_symlist *)getbytes(sizeof(*element));
   element->s = s;
   element->next = NULL;
   pd_bind(&x->x_proxy->x_obj.ob_pd, s);
@@ -111,7 +111,7 @@ static void multireceive_clear(t_multireceive *x)
 
     current->s = NULL;
     current->next = NULL;
-    freebytes(current, sizeof(t_symlist));
+    freebytes(current, sizeof(*current));
   }
   x->x_symlist = NULL;
 }

@@ -177,10 +177,10 @@ static void write_currentnode(t_msgfile *x, int ac, t_atom *av)
   newsize = cur->n + ac;
 
   ap = (t_atom *)resizebytes(
-      cur->thislist, cur->n * sizeof(t_atom), newsize * sizeof(t_atom));
+      cur->thislist, cur->n * sizeof(*ap), newsize * sizeof(*ap));
   if (ap) {
     cur->thislist = ap;
-    memcpy(cur->thislist + cur->n, av, ac * sizeof(t_atom));
+    memcpy(cur->thislist + cur->n, av, ac * sizeof(*av));
 
     cur->n = newsize;
   }
@@ -201,13 +201,13 @@ static void delete_currentnode(t_msgfile *x)
         x->start = nxt;
       }
 
-      freebytes(dummy->thislist, sizeof(dummy->thislist));
+      freebytes(dummy->thislist, sizeof(*dummy->thislist));
       dummy->thislist = 0;
       dummy->n = 0;
       dummy->next = 0;
       dummy->previous = 0;
 
-      freebytes(dummy, sizeof(t_msglist));
+      freebytes(dummy, sizeof(*dummy));
 
       dummy = 0;
     }
@@ -249,7 +249,7 @@ static void delete_emptynodes(t_msgfile *x)
 static void add_currentnode(t_msgfile *x)
 {
   /* add (after the current node) a node at the current position (do not write the listbuf !!!) */
-  t_msglist *newnode = (t_msglist *)getbytes(sizeof(t_msglist));
+  t_msglist *newnode = (t_msglist *)getbytes(sizeof(*newnode));
   t_msglist *prv, *nxt, *cur = x->current;
 
   newnode->n = 0;
@@ -284,7 +284,7 @@ static void insert_currentnode(t_msgfile *x)
   if (!(cur && cur->thislist)) {
     add_currentnode(x);
   } else {
-    newnode = (t_msglist *)getbytes(sizeof(t_msglist));
+    newnode = (t_msglist *)getbytes(sizeof(*newnode));
 
     newnode->n = 0;
     newnode->thislist = 0;
@@ -919,7 +919,7 @@ static void msgfile_replace(
 {
   if (x->current) {
     if (x->current->thislist) {
-      freebytes(x->current->thislist, sizeof(x->current->thislist));
+      freebytes(x->current->thislist, sizeof(*x->current->thislist));
     }
     x->current->thislist = 0;
     x->current->n = 0;
@@ -1058,7 +1058,7 @@ static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol *s1, t_symbol *r)
 
 #if 0
   int step = argc, n;
-  t_atom *atombuf = (t_atom *)getbytes(sizeof(t_atom) * argc);
+  t_atom *atombuf = (t_atom *)getbytes(sizeof(*atombuf) * argc);
   t_float *buf;
   int   *idx;
 
@@ -1179,7 +1179,7 @@ static void msgfile_read2(t_msgfile *x, t_symbol *filename, t_symbol *sformat)
   }
 
   /* read */
-  if ((readlength = fread(readbuf, sizeof(char), length, fil)) < length) {
+  if ((readlength = fread(readbuf, sizeof(*readbuf), length, fil)) < length) {
     pd_error(x, "msgfile_read: unable to read %s: %ld of %ld", filnam,
         readlength, length);
     sys_fclose(fil);
@@ -1259,15 +1259,15 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *sformat)
         atom_string(a, mytext, MAXPDSTRING);
         escapefn(mytext, mytext2);
         mylen = z_strnlen(mytext2, MAXPDSTRING);
-        errcount += (fwrite(mytext2, mylen, sizeof(char), f) < 1);
+        errcount += (fwrite(mytext2, sizeof(*mytext), mylen, f) < 1);
       }
       }
       if (i + 1 < cur->n) {
-        errcount += (fwrite(&separator, sizeof(char), 1, f) < 1);
+        errcount += (fwrite(&separator, sizeof(separator), 1, f) < 1);
       }
     }
     if (eol) {
-      errcount += (fwrite(&eol, sizeof(char), 1, f) < 1);
+      errcount += (fwrite(&eol, sizeof(eol), 1, f) < 1);
     }
     errcount += (fwrite("\n", sizeof(char), 1, f) < 1);
   }
@@ -1337,7 +1337,7 @@ static void msgfile_help(t_msgfile *UNUSED(x))
 static void msgfile_free(t_msgfile *x)
 {
   msgfile_clear(x);
-  freebytes(x->current, sizeof(t_msglist));
+  freebytes(x->current, sizeof(*x->current));
 }
 
 static void *msgfile_new(t_symbol *UNUSED(s), int argc, t_atom *argv)

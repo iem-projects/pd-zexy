@@ -77,7 +77,7 @@ static void packel_list(t_packel *x, t_symbol *s, int argc, t_atom *argv)
 
 static void packel_anything(t_packel *x, t_symbol *s, int argc, t_atom *argv)
 {
-  t_atom *av2 = (t_atom *)getbytes((argc + 1) * sizeof(t_atom));
+  t_atom *av2 = (t_atom *)getbytes((argc + 1) * sizeof(*av2));
   int i;
 
   if (x->x_warningflag) {
@@ -90,7 +90,7 @@ static void packel_anything(t_packel *x, t_symbol *s, int argc, t_atom *argv)
   }
   SETSYMBOL(av2, s);
   packel_list(x, gensym("list"), argc + 1, av2);
-  freebytes(av2, (argc + 1) * sizeof(t_atom));
+  freebytes(av2, (argc + 1) * sizeof(*av2));
 }
 
 static void packel_free(t_packel *x)
@@ -107,13 +107,13 @@ static void packel_free(t_packel *x)
   }
 
   if (x->position) {
-    freebytes(x->position, x->count * sizeof(t_float));
+    freebytes(x->position, x->count * sizeof(*x->position));
   }
   if (x->x_inlet) {
-    freebytes(x->x_inlet, x->count * sizeof(t_inlet *));
+    freebytes(x->x_inlet, x->count * sizeof(*x->x_inlet));
   }
   if (x->x_outlet) {
-    freebytes(x->x_outlet, x->count * sizeof(t_outlet *));
+    freebytes(x->x_outlet, x->count * sizeof(*x->x_outlet));
   }
 }
 
@@ -123,9 +123,9 @@ static void *packel_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 
   x->count = (argc > 0) ? argc : 1;
 
-  x->position = (t_float *)getbytes(x->count * sizeof(t_float));
-  x->x_inlet = (t_inlet **)getbytes(x->count * sizeof(t_inlet *));
-  x->x_outlet = (t_outlet **)getbytes(x->count * sizeof(t_outlet *));
+  x->position = (t_float *)getbytes(x->count * sizeof(*x->position));
+  x->x_inlet = (t_inlet **)getbytes(x->count * sizeof(*x->x_inlet));
+  x->x_outlet = (t_outlet **)getbytes(x->count * sizeof(*x->x_outlet));
 
   if (argc < 1) {
     x->position[0] = 0.f;

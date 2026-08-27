@@ -71,12 +71,12 @@ typedef struct _matchbox {
 
 static t_listlist *addlistlist(t_listlist *list, int argc, t_atom *argv)
 {
-  t_listlist *ll = (t_listlist *)getbytes(sizeof(t_listlist));
+  t_listlist *ll = (t_listlist *)getbytes(sizeof(*ll));
   t_listlist *lp = 0;
   ll->next = 0;
   ll->argc = argc;
-  ll->argv = (t_atom *)getbytes(argc * sizeof(t_atom));
-  memcpy(ll->argv, argv, argc * sizeof(t_atom));
+  ll->argv = (t_atom *)getbytes(argc * sizeof(*ll->argv));
+  memcpy(ll->argv, argv, argc * sizeof(*ll->argv));
 
   if (0 == list) {
     return ll;
@@ -103,13 +103,13 @@ static t_listlist *deletelistnext(t_listlist *list)
   ll = list->next;
   list->next = ll->next;
   if (ll->argv) {
-    freebytes(ll->argv, ll->argc * sizeof(t_atom));
+    freebytes(ll->argv, ll->argc * sizeof(*ll->argv));
   }
 
   ll->argv = 0;
   ll->argc = 0;
   ll->next = 0;
-  freebytes(ll, sizeof(t_listlist));
+  freebytes(ll, sizeof(*ll));
   return list;
 }
 
@@ -440,7 +440,7 @@ static t_listlist *matchlistlist_regex(void *x, unsigned int *numresults,
   flags |= REG_EXTENDED;
 
   /* 1st compile the patterns */
-  regexpressions = (regex_t **)getbytes(sizeof(regex_t *) * p_argc);
+  regexpressions = (regex_t **)getbytes(sizeof(*regexpressions) * p_argc);
   for (i = 0; i < p_argc; i++) {
     char *s_pattern = 0;
     int pattern_size = 0;
@@ -453,11 +453,11 @@ static t_listlist *matchlistlist_regex(void *x, unsigned int *numresults,
       s_pattern = (char *)getbytes(pattern_size);
       atom_string(pattern, s_pattern, pattern_size);
     }
-    regexpressions[i] = (regex_t *)getbytes(sizeof(regex_t));
+    regexpressions[i] = (regex_t *)getbytes(sizeof(*regexpressions[i]));
     if (regcomp(regexpressions[i], s_pattern, flags)) {
       pd_error(x, "[matchbox]: invalid regular expression: %s", s_pattern);
       if (regexpressions[i]) {
-        freebytes(regexpressions[i], sizeof(regex_t));
+        freebytes(regexpressions[i], sizeof(*regexpressions[i]));
       }
       regexpressions[i] = 0;
     }
@@ -495,10 +495,10 @@ static t_listlist *matchlistlist_regex(void *x, unsigned int *numresults,
   for (i = 0; i < p_argc; i++) {
     if (regexpressions[i]) {
       regfree(regexpressions[i]);
-      freebytes(regexpressions[i], sizeof(regex_t));
+      freebytes(regexpressions[i], sizeof(*regexpressions[i]));
     }
   }
-  freebytes(regexpressions, sizeof(regex_t *) * p_argc);
+  freebytes(regexpressions, sizeof(*regexpressions) * p_argc);
 
   /* return the result */
   if (numresults != 0) {
@@ -690,7 +690,7 @@ static void *matchbox_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   x->x_outResult = outlet_new(&x->x_obj, gensym("list"));
   x->x_outNumResults = outlet_new(&x->x_obj, gensym("float"));
 
-  x->x_lists = (t_listlist *)getbytes(sizeof(t_listlist));
+  x->x_lists = (t_listlist *)getbytes(sizeof(*x->x_lists));
   x->x_lists->next = 0;
   x->x_lists->argc = 0;
   x->x_lists->argv = 0;
@@ -708,7 +708,7 @@ static void *matchbox_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 static void matchbox_free(t_matchbox *x)
 {
   matchbox_clear(x);
-  freebytes(x->x_lists, sizeof(t_listlist));
+  freebytes(x->x_lists, sizeof(*x->x_lists));
   x->x_lists = 0;
 }
 

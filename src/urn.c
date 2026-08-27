@@ -49,12 +49,12 @@ static void makestate(t_urn *x, unsigned int newrange)
   }
 
   if (x->x_range && x->x_state) {
-    freebytes(x->x_state, sizeof(char) * x->x_range);
+    freebytes(x->x_state, sizeof(*x->x_state) * x->x_range);
     x->x_state = 0;
   }
 
   x->x_range = newrange;
-  x->x_state = getbytes(sizeof(char) * x->x_range);
+  x->x_state = getbytes(sizeof(*x->x_state) * x->x_range);
 }
 
 static void urn_clear(t_urn *x)

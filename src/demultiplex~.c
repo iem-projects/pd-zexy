@@ -88,7 +88,7 @@ static void demux_helper(void)
 
 static void demux_free(t_demux *x)
 {
-  freebytes(x->out, x->n_out * sizeof(t_sample *));
+  freebytes(x->out, x->n_out * sizeof(*x->out));
 }
 
 static void *demux_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
@@ -106,7 +106,7 @@ static void *demux_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
     outlet_new(&x->x_obj, gensym("signal"));
   }
 
-  x->out = (t_sample **)getbytes(x->n_out * sizeof(t_sample *));
+  x->out = (t_sample **)getbytes(x->n_out * sizeof(*x->out));
   i = x->n_out;
   while (i--) {
     x->out[i] = 0;

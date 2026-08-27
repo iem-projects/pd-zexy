@@ -46,7 +46,7 @@ static void list2lists_list2(
     t_list2lists *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
 {
   if (x->x_length != 0) {
-    freebytes(x->x_length, sizeof(t_atom) * x->x_lcount);
+    freebytes(x->x_length, sizeof(*x->x_length) * x->x_lcount);
   }
   x->x_lcount = 0;
   x->x_length = 0;
@@ -105,7 +105,7 @@ static void list2lists_list(
 static void list2lists_free(t_list2lists *x)
 {
   if (x->x_length) {
-    freebytes(x->x_length, x->x_lcount * sizeof(int));
+    freebytes(x->x_length, x->x_lcount * sizeof(*x->x_length));
     x->x_length = 0;
     x->x_lcount = 0;
   }

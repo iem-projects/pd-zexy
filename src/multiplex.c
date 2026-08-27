@@ -75,8 +75,8 @@ static void *mux_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
 
   x->f_selected = 0;
   x->i_count = n;
-  x->in = (t_inlet **)getbytes(x->i_count * sizeof(t_inlet *));
-  x->x_proxy = (t_muxproxy **)getbytes(x->i_count * sizeof(t_muxproxy *));
+  x->in = (t_inlet **)getbytes(x->i_count * sizeof(*x->in));
+  x->x_proxy = (t_muxproxy **)getbytes(x->i_count * sizeof(*x->x_proxy));
 
   for (n = 0; n < x->i_count; n++) {
     x->x_proxy[n] = (t_muxproxy *)pd_new(muxproxy_class);
@@ -110,8 +110,8 @@ static void mux_free(t_mux *x)
       }
       x->x_proxy[n] = 0;
     }
-    freebytes(x->in, x->i_count * sizeof(t_inlet *));
-    freebytes(x->x_proxy, x->i_count * sizeof(t_muxproxy *));
+    freebytes(x->in, x->i_count * sizeof(*x->in));
+    freebytes(x->x_proxy, x->i_count * sizeof(*x->x_proxy));
   }
 
   /* pd_free(&y->p_pd); */

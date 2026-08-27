@@ -213,13 +213,13 @@ static void mline_dsp(t_mline *x, t_signal **sp)
 
 static void mline_free(t_mline *x)
 {
-  freebytes(x->value, sizeof(x->value));
-  freebytes(x->target, sizeof(x->target));
-  freebytes(x->increment, sizeof(x->increment));
+  freebytes(x->value, sizeof(*x->value));
+  freebytes(x->target, sizeof(*x->target));
+  freebytes(x->increment, sizeof(*x->increment));
 
-  freebytes(x->sigIN, sizeof(x->sigIN));
-  freebytes(x->sigOUT, sizeof(x->sigOUT));
-  freebytes(x->sigBUF, sizeof(x->sigBUF));
+  freebytes(x->sigIN, sizeof(*x->sigIN));
+  freebytes(x->sigOUT, sizeof(*x->sigOUT));
+  freebytes(x->sigBUF, sizeof(*x->sigBUF));
 }
 
 static void *mline_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
@@ -256,13 +256,13 @@ static void *mline_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
   floatinlet_new(&x->x_obj, &x->time);
 
-  x->sigIN = (t_sample **)getbytes(x->sigNUM * sizeof(t_sample **));
-  x->sigOUT = (t_sample **)getbytes(x->sigNUM * sizeof(t_sample **));
-  x->sigBUF = (t_sample *)getbytes(x->sigNUM * sizeof(t_sample *));
+  x->sigIN = (t_sample **)getbytes(x->sigNUM * sizeof(*x->sigIN));
+  x->sigOUT = (t_sample **)getbytes(x->sigNUM * sizeof(*x->sigOUT));
+  x->sigBUF = (t_sample *)getbytes(x->sigNUM * sizeof(*x->sigBUF));
 
-  x->value = (t_sample *)getbytes(x->sigNUM * sizeof(t_sample *));
-  x->target = (t_sample *)getbytes(x->sigNUM * sizeof(t_sample *));
-  x->increment = (t_sample *)getbytes(x->sigNUM * sizeof(t_sample *));
+  x->value = (t_sample *)getbytes(x->sigNUM * sizeof(*x->value));
+  x->target = (t_sample *)getbytes(x->sigNUM * sizeof(*x->target));
+  x->increment = (t_sample *)getbytes(x->sigNUM * sizeof(*x->increment));
 
   i = x->sigNUM;
 

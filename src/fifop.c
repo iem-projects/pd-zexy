@@ -80,7 +80,7 @@ static t_fifop_prioritylist *fifop_genprioritylist(t_fifop *x, t_float priority)
         result; /* dummy points to the FIFO-before the one we want to insert */
   }
   /* create a new priority list */
-  result = (t_fifop_prioritylist *)getbytes(sizeof(t_fifop_prioritylist));
+  result = (t_fifop_prioritylist *)getbytes(sizeof(*result));
   result->priority = priority;
   result->fifo_start = 0;
   result->fifo_end = 0;
@@ -112,15 +112,15 @@ static int add2fifo(
   }
 
   /* create an entry for the fifo */
-  if (!(entry = (t_fifop_list *)getbytes(sizeof(t_fifop_list)))) {
+  if (!(entry = (t_fifop_list *)getbytes(sizeof(*entry)))) {
     pd_error(x, "pfifo: couldn't add entry to end of fifo");
     return -1;
   }
-  if (!(entry->argv = (t_atom *)getbytes(argc * sizeof(t_atom)))) {
+  if (!(entry->argv = (t_atom *)getbytes(argc * sizeof(*entry->argv)))) {
     pd_error(x, "pfifo: couldn't add list to fifo!");
     return -1;
   }
-  memcpy(entry->argv, argv, argc * sizeof(t_atom));
+  memcpy(entry->argv, argv, argc * sizeof(*argv));
   entry->argc = argc;
   entry->next = 0;
 
@@ -194,13 +194,13 @@ static void fifop_bang(t_fifop *x)
   fifo->next = 0;
 
   /* destroy the fifo-entry (important for recursion! */
-  freebytes(fifo, sizeof(t_fifop_list));
+  freebytes(fifo, sizeof(*fifo));
 
   /* output the list */
   outlet_list(x->x_out, gensym("list"), argc, argv);
 
   /* free the list */
-  freebytes(argv, argc * sizeof(t_atom));
+  freebytes(argv, argc * sizeof(*argv));
 }
 static void fifop_query(t_fifop *x)
 {
@@ -223,18 +223,18 @@ static void fifop_clear(t_fifop *x)
       fifo = fifo->next;
 
       if (fifo2->argv) {
-        freebytes(fifo2->argv, fifo2->argc * sizeof(t_atom));
+        freebytes(fifo2->argv, fifo2->argc * sizeof(*fifo2->argv));
       }
       fifo2->argv = 0;
       fifo2->argc = 0;
       fifo2->next = 0;
-      freebytes(fifo2, sizeof(t_fifop_list));
+      freebytes(fifo2, sizeof(*fifo2));
     }
     fifo_list2->priority = 0;
     fifo_list2->fifo_start = 0;
     fifo_list2->fifo_end = 0;
     fifo_list2->next = 0;
-    freebytes(fifo_list2, sizeof(t_fifop_prioritylist));
+    freebytes(fifo_list2, sizeof(*fifo_list2));
   }
   x->fifo_list = 0;
   x->counter = 0;

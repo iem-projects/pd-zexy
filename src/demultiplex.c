@@ -85,7 +85,7 @@ static void *demux_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
 
   x->findex = 0;
   floatinlet_new(&x->x_obj, &x->findex);
-  x->out = (t_outlet **)getbytes(n * sizeof(t_outlet *));
+  x->out = (t_outlet **)getbytes(n * sizeof(*x->out));
 
   for (n = 0; n <= x->n_out; n++) {
     x->out[n] = outlet_new(&x->x_obj, 0);

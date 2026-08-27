@@ -65,11 +65,11 @@ static void freadln_close(t_freadln *x)
   }
   x->x_file = 0;
   if (x->x_filename) {
-    freebytes(x->x_filename, sizeof(char) * MAXPDSTRING);
+    freebytes(x->x_filename, sizeof(*x->x_filename) * MAXPDSTRING);
   }
   x->x_filename = 0;
   if (x->x_textbuf) {
-    freebytes(x->x_textbuf, sizeof(char) * x->x_textbuf_length);
+    freebytes(x->x_textbuf, sizeof(*x->x_textbuf) * x->x_textbuf_length);
   }
   x->x_textbuf = 0;
   x->x_textbuf_length = 0;
@@ -105,7 +105,7 @@ static void freadln_open(t_freadln *x, t_symbol *s, t_symbol *type)
   sys_close(fd);
   len = strlen(filenamebuf);
   if (!(x->x_filename =
-              (char *)getbytes(sizeof(char) * (len + strlen(s->s_name) + 2)))) {
+              (char *)getbytes(sizeof(*x->x_filename) * (len + strlen(s->s_name) + 2)))) {
     pd_error(x, "out of memory");
     freadln_close(x);
     return;
@@ -117,7 +117,7 @@ static void freadln_open(t_freadln *x, t_symbol *s, t_symbol *type)
     pd_error(x, "freadln: failed to fopen %s", x->x_filename);
     return;
   }
-  if (!(x->x_textbuf = (char *)getbytes(MIN_FREADLN_LENGTH * sizeof(char)))) {
+  if (!(x->x_textbuf = (char *)getbytes(MIN_FREADLN_LENGTH * sizeof(*x->x_textbuf)))) {
     pd_error(x, "out of memory!");
     freadln_close(x);
     return;
@@ -195,7 +195,7 @@ static void freadln_readline(t_freadln *x)
       return;
     }
     if (!(items_read = fread(
-              x->x_textbuf, sizeof(char), x->x_textbuf_length, x->x_file))) {
+              x->x_textbuf, sizeof(*x->x_textbuf), x->x_textbuf_length, x->x_file))) {
       freadln_close(x);
       freadln_done(x);
       return;

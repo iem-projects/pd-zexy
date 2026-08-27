@@ -40,7 +40,7 @@ static void symbol2list_delimiter(t_symbol2list *x, t_symbol *s)
 
 STATIC_INLINE void string2atom(t_atom *ap, const char *cp, int clen)
 {
-  char *buffer = getbytes(sizeof(char) * (clen + 1));
+  char *buffer = getbytes(sizeof(*buffer) * (clen + 1));
   char *endptr[1];
   t_float ftest;
   strncpy(buffer, cp, clen + 1);
@@ -58,7 +58,7 @@ STATIC_INLINE void string2atom(t_atom *ap, const char *cp, int clen)
     /* it is a number. */
     SETFLOAT(ap, ftest);
   }
-  freebytes(buffer, sizeof(char) * (clen + 1));
+  freebytes(buffer, sizeof(*buffer) * (clen + 1));
 }
 static void symbol2list_process(t_symbol2list *x)
 {
@@ -78,9 +78,9 @@ static void symbol2list_process(t_symbol2list *x)
   if (x->delimiter == NULL || x->delimiter == gensym("")) {
     i = strlen(cc);
     if (x->argnum < i) {
-      freebytes(x->argv, x->argnum * sizeof(t_atom));
+      freebytes(x->argv, x->argnum * sizeof(*x->argv));
       x->argnum = i + 10;
-      x->argv = getbytes(x->argnum * sizeof(t_atom));
+      x->argv = getbytes(x->argnum * sizeof(*x->argv));
     }
     x->argc = i;
     while (i--) {
@@ -102,9 +102,9 @@ static void symbol2list_process(t_symbol2list *x)
 
   /* resize the list-buffer if necessary */
   if (x->argnum < i) {
-    freebytes(x->argv, x->argnum * sizeof(t_atom));
+    freebytes(x->argv, x->argnum * sizeof(*x->argv));
     x->argnum = i + 10;
-    x->argv = getbytes(x->argnum * sizeof(t_atom));
+    x->argv = getbytes(x->argnum * sizeof(*x->argv));
   }
   x->argc = i;
   /* parse the tokens into the list-buffer */
@@ -152,7 +152,7 @@ static void *symbol2list_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 
   x->argc = 0;
   x->argnum = 16;
-  x->argv = getbytes(x->argnum * sizeof(t_atom));
+  x->argv = getbytes(x->argnum * sizeof(*x->argv));
   symbol2list_delimiter(x, (argc) ? atom_getsymbol(argv) : gensym(" "));
 
   return (x);

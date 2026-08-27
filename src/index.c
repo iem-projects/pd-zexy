@@ -142,15 +142,15 @@ static void index_add(t_index *x, t_symbol *s, t_float f)
       /* do some resizing */
       int maxentries =
           (newentry > x->maxentries) ? newentry : (x->maxentries * 2);
-      t_symbol **buf = (t_symbol **)getbytes(sizeof(t_symbol *) * maxentries);
+      t_symbol **buf = (t_symbol **)getbytes(sizeof(*buf) * maxentries);
       if (buf != 0) {
         int i;
-        memcpy(buf, x->names, sizeof(t_symbol *) * x->maxentries);
+        memcpy(buf, x->names, sizeof(*buf) * x->maxentries);
         for (i = x->maxentries; i < maxentries; i++) {
           buf[i] = 0;
         }
 
-        freebytes(x->names, sizeof(t_symbol *) * x->maxentries);
+        freebytes(x->names, sizeof(*x->names) * x->maxentries);
 
         x->names = buf;
         x->maxentries = maxentries;
@@ -327,7 +327,7 @@ static void *index_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
     maxentries = 128;
   }
 
-  buf = (t_symbol **)getbytes(sizeof(t_symbol *) * maxentries);
+  buf = (t_symbol **)getbytes(sizeof(*buf) * maxentries);
 
   x->entries = 0;
   x->maxentries = maxentries;
@@ -346,7 +346,7 @@ static void *index_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 
 static void index_free(t_index *x)
 {
-  freebytes(x->names, sizeof(t_symbol *) * x->maxentries);
+  freebytes(x->names, sizeof(*x->names) * x->maxentries);
 }
 
 static void index_helper(t_index *UNUSED(x))

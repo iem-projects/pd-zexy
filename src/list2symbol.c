@@ -74,7 +74,7 @@ static void list2symbol_bang(t_list2symbol *x)
     goto cleanup;
   }
 
-  result = (char *)getbytes((length + 1) * sizeof(char));
+  result = (char *)getbytes((length + 1) * sizeof(*result));
 
   /* 2nd create the symbol */
   if (x->s) {
@@ -108,14 +108,14 @@ static void list2symbol_bang(t_list2symbol *x)
   result[length] = 0;
   outlet_symbol(x->x_obj.ob_outlet, gensym(result));
 cleanup:
-  freebytes(result, (length + 1) * sizeof(char));
+  freebytes(result, (length + 1) * sizeof(*result));
 }
 
 static void list2symbol_anything(
     t_list2symbol *x, t_symbol *s, int argc, t_atom *argv)
 {
   if (x->ap) {
-    freebytes(x->ap, x->ac * sizeof(t_atom));
+    freebytes(x->ap, x->ac * sizeof(*x->ap));
     x->ap = 0;
   }
 
@@ -123,7 +123,7 @@ static void list2symbol_anything(
   x->ac = argc;
 
   if (x->ac) {
-    x->ap = (t_atom *)getbytes(x->ac * sizeof(t_atom));
+    x->ap = (t_atom *)getbytes(x->ac * sizeof(*x->ap));
   }
   if (x->ap) {
     t_atom *ap = x->ap;
@@ -155,7 +155,7 @@ static void *list2symbol_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 static void list2symbol_free(t_list2symbol *x)
 {
   if (x->ap) {
-    freebytes(x->ap, x->ac * sizeof(t_atom));
+    freebytes(x->ap, x->ac * sizeof(*x->ap));
     x->ap = 0;
   }
   outlet_free(x->x_outlet);

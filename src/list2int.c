@@ -26,11 +26,11 @@ static void list2int_any(t_mypdlist *x, t_symbol *s, int argc, t_atom *argv)
 {
   t_atom *ap;
   if (x->x_n != argc) {
-    freebytes(x->x_list, x->x_n * sizeof(t_atom));
+    freebytes(x->x_list, x->x_n * sizeof(*x->x_list));
     x->x_n = argc;
-    x->x_list = copybytes(argv, argc * sizeof(t_atom));
+    x->x_list = copybytes(argv, argc * sizeof(*x->x_list));
   } else {
-    memcpy(x->x_list, argv, argc * sizeof(t_atom));
+    memcpy(x->x_list, argv, argc * sizeof(*x->x_list));
   }
   ap = x->x_list;
   while (argc--) {
@@ -71,7 +71,7 @@ static void *list2int_new(t_symbol *s, int argc, t_atom *argv)
 
 static void mypdlist_free(t_mypdlist *x)
 {
-  freebytes(x->x_list, x->x_n * sizeof(t_atom));
+  freebytes(x->x_list, x->x_n * sizeof(*x->x_list));
 }
 static t_class *zclass_setup(const char *name)
 {

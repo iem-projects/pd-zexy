@@ -39,13 +39,13 @@ static void mavg_resize(t_mavg *x, t_float f)
     return;
   }
 
-  dumbuf = getbytes(sizeof(t_float) * i);
+  dumbuf = getbytes(sizeof(*dumbuf) * i);
   if (!dumbuf) {
     pd_error(x, "unable to allocate memory for %d elements", i);
     return;
   }
   if (x->buf) {
-    freebytes(x->buf, sizeof(t_float) * x->size);
+    freebytes(x->buf, sizeof(*x->buf) * x->size);
   }
   x->buf = x->wp = dumbuf;
   x->size = i;

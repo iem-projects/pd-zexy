@@ -113,19 +113,19 @@ static void *zpack_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
   x->x_argc = (argc < 1) ? 2 : argc;
 
   if (argc < 1) {
-    x->x_argv = (t_atom *)getbytes(2 * sizeof(t_atom));
+    x->x_argv = (t_atom *)getbytes(2 * sizeof(*x->x_argv));
     SETFLOAT(x->x_argv + 0, 0.f);
     SETFLOAT(x->x_argv + 1, 0.f);
   } else {
     int i = 0;
-    x->x_argv = (t_atom *)getbytes(x->x_argc * sizeof(t_atom));
+    x->x_argv = (t_atom *)getbytes(x->x_argc * sizeof(*x->x_argv));
     for (i = 0; i < x->x_argc; i++) {
       setatom(x, argv + i, i);
     }
   }
 
-  x->in = (t_inlet **)getbytes(x->x_argc * sizeof(t_inlet *));
-  x->x_proxy = (t_zpackproxy **)getbytes(x->x_argc * sizeof(t_zpackproxy *));
+  x->in = (t_inlet **)getbytes(x->x_argc * sizeof(*x->in));
+  x->x_proxy = (t_zpackproxy **)getbytes(x->x_argc * sizeof(*x->x_proxy));
 
   x->in[0] = 0;
   x->x_proxy[0] = 0;
@@ -160,8 +160,8 @@ static void zpack_free(t_zpack *x)
       }
       x->x_proxy[n] = 0;
     }
-    freebytes(x->in, x->x_argc * sizeof(t_inlet *));
-    freebytes(x->x_proxy, x->x_argc * sizeof(t_zpackproxy *));
+    freebytes(x->in, x->x_argc * sizeof(*x->in));
+    freebytes(x->x_proxy, x->x_argc * sizeof(*x->x_proxy));
   }
 }
 

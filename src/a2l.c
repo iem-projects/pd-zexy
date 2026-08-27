@@ -29,17 +29,17 @@ typedef struct _a2l {
 static void a2l_anything(t_a2l *x, t_symbol *s, int argc, t_atom *argv)
 {
   int n = argc + 1;
-  t_atom *cur, *alist = (t_atom *)getbytes(n * sizeof(t_atom));
+  t_atom *cur, *alist = (t_atom *)getbytes(n * sizeof(*alist));
 
   cur = alist;
   SETSYMBOL(cur, s);
   cur++;
 
-  memcpy(cur, argv, argc * sizeof(t_atom));
+  memcpy(cur, argv, argc * sizeof(*argv));
 
   outlet_list(x->x_obj.ob_outlet, gensym("list"), n, alist);
 
-  freebytes(alist, n * sizeof(t_atom));
+  freebytes(alist, n * sizeof(*alist));
 }
 
 static void a2l_list(t_a2l *x, t_symbol *s, int argc, t_atom *argv)

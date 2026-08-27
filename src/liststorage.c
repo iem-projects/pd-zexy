@@ -81,11 +81,11 @@ static void _liststorage_deletemsglist(t_msglist *list)
     t_msglist *y = x;
     x = x->next;
 
-    freebytes(y->argv, y->argc * sizeof(t_atom));
+    freebytes(y->argv, y->argc * sizeof(*y->argv));
     y->argc = 0;
     y->argv = NULL;
     y->next = NULL;
-    freebytes(y, sizeof(t_msglist));
+    freebytes(y, sizeof(*y));
   }
 }
 
@@ -100,10 +100,10 @@ static void _liststorage_deleteslot(t_liststorage *x, int slot)
 
 static t_msglist *_liststorage_newslot(int argc, t_atom *argv)
 {
-  t_msglist *slot = getbytes(sizeof(t_msglist));
+  t_msglist *slot = getbytes(sizeof(*slot));
   int i = 0;
 
-  slot->argv = getbytes(sizeof(t_atom) * argc);
+  slot->argv = getbytes(sizeof(*slot->argv) * argc);
   for (i = 0; i < argc; i++) {
     slot->argv[i] = argv[i];
   }
@@ -148,7 +148,7 @@ static int _liststorage_resize(t_liststorage *x, int size)
   }
 
   /* create a new array */
-  newarray = getbytes(sizeof(t_msglist *) * size);
+  newarray = getbytes(sizeof(*newarray) * size);
   for (i = 0; i < size; i++) {
     newarray[i] = NULL;
   }
@@ -164,7 +164,7 @@ static int _liststorage_resize(t_liststorage *x, int size)
   for (i = 0; i < x->x_numslots; i++) {
     _liststorage_deleteslot(x, i);
   }
-  freebytes(x->x_slots, sizeof(t_msglist *));
+  freebytes(x->x_slots, sizeof(*x->x_slots));
 
   /* make the new array the current */
   x->x_slots = newarray;
@@ -319,7 +319,7 @@ static void liststorage_compress(t_liststorage *x)
   }
 
   /* create a new array */
-  newarray = getbytes(sizeof(t_msglist *) * size);
+  newarray = getbytes(sizeof(*newarray) * size);
   for (i = 0; i < size; i++) {
     newarray[i] = NULL;
   }
@@ -337,7 +337,7 @@ static void liststorage_compress(t_liststorage *x)
   for (i = 0; i < x->x_numslots; i++) {
     _liststorage_deleteslot(x, i);
   }
-  freebytes(x->x_slots, sizeof(t_msglist *));
+  freebytes(x->x_slots, sizeof(*x->x_slots));
 
   /* make the new array the current */
   x->x_slots = newarray;

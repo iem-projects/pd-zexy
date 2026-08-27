@@ -702,7 +702,7 @@ static void *limiter_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
 
   outlet_new(&x->x_obj, gensym("signal"));
 
-  x->in = (t_inbuf *)getbytes(sizeof(t_inbuf) * x->number_of_inlets);
+  x->in = (t_inbuf *)getbytes(sizeof(*x->in) * x->number_of_inlets);
   while (i < x->number_of_inlets) {
     int n;
     t_sample *buf = (t_sample *)getbytes(sizeof(*buf) * x->buf_size);
@@ -714,9 +714,9 @@ static void *limiter_new(t_symbol *UNUSED(s), int argc, t_atom *argv)
     i++;
   }
 
-  x->val1 = (t_limctl *)getbytes(sizeof(t_limctl));
-  x->val2 = (t_limctl *)getbytes(sizeof(t_limctl));
-  x->cmp = (t_cmpctl *)getbytes(sizeof(t_cmpctl));
+  x->val1 = (t_limctl *)getbytes(sizeof(*x->val1));
+  x->val2 = (t_limctl *)getbytes(sizeof(*x->val2));
+  x->cmp = (t_cmpctl *)getbytes(sizeof(*x->cmp));
 
   x->cmp->ratio = 1.;
   x->cmp->threshold = 1;
@@ -734,15 +734,16 @@ static void limiter_free(t_limiter *x)
 {
   int i = 0;
 
-  freebytes(x->val1, sizeof(t_limctl));
-  freebytes(x->val2, sizeof(t_limctl));
-  freebytes(x->cmp, sizeof(t_cmpctl));
+  freebytes(x->val1, sizeof(*x->val1));
+  freebytes(x->val2, sizeof(*x->val2));
+  freebytes(x->cmp, sizeof(*x->cmp));
 
   while (i < x->number_of_inlets) {
-    freebytes(x->in[i++].ringbuf, x->buf_size * sizeof(t_sample));
+    freebytes(x->in[i].ringbuf, x->buf_size * sizeof(*x->in[i].ringbuf));
+    i++;
   }
 
-  freebytes(x->in, x->number_of_inlets * sizeof(t_inbuf));
+  freebytes(x->in, x->number_of_inlets * sizeof(*x->in));
 }
 
 /* ------------------------------------------------------------------------------------ */

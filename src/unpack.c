@@ -71,7 +71,7 @@ static void zunpack_free(t_zunpack *x)
   for (i = 0; i < x->x_numouts; i++) {
     outlet_free(x->x_out[i]);
   }
-  freebytes(x->x_out, x->x_numouts * sizeof(t_outlet *));
+  freebytes(x->x_out, x->x_numouts * sizeof(*x->x_out));
 
   x->x_numouts = 0;
   x->x_out = 0;
@@ -84,7 +84,7 @@ static void *zunpack_new(t_symbol *UNUSED(s), int argc, t_atom *UNUSED(argv))
   int i = 0;
 
   x->x_numouts = count;
-  x->x_out = (t_outlet **)getbytes(count * sizeof(t_outlet *));
+  x->x_out = (t_outlet **)getbytes(count * sizeof(*x->x_out));
 
   for (i = 0; i < count; i++) {
     x->x_out[i] = outlet_new(&x->x_obj, 0);

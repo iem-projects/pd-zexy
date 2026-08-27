@@ -60,14 +60,14 @@ static void repack_set(t_repack *x, t_float f)
     if (dumcur < 0) {
       pd_error(x, "this should never happen :: dumcur = %d < 0", dumcur);
     } else {
-      memcpy(x->buffer, dumbuf, dumcur * sizeof(t_atom));
+      memcpy(x->buffer, dumbuf, dumcur * sizeof(*x->buffer));
       x->current = dumcur;
     }
 
     if (n > x->bufsize) {
-      dumbuf = (t_atom *)getbytes(n * sizeof(t_atom));
-      memcpy(dumbuf, x->buffer, x->current * sizeof(t_atom));
-      freebytes(x->buffer, x->bufsize * sizeof(t_atom));
+      dumbuf = (t_atom *)getbytes(n * sizeof(*dumbuf));
+      memcpy(dumbuf, x->buffer, x->current * sizeof(*dumbuf));
+      freebytes(x->buffer, x->bufsize * sizeof(*x->buffer));
       x->buffer = dumbuf;
       x->bufsize = n;
     }
@@ -118,7 +118,7 @@ static void repack_list(
   t_atom *ap = argv;
 
   if (argc >= remain) {
-    memcpy(x->buffer + x->current, ap, remain * sizeof(t_atom));
+    memcpy(x->buffer + x->current, ap, remain * sizeof(*ap));
     ap += remain;
     argc -= remain;
     outlet_list(x->x_obj.ob_outlet, gensym("list"), x->outputsize, x->buffer);
@@ -131,7 +131,7 @@ static void repack_list(
     argc -= x->outputsize;
   }
 
-  memcpy(x->buffer + x->current, ap, argc * sizeof(t_atom));
+  memcpy(x->buffer + x->current, ap, argc * sizeof(*ap));
   x->current += argc;
 }
 static void repack_anything(t_repack *x, t_symbol *s, int argc, t_atom *argv)
@@ -152,7 +152,7 @@ static void *repack_new(t_floatarg f)
   x->outputsize = x->bufsize = (f > 0.f) ? f : 2;
   x->current = 0;
 
-  x->buffer = (t_atom *)getbytes(x->bufsize * sizeof(t_atom));
+  x->buffer = (t_atom *)getbytes(x->bufsize * sizeof(*x->buffer));
 
   inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym(""));
   outlet_new(&x->x_obj, 0);

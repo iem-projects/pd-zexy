@@ -59,9 +59,9 @@ static t_int *sigpack_perform(t_int *w)
 static void sigpack_dsp(t_sigpack *x, t_signal **sp)
 {
   if (x->vector_length != sp[0]->s_n) {
-    freebytes(x->buffer, x->vector_length * sizeof(t_atom));
+    freebytes(x->buffer, x->vector_length * sizeof(*x->buffer));
     x->vector_length = sp[0]->s_n;
-    x->buffer = (t_atom *)getbytes(x->vector_length * sizeof(t_atom));
+    x->buffer = (t_atom *)getbytes(x->vector_length * sizeof(*x->buffer));
   }
   dsp_add(sigpack_perform, 3, sp[0]->s_vec, x, sp[0]->s_n);
 }
