@@ -60,9 +60,6 @@ static t_int *dirac_perform(t_int *w)
   int n = (int)(w[3]);
 
   t_int do_it = x->do_it;
-
-  zero_perform(w + 1);
-
   if (do_it >= n) {
     x->do_it -= n;
   } else if (do_it >= 0) {
@@ -73,19 +70,6 @@ static t_int *dirac_perform(t_int *w)
   return (w + 4);
 }
 
-#ifndef __WIN32__
-/* LATER: investigate the occurrence of zero_perf8() */
-/* it seems, like Pd has the symbol zero_perf8(),
- * but it is not exported by m_pd.h:
- * so linux can use it, but w32 not
- * have to tell miller about that
- */
-t_int *zero_perf8(t_int *w);
-#else
-/* on w32 we have no access to this hidden function anyhow... */
-#  define zero_perf8 zero_perform
-#endif
-
 static t_int *dirac_perf8(t_int *w)
 {
   t_dirac *x = (t_dirac *)(w[1]);
@@ -93,8 +77,6 @@ static t_int *dirac_perf8(t_int *w)
   int n = (int)(w[3]);
 
   t_int do_it = x->do_it;
-  zero_perf8(w + 1);
-
   if (do_it >= n) {
     x->do_it -= n;
   } else if (do_it >= 0) {
@@ -107,6 +89,8 @@ static t_int *dirac_perf8(t_int *w)
 
 static void dirac_dsp(t_dirac *x, t_signal **sp)
 {
+  dsp_add_zero(sp[0]->s_vec, sp[0]->s_n);
+
   if (sp[0]->s_n & 7) {
     dsp_add(dirac_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
   } else {
