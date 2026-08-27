@@ -21,8 +21,11 @@ int read_parport(unsigned short int port)
 {
   unsigned char value;
 #  ifdef _MSC_VER
-  __asm mov edx, port __asm in al, dx __asm mov value,
-      al
+  /* clang-format off */
+  __asm mov edx,port
+  __asm in al,dx
+  __asm mov value,al
+  /* clang-format on */
 #  else
   /* hmm, i should read some documentation about inline assembler */
   post("lpt: cannot read from parport (recompile!)");
