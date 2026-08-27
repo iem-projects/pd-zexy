@@ -116,20 +116,21 @@ static int z_getWinErr(char *outstr, size_t len)
   outstr[len - 1] = 0;
   return err;
 }
+#    include "z_strnlen.h"
 static void z_findfile(const char *filename, char *buf, size_t bufsize)
 {
   char *bufptr;
   int fd = open_via_path(".", filename, "", buf, &bufptr, bufsize, 0);
+  size_t dirsize = z_strnlen(buf, bufsize);
 
-  if (fd < 0) {
+  if (fd < 0 || bufsize < (dirsize + 1)) {
     snprintf(buf, bufsize - 1, "%s", filename);
   } else {
     sys_close(fd);
-    snprintf(buf, bufsize - 1, "%s/%s", buf, bufptr);
+    snprintf(buf + dirsize, bufsize - dirsize - 1, "/%s", bufptr);
   }
   buf[bufsize - 1] = 0;
 }
-
 static int z_inpout32_ctor()
 {
   if (!z_inpout32_refcount) {
