@@ -98,14 +98,14 @@ typedef struct _sfplay {
   int please_stop;  /* can be reset only by stop-state itself */
   int please_close; /* can be reset only by close-state */
   int x_channels;   /* channels to play */
-  t_float x_offset;   /* offsetto start reading */
-  t_float offset;     /* inlet value offset in secs */
-  t_float x_skip;     /* skip bytes because header */
+  t_float x_offset; /* offset to start reading */
+  t_float offset;   /* inlet value offset in secs */
+  t_float x_skip;   /* skip bytes because header */
   int skip;         /* pending skip if 1 */
-  t_float x_speed;    /* play speed, not supported in this version */
+  t_float x_speed;  /* play speed, not supported in this version */
   int size;         /* size of file (if memory mapped) */
   int swap;         /* swap bytes from l->b or b->m */
-  FILE *fp;           /* file oper non-NULL of open */
+  FILE *fp;         /* file oper non-NULL of open */
   int state;        /* which state is player in */
   int count;        /* count for ticks before next step */
 
@@ -574,7 +574,7 @@ static void *sfplay_new(t_floatarg chan, t_floatarg skip)
   t_sfplay *x = (t_sfplay *)pd_new(sfplay_class);
   int c = chan;
 
-  if(c<1) {
+  if (c < 1) {
     pd_error(x, "[sfplay] channel count must be >0!");
   }
 
