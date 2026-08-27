@@ -31,7 +31,7 @@ typedef struct _blockshuffle {
   t_object x_obj;
 
   t_sample *blockbuf;
-  t_int *indices;
+  int *indices;
   int size;
 
   t_float *shuffle;
@@ -48,8 +48,8 @@ static void blockshuffle_buildindex(t_blockshuffle *x, int blocksize)
     if (x->blockbuf) {
       freebytes(x->blockbuf, x->size);
     }
-    x->indices = getbytes(sizeof(t_int) * blocksize);
-    x->blockbuf = getbytes(sizeof(t_sample) * blocksize);
+    x->indices = getbytes(sizeof(*x->indices) * blocksize);
+    x->blockbuf = getbytes(sizeof(*x->blockbuf) * blocksize);
     x->size = blocksize;
   }
   for (i = 0; i < x->shufflesize && i < blocksize; i++) {
@@ -91,7 +91,7 @@ static t_int *blockshuffle_perform(t_int *w)
   t_sample *out = (t_sample *)(w[3]);
   int n = (int)(w[4]);
   t_sample *temp = x->blockbuf;
-  t_int *idx = x->indices;
+  int *idx = x->indices;
 
   if (idx) {
     int i = 0;

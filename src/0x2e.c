@@ -25,7 +25,7 @@ static t_class *scalmul_scal_class = NULL;
 typedef struct _scalmul {
   t_object x_obj;
 
-  t_int n1, n2;
+  int n1, n2;
 
   t_float *buf1, *buf2;
 

@@ -1060,7 +1060,7 @@ static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol *s1, t_symbol *r)
   int step = argc, n;
   t_atom *atombuf = (t_atom *)getbytes(sizeof(t_atom) * argc);
   t_float *buf;
-  t_int   *idx;
+  int   *idx;
 
   int i, loops = 1;
 
@@ -1077,7 +1077,7 @@ static void msgfile_sort(t_msgfile *x, t_symbol *s0, t_symbol *s1, t_symbol *r)
     while(i--) { /* there might be some optimization in here */
       for (n=0; n<(argc-step); n++) {
         if (buf[n] > buf[n+step]) {
-          t_int   i_tmp = idx[n];
+          int   i_tmp = idx[n];
           t_float f_tmp = buf[n];
           buf[n]        = buf[n+step];
           buf[n+step]   = f_tmp;

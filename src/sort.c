@@ -32,7 +32,7 @@ typedef struct _sort {
 
   int bufsize;
   t_float *buffer;
-  t_int *indices;
+  int *indices;
 
   int ascending;
 
@@ -52,15 +52,15 @@ static void sort_buffer(t_sort *x, int argc, t_atom *argv)
 
   if (argc != x->bufsize) {
     if (x->buffer) {
-      freebytes(x->buffer, x->bufsize * sizeof(t_float));
+      freebytes(x->buffer, x->bufsize * sizeof(*x->buffer));
     }
     if (x->indices) {
-      freebytes(x->indices, x->bufsize * sizeof(t_int));
+      freebytes(x->indices, x->bufsize * sizeof(*x->indices));
     }
 
     x->bufsize = argc;
-    x->buffer = getbytes(x->bufsize * sizeof(t_float));
-    x->indices = getbytes(x->bufsize * sizeof(t_int));
+    x->buffer = getbytes(x->bufsize * sizeof(*x->buffer));
+    x->indices = getbytes(x->bufsize * sizeof(*x->indices));
   }
 
   buf = x->buffer;
@@ -75,7 +75,7 @@ static void sort_list(t_sort *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
   int step = argc, n;
   t_atom *atombuf = (t_atom *)getbytes(sizeof(t_atom) * argc);
   t_float *buf;
-  t_int *idx;
+  int *idx;
 
   int i, loops = 1;
 
@@ -92,7 +92,7 @@ static void sort_list(t_sort *x, t_symbol *UNUSED(s), int argc, t_atom *argv)
     while (i--) { /* there might be some optimization in here */
       for (n = 0; n < (argc - step); n++) {
         if (buf[n] > buf[n + step]) {
-          t_int i_tmp = idx[n];
+          int i_tmp = idx[n];
           t_float f_tmp = buf[n];
           buf[n] = buf[n + step];
           buf[n + step] = f_tmp;

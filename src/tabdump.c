@@ -25,7 +25,7 @@ static t_class *tabdump_class = NULL;
 typedef struct _tabdump {
   t_object x_obj;
   t_symbol *x_arrayname;
-  t_int startindex, stopindex;
+  int startindex, stopindex;
 } t_tabdump;
 
 static void tabdump_bang(t_tabdump *x)

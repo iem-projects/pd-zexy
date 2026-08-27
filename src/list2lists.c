@@ -39,7 +39,7 @@ typedef struct _list2lists {
 
   t_inlet *x_lengin;
   int x_lcount;
-  t_int *x_length;
+  int *x_length;
 } t_list2lists;
 
 static void list2lists_list2(
@@ -56,7 +56,7 @@ static void list2lists_list2(
   if (argc > 0) {
     int i;
     x->x_lcount = argc;
-    x->x_length = (t_int *)getbytes((x->x_lcount) * sizeof(t_int));
+    x->x_length = (int *)getbytes((x->x_lcount) * sizeof(*x->x_length));
     for (i = 0; i < argc; i++) {
       int index = atom_getint(argv + i);
       if (index < 0) {

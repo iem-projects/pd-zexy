@@ -63,20 +63,20 @@ typedef struct _sfrecord {
         because there is no command queue,
         flags are used instead
   */
-  t_int write;        /* write: 1, stop: 0 */
-  t_int please_stop;  /* can be reset only by stop-state itself */
-  t_int please_close; /* can be reset only by close-state */
-  t_int x_channels;   /* channels to write */
+  int write;        /* write: 1, stop: 0 */
+  int please_stop;  /* can be reset only by stop-state itself */
+  int please_close; /* can be reset only by close-state */
+  int x_channels;   /* channels to write */
   t_float x_offset;   /* offset to start writing */
   t_float offset;     /* inlet value offset in secs */
   t_float x_skip;     /* skip bytes because header */
-  t_int skip;         /* pending skip if 1 */
+  int skip;         /* pending skip if 1 */
   t_float x_speed;    /* write speed, not supported in this version */
-  t_int size;         /* size of file (if memory mapped) */
-  t_int swap;         /* swap bytes from l->b or b->m */
+  int size;         /* size of file (if memory mapped) */
+  int swap;         /* swap bytes from l->b or b->m */
   FILE *fp;           /* file oper non-NULL of open */
-  t_int state;        /* which state is writer in */
-  t_int count;        /* count for ticks before next step */
+  int state;        /* which state is writer in */
+  int count;        /* count for ticks before next step */
 
 } t_sfrecord;
 
@@ -504,7 +504,11 @@ static void sfrecord_dsp(t_sfrecord *x, t_signal **sp)
 static void *sfrecord_new(t_floatarg chan)
 {
   t_sfrecord *x = (t_sfrecord *)pd_new(sfrecord_class);
-  t_int c = chan;
+  int c = chan;
+
+  if(c<1) {
+    pd_error(x, "[sfrecord] channel count must be >0!");
+  }
 
   switch (c) {
   /* ok */

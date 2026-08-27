@@ -27,7 +27,7 @@ typedef struct _tabminmax {
   t_object x_obj;
   t_outlet *min_out, *max_out;
   t_symbol *x_arrayname;
-  t_int startindex, stopindex;
+  int startindex, stopindex;
 } t_tabminmax;
 
 static void tabminmax_bang(t_tabminmax *x)

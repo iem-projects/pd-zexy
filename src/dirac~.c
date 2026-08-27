@@ -39,8 +39,8 @@ static t_class *dirac_class = NULL;
 
 typedef struct _dirac {
   t_object x_obj;
-  t_int position;
-  t_int do_it;
+  int position;
+  int do_it;
 } t_dirac;
 
 static void dirac_bang(t_dirac *x)
@@ -50,7 +50,7 @@ static void dirac_bang(t_dirac *x)
 
 static void dirac_float(t_dirac *x, t_float where)
 {
-  x->do_it = x->position = (t_int)where;
+  x->do_it = x->position = (int)where;
 }
 
 static t_int *dirac_perform(t_int *w)
@@ -59,7 +59,7 @@ static t_int *dirac_perform(t_int *w)
   t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3]);
 
-  t_int do_it = x->do_it;
+  int do_it = x->do_it;
   if (do_it >= n) {
     x->do_it -= n;
   } else if (do_it >= 0) {
@@ -76,7 +76,7 @@ static t_int *dirac_perf8(t_int *w)
   t_sample *out = (t_sample *)(w[2]);
   int n = (int)(w[3]);
 
-  t_int do_it = x->do_it;
+  int do_it = x->do_it;
   if (do_it >= n) {
     x->do_it -= n;
   } else if (do_it >= 0) {

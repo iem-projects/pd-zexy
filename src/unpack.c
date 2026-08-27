@@ -36,7 +36,7 @@ static t_class *zunpack_class = NULL;
 typedef struct _zunpack {
   t_object x_obj;
   t_outlet **x_out;
-  t_int x_numouts;
+  int x_numouts;
 } t_zunpack;
 
 static void zunpack_any(t_zunpack *x, t_symbol *s, int argc, t_atom *argv)

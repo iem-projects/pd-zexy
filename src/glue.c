@@ -26,9 +26,9 @@ typedef struct _zglue {
   t_object x_obj;
 
   t_atom *ap2, *ap;
-  t_int n1, n2, n;
+  int n1, n2, n;
 
-  t_int changed;
+  int changed;
 } t_glue;
 
 static void glue_lst2(t_glue *x, t_symbol *UNUSED(s), int argc, t_atom *argv)

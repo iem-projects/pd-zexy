@@ -47,7 +47,7 @@ typedef struct _relayelement {
 typedef struct _relay {
   t_object x_obj;
   t_atomtype x_type;
-  t_int x_nelement;
+  int x_nelement;
   t_relayelement *x_vec;
   t_outlet *x_rejectout;
 } t_relay;

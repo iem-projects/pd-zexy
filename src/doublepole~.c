@@ -44,7 +44,7 @@ static t_int *sigdoublepole_perform(t_int *w)
   t_sample *in = (t_sample *)(w[1]);
   t_sample *out = (t_sample *)(w[2]);
   t_doublepolectl *c = (t_doublepolectl *)(w[3]);
-  int n = (t_int)(w[4]);
+  int n = (int)(w[4]);
   int i;
   t_sample last = c->c_x1;
   t_sample prev = c->c_x2;
