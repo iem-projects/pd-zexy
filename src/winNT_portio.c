@@ -19,7 +19,7 @@ static BOOL bPrivException = FALSE;
 
 int read_parport(unsigned short int port)
 {
-  unsigned char value;
+  unsigned char value = 0;
 #  ifdef _MSC_VER
   /* clang-format off */
   __asm mov edx,port
@@ -29,9 +29,8 @@ int read_parport(unsigned short int port)
 #  else
   /* hmm, i should read some documentation about inline assembler */
   post("lpt: cannot read from parport (recompile!)");
-  return 0;
 #  endif
-      return (int)value;
+  return (int)value;
 }
 
 void write_parport(unsigned short int port, int invalue)
