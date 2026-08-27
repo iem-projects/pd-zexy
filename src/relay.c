@@ -24,7 +24,7 @@
 
    example:
    [foo bar( --> [route foo] --> [bar(
-   [foo bar( --> [relay foo] --> [foor bar(
+   [foo bar( --> [relay foo] --> [foo bar(
 
    namings:
    direct, channel, relay, steer, guide, ??

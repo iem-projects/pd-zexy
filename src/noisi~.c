@@ -20,7 +20,7 @@
 /*
   30041999
 
-  two bandlimited noise gnerators based on DODGE/JERSE "computer music" c3.9 : RANDI & RANDH
+  two bandlimited noise generators based on DODGE/JERSE "computer music" c3.9 : RANDI & RANDH
 
   I do not care for copyrights
   (all in all, the used noise~-code (in fact, the pseude-random-code) is from Miller Puckette

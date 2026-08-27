@@ -563,7 +563,7 @@ static void sfrecord_helper(void)
   post("\nsfplay :: a raw-data soundfile-recorder");
   post("\ncreation :: sfrecord <channels>\t: channels set the number of "
        "channels");
-  post("\nopen [<path>]<filename> [<endianity>]\t:: open b(ig) or l(ittle) "
+  post("\nopen [<path>]<filename> [<endianness>]\t:: open b(ig) or l(ittle) "
        "endian file"
        "\nclose\t\t\t:: close file (aka eject)"
        "\nstart\t\t\t:: start playing"

@@ -1284,21 +1284,21 @@ static void msgfile_write(t_msgfile *x, t_symbol *filename, t_symbol *sformat)
 
 static void msgfile_print(t_msgfile *x)
 {
-  t_msglist *cur = x->start;
+  t_msglist *current = x->start;
   int j = 0;
   post("--------- msgfile contents: -----------");
 
-  while (cur) {
-    t_msglist *dum = cur;
+  while (current) {
+    t_msglist *cur = current;
     int i;
     startpost("line %d:", j);
     j++;
-    for (i = 0; i < dum->n; i++) {
-      t_atom *a = dum->thislist + i;
+    for (i = 0; i < cur->n; i++) {
+      t_atom *a = cur->thislist + i;
       postatom(1, a);
     }
     endpost();
-    cur = cur->next;
+    current = current->next;
   }
 }
 

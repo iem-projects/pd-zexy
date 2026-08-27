@@ -139,7 +139,7 @@ static void sfplay_helper(t_sfplay *UNUSED(x))
   post("\nsfplay :: a soundfile-player (c) winfried ritsch 1999");
   post("\ncreation :: sfplay <channels> <bytes> : channels set the number of "
        "channels, bytes skip fileheader");
-  post("\nopen [<path>]<filename> [<endianity>]\t::open b(ig) or l(ittle) "
+  post("\nopen [<path>]<filename> [<endianness>]\t::open b(ig) or l(ittle) "
        "endian file"
        "\nclose\t\t\t::close file (aka eject)"
        "\nstart\t\t\t::start playing"
